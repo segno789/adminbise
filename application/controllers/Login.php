@@ -40,7 +40,7 @@ class Login extends CI_Controller {
             'user_status' => ''                     
 
         );
-        DebugBreak();
+        //DebugBreak();
         //$this->is_logged_in();
         
         

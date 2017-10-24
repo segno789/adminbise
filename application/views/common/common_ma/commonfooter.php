@@ -1,32 +1,18 @@
-<footer>
-    <p>
-        &copy; <?php echo Year; ?> BISE Gujranwala All Rights Reserved.
-    </p>
-</footer>
 
-<!--Add the following script at the bottom of the web page (before </body></html>)-->
-<!--<script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=93646887"></script>-->
+<div id="footer" class="footer">
+    &nbsp; &copy; 2017 BISE Gujranwala, All Rights Reserved. 
+</div>
 
-<script src="<?php echo base_url(); ?>assets/js_matric/jquery-1.8.3.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
-<script src="<?php echo base_url(); ?>assets/js_matric/jquery.validate.js"></script>
-<script src="<?php echo base_url(); ?>assets/js_matric/jquery.maskedinput.js"></script>
-<script src="<?php echo base_url(); ?>assets/js_matric/noty/jquery.noty.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/wysiwyg/bootstrap-wysihtml5.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.dataTables.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js_matric/noty/layouts/bottom.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js_matric/noty/themes/default.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js_matric/jquery-ui.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.fancybox.pack.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/alertify.min.js"></script>
+</div>
+
+<script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery.maskedinput.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
-
-
-
-
-</body>
-</html>
-
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/alertify.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.pack.js"></script>    
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.js"></script>    
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
 
     var count = 0; // needed for safari
@@ -84,7 +70,6 @@
             {
                 alertify.error("Dear Student! Please  rectify  "+spl_cd+" before proceeding further from MATRIC BRANCH !"); 
             }   
-
         } 
         var error_New_Enrolement ='<?php   if(@$excep != ""){echo @$excep['excep'];}  ?>';
         var  error_New_Enrolement_update ='<?php   if(@$data != ""){echo @$data[0]['excep'];}  ?>';
@@ -604,7 +589,6 @@
     }
     function EditForm(formrno)
     {
-        // //
         $('#sub1').empty();
         $('#sub2').empty();
         $('#sub3').empty();
@@ -849,7 +833,7 @@
     }
     function  check_NewEnrol_validation_matric()
     {
-       // debugger;
+        // debugger;
         var name =  $('#cand_name').val();
         var dist_cd= $('#pvtinfo_dist option:selected').val();
         var teh_cd= $('#pvtinfo_teh').val();
@@ -937,14 +921,14 @@
             $('#bay_form').focus();  
             return status; 
         }
-       /* else if(bFormNo == "00000-0000000-0")
+        /* else if(bFormNo == "00000-0000000-0")
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your bay-Form</b>"); 
-            alertify.error("Please Enter correct bay-Form ") 
-            $('#bay_form').focus();  
-            return status; 
+        $('#ErrMsg').show(); 
+        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+        // $('#ErrMsg').html("<b>Please Enter your bay-Form</b>"); 
+        alertify.error("Please Enter correct bay-Form ") 
+        $('#bay_form').focus();  
+        return status; 
         }*/
 
         else if(FNic == "" || FNic.length == undefined )
@@ -958,12 +942,12 @@
         }
         /*else if(FNic == "00000-0000000-0" )
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
-            alertify.error("Please Enter your Father's CNIC") 
-            $('#father_cnic').focus();  
-            return status; 
+        $('#ErrMsg').show(); 
+        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+        // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
+        alertify.error("Please Enter your Father's CNIC") 
+        $('#father_cnic').focus();  
+        return status; 
         }                                  */
 
 
@@ -1040,7 +1024,7 @@
             $("#sub6").focus();
             return status;  
         }
-        
+
         else if((exam_type ==2 &&  selected_group_conversion==2 && grppre == 2)|| (exam_type < 7 &&  selected_group_conversion != grppre ))
         {
             if ((sub6p1 == 0 || sub6p2 == 0) )
@@ -1053,7 +1037,7 @@
             }
             if((sub7p1 == 0 || sub7p2== 0)) 
             {
-             $('#ErrMsg').show(); 
+                $('#ErrMsg').show(); 
                 $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
                 alertify.error('Please Select Optionl Subject First! '); 
                 $("#sub7").focus();
@@ -1064,11 +1048,11 @@
                 status = 1;
             }
         }
-        
-        
+
+
         else if (selected_group_conversion != grppre && (exam_type == 16 ||  exam_type == 14)) 
         {
-            
+
             var ddlMarksImproveoptions = $("#ddlMarksImproveoptions").val();
 
             if(ddlMarksImproveoptions == 0)
@@ -1336,7 +1320,7 @@
     }
     function  check_NewEnrol_validation_regular_matric()
     {
-        
+
         var name =  $('#cand_name').val();
         var dist_cd= $('#pvtinfo_dist option:selected').val();
         var teh_cd= $('#pvtinfo_teh').val();
@@ -1375,7 +1359,7 @@
             selected_group_conversion =grp_cd;
         }
         //  alert($("#pvtinfo_dist").find('option:selected').val())
-        
+
         if(src == '') {
             $img.addClass("highlight");
             // or
@@ -1594,10 +1578,9 @@
 
             if (e) {
                 window.parent.location=<?php base_url() ?>'Admission';
-            } 
-
-
+            }
         });
-
     }
 </script>
+</body>
+</html>
