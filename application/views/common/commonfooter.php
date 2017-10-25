@@ -1,87 +1,68 @@
-<footer>
-    <p>
-        &copy; <?php echo Year; ?> BISE Gujranwala All Rights Reserved.
-    </p>
-</footer>
 
-<!--Add the following script at the bottom of the web page (before </body></html>)-->
-<!--<script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=93646887"></script>-->
+<div id="footer" class="footer">
+    &nbsp; &copy; 2017 BISE Gujranwala, All Rights Reserved. 
+</div>
 
-<script src="<?php echo base_url(); ?>assets/js_matric/jquery-1.8.3.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
-<script src="<?php echo base_url(); ?>assets/js_matric/jquery.validate.js"></script>
-<script src="<?php echo base_url(); ?>assets/js_matric/jquery.maskedinput.js"></script>
-<script src="<?php echo base_url(); ?>assets/js_matric/noty/jquery.noty.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/wysiwyg/bootstrap-wysihtml5.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.dataTables.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js_matric/noty/layouts/bottom.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js_matric/noty/themes/default.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js_matric/jquery-ui.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.fancybox.pack.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/alertify.min.js"></script>
+</div>
+
+<script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery.maskedinput.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
-
-
-
-
-</body>
-</html>
-
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/alertify.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.pack.js"></script>    
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.js"></script>    
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
- $(document).ready(function(){
-    var out = false;
-    $("body").mouseover(function(){
-      out=false;
-    }).mouseout(function(){
-      out=true;
-    });
-    window.onbeforeunload = function(){
-        if(out)
-        {
-            //$.ajax({url:"http://ssc.bisegrw.com/index.php/login/log_out", async:false});
-            
-        }
-
-    }
-  });
-  
-  
-  
-var count = 0; // needed for safari
-window.onload = function () { 
-    $('.mPageloader').attr('style','display: none;')
-    if (typeof history.pushState === "function") { 
-        history.pushState("back", null, null);          
-        window.onpopstate = function () { 
-            history.pushState('back', null, null);              
-            if(count == 1){
-                var msg = "Are You Sure You want to Cancel this Form ?"
-                alertify.confirm(msg, function (e) {
-                    if (e) {
-                        // user clicked "ok"
-                        window.location.href ='<?php echo base_url(); ?>Admission/';
-                    } else {
-                        // user clicked "cancel"
-                    }
-                });
-                
+    $(document).ready(function(){
+        var out = false;
+        $("body").mouseover(function(){
+            out=false;
+        }).mouseout(function(){
+            out=true;
+        });
+        window.onbeforeunload = function(){
+            if(out)
+            {
+                //$.ajax({url:"http://ssc.bisegrw.com/index.php/login/log_out", async:false});
             }
-         }; 
-     }
- }  
-setTimeout(function(){count = 1;},200);
-  
+        }
+    });
+
+    var count = 0; // needed for safari
+    window.onload = function () { 
+        $('.mPageloader').attr('style','display: none;')
+        if (typeof history.pushState === "function") { 
+            history.pushState("back", null, null);          
+            window.onpopstate = function () { 
+                history.pushState('back', null, null);              
+                if(count == 1){
+                    var msg = "Are You Sure You want to Cancel this Form ?"
+                    alertify.confirm(msg, function (e) {
+                        if (e) {
+                            // user clicked "ok"
+                            window.location.href ='<?php echo base_url(); ?>Admission/';
+                        } else {
+                            // user clicked "cancel"
+                        }
+                    });
+
+                }
+            }; 
+        }
+    }  
+    setTimeout(function(){count = 1;},200);
+
     $(document).ready(function(){
         $('#data-table').dataTable({
             "sPaginationType": "full_numbers",
             "cache": false
         });
 
-    $("#bay_form,#father_cnic").mask("99999-9999999-9",{placeholder:"_"});
-    $("#dob,#dateofadmission").mask("99-99-9999",{placeholder:"_"});
-    $("#mob_number").mask("9999-9999999",{placeholder:"_"});
-        $( "#batch_real_PaidDate" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, startDate:new Date() }).val();
-
+        $("#bay_form,#father_cnic").mask("99999-9999999-9",{placeholder:"_"});
+        $("#dob,#dateofadmission").mask("99-99-9999",{placeholder:"_"});
+        $("#mob_number").mask("9999-9999999",{placeholder:"_"});
+        $("#batch_real_PaidDate" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, startDate:new Date() }).val();
         $( "#dob" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, maxDate: new Date(2003, 7,1),yearRange: '1970:2003'}).val();
 
         var spl_cd = "<?php   echo @$spl_cd; ?>";
@@ -350,43 +331,43 @@ setTimeout(function(){count = 1;},200);
             }
         }
         $("#pvtinfo_dist").change(function()
-        {
-            var distId =  $("#pvtinfo_dist").val();
-            $('#pvtinfo_teh').empty();
-            $('#pvtinfo_teh').append('<option value="0">SELECT TEHSIL</option>');
-            $('#pvtZone').empty();
-            $('#pvtZone').append('<option value="0">SELECT ZONE</option>');
-            if(distId == 1){
-                $("#pvtinfo_teh").append('<option value="1">KAMOKE</option>');
-                $("#pvtinfo_teh").append('<option value="2">GUJRANWALA</option>');
-                $("#pvtinfo_teh").append('<option value="3">WAZIRABAD</option>');
-                $("#pvtinfo_teh").append('<option value="4">NOWSHERA VIRKAN</option>'); 
-            }
-            else if(distId == 2){
-                $("#pvtinfo_teh").append('<option value="5">GUJRAT</option>');
-                $("#pvtinfo_teh").append('<option value="6">KHARIAN</option>');
-                $("#pvtinfo_teh").append('<option value="7">SARAI ALAMGIR</option>');
-            }
-            else if(distId == 3){
-                $("#pvtinfo_teh").append('<option value="8">HAFIZABAD</option>');
-                $("#pvtinfo_teh").append('<option value="9">PINDI BHATTIAN</option>');
-            }
-            else if(distId == 4){
-                $("#pvtinfo_teh").append('<option value="10">MANDI BAHA-UD-DIN</option>');
-                $("#pvtinfo_teh").append('<option value="11">PHALIA</option>');
-                $("#pvtinfo_teh").append('<option value="12">MALAKWAL</option>');
-            }
-            else if(distId == 5){
-                $("#pvtinfo_teh").append('<option value="13">NAROWAL</option>');
-                $("#pvtinfo_teh").append('<option value="14">SHAKARGARH</option>');
-                $("#pvtinfo_teh").append('<option value="19">ZAFARWAL</option>');
-            }
-            else if(distId == 6){
-                $("#pvtinfo_teh").append('<option value="15">SIALKOT</option>');
-                $("#pvtinfo_teh").append('<option value="16">PASRUR</option>');
-                $("#pvtinfo_teh").append('<option value="17">DASKA</option>');
-                $("#pvtinfo_teh").append('<option value="18">SAMBRIAL</option>');
-            }
+            {
+                var distId =  $("#pvtinfo_dist").val();
+                $('#pvtinfo_teh').empty();
+                $('#pvtinfo_teh').append('<option value="0">SELECT TEHSIL</option>');
+                $('#pvtZone').empty();
+                $('#pvtZone').append('<option value="0">SELECT ZONE</option>');
+                if(distId == 1){
+                    $("#pvtinfo_teh").append('<option value="1">KAMOKE</option>');
+                    $("#pvtinfo_teh").append('<option value="2">GUJRANWALA</option>');
+                    $("#pvtinfo_teh").append('<option value="3">WAZIRABAD</option>');
+                    $("#pvtinfo_teh").append('<option value="4">NOWSHERA VIRKAN</option>'); 
+                }
+                else if(distId == 2){
+                    $("#pvtinfo_teh").append('<option value="5">GUJRAT</option>');
+                    $("#pvtinfo_teh").append('<option value="6">KHARIAN</option>');
+                    $("#pvtinfo_teh").append('<option value="7">SARAI ALAMGIR</option>');
+                }
+                else if(distId == 3){
+                    $("#pvtinfo_teh").append('<option value="8">HAFIZABAD</option>');
+                    $("#pvtinfo_teh").append('<option value="9">PINDI BHATTIAN</option>');
+                }
+                else if(distId == 4){
+                    $("#pvtinfo_teh").append('<option value="10">MANDI BAHA-UD-DIN</option>');
+                    $("#pvtinfo_teh").append('<option value="11">PHALIA</option>');
+                    $("#pvtinfo_teh").append('<option value="12">MALAKWAL</option>');
+                }
+                else if(distId == 5){
+                    $("#pvtinfo_teh").append('<option value="13">NAROWAL</option>');
+                    $("#pvtinfo_teh").append('<option value="14">SHAKARGARH</option>');
+                    $("#pvtinfo_teh").append('<option value="19">ZAFARWAL</option>');
+                }
+                else if(distId == 6){
+                    $("#pvtinfo_teh").append('<option value="15">SIALKOT</option>');
+                    $("#pvtinfo_teh").append('<option value="16">PASRUR</option>');
+                    $("#pvtinfo_teh").append('<option value="17">DASKA</option>');
+                    $("#pvtinfo_teh").append('<option value="18">SAMBRIAL</option>');
+                }
 
 
         });
@@ -396,13 +377,13 @@ setTimeout(function(){count = 1;},200);
             var tehId =  $("#pvtinfo_teh").val();
             var gend = $("#gen").val();
             //alert("hello "+gend);
-              if(gend==undefined)
+            if(gend==undefined)
             {
                 alertify.error("Select Gender First.");
                 $("#pvtinfo_teh").val(0);
                 return false;
             }
-           else if(tehId == 0){
+            else if(tehId == 0){
                 alert("Select Tehsil First");
             }
             else{
@@ -472,7 +453,7 @@ setTimeout(function(){count = 1;},200);
             var tehId =  $("#pvtZone").val();
             var gend = $("#gen").val();
             //alert("hello "+tehId);
-              if(gend==undefined)
+            if(gend==undefined)
             {
                 alertify.error("Select Gender First.");
                 $("#pvtinfo_teh").val(0);
@@ -488,7 +469,7 @@ setTimeout(function(){count = 1;},200);
                     url: "<?php echo base_url(); ?>Admission/getcenter/",
                     dataType: 'json',
                     //data: $("#myform").serialize(),
-                      data: {'tehCode': tehId,'gend':gend},
+                    data: {'tehCode': tehId,'gend':gend},
                     beforeSend: function() {  $('.mPageloader').show(); },
                     complete: function() { $('.mPageloader').hide();},
                     success: function(json) {
@@ -564,7 +545,7 @@ setTimeout(function(){count = 1;},200);
                 alertify.error("Please Select Group First!") ;
             }
             else{
-               var msg = "Are You Sure you want to make Batch ?" // var msg = "<img src='<?php echo base_url(); ?>assets/img/note_for_batch.jpg' alt='logo' style='width:800px; height: auto;' />"
+                var msg = "Are You Sure you want to make Batch ?" // var msg = "<img src='<?php echo base_url(); ?>assets/img/note_for_batch.jpg' alt='logo' style='width:800px; height: auto;' />"
                 //var msg = "Are You Sure You want to Cancel this Form ? <img src='<?php echo base_url(); ?>assets/img/note_for_batch.jpg' alt='logo' style='width:30px; height: 50px;' />"
                 alertify.confirm(msg, function (e) {
 
@@ -589,7 +570,7 @@ setTimeout(function(){count = 1;},200);
 
         if( $('input[name="chk[]"]:checked').length > 0 )
         {
-           var msg = "Are you sure you want to make Batch ?" //var msg = "<img src='<?php echo base_url(); ?>assets/img/note_for_batch.jpg' alt='logo' style='width:800px; height: auto;' />"
+            var msg = "Are you sure you want to make Batch ?" //var msg = "<img src='<?php echo base_url(); ?>assets/img/note_for_batch.jpg' alt='logo' style='width:800px; height: auto;' />"
 
             alertify.confirm(msg, function (e) {
 
@@ -634,8 +615,8 @@ setTimeout(function(){count = 1;},200);
         $('#sub8').empty();
         window.location.href = '<?=base_url()?>Admission_matric/NewEnrolment_EditForm_matric/'+formrno
     }
-    
-      function NewForm(formrno,Brd_cd)
+
+    function NewForm(formrno,Brd_cd)
     {
         // //debugger;
         $('#sub1').empty();
@@ -763,7 +744,7 @@ setTimeout(function(){count = 1;},200);
             return;
         }
     })
-     $('#get_proof_cutlist').click( function(){
+    $('#get_proof_cutlist').click( function(){
         var option =  $('input[type=radio][name=opt]:checked').val(); 
         if(option == "1")
         {
@@ -891,7 +872,7 @@ setTimeout(function(){count = 1;},200);
     {
         window.location.href =  '<?=base_url()?>Admission_matric/Print_Admission_matric_Form_Proofreading_Groupwise/'+grp_cd + '/1'
     }
-     function Print_cutlist_Proofreading_Groupwise(grp_cd)
+    function Print_cutlist_Proofreading_Groupwise(grp_cd)
     {
         window.location.href =  '<?=base_url()?>Admission_matric/cutlist/'+grp_cd + '/1'
     }
@@ -905,7 +886,7 @@ setTimeout(function(){count = 1;},200);
     }
     function  check_NewEnrol_validation()
     {
-       // debugger;
+        // debugger;
         var name =  $('#cand_name').val();
         var dist_cd= $('#pvtinfo_dist option:selected').val();
         var teh_cd= $('#pvtinfo_teh').val();
@@ -943,13 +924,13 @@ setTimeout(function(){count = 1;},200);
         {
             selected_group_conversion =grp_cd;
         }
-      //  alert($("#pvtinfo_dist").find('option:selected').val())
+        //  alert($("#pvtinfo_dist").find('option:selected').val())
         debugger;
         if(src == '') {
-         $img.addClass("highlight");
-    // or
-        $img.css("border", "3px solid yellow");
-         $('#ErrMsg').show();  
+            $img.addClass("highlight");
+            // or
+            $img.css("border", "3px solid yellow");
+            $('#ErrMsg').show();  
             $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
             // $('#ErrMsg').html("<b>Please Enter your  Name </b>");    
             alertify.error("Please upload your Picture First.")
@@ -992,7 +973,7 @@ setTimeout(function(){count = 1;},200);
             return status; 
         }
 
-      
+
 
         else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
         {
@@ -1054,10 +1035,10 @@ setTimeout(function(){count = 1;},200);
         }
         else if ((sub6p1 == 19 || sub6p2 == 19) && (sub7p1 == 20 || sub7p2== 20))
         {
-        $('#ErrMsg').show(); 
-        alertify.error('Please select One Subject from ADVANCED ISLAMIC STUDIES / ISLAMIC HISTORY / MUSLIM HISTORY ');                   
-        $("#sub6").focus();
-        return status;  
+            $('#ErrMsg').show(); 
+            alertify.error('Please select One Subject from ADVANCED ISLAMIC STUDIES / ISLAMIC HISTORY / MUSLIM HISTORY ');                   
+            $("#sub6").focus();
+            return status;  
         }
         else if ( exam_type == 16 || exam_type == 14) 
         {
@@ -1065,110 +1046,110 @@ setTimeout(function(){count = 1;},200);
             var ddlMarksImproveoptions = $("#ddlMarksImproveoptions").val();
             if(ddlMarksImproveoptions == 1)
             {
-              if (sub6p1 == 0 )
+                if (sub6p1 == 0 )
                 {
-                $('#ErrMsg').show(); 
-                alertify.error('Please select Subject ');                   
-                $("#sub6").focus();
-                return status;  
+                    $('#ErrMsg').show(); 
+                    alertify.error('Please select Subject ');                   
+                    $("#sub6").focus();
+                    return status;  
                 }  
-                 else   if (sub7p1 == 0)
+                else   if (sub7p1 == 0)
                 {
-                $('#ErrMsg').show(); 
-                $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-                alertify.error('Please select Subject ');
-                $("#sub7").focus();
-                return status;  
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject ');
+                    $("#sub7").focus();
+                    return status;  
                 }
-                 else if (sub8p1 == 0 )
+                else if (sub8p1 == 0 )
                 {
-                $('#ErrMsg').show(); 
-                $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-                alertify.error('Please select Subject '); 
-                $("#sub8").focus();
-                return status;  
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject '); 
+                    $("#sub8").focus();
+                    return status;  
                 }
             }
             else if(ddlMarksImproveoptions == 2)
             {
-                 if (sub6p2 == 0)
+                if (sub6p2 == 0)
                 {
-                $('#ErrMsg').show(); 
-                $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-                alertify.error('Please select Subject ');                          
-                $("#sub6p2").focus();
-                return status;  
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject ');                          
+                    $("#sub6p2").focus();
+                    return status;  
                 }
-                 else   if (sub7p2 == 0)
+                else   if (sub7p2 == 0)
                 {
-                $('#ErrMsg').show(); 
-                $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-                alertify.error('Please select Subject ');
-                $("#sub7p2").focus();
-                return status;  
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject ');
+                    $("#sub7p2").focus();
+                    return status;  
                 }
-                 else if (sub8p2== 0 )
+                else if (sub8p2== 0 )
                 {
-                $('#ErrMsg').show(); 
-                $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-                alertify.error('Please select Subject '); 
-                $("#sub8p2").focus();
-                return status;  
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject '); 
+                    $("#sub8p2").focus();
+                    return status;  
                 }
             }
-           else if (ddlMarksImproveoptions != 4 && (exam_type == 16 || exam_type == 14))
+            else if (ddlMarksImproveoptions != 4 && (exam_type == 16 || exam_type == 14))
             {
-            if (sub6p1 == 0 )
-        {
-        $('#ErrMsg').show(); 
-        alertify.error('Please select Subject ');                   
-        $("#sub6").focus();
-        return status;  
-        }
-        
-        else if (sub6p2 == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');                          
-        $("#sub6p2").focus();
-        return status;  
-        }
+                if (sub6p1 == 0 )
+                {
+                    $('#ErrMsg').show(); 
+                    alertify.error('Please select Subject ');                   
+                    $("#sub6").focus();
+                    return status;  
+                }
 
-        else   if (sub7p1 == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');
-        $("#sub7").focus();
-        return status;  
-        }
-         else   if (sub7p2 == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');
-        $("#sub7p2").focus();
-        return status;  
-        }
-        else if (sub8p1 == 0 )
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject '); 
-        $("#sub8").focus();
-        return status;  
-        }
-         else if (sub8p2== 0 )
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject '); 
-        $("#sub8p2").focus();
-        return status;  
-        }
+                else if (sub6p2 == 0)
+                {
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject ');                          
+                    $("#sub6p2").focus();
+                    return status;  
+                }
+
+                else   if (sub7p1 == 0)
+                {
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject ');
+                    $("#sub7").focus();
+                    return status;  
+                }
+                else   if (sub7p2 == 0)
+                {
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject ');
+                    $("#sub7p2").focus();
+                    return status;  
+                }
+                else if (sub8p1 == 0 )
+                {
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject '); 
+                    $("#sub8").focus();
+                    return status;  
+                }
+                else if (sub8p2== 0 )
+                {
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject '); 
+                    $("#sub8p2").focus();
+                    return status;  
+                }
             }
-           /* $('#ErrMsg').show(); 
+            /* $('#ErrMsg').show(); 
             $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
             alertify.error('Please Select your Study Group '); 
             $("#std_group").focus();
@@ -1177,63 +1158,63 @@ setTimeout(function(){count = 1;},200);
         else if(exam_type==15 || exam_type == 16)
         {
             var cattype = "<?php echo @$cattype ?>";
-          
-          if(cattype == 2) 
-          {
-               if (sub6p1 == 0 )
-        {
-        $('#ErrMsg').show(); 
-        alertify.error('Please select Subject ');                   
-        $("#sub6").focus();
-        return status;  
-        }
-        
-        else if (sub6p2 == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');                          
-        $("#sub6p2").focus();
-        return status;  
+
+            if(cattype == 2) 
+            {
+                if (sub6p1 == 0 )
+                {
+                    $('#ErrMsg').show(); 
+                    alertify.error('Please select Subject ');                   
+                    $("#sub6").focus();
+                    return status;  
+                }
+
+                else if (sub6p2 == 0)
+                {
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject ');                          
+                    $("#sub6p2").focus();
+                    return status;  
+                }
+
+                else   if (sub7p1 == 0)
+                {
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject ');
+                    $("#sub7").focus();
+                    return status;  
+                }
+                else   if (sub7p2 == 0)
+                {
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject ');
+                    $("#sub7p2").focus();
+                    return status;  
+                }
+                else if (sub8p1 == 0 )
+                {
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject '); 
+                    $("#sub8").focus();
+                    return status;  
+                }
+                else if (sub8p2== 0 )
+                {
+                    $('#ErrMsg').show(); 
+                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                    alertify.error('Please select Subject '); 
+                    $("#sub8p2").focus();
+                    return status;  
+                }
+            }
+
         }
 
-        else   if (sub7p1 == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');
-        $("#sub7").focus();
-        return status;  
-        }
-         else   if (sub7p2 == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');
-        $("#sub7p2").focus();
-        return status;  
-        }
-        else if (sub8p1 == 0 )
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject '); 
-        $("#sub8").focus();
-        return status;  
-        }
-         else if (sub8p2== 0 )
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject '); 
-        $("#sub8p2").focus();
-        return status;  
-        }
-          }
-            
-        }
-        
-        
+
 
         /*      else if ($("#sub3p2").find('option:selected').val() == 0) 
         {
@@ -1279,9 +1260,9 @@ setTimeout(function(){count = 1;},200);
         status = 1;
         return status;
     }
-function  check_NewEnrol_validation_regular()
+    function  check_NewEnrol_validation_regular()
     {
-       // debugger;
+        // debugger;
         var name =  $('#cand_name').val();
         var dist_cd= $('#pvtinfo_dist option:selected').val();
         var teh_cd= $('#pvtinfo_teh').val();
@@ -1319,13 +1300,13 @@ function  check_NewEnrol_validation_regular()
         {
             selected_group_conversion =grp_cd;
         }
-      //  alert($("#pvtinfo_dist").find('option:selected').val())
+        //  alert($("#pvtinfo_dist").find('option:selected').val())
         debugger;
         if(src == '') {
-         $img.addClass("highlight");
-    // or
-        $img.css("border", "3px solid yellow");
-         $('#ErrMsg').show();  
+            $img.addClass("highlight");
+            // or
+            $img.css("border", "3px solid yellow");
+            $('#ErrMsg').show();  
             $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
             // $('#ErrMsg').html("<b>Please Enter your  Name </b>");    
             alertify.error("Please upload your Picture First.")
@@ -1368,7 +1349,7 @@ function  check_NewEnrol_validation_regular()
             return status; 
         }
 
-      
+
 
         else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
         {
@@ -1428,16 +1409,16 @@ function  check_NewEnrol_validation_regular()
             $("#std_group").focus();
             return status;  
         }
-     /*   else if (selected_group_conversion != grppre || exam_type == 2) 
+        /*   else if (selected_group_conversion != grppre || exam_type == 2) 
         {
-            if (sub6p1 == 0 )
+        if (sub6p1 == 0 )
         {
         $('#ErrMsg').show(); 
         alertify.error('Please select Subject ');                   
         $("#sub6").focus();
         return status;  
         }
-        
+
         else if (sub6p2 == 0)
         {
         $('#ErrMsg').show(); 
@@ -1455,7 +1436,7 @@ function  check_NewEnrol_validation_regular()
         $("#sub7").focus();
         return status;  
         }
-         else   if (sub7p2 == 0)
+        else   if (sub7p2 == 0)
         {
         $('#ErrMsg').show(); 
         $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
@@ -1471,7 +1452,7 @@ function  check_NewEnrol_validation_regular()
         $("#sub8").focus();
         return status;  
         }
-         else if (sub8p2== 0 )
+        else if (sub8p2== 0 )
         {
         $('#ErrMsg').show(); 
         $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
@@ -1479,14 +1460,14 @@ function  check_NewEnrol_validation_regular()
         $("#sub8p2").focus();
         return status;  
         }
-           /* $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            alertify.error('Please Select your Study Group '); 
-            $("#std_group").focus();
-            return status;  */
-       /* }*/
-        
-        
+        /* $('#ErrMsg').show(); 
+        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+        alertify.error('Please Select your Study Group '); 
+        $("#std_group").focus();
+        return status;  */
+        /* }*/
+
+
 
         /*      else if ($("#sub3p2").find('option:selected').val() == 0) 
         {
@@ -1545,3 +1526,5 @@ function  check_NewEnrol_validation_regular()
 
     }
 </script>
+</body>
+</html>

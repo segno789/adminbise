@@ -12,9 +12,9 @@ else if(Session == '2')
             <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close"></a>
             <strong>Last Date of Online Admissions and Submission of Hard Copy for Matric <?php echo $sess; ?> Examination with <br> Single fee </strong>
             <?php  
-            $SingleDateFee = date("d-m-Y", strtotime(SingleDateFee)); 
-            $DoubleDateFee = date("d-m-Y", strtotime(DoubleDateFee)); 
-            $TripleDateFee = date("d-m-Y", strtotime(TripleDateFee)); 
+            $SingleDateFee = date("d-m-Y", strtotime(SingleDateFee9th)); 
+            $DoubleDateFee = date("d-m-Y", strtotime(DoubleDateFee9th)); 
+            $TripleDateFee = date("d-m-Y", strtotime(TripleDateFee9th)); 
             ?>
             <b style="color: green;"> <?php echo $SingleDateFee ?> </b>
             <br>
@@ -86,7 +86,7 @@ else if(Session == '2')
     <div class="form-group">    
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
-                <input type="button" value="Download" name="btndwnForm" id="btndwnForm12"  class="btn btn-primary btn-block">
+                <input type="button" value="Download" name="btndwnForm" id="btndwnForm"  class="btn btn-primary btn-block">
             </div>
         </div>
     </div>

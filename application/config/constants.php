@@ -53,7 +53,7 @@ define('GET_PRIVATE_IMAGE_PATH_COPY','');
 define('Insertion_tbl','Admission_online..tblMAdm');   // For Matric Admissions
 define('Batch_tbl','Admission_online..tblRegBatch10th'); // For Matric Admission Batch
 define('INSERT_TBL','Admission_online..tblMAdm'); // for insertion matric supply
-define('Insert_sp','Admission_online..MSAdm2016_sp_insert_temp'); // for insertion matric supply
+define('Insert_sp','admission_online..MAdm_sp_insert'); // for insertion matric supply
 define('Insert_sp_matric_annual','Admission_online..tblMAdmInsert'); // for insertion matric Annual
 define('formprint_sp','Admission_online..sp_form_data_temp');    // for selection matric supply
 define('formprint_sp_9th','Registration..sp_form_data_9thAdm');    // for selection 9th Annual
@@ -81,9 +81,9 @@ define('currdate','date("d-m-Y");');
 define('SingleDateFee','23-12-2016');
 define('DoubleDateFee', '03-01-2017');
 define('TripleDateFee', '10-01-2017');
-define('SingleDateFee9th','08-08-2017');
-define('DoubleDateFee9th', '15-08-2017');
-define('TripleDateFee9th', '22-08-2017');
+define('SingleDateFee9th','12-12-2017');
+define('DoubleDateFee9th', '30-12-2017');
+define('TripleDateFee9th', '07-01-2018');
 define('getinfo','admission_online..tblAdmissionDataForSSC');
 //define('DIRPATH','C:\inetpub\vhosts\bisegrw.com\Share Images\OldPics'); 
 define('DIRPATH','C:\inetpub\vhosts\bisegrw.com\Share Images\\'); 

@@ -256,11 +256,13 @@
             if(formno == "")
             {
                 alertify.error("Please write Form No.");
+                $("#formid").focus();
                 return false;    
             }
             else if(formno.length < 5)
             {
                 alertify.error("Please write Valid Form No.");
+                $("#formid").focus();
                 return false;    
             }
             else if(dob == "")
@@ -273,9 +275,8 @@
                 alertify.log("Please wait while your form is downloading....")    
                 downloadform();    
             }
-
-
-        })
+        });
+        
         $("#btndwnForm9th").click(function(){
             var formno = $("#formid").val();
             var dob = $("#dob").val();

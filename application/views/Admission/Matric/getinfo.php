@@ -283,7 +283,7 @@ else{
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.js"></script>    
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
-    $("#oldRno").mask("999999",{placeholder:"_"});
+    //$("#oldRno").mask("999999",{placeholder:"_"});
     function CancelAlert()
     {
         var msg = "Are You Sure You want to Cancel this Form ?"
@@ -309,11 +309,13 @@ else{
         if(dob == "")
         {
             alertify.error("Please write your Date of birth.");
+            document.getElementById("dob").focus();
             return false;
         }
         else if(rno == "0" || rno == '')
         {
             alertify.error("Please provide a valid Roll Number.");
+            document.getElementById("oldRno").focus();
             return false;  
         }
     }

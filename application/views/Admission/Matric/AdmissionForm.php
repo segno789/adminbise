@@ -13,11 +13,6 @@
             </div>
         </div>
     </div>
-
-    <input class="hidden" type="hidden" value="<?=  $data[0]['picpath']?>" name="pic">
-    <input class="hidden" type="hidden" value="0" id="isotherbrd" name="isotherbrd" />
-    <input class="hidden" type="hidden" value="0" id="isFresh" name="isFresh" />
-
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-5 col-md-5">
@@ -171,7 +166,7 @@
                     }
                     ?>
                 </select>
-                <input type="hidden" class="hidden" name="gend" value="<?php echo @$gender; ?>">
+
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="UrbanRural" >
@@ -282,8 +277,6 @@
                     Board :
                 </label>        
                 <input type="text" class="text-uppercase form-control" id="oldboard" name="oldboard" readonly="readonly" value="<?php echo $data[0]['brd_name'];?>"/>     
-                <input type="hidden" class="hidden" id="oldClass" name="oldClass"  value="<?php echo $data[0]['class'];?>"/>     
-                <input type="hidden" class="hidden" id="oldboardid" name="oldboardid"  value="<?php  echo $data[0]['Brd_cd'];?>"/>    
             </div>
         </div>
     </div>
@@ -344,7 +337,7 @@
             </div>
         </div>
     </div>
-    <input type="hidden" class="hidden" value="<?=  $data[0]['grp_cd']?>" name="pergrp" id="pergrp">
+
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
@@ -887,6 +880,13 @@
         </div>
     </div>
     <div class="hidden">
+        <input type="hidden" class="hidden" value="<?=  $data[0]['grp_cd']?>" name="pergrp" id="pergrp">
+        <input type="hidden" class="hidden" id="oldClass" name="oldClass"  value="<?php echo $data[0]['class'];?>"/>     
+        <input type="hidden" class="hidden" id="oldboardid" name="oldboardid"  value="<?php  echo $data[0]['Brd_cd'];?>"/>    
+        <input type="hidden" class="hidden" name="gend" value="<?php echo @$gender; ?>">
+        <input class="hidden" type="hidden" value="<?=  $data[0]['picpath']?>" name="pic">
+        <input class="hidden" type="hidden" value="0" id="isotherbrd" name="isotherbrd" />
+        <input class="hidden" type="hidden" value="0" id="isFresh" name="isFresh" />
         <input type="hidden" class="hidden" name="oldclass" id="oldclass" value="<?php echo @$oldcls; ?>">
         <input type="hidden" class="hidden" name="exam_type" id="exam_type" value="<?php echo @$exam_type = $data[0]['exam_type']; ?>">
         <input type="hidden" class="hidden" name="exam_type_static" id="exam_type_static" value="<?php echo @$exam_type = $data[0]['exam_type']; ?>">

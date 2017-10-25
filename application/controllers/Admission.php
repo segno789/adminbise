@@ -109,7 +109,8 @@ class Admission extends CI_Controller
     }
     public function checkFormNo_then_download()
     {
-        //         DebugBreak();
+        //DebugBreak();
+
         $formno_seg = $this->uri->segment(3);
         $dob_seg = '';//$this->uri->segment(4);
         if($formno_seg !=0 ){
@@ -152,16 +153,10 @@ class Admission extends CI_Controller
             $this->load->view('common/homepagefooter.php'); 
         }
 
-        // DebugBreak();
         $data = $this->Admission_model->get_formno_data($formno);
         if (!$data) 
         {
-            // if query returns null
             $errNo   = $this->db->error();
-
-            // $data['msg'] = $e;
-            //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-            //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
             $data['msg'] = "Error(".$errNo['code'].") ";
             $data['errno'] = "516";
             $this->load->view('common/commonheader.php');
@@ -169,8 +164,6 @@ class Admission extends CI_Controller
             $this->load->view('common/homepagefooter.php');
             return;
         }
-
-
 
         if($data == -1)
         {
@@ -1289,6 +1282,7 @@ class Admission extends CI_Controller
     function feecalculate($data)
     {
         //DebugBreak();
+        
         $isper = 0;
         if( $this->practicalsubjects($data['sub5'])|| $this->practicalsubjects($data['sub6'])|| $this->practicalsubjects($data['sub7']))
         {
