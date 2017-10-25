@@ -3,18 +3,21 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-5 col-md-5">
-                <img id="image_upload_preview" src="<?php  echo base_url(); ?>assets/img/profile.png" style="width:130px; height: 130px;" alt="Candidate Image" />
-                <input type="file" id="inputFile" name="pic" onchange="return ValidateFileUpload(this);"/>
+                <h4 class="bold">Personal Information</h4>
             </div>
         </div>
     </div>
-    <input class="hidden" type="hidden" value="1" id="isotherbrd" name="isotherbrd" />
-    <input class="hidden" type="hidden" value="0" id="isFresh" name="isFresh" />
-    <input class="hidden" type="hidden" value="<?php  if(!empty($data['name'])) echo 1; else echo 0; ?>" id="isNotFresh" name="isNotFresh" />   
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-5 col-md-5">
-                <h4 class="bold">Personal Information</h4>
+                <img id="image_upload_preview" src="<?php echo base_url(); ?>assets/img/profile.png" style="width:130px; height: 130px;" alt="Candidate Image" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-5">
+                <input type="file" id="inputFile" name="pic" onchange="return ValidateFileUpload(this);"/>
             </div>
         </div>
     </div>
@@ -76,13 +79,13 @@
                     }
                     else
                     {
-                        echo  "<option value='2' >Urdu</option> <option value='2' selected='selected'>English</option>";
+                        echo  "<option value='2' >Urdu</option><option value='2' selected='selected'>English</option>";
                     }
                     ?>
                 </select>
             </div>
             <div class="col-md-4">
-                <label class="control-label" for="MarkOfIden">Previous Result:</label>
+                <label class="control-label" for="preResult">Previous Result:</label>
                 <input type="text" class="form-control" name="preResult" required="required" id="preResult" value="<?php echo  @$data['preResult'] ; ?>" placeholder="i.e 350 or E,U">
             </div>
         </div>
@@ -176,14 +179,9 @@
                     }
                     ?>
                 </select>
-                <input type="hidden" class="hidden" name="category" id="category" value="<?php  ?>">
             </div>
         </div>
     </div>
-
-
-
-
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
@@ -250,8 +248,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
@@ -346,11 +342,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
     <?php
     $subarray = array(
         'NONE'=>'',
@@ -451,9 +442,6 @@
         'HEALTH & PHYSICAL EDUCATION_DFD' => '94'
     );
     ?>
-    <input type="hidden" class="hidden" id="oldClass" name="oldClass">
-
-
     <hr class="colorgraph">
     <div class="form-group">
         <div class="row">
@@ -511,7 +499,6 @@
             </div>
         </div>
     </div>
-    <input type="hidden" class="hidden" value="<?=  $data[0]['grp_cd']?>" name="pergrp" id="pergrp">
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
@@ -671,11 +658,23 @@
             </div>
         </div>
     </div>
+    <div class="hidden">
+        <input class="hidden" type="hidden" value="1" id="isotherbrd" name="isotherbrd" />
+        <input class="hidden" type="hidden" value="0" id="isFresh" name="isFresh" />
+        <input class="hidden" type="hidden" value="<?php  if(!empty($data['name'])) echo 1; else echo 0; ?>" id="isNotFresh" name="isNotFresh" />   
+        <input type="hidden" class="hidden" id="oldClass" name="oldClass">
+        <input type="hidden" class="hidden" name="category" id="category" value="<?php  ?>">
+        <input type="hidden" class="hidden" value="<?=  $data[0]['grp_cd']?>" name="pergrp" id="pergrp">
+    </div>
     <div class="form-group">
-        <label class="checkbox-inline">
-            <input type="checkbox" class="checkboxtext" id="terms" name="terms" value="yes"><span style="font-size: larger; font-weight: bold;">I agree with the <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg">Terms and Conditions </a> of BISE Gujranwala</span>  
-        </label>
-    </div> 
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="checkbox-inline">
+                    <input type="checkbox" class="checkboxtext" id="terms" name="terms" value="yes">I agree with the <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg">Terms and Conditions </a> of Board of Intermediate & Secondary Education, Gujranwala  
+                </label>
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-3">
@@ -685,7 +684,7 @@
                 <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg" download="instructions" class="btn btn-info btn-block">Download Instruction</a>
             </div>
             <div class="col-md-3">
-                <input type="button" class="btn btn-danger btn-block" value="Cancel" id="btnCancel" name="btnCancel" onclick="return CancelAlert();" >
+                <input type="button" class="btn btn-danger btn-block" value="Cancel" id="btnCancel" name="btnCancel" onclick="return gotodefaultpage();">
             </div>
         </div>
     </div>

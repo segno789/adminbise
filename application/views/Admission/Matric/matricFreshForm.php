@@ -1,767 +1,554 @@
 
 <form class="form-horizontal no-margin" action="<?php  echo base_url(); ?>index.php/Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
-    <div class="control-group">
-        <h4 class="span4">Personal Information :</h4>
-        <div class="controls controls-row">
-            <label class="control-label span4">
-                <img id="image_upload_preview" src="<?php  echo base_url(); ?>assets/img/profile.png" style="width:140px; height: 140px;" alt="Candidate Image" />
-            </label> 
-            <label class="control-label span1" >
-                <input type='file' id="inputFile" name="pic" onchange="return ValidateFileUpload(this);"/>
-            </label>
-            <input type="hidden" value="0" id="isotherbrd" name="isotherbrd" />
-            <input type="hidden" value="1" id="isFresh" name="isFresh" />
-            <input type="hidden" value="<?php if(((@$data['isNotFresh']!=0 || @$data['isNotFresh']!=""))) echo 1; else echo 0; ?>" id="isNotFresh" name="isNotFresh" />
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-5">
+                <h4 class="bold">Personal Information</h4>
+            </div>
         </div>
     </div>
-    <div class="control-group">
-        <label id="ErrMsg" class="control-label span2" style=" text-align: left;"><?php ?></label>
-    </div>
-    <div class="control-group" style="display: none;">
-        <label class="control-label span1" >
-            Institute Code:
-        </label>
-        <div class="controls controls-row">
-            <input class="span3"  type="text" id="inst_cd_other" style="text-transform: uppercase;" name="inst_cd_other" placeholder="Institute Code" maxlength="6"  value="">
-            <label class="control-label span2" for="">
-
-            </label> 
-
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-5">
+                <img id="image_upload_preview" src="<?php echo base_url(); ?>assets/img/profile.png" style="width:130px; height: 130px;" alt="Candidate Image" />
+            </div>
         </div>
     </div>
-    <div class="control-group">
-        <label class="control-label span1" >
-            Candidate Name:
-        </label>
-        <div class="controls controls-row">
-            <input class="span3"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60"  value="<?php  echo @$data['name']; ?>" <?php  if(@$data['isNotFresh']!=0) echo "readonly='readonly'";  ?>>
-            <label class="control-label span2" for="lblfather_name">
-                Father's Name :
-            </label> 
-            <input class="span3" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo  @$data['Fname']; ?>"  <?php   if(@$data['isNotFresh']!=0) echo "readonly='readonly'";  ?> required="required">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-5">
+                <input type="file" id="inputFile" name="pic" onchange="return ValidateFileUpload(this);"/>
+            </div>
         </div>
     </div>
-    <div class="control-group">
-        <label class="control-label span1" >
-            Bay Form No :
-        </label>
-        <div class="controls controls-row">
-            <input class="span3" type="text" id="bay_form" name="bay_form" maxlength="15" placeholder="Bay Form No." value="<?php echo @$data['BForm'];?>" <?php if(@$data['isNotFresh']!=0 && @$data['BForm']!="") echo "readonly='readonly'";  ?>  required="required" >
-            <label class="control-label span2" for="father_cnic">
-                Father's CNIC :
-            </label> 
-            <input class="span3" id="father_cnic" name="father_cnic" type="text" placeholder="FNIC No"  value="<?php  echo @$data['FNIC'];?>" <?php if(@$data['isNotFresh']!=0 && @$data['FNIC']!="") echo "readonly='readonly'";  ?>  required="required" >
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="cand_name" >
+                    Candidate Name:
+                </label>        
+                <input class="text-uppercase form-control"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>" >
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="father_name">
+                    Father's Name :
+                </label>        
+                <input class="text-uppercase form-control" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo  @$data['Fname']; ?>" > 
+            </div>
         </div>
     </div>
-    <div class="control-group">
-        <label class="control-label span1" >
-            Date of Birth:
-        </label>
-
-        <div class="controls controls-row">
-            <input class="span3" type="text" name="dob" id="dob" readonly="readonly" placeholder="Date of Birth" value="<?php  echo @$data['Dob'];?>" required = "required">
-            <label class="control-label span2" >
-                Mobile Number :
-            </label> 
-            <input class="span3" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value="<?php echo  @$data['MobNo']; ?> " required="required">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="bay_form" >
+                    Bay Form No:
+                </label>        
+                <input class="form-control" type="text" id="bay_form" name="bay_form" maxlength="15" placeholder="Bay Form No." value="<?php echo @$data['BForm'];?>" <?php if(@$data['isNotFresh']!=0 && @$data['BForm']!="") echo "readonly='readonly'";  ?>  required="required" >
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="father_cnic">
+                    Father's CNIC:
+                </label>        
+                <input class="form-control" id="father_cnic" name="father_cnic" type="text" placeholder="FNIC No"  value="<?php  echo @$data['FNIC'];?>" <?php if(@$data['isNotFresh']!=0 && @$data['FNIC']!="") echo "readonly='readonly'";  ?>  required="required" >
+            </div>
         </div>
     </div>
-    <div class="control-group">
-        <label class="control-label span1" >
-            MEDIUM:
-        </label>
-        <div class="controls controls-row">
-            <select id="medium" class="dropdown span3" name="medium">
-                <?php
-                $med = @$data['medium'] ;
-                // $med = 2; 
-                if($med == 1)
-                {
-                    echo  "<option value='1' selected='selected'>Urdu</option> <option value='1'>English</option>";
-                }
-                else if($med==2)
-                {
-                    echo  "<option value='2' >Urdu</option> <option value='2' selected='selected'>English</option>";
-                }
-                else
-                {
-                    echo  "<option value='2' >Urdu</option> <option value='2' selected='selected'>English</option>";
-                }
-                ?>
-            </select>
-
-
-            <label class="control-label span2" style="display: none;" >
-                Previous Result:
-            </label> 
-            <input type="text" style="display: none;" name="preResult" required="required" id="preResult" value="0<?php echo  @$data['preResult'] ; ?>" class="span3" placeholder="i.e 350 or E,U">
-        </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label span1" >
-            Mark of Identification :
-        </label>
-        <div class="controls controls-row">
-            <input class="span3" type="text" id="MarkOfIden" style="text-transform: uppercase;" name="MarkOfIden" value="<?php echo  @$data['markOfIden']; ?>" required="required" maxlength="60" >
-            <label class="control-label span2" >
-                Speciality:
-            </label> 
-            <select id="speciality"  class="span3" name="speciality">
-                <?php 
-                $spec =  @$data['Speciality'];
-                if($spec==1)
-                {
-                    echo  "<option value='0' >None</option>  
-                    <option value='1' selected='selected'>Deaf &amp; Dumb</option>
-                    <option value='2'>Board Employee</option>
-                    <option value='3'>Blind</option>";
-                }
-                else if($spec ==2)
-                {
-                    echo  "<option value='0' >None</option>  
-                    <option value='1'>Deaf &amp; Dumb</option>
-                    <option value='2' selected='selected'>Board Employee</option>
-                    <option value='3'>Blind</option>";
-                }
-                else
-                {
-                    echo  "<option value='0' selected='selected'>None</option>  
-                    <option value='1'>Deaf &amp; Dumb</option>
-                    <option value='2'>Board Employee</option>
-                    <option value='3'>Blind</option>";
-                }
-
-                ?>
-            </select>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="dob">Date of Birth:</label>
+                <input class="text-uppercase form-control" type="text" name="dob" id="dob" readonly="readonly" placeholder="Date of Birth" value="<?php  echo @$data['Dob'];?>" required = "required">
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="mob_number">Mobile Number:</label>
+                <input class="text-uppercase form-control" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value="<?php echo  @$data['MobNo']; ?> " required="required">
+            </div>
         </div>
     </div>
 
-    <div class="control-group">
-        <label class="control-label span1" >
-            Nationality :
-        </label>
-        <div class="controls controls-row">  
-            <?php
-            $nat = @$data['nat'];
-            if($nat==1)
-            {
-                echo 
-                "<label class='radio inline span1'><input type='radio' value='1' id='nationality' checked='checked' name='nationality'> Pakistani</label>
-                <label class='radio inline span2'><input type='radio'  id='nationality1' value='2' name='nationality'> Non Pakistani</label>";
-            }
-            else if($nat==2)
-            {
-                echo 
-                "<label class='radio inline span1'><input type='radio' value='1' id='nationality'  name='nationality'> Pakistani</label>
-                <label class='radio inline span2'><input type='radio'  id='nationality1' value='2' checked='checked' name='nationality'> Non Pakistani</label>";
-            }
-            else
-            {
-                echo 
-                "<label class='radio inline span1'><input type='radio' value='1' id='nationality' checked='checked' name='nationality'> Pakistani</label>
-                <label class='radio inline span2'><input type='radio'  id='nationality1' value='2' name='nationality'> Non Pakistani</label>";
-            }
-
-
-            ?>
-            <label class="control-label span3" style="margin-left: -100px;" for="gender1">
-                Gender :
-            </label> 
-            <?php
-            // DebugBreak();
-            $gender = @$data['sex'];
-
-            if($gender == 1)
-            {
-                echo 
-                "<label class='radio inline span1'><input type='radio' id='gender1' value='1' checked='checked'   name='gend'> Male</label> 
-                <label class='radio inline span1'><input type='radio' id='gender2' value='2'  name='gend'  > Female </label> " ;
-            }
-            else if($gender == 2)
-            {
-                echo 
-                "<label class='radio inline span1'><input type='radio' id='gender1' value='1'   name='gend'> Male</label> 
-                <label class='radio inline span1'><input type='radio' id='gender2' value='2'  checked='checked'  name='gend'  > Female </label> " ;
-            }
-            else
-            {
-                echo 
-                "<label class='radio inline span1' style='    color: red;' ><input type='radio' id='gender1' value='1'   name='gend' > Male</label> 
-                <label class='radio inline span1' style='    color: red;'><input type='radio' id='gender2' value='2'    name='gend'  > Female </label> " ;
-            }
-
-
-            ?>
-
-            <input type="hidden" name="category" id="category" value="<?php  ?>">
-            <input type="hidden" name="strRegNo" id="strRegNo" value="<?php echo @$data['strRegNo'];?>">
-
-
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="medium"> MEDIUM:</label>
+                <select id="medium" class="form-control text-uppercase" name="medium">
+                    <?php
+                    $med = @$data['medium'];
+                    // $med = 2; 
+                    if($med == 1)
+                    {
+                        echo  "<option value='1' selected='selected'>Urdu</option> <option value='1'>English</option>";
+                    }
+                    else
+                    {
+                        echo  "<option value='2' >Urdu</option><option value='2' selected='selected'>English</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="MarkOfIden"> Mark of Identification :</label>
+                <input class="form-control" type="text" id="MarkOfIden" style="text-transform: uppercase;" name="MarkOfIden" value="<?php echo  @$data['markOfIden']; ?>" required="required" maxlength="60" >
+            </div>
         </div>
     </div>
-    <div class="control-group">
-        <label class="control-label span1" >
-            Hafiz-e-Quran :
-        </label>
-        <div class="controls controls-row">
-            <label class='radio inline span1'><input type='radio' id='hafiz1' value='1'  checked='checked' name='hafiz'> No</label>
-            <label class='radio inline span1'><input type='radio' id='hafiz2' value='2' name='hafiz'> Yes</label>    
-            <label class="control-label span3" >
-                Religion :
-            </label> 
-            <?php
-            $rel = @$data['rel'];
-            if($rel==1)
-            {
-                echo
-                "<label class='radio inline span1'><input type='radio' id='religion' class='rel_class' value='1' checked='checked' name='religion'> Muslim
-                </label><label class='radio inline span1'><input type='radio' id='religion1' class='rel_class'  value='2' name='religion'> Non Muslim</label>" ;
-            }
-            else if($rel==2)
-            {
-                echo
-                "<label class='radio inline span1'><input type='radio' id='religion' class='rel_class' value='1'  name='religion'> Muslim
-                </label><label class='radio inline span1'><input type='radio' id='religion1' class='rel_class' checked='checked' value='2' name='religion'> Non Muslim</label>" ;
-            }
-            else{
-                echo
-                "<label class='radio inline span1'><input type='radio' id='religion' class='rel_class' value='1' checked='checked' name='religion'> Muslim
-                </label><label class='radio inline span1'><input type='radio' id='religion1' class='rel_class'  value='2' name='religion'> Non Muslim</label>" ;}
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="nationality" >
+                    Nationality :
+                </label>        
+                <select name="nationality" class="form-control text-uppercase" id="nationality"> 
+                    <?php
+                    $nat = @$data['nat'];
+                    if($nat == 1)
+                    {
+                        echo  
+                        "<option value='1' selected='selected'>Pakistani</option>
+                        <option value='2'>Non Pakistani</option>";
+                    }
+                    else if ($nat == 2)
+                    {
+                        echo  
+                        "<option value='1'>Pakistani</option> 
+                        <option value='2' selected='selected'>Non Pakistani</option>";
+                    }
+                    else{
+                        echo  
+                        "<option value='1'>Pakistani</option> 
+                        <option value='2'>Non Pakistani</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="speciality">
+                    Speciality:
+                </label>     
+                <select id="speciality"  class="form-control" name="speciality">
+                    <?php 
+                    $spec =  @$data['Speciality'];
+                    if($spec==1)
+                    {
+                        echo  "<option value='0' >None</option>  
+                        <option value='1' selected='selected'>Deaf &amp; Dumb</option>
+                        <option value='2'>Board Employee</option>
+                        <option value='3'>Blind</option>";
+                    }
+                    else if($spec ==2)
+                    {
+                        echo  "<option value='0' >None</option>  
+                        <option value='1'>Deaf &amp; Dumb</option>
+                        <option value='2' selected='selected'>Board Employee</option>
+                        <option value='3'>Blind</option>";
+                    }
+                    else
+                    {
+                        echo  "<option value='0' selected='selected'>None</option>  
+                        <option value='1'>Deaf &amp; Dumb</option>
+                        <option value='2'>Board Employee</option>
+                        <option value='3'>Blind</option>";
+                    }
 
-
-            ?>
-        </div>
-    </div>
-    <div class="control-group">
-    <label class="control-label span1" >
-        Residency :
-    </label>
-    <div class="controls controls-row">  
-        <?php
-        $resid = @$data['RuralORUrban'];
-        if($resid==1)
-        {
-            echo " <label class='radio inline span1'><input type='radio' value='1' id='UrbanRural' checked='checked' name='UrbanRural'> Urban
-            </label><label class='radio inline span2'><input type='radio'  id='UrbanRural' value='2' name='UrbanRural'>  Rural </label>";
-        }
-        else
-        {
-            echo " <label class='radio inline span1'><input type='radio' value='1' id='UrbanRural' name='UrbanRural'> Urban
-            </label><label class='radio inline span2'><input type='radio'  id='UrbanRural' value='2' checked='checked'  name='UrbanRural'>  Rural </label>";
-        }
-
-
-        ?>
-
-    </div>
-    <div class="control-group">
-        <label class="control-label span1" style="margin-top: 25px;">
-            Address :
-        </label>
-        <div class="controls controls-row">
-            <textarea style="height:150px; margin-top: 25px; text-transform: uppercase;"  id="address" class="span8" name="address" required="required"><?php echo @$data['addr'];?></textarea>
+                    ?>
+                </select>
+            </div>
         </div>
     </div>
 
-    <div class="control-group" style="display: none;">
-        <h4 class="span4">Old Exam Information :</h4>
-    </div>
-    <div class="control-group" style="display: none;">
-        <label class="control-label span1" >
-            Rno :
-        </label>
-        <div class="controls controls-row">
-            <input class="span3" type="text" id="oldrno" style="text-transform: uppercase;" name="oldrno" value="<?php if(!empty($data['rno'])) echo $data['rno']; else echo 0; ?>" required="required" maxlength="6" >
-            <label class="control-label span2" >
-                Year:
-            </label> 
-            <input type="hidden" name="oldyear" id ="oldyear" value="<?php echo @$data['Iyear']; ?>" >
-            <!-- <select class="span3"  name="oldyear" id = "oldyear" >
-            <option value="2016">2016</option>
-            <option value="2015">2015</option>
-            </select>  -->
-
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="UrbanRural" >
+                    Locality : 
+                </label>        
+                <select name="UrbanRural" class="form-control text-uppercase" id="UrbanRural"> 
+                    <?php
+                    $resid = @$data['RuralORUrban'];
+                    if($resid == 1 )
+                    {
+                        echo"<option value='1' selected='selected'>URBAN</option> 
+                        <option value='2'>RURAL</option>";
+                    }
+                    else if($resid == 2)
+                    {
+                        echo"<option value='1'>URBAN</option> 
+                        <option value='2' selected='selected'>RURAL</option>";
+                    }
+                    else
+                    {
+                        echo"<option value='1' selected='selected'>URBAN</option> 
+                        <option value='2'>RURAL</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="gend">
+                    Gender :
+                </label>     
+                <select name="gend" class="form-control text-uppercase" id="gend">
+                    <?php
+                    @$gender = @$data['sex'];
+                    if($gender == 1)
+                    {
+                        echo"<option value='1' selected='selected'>MALE</option> 
+                        <option value='2'>FEMALE</option>";
+                    }
+                    else if ($gender == 2)
+                    {
+                        echo"<option value='1'>MALE</option> 
+                        <option value='2' selected='selected'>FEMALE</option>";
+                    }
+                    else{
+                        echo"<option value='1'>MALE</option> 
+                        <option value='2'>FEMALE</option>";
+                    }
+                    ?>
+                </select>
+            </div>
         </div>
     </div>
-    <div class="control-group" style="display: none;">
-        <label class="control-label span1" >
-            Session :
-        </label>
-        <div class="controls controls-row">
-            <input type="hidden" name="oldsess" id ="oldsess" value="<?php echo @$data['sess'] == 1 ? "Annual" :"Supplementary";  ?>" > 
-            <select class="span3" id="oldsess" name="oldsess">
-                <?php if(@$data['sess']==1)
-                {
-                    echo "<option selected='selected' value='1'>Annual</option> <option  value='2'>Supplementary</option>";
-                }
-                else  if(@$data['sess']==2)
-                {
-                    echo "<option  value='1'>Annual</option> <option selected='selected' value='2'>Supplementary</option>";
-                }
-                else
-                {
-                    echo "<option selected='selected' value='1'>Annual</option> <option  value='2'>Supplementary</option>";
-                }
-
-                $subarray = array(
-                    'NONE'=>'',
-                    'NONE'=>'0',
-                    'Urdu' => '1',
-                    'English' => '2',
-                    'ISLAMIYAT (COMPULSORY)' => '3',
-                    'PAKISTAN STUDIES' => '4',
-                    'MATHEMATICS' => '5',
-                    'PHYSICS' => '6',
-                    'CHEMISTRY' => '7',
-                    'BIOLOGY' => '8',
-                    'GENERAL SCIENCE' => '9',
-                    'FOUNDATION OF EDUCATION' => '10',
-                    'GEOGRAPHY OF PAKISTAN' => '11',
-                    'HOUSE HOLD ACCOUNTS & ITS RELATED PROBLEMS' => '12',
-                    'ELEMENTS OF HOME ECONOMICS' => '13',
-                    'PHYSIOLOGY & HYGIENE' => '14',
-                    'GEOMETRICAL & TECHNICAL DRAWING' => '15',
-                    'GEOLOGY' => '16',
-                    'ASTRONOMY & SPACE SCIENCE' => '17',
-                    'ART/ART & MODEL DRAWING' => '18',
-                    'ISLAMIC STUDIES' => '19',
-                    'ISLAMIC HISTORY' => '20',
-                    'HISTORY OF PAKISTAN' => '21',
-                    'ARABIC' => '22',
-                    'PERSIAN' => '23',
-                    'GEOGRAPHY' => '24',
-                    'ECONOMICS' => '25',
-                    'CIVICS' => '26',
-                    'FOOD AND NUTRITION' => '27',
-                    'ART IN HOME ECONOMICS' => '28',
-                    'MANAGEMENT FOR BETTER HOME' => '29',
-                    'CLOTHING & TEXTILES' => '30',
-                    'CHILD DEVELOPMENT AND FAMILY LIVING' => '31',
-                    'MILITARY SCIENCE' => '32',
-                    'COMMERCIAL GEOGRAPHY' => '33',
-                    'URDU LITERATURE' => '34',
-                    'ENGLISH LITERATURE' => '35',
-                    'PUNJABI' => '36',
-                    'EDUCATION' => '37',
-                    'ELEMENTARY NURSING & FIRST AID' => '38',
-                    'PHOTOGRAPHY' => '39',
-                    'HEALTH & PHYSICAL EDUCATION' => '40',
-                    'CALIGRAPHY' => '41',
-                    'LOCAL (COMMUNITY) CRAFTS' => '42',
-                    'ELECTRICAL WIRING' => '43',
-                    'RADIO ELECTRONICS' => '44',
-                    'COMMERCE' => '45',
-                    'AGRICULTURE' => '46',
-                    'BOOK KEEPING & ACCOUNTANCY' => '47',
-                    'WOOD WORK (FURNITURE MAKING)' => '48',
-                    'GENERAL AGRICULTURE' => '49',
-                    'FARM ECONOMICS' => '50',
-                    'ETHICS' => '51',
-                    'LIVE STOCK FARMING' => '52',
-                    'ANIMAL PRODUCTION' => '53',
-                    'PRODUCTIVE INSECTS AND FISH CULTURE' => '54',
-                    'HORTICULTURE' => '55',
-                    'PRINCIPLES OF HOME ECONOMICS' => '56',
-                    'RELATED ACT' => '57',
-                    'HAND AND MACHINE EMBROIDERY' => '58',
-                    'DRAFTING AND GARMENT MAKING' => '59',
-                    'HAND & MACHINE KNITTING & CROCHEING' => '60',
-                    'STUFFED TOYS AND DOLL MAKING' => '61',
-                    'CONFECTIONERY AND BAKERY' => '62',
-                    'PRESERVATION OF FRUITS,VEGETABLES & OTHER FOODS' => '63',
-                    'CARE AND GUIDENCE OF CHILDREN' => '64',
-                    'FARM HOUSE HOLD MANAGEMENT' => '65',
-                    'ARITHEMATIC' => '66',
-                    'BAKERY' => '67',
-                    'CARPET MAKING' => '68',
-                    'DRAWING' => '69',
-                    'EMBORIDERY' => '70',
-                    'HISTORY' => '71',
-                    'TAILORING' => '72',
-                    'TYPE WRITING' => '73',
-                    'WEAVING' => '74',
-                    'SECRETARIAL PRACTICE' => '75',
-                    'CANDLE MAKING' => '76',
-                    'SECRETARIAL PRACTICE AND CORRESPONDANCE' => '77',
-                    'COMPUTER SCIENCES' => '78',
-                    'WOOD WORK (BOAT MAKING)' => '79',
-                    'PRINCIPLES OF ARITHMATIC' => '80',
-                    'SEERAT-E-RASOOL' => '81',
-                    'AL-QURAAN' => '82',
-                    'POULTRY FARMING' => '83',
-                    'ART & MODEL DRAWING' => '84',
-                    'BUSINESS STUDIES' => '85',
-                    'HADEES & FIQAH' => '86',
-                    'ENVIRONMENTAL STUDIES' => '87',
-                    'REFRIGERATION AND AIR CONDITIONING' => '88',
-                    'FISH FARMING' => '89',
-                    'COMPUTER HARDWARE' => '90',
-                    'BEAUTICIAN' => '91',
-                    'GENERAL MATHEMATICS' => '92',
-                    'COMPUTER SCIENCES_DFD' => '93',
-                    'HEALTH & PHYSICAL EDUCATION_DFD' => '94'
-                );
-                ?>
-
-
-            </select>
-
-            <label class="control-label span2" >
-                Board:
-            </label> 
-            <select class="span3" id="oldboardid" name="oldboardid">
-                <option value="1" <?php if(@$data['Brd_cd'] == 1) echo 'selected' ?>>BISE, GUJRANWALA</option>
-                <option value="2" <?php if(@$data['Brd_cd'] == 2) echo 'selected' ?>>BISE,  LAHORE</option>
-                <option value="3" <?php if(@$data['Brd_cd'] == 3) echo 'selected' ?>>BISE,  RAWALPINDI</option>
-                <option value="4" <?php if(@$data['Brd_cd'] == 4) echo 'selected' ?>>BISE,  MULTAN</option>
-                <option value="5" <?php if(@$data['Brd_cd'] == 5) echo 'selected' ?>>BISE,  FAISALABAD</option>
-                <option value="6" <?php if(@$data['Brd_cd'] == 6) echo 'selected' ?>>BISE,  BAHAWALPUR</option>
-                <option value="7" <?php if(@$data['Brd_cd'] == 7) echo 'selected' ?>>BISE,  SARGODHA</option>
-                <option value="8" <?php if(@$data['Brd_cd'] == 8) echo 'selected' ?>>BISE,  DERA GHAZI KHAN</option>
-                <option value="9" <?php if(@$data['Brd_cd'] == 9) echo 'selected' ?>>FBISE, ISLAMABAD</option>
-                <option value="10" <?php if(@$data['Brd_cd'] == 10) echo 'selected' ?>>BISE, MIRPUR</option>
-                <option value="11" <?php if(@$data['Brd_cd'] == 11) echo 'selected' ?>>BISE, ABBOTTABAD</option>
-                <option value="12" <?php if(@$data['Brd_cd'] == 12) echo 'selected' ?>>BISE, PESHAWAR</option>
-                <option value="13" <?php if(@$data['Brd_cd'] == 13) echo 'selected' ?>>BISE, KARACHI</option>
-                <option value="14" <?php if(@$data['Brd_cd'] == 14) echo 'selected' ?>>BISE, QUETTA</option>
-                <option value="15" <?php if(@$data['Brd_cd'] == 15) echo 'selected' ?>>BISE, MARDAN</option>
-                <option value="16" <?php if(@$data['Brd_cd'] == 16) echo 'selected' ?>>FBISE, ISLAMABAD</option>
-                <option value="17" <?php if(@$data['Brd_cd'] == 17) echo 'selected' ?>>CAMBRIDGE</option>
-                <option value="18" <?php if(@$data['Brd_cd'] == 18) echo 'selected' ?>>AIOU, ISLAMABAD</option>
-                <option value="19" <?php if(@$data['Brd_cd'] == 19) echo 'selected' ?>>BISE, KOHAT</option>
-                <option value="20" <?php if(@$data['Brd_cd'] == 20) echo 'selected' ?>>KARAKURUM</option>
-                <option value="21" <?php if(@$data['Brd_cd'] == 21) echo 'selected' ?>>MALAKAN</option>
-                <option value="22" <?php if(@$data['Brd_cd'] == 22) echo 'selected' ?>>BISE, BANNU</option>
-                <option value="23" <?php if(@$data['Brd_cd'] == 23) echo 'selected' ?>>BISE, D.I.KHAN</option>
-                <option value="24" <?php if(@$data['Brd_cd'] == 24) echo 'selected' ?>>AKUEB, KARACHI</option>
-                <option value="25" <?php if(@$data['Brd_cd'] == 25) echo 'selected' ?>>BISE, HYDERABAD</option>
-                <option value="26" <?php if(@$data['Brd_cd'] == 26) echo 'selected' ?>>BISE, LARKANA</option>
-                <option value="27" <?php if(@$data['Brd_cd'] == 27) echo 'selected' ?>>BISE, MIRPUR(SINDH)</option>
-                <option value="28" <?php if(@$data['Brd_cd'] == 28) echo 'selected' ?>>BISE, SUKKUR</option>
-                <option value="29" <?php if(@$data['Brd_cd'] == 29) echo 'selected' ?>>BISE, SWAT</option>
-                <option value="30" <?php if(@$data['Brd_cd'] == 30) echo 'selected' ?>>SBTE KARACHI</option>
-                <option value="31" <?php if(@$data['Brd_cd'] == 31) echo 'selected' ?>>PBTE, LAHORE</option>
-                <option value="32" <?php if(@$data['Brd_cd'] == 32) echo 'selected' ?>>AFBHE RAWALPINDI</option>
-                <option value="33" <?php if(@$data['Brd_cd'] == 33) echo 'selected' ?>>BIE, KARACHI</option>
-                <option value="34" <?php if(@$data['Brd_cd'] == 34) echo 'selected' ?>>BISE SAHIWAL</option>
-                <!-- <option value="35" <?php if(@$data['Brd_cd'] == 35) echo 'selected' ?>>ISLAMIC UNIVERSITY</option> -->                               
-            </select>
-
-            <input type="hidden" class="span3" id="oldClass" name="oldClass"  value="<?php  echo @$data['class']; ?>"/>     
-
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="religion">
+                    Religion : 
+                </label>        
+                <select name="religion" class="form-control text-uppercase" id="religion"> 
+                    <?php
+                    @$rel = @$data['rel'];
+                    if($rel == 1)
+                    {
+                        echo"<option value='1' selected='selected'>MUSLIM</option> 
+                        <option value='2'>NON MUSLIM</option>";
+                    }
+                    else if ($rel == 2)
+                    {
+                        echo"<option value='1'>MUSLIM</option> 
+                        <option value='2' selected='selected'>NON MUSLIM</option>";
+                    }
+                    else{
+                        echo"<option value='1' selected='selected'>MUSLIM</option> 
+                        <option value='2'>NON MUSLIM</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="hafiz" >
+                    Hafiz-e-Quran :
+                </label>        
+                <select name="hafiz" class="form-control text-uppercase" id="hafiz"> 
+                    <option value='1' selected='selected'>NO</option> 
+                    <option value='2'>YES</option> 
+                </select>
+            </div>
         </div>
     </div>
-    <hr>
-    <div class="control-group">
-        <h4 class="span4" >Exam Proposed Center Information :</h4>
-        <div class="controls controls-row">
-            <label class="control-label span2">
-
-            </label> 
-
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="control-label" for="address" >
+                    Address :
+                </label>        
+                <textarea  id="address" class="text-uppercase form-control" rows="4" name="address" required="required">
+                    <?php echo $data['addr'];  ?>
+                </textarea>       
+            </div>
         </div>
     </div>
-    <div class="control-group">
-        <label class="control-label span1" >
-            District :
-        </label>
-        <div class="controls controls-row">
-            <select class='span3' id='pvtinfo_dist' name='pvtinfo_dist' required='required'>
-                <option value='0'>SELECT DISTRICT</option>
-                <option value='1'>GUJRANWALA</option>
-                <option value='2'>GUJRAT</option>
-                <option value='3'>HAFIZABAD</option>
-                <option value='4'>MANDI BAHA-UD-DIN</option>
-                <option value='5'>NAROWAL</option>
-                <option value='6'>SIALKOT</option>
-            </select>
-            <label class="control-label span2" >
-                Tehsil:
-            </label> 
-            <select class='span3' id='pvtinfo_teh' name='pvtinfo_teh' required='required'>
-                <option value='0'>SELECT TEHSIL</option>
-
-            </select>
+    <hr class="colorgraph">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-5">
+                <h4 class="bold">Examination Proposed Center Information</h4>
+            </div>
         </div>
     </div>
-    <div class="control-group">
-    <label class="control-label span1" >
-        Zone :
-    </label>
-
-    <div class="controls controls-row">
-        <select id="pvtZone"  class="span3" name="pvtZone">
-            <option value='0'>SELECT ZONE</option>
-
-        </select>
-        <!-- <label class="control-label span2" >
-        Board:
-        </label> 
-        <select id="speciality"  class="span3" name="speciality">
-        <?php echo "<option value='1' selected='selected'>Gujranwala</option>";  ?>
-        </select>
-        </div>-->
-    </div>
-    <div id="instruction" style="display:none; width:700px" >
-        <!--  <img src="<?php // echo base_url(); ?>assets/img/admission_form.jpg" border="0" width="10000" height="840" alt="admission_form.jpg">-->
-        <img src="<?php echo base_url(); ?>assets/img/instructions.jpg" border="0" width="10000" height="840" alt="admission_form.jpg"> 
-    </div>
-    <hr>
-    <div class="control-group">
-        <h4 class="span4">Exam Information :</h4>
-        <div class="controls controls-row">
-            <label class="control-label span2">
-
-            </label> 
-
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="pvtinfo_dist" >
+                    District :
+                </label>        
+                <select class='form-control text-uppercase' id='pvtinfo_dist' name='pvtinfo_dist' required='required'>
+                    <option value='0'>SELECT DISTRICT</option>
+                    <option value='1'>GUJRANWALA</option>
+                    <option value='2'>GUJRAT</option>
+                    <option value='3'>HAFIZABAD</option>
+                    <option value='4'>MANDI BAHA-UD-DIN</option>
+                    <option value='5'>NAROWAL</option>
+                    <option value='6'>SIALKOT</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="pvtinfo_teh">
+                    Tehsil :
+                </label>        
+                <select class='form-control  text-uppercase' id='pvtinfo_teh' name='pvtinfo_teh' required='required'>
+                    <option value='0'>SELECT TEHSIL</option>
+                </select>
+            </div>
         </div>
     </div>
-    <div class="control-group">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="control-label" for="pvtZone" >
+                    Zone :
+                </label>        
+                <select id="pvtZone" class="form-control text-uppercase" name="pvtZone">
+                    <option value='0'>SELECT ZONE</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div style="width: 750px;" class="pull-right" id="instruction">
+        <img src="<?php echo base_url(); ?>assets/img/Instructions.jpg" class="img-responsive" alt="instructions.jpg">
+    </div>
+    <hr class="colorgraph">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-5">
+                <h4 class="bold">Examination Information</h4>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="control-label" for="std_group" >
+                    Study Group :
+                </label>
+                <select id="std_group" class="form-control text-uppercase" name="std_group">
+                    <?php 
+                    // DebugBreak();
+                    $grp = $data['grp_cd'];
+                    $sub7 = $data['sub7'];
+                    $sub8 = $data['sub8'];
+                    if(!empty($grp)){
+
+                        if($grp == 1 && ($sub7 == 8 || $sub8 == 8))
+                        {
+                            echo "<option value='1' selected='selected'>SCIENCE WITH BIOLOGY</option>
+
+                            <option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>
+                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
+                            <option value='2'>HUMANTIES</option>
+                            <option value='5'>DEAF AND DUMB</option>
+                            <option value='4'>AAMA GROUP</option>
+                            <option value='9'>ADIB/ALIM GROUP </option>
+                            ";  
+                        }
+
+                        if($sub7 == 78 || $sub8 == 78)
+                        {
+                            echo " 
+                            <option value='1' >SCIENCE WITH BIOLOGY</option>
+                            <option value='7'  selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>
+                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
+                            <option value='2'>HUMANTIES</option>
+                            <option value='5'>DEAF AND DUMB</option>
+                            <option value='4'>AAMA GROUP</option>
+                            <option value='9'>ADIB/ALIM GROUP </option>
+                            ";
+                        }
+
+                        if($grp == 2)
+                        {
+                            echo "<option value='2' selected='selected'>HUMANTIES</option>
+                            <option value='1' >SCIENCE WITH BIOLOGY</option>
+                            <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
+                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
+
+                            <option value='5'>DEAF AND DUMB</option>
+                            <option value='4'>AAMA GROUP</option>
+                            <option value='9'>ADIB/ALIM GROUP </option>
+                            ";  
+                        }
+
+                        if($grp == 5)
+                        {
+                            echo "<option value='5' selected='selected'>DEAF AND DUMB</option>
+                            <option value='2' >HUMANTIES</option>
+                            <option value='1' >SCIENCE WITH BIOLOGY</option>
+                            <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
+                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
+                            <option value='4'>AAMA GROUP</option>
+                            <option value='9'>ADIB/ALIM GROUP </option>
+                            ";  
+                        }
+
+                        if($grp==4)
+                        {
+                            echo "<option value='4' selected='selected'>AAMA GROUP</option>
+                            <option value='5' >DEAF AND DUMB</option>
+                            <option value='2' >HUMANTIES</option>
+                            <option value='1' >SCIENCE WITH BIOLOGY</option>
+                            <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
+                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
+                            <option value='9'>ADIB/ALIM GROUP </option>
+                            ";
+                        }
+                    }
+                    else
+                    {
+                        echo "<option value='0'>SELECT GROUP</option>
+                        <option value='1' >SCIENCE WITH BIOLOGY</option>
+                        <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
+                        <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
+                        <option value='2' >GENERAL</option>
+                        <option value='5'>DEAF AND DUMB</option>
+                        <option value='4'>AAMA GROUP</option>
+                        <option value='9'>ADIB/ALIM GROUP </option>";
+                    }
+                    ?>
+                </select>                                            
+            </div>
+        </div>
+    </div>
+
+
+    <?php
+    @$exam_type = @$data['exam_type'];
+    @$grp_cd = @$data['grp_cd'];
+    @$oldcls = @$data['class'];
+    $Status =  @$data['status'];
+
+    ?>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" id="lblpart1cat" name="lblpart1cat" style="text-decoration: underline;">
+                    PART-I Subjects
+                </label>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" id="lblpart2cat" name="lblpart2cat" style="text-decoration: underline;">
+                    PART-II Subjects
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <select id="sub1" class="form-control" name="sub1"></select> 
+            </div>
+            <div class="col-md-4">
+                <select id="sub1p2" class="form-control" name="sub1p2"></select> 
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <select id="sub2" class="form-control" name="sub2"></select> 
+            </div>
+            <div class="col-md-4">
+                <select id="sub2p2" class="form-control" name="sub2p2"></select> 
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <select id="sub3" class="form-control" name="sub3"></select> 
+            </div>
+            <div class="col-md-4">
+                <select id="sub3p2" class="form-control" name="sub3p2"></select> 
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <select id="sub8" class="form-control" name="sub8"></select> 
+            </div>
+            <div class="col-md-4">
+                <select id="sub8p2" class="form-control" name="sub8p2"></select> 
+            </div>
+        </div>
+    </div>    
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <select id="sub4" class="form-control" name="sub4"></select> 
+            </div>
+            <div class="col-md-4">
+                <select id="sub4p2" class="form-control" name="sub4p2"></select> 
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <select id="sub5" class="form-control" name="sub5"></select> 
+            </div>
+            <div class="col-md-4">
+                <select id="sub5p2" class="form-control" name="sub5p2"></select> 
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <select id="sub6" class="form-control" name="sub6"></select> 
+            </div>
+            <div class="col-md-4">
+                <select id="sub6p2" class="form-control" name="sub6p2"></select> 
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <select id="sub7" class="form-control" name="sub7"></select> 
+            </div>
+            <div class="col-md-4">
+                <select id="sub7p2" class="form-control" name="sub7p2"></select> 
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="checkbox-inline">
+                    <input type="checkbox" class="checkboxtext" id="terms" name="terms" value="yes">I agree with the <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg">Terms and Conditions </a> of Board of Intermediate & Secondary Education, Gujranwala  
+                </label>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="hidden">
         <input type="hidden" value="<?=  @$data['grp_cd']?>" name="pergrp">
-        <label class="control-label span1" >
-            Study Group :
-        </label>
-        <div class="controls controls-row">
-            <select id="std_group" class="dropdown span6"  name="std_group">
-                <?php 
-                // DebugBreak();
-                $grp = $data['grp_cd'];
-                $sub7 = $data['sub7'];
-                $sub8 = $data['sub8'];
-                if(!empty($grp)){
-
-                    if($grp == 1 && ($sub7 == 8 || $sub8 == 8))
-                    {
-                        echo "<option value='1' selected='selected'>SCIENCE WITH BIOLOGY</option>
-
-                        <option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>
-                        <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
-                        <option value='2'>HUMANTIES</option>
-                        <option value='5'>DEAF AND DUMB</option>
-                        <option value='4'>AAMA GROUP</option>
-                        <option value='9'>ADIB/ALIM GROUP </option>
-                        ";  
-                    }
-
-                    if($sub7 == 78 || $sub8 == 78)
-                    {
-                        echo " 
-                        <option value='1' >SCIENCE WITH BIOLOGY</option>
-                        <option value='7'  selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>
-                        <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
-                        <option value='2'>HUMANTIES</option>
-                        <option value='5'>DEAF AND DUMB</option>
-                        <option value='4'>AAMA GROUP</option>
-                        <option value='9'>ADIB/ALIM GROUP </option>
-                        ";
-
-                    }
-
-
-                    if($grp == 2)
-                    {
-                        echo "<option value='2' selected='selected'>HUMANTIES</option>
-                        <option value='1' >SCIENCE WITH BIOLOGY</option>
-                        <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                        <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
-
-                        <option value='5'>DEAF AND DUMB</option>
-                        <option value='4'>AAMA GROUP</option>
-                        <option value='9'>ADIB/ALIM GROUP </option>
-                        ";  
-                    }
-
-                    if($grp == 5)
-                    {
-                        echo "<option value='5' selected='selected'>DEAF AND DUMB</option>
-                        <option value='2' >HUMANTIES</option>
-                        <option value='1' >SCIENCE WITH BIOLOGY</option>
-                        <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                        <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
-
-
-                        <option value='4'>AAMA GROUP</option>
-                        <option value='9'>ADIB/ALIM GROUP </option>
-                        ";  
-                    }
-
-                    if($grp==4)
-                    {
-                        echo "<option value='4' selected='selected'>AAMA GROUP</option>
-                        <option value='5' >DEAF AND DUMB</option>
-                        <option value='2' >HUMANTIES</option>
-                        <option value='1' >SCIENCE WITH BIOLOGY</option>
-                        <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                        <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
-                        <option value='9'>ADIB/ALIM GROUP </option>
-                        ";
-                    }
-                }
-                else{
-                    echo "<option value='0'>SELECT GROUP</option>
-                    <option value='1' >SCIENCE WITH BIOLOGY</option>
-                    <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                    <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
-                    <option value='2' >GENERAL</option>
-                    <option value='5'>DEAF AND DUMB</option>
-                    <option value='4'>AAMA GROUP</option>
-                    <option value='9'>ADIB/ALIM GROUP </option>";
-                }
-                ?>
-
-            </select>                                            
-        </div>
+        <input type="hidden" class="span3" id="oldClass" name="oldClass"  value="<?php  echo @$data['class']; ?>"/>     
+        <input type="hidden" name="oldsess" id ="oldsess" value="<?php echo @$data['sess'] == 1 ? "Annual" :"Supplementary";  ?>" > 
+        <input type="hidden" name="oldyear" id ="oldyear" value="<?php echo @$data['Iyear']; ?>" >
+        <input type="hidden" name="category" id="category" value="<?php  ?>">
+        <input type="hidden" name="strRegNo" id="strRegNo" value="<?php echo @$data['strRegNo'];?>">
+        <input type="hidden" value="0" id="isotherbrd" name="isotherbrd" />
+        <input type="hidden" value="1" id="isFresh" name="isFresh" />
+        <input type="hidden" value="<?php if(((@$data['isNotFresh']!=0 || @$data['isNotFresh']!=""))) echo 1; else echo 0; ?>" id="isNotFresh" name="isNotFresh" />
     </div>
-
-
-
-
-    <div class="control-group">
-        <label class="control-label span12" style="width: 366px; font-weight: bold;" >
-            Choose Subjects(Elective Subjects are Enabled Only)   
-            </br></br></br>
-
-            <?php
-
-
-
-            ////DebugBreak();
-            @$exam_type = @$data['exam_type'];
-            @$grp_cd = @$data['grp_cd'];
-            @$oldcls = @$data['class'];
-            $Status =  @$data['status'];
-
-            ?>
-        </label> 
-    </div>
-
-    <div class="control-group">
-        <div class="control row controls-row">
-            <label class="control-label span3 " id="lblpart1cat" name="lblpart1cat" style="text-decoration: underline; font-weight: bold;" >
-                PART-I Subjects
-            </label>
-            <label class="control-label span3 " id="lblpart2cat" name="lblpart2cat" style="text-decoration: underline; font-weight: bold;" >
-                PART-II Subjects
-            </label>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+                <input type="submit" value="Save Form" id="btnsubmitUpdateEnrol" name="btnsubmitUpdateEnrol" class="btn btn-primary btn-block" onclick="return checks()">
+            </div>
+            <div class="col-md-2">
+                <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg" download="instructions" class="btn btn-info btn-block">Download Instruction</a>
+            </div>
+            <div class="col-md-3">
+                <input type="button" class="btn btn-danger btn-block" value="Cancel" id="btnCancel" name="btnCancel" onclick="return gotodefaultpage();">
+            </div>
         </div>
-        <div class="control row controls-row">
-            <label class="control-label span1" >
-
-            </label>
-            <select id="sub1" class="span3 dropdown" name="sub1">
-
-            </select> 
-
-            <select id="sub1p2" class="span3 dropdown" name="sub1p2">
-
-            </select> 
-        </div>
-        <div class="control row controls-row">
-            <label class="control-label span1" >
-
-            </label>
-            <select id="sub2"  name="sub2" class="span3 dropdown">
-
-            </select>
-            <select id="sub2p2" class="span3 dropdown" name="sub2p2">
-
-            </select> 
-        </div>
-        <div class="control row controls-row">
-            <label class="control-label span1" >
-
-            </label>
-            <select id="sub3" class="span3 dropdown" name="sub3">
-
-            </select> 
-            <select id="sub3p2" class="span3 dropdown" name="sub3p2">
-
-            </select> 
-        </div>
-        <div class="control row controls-row">
-            <label class="control-label span1" >
-
-            </label>
-            <select id="sub8"  name="sub8" class="span3 dropdown">
-
-            </select>
-            <select id="sub8p2"  name="sub8p2" class="span3 dropdown">
-            </select>
-        </div>
-        <div class="control row controls-row">
-            <label class="control-label span1" >
-
-            </label>
-            <select id="sub4"  name="sub4" class="span3 dropdown">
-
-            </select>
-            <select id="sub4p2" class="span3 dropdown" name="sub4p2">
-
-            </select> 
-        </div>
-
-        <div class="control row controls-row">
-            <label class="control-label span1" >
-
-            </label>
-            <select id="sub5" class="span3 dropdown" name="sub5" selected="selected">
-
-            </select> 
-            <select id="sub5p2" class="span3 dropdown" name="sub5p2" selected="selected">
-
-            </select> 
-        </div>
-        <div class="control row controls-row">
-            <label class="control-label span1" >
-
-            </label>
-            <select id="sub6"  name="sub6" class="span3 dropdown" selected="selected">
-
-            </select>
-            <select id="sub6p2"  name="sub6p2" class="span3 dropdown" selected="selected">
-
-            </select>
-        </div>
-        <div class="control row controls-row">
-            <label class="control-label span1" >
-
-            </label>
-            <select id="sub7" class="span3 dropdown" name="sub7" selected="selected">
-
-            </select> 
-            <select id="sub7p2" class="span3 dropdown" name="sub7p2" selected="selected">
-
-            </select> 
-        </div> 
-        <div class="control row controls-row">
-            <label class="control-label span1" >
-
-
-
-            </label>
-            <input type="checkbox" name="terms" id="terms" class="span1" style="width: 25px; height: 15px;">
-            <span class="span4" style="color: red; font-weight: bolder; font-size: large;margin-top: 10px;margin-left: 0px;">I accept all the terms &amp; conditions of B.I.S.E Gujranwala.</span> 
-
-
-        </div>
-    </div>
-    <div>
-        <!-- <input type="hidden" name="oldclass" id="oldclass" value="<?php echo @$oldcls; ?>">
-        <input type="hidden" name="exam_type" id="exam_type" value="<?php echo @$exam_type = @$data['exam_type']; ?>">
-        <input type="hidden" name="oldexam_type" id="oldexam_type">
-        <input type="hidden" name="grppre" id="grppre" value="<?php  echo @$grp_cd = @$data['grp_cd']; ?>">
-
-
-
-        -->
-    </div>
-    <div class="form-actions no-margin">
-        <button type="submit" onclick="return checks()" name="btnsubmitUpdateEnrol" class="btn btn-large btn-info " style="    margin-left: -807px;" >
-            Save Form
-        </button>
-        <a href="<?php echo base_url(); ?>assets/pdfs/instructions.pdf" download="Instructions.pdf" class="btn btn-large btn-info" >Download Instruction</a>
-        <input type="button" class="btn btn-large btn-danger" value="Cancel" id="btnCancel" name="btnCancel" onclick="return gotodefaultpage();" >
-        <div class="clearfix"></div>
     </div>
 </form>
 <script src="<?php echo base_url(); ?>assets/js_matric/jquery-1.8.3.js"></script>
