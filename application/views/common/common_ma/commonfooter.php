@@ -357,11 +357,9 @@
         });
         $("#pvtinfo_teh").change(function(){
 
-            // alert("hello");
-            var tehId =  $("#pvtinfo_teh").val();
-            //alert("hello "+tehId);
+            var tehId =  $("#pvtinfo_teh").val();            
             var gend = $("#gend").val();
-            //alert("hello "+gend);
+
             if(gend==undefined)
             {
                 alertify.error("Select Gender First.");
@@ -383,45 +381,18 @@
                     complete: function() { $('.mPageloader').hide();},
                     success: function(json) {
                         var listitems;
-                        //alert('Hi i am success');
-                        // console.log("I am console");
-                        // console.log(url);
+
                         $('#pvtZone').empty();
                         $('#pvtZone').append('<option value="0">SELECT ZONE</option>');
                         $.each(json, function (key, data) {
 
-                            //console.log(key)
-
                             $.each(data, function (index, data) {
 
-                                // console.log('Zone Name :', data.zone_name , ' Zone Code : ' ,data.zone_cd)
                                 listitems +='<option value=' + data.zone_cd + '>' + data.zone_name + '</option>';
-                                //$('#pvtZone').append('<option value=' + data.zone_cd + '>' + data.zone_name + '</option>');
-                                //console.log('Zone Name :', data.zone_cd)
-                                //console.log('Zone Name :', data)
+
                             })
                         })
                         $('#pvtZone').append(listitems)
-                        /*console.log(data.length);
-                        for (var i = 0; i < data.length; i++) {
-
-                        console.log(" Thesil : "+ data[i].zone_name);
-                        // var checkBox = "<input type='checkbox' data-price='" + data[i].Price + "' name='" + data[i].Name + "' value='" + data[i].ID + "'/>" + data[i].Name + "<br/>";
-                        // $(checkBox).appendTo('#modifiersDiv');
-                        }*/
-                        //if (json)
-                        //{
-                        //var obj = jQuery.parseJSON(json);
-                        //  console.log(json.teh[0].zone_name);
-                        //alert( obj['teh']['Class']);
-                        //   alert(res.Sess);
-                        //   alert(res.Class);
-                        //   //
-                        //   Show Entered Value
-                        //   jQuery("div#result").show();
-                        //   jQuery("div#value").html(res.username);
-                        //   jQuery("div#value_pwd").html(res.pwd);
-                        //}
 
                     },
                     error: function(request, status, error){
@@ -433,11 +404,9 @@
         })
         $("#pvtZone").change(function(){
 
-            // alert("hello"); getcenter
-            //  $.fancybox("#center");
             var tehId =  $("#pvtZone").val();
             var gend = $("#gend").val();
-            //alert("hello "+gend);
+
             if(gend==undefined)
             {
                 alertify.error("Select Gender First.");
@@ -458,7 +427,7 @@
                     complete: function() { $('.mPageloader').hide();},
                     success: function(json) {
                         var listitems='';
-                        //$('#instruction').empty();
+                        
                         $.each(json.center, function (key, data) {
 
                             console.log(data);

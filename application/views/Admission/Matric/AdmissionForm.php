@@ -46,10 +46,10 @@
                 $bform = $data['0']['BForm'];
 
                 if($bform == ""){
-                    echo '<input class="form-control" type="text" id="bay_form" name="bay_form"  placeholder="34101-1111111-1" value=""  required="required" >';
+                    echo '<input class="text-uppercase form-control" type="text" id="bay_form" name="bay_form"  placeholder="34101-1111111-1" value=""  required="required" >';
                 }
                 else{
-                    echo'<input class="form-control" type="text" id="bay_form" name="bay_form"  placeholder="34101-1111111-1" value='.@$data[0][BForm].' required="required" >';
+                    echo'<input class="text-uppercase form-control" type="text" id="bay_form" name="bay_form"  placeholder="34101-1111111-1" value='.@$data[0][BForm].' required="required" >';
                 }
                 ?>
             </div>
@@ -62,10 +62,10 @@
                 $fnic = $data['0']['FNIC'];
                 if($fnic== "" || $fnic== '00000-0000000-0' || $fnic== '11111-1111111-1' || $fnic== '22222-2222222-2' || 
                     $fnic== '33333-3333333-3' || $fnic== '44444-4444444-4' || $fnic== '55555-5555555-5' || $fnic== '66666-6666666-6' || $fnic== '77777-7777777-7' || $fnic== '88888-8888888-8' || $fnic== '99999-9999999-9'){
-                    echo'<input class="form-control" id="father_cnic" name="father_cnic" type="text" placeholder="34101-1111111-1"  value=""  required="required">';        
+                    echo'<input class="text-uppercase form-control" id="father_cnic" name="father_cnic" type="text" placeholder="34101-1111111-1"  value=""  required="required">';        
                 }
                 else{
-                    echo'<input class="form-control" id="father_cnic" name="father_cnic" type="text" placeholder="34101-1111111-1"  value='.@$data[0][FNIC].' readonly="readonly"  required="required">';
+                    echo'<input class="text-uppercase form-control" id="father_cnic" name="father_cnic" type="text" placeholder="34101-1111111-1"  value='.@$data[0][FNIC].' readonly="readonly"  required="required">';
                 }
                 ?>
             </div>
@@ -75,11 +75,11 @@
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
                 <label class="control-label" for="dob">Date of Birth:</label>
-                <input class="form-control" type="text" name="dob" placeholder="Date of Birth" readonly="readonly"  value="<?php echo $data['0']['Dob']?>" required = "required">
+                <input class="text-uppercase form-control" type="text" name="dob" placeholder="Date of Birth" readonly="readonly"  value="<?php echo $data['0']['Dob']?>" required = "required">
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="mob_number">Mobile Number:</label>
-                <input class="form-control" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value="<?php echo  $data['0']['MobNo']; ?> " required="required">
+                <input class="text-uppercase form-control" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value="<?php echo  $data['0']['MobNo']; ?> " required="required">
             </div>
         </div>
     </div>
@@ -802,80 +802,80 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub1" class="form-control" name="sub1"></select> 
+                <select id="sub1" class="text-uppercase form-control" name="sub1"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub1p2" class="form-control" name="sub1p2"></select> 
+                <select id="sub1p2" class="text-uppercase form-control" name="sub1p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub2" class="form-control" name="sub2"></select> 
+                <select id="sub2" class="text-uppercase form-control" name="sub2"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub2p2" class="form-control" name="sub2p2"></select> 
+                <select id="sub2p2" class="text-uppercase form-control" name="sub2p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub3" class="form-control" name="sub3"></select> 
+                <select id="sub3" class="text-uppercase form-control" name="sub3"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub3p2" class="form-control" name="sub3p2"></select> 
+                <select id="sub3p2" class="text-uppercase form-control" name="sub3p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub8" class="form-control" name="sub8"></select> 
+                <select id="sub8" class="text-uppercase form-control" name="sub8"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub8p2" class="form-control" name="sub8p2"></select> 
+                <select id="sub8p2" class="text-uppercase form-control" name="sub8p2"></select> 
             </div>
         </div>
     </div>    
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub4" class="form-control" name="sub4"></select> 
+                <select id="sub4" class="text-uppercase form-control" name="sub4"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub4p2" class="form-control" name="sub4p2"></select> 
+                <select id="sub4p2" class="text-uppercase form-control" name="sub4p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub5" class="form-control" name="sub5"></select> 
+                <select id="sub5" class="text-uppercase form-control" name="sub5"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub5p2" class="form-control" name="sub5p2"></select> 
+                <select id="sub5p2" class="text-uppercase form-control" name="sub5p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub6" class="form-control" name="sub6"></select> 
+                <select id="sub6" class="text-uppercase form-control" name="sub6"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub6p2" class="form-control" name="sub6p2"></select> 
+                <select id="sub6p2" class="text-uppercase form-control" name="sub6p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub7" class="form-control" name="sub7"></select> 
+                <select id="sub7" class="text-uppercase form-control" name="sub7"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub7p2" class="form-control" name="sub7p2"></select> 
+                <select id="sub7p2" class="text-uppercase form-control" name="sub7p2"></select> 
             </div>
         </div>
     </div>
@@ -1244,7 +1244,7 @@
         }
         function load_Bio_CS_Sub()
         {
-            var NationalityVal = $("input[name=nationality]:checked").val();
+            var NationalityVal = $("#nationality").val();
             $('#sub1').empty();
             $('#sub1p2').empty();
             if(NationalityVal == "1")
@@ -1269,9 +1269,8 @@
             // Check Religion and select sub........
             $("#sub3").empty();
             $("#sub3p2").empty();
-            var Religion = $("input[name=religion]:checked").val();
-            //console.log(Religion);
-            console.log(Religion);
+            var Religion = $("#religion").val();
+
             if(Religion == "1")
             {
                 $.each(sub3_Muslim,function(val,text){
@@ -1310,7 +1309,7 @@
         function Hum_Deaf_Subjects()
         {
             //alert(isElec);
-            var NationalityVal = $("input[name=nationality]:checked").val();
+            var NationalityVal = $("#nationality").val();
             console.log(NationalityVal);
             $('#sub1').empty();
             $('#sub1p2').empty();
@@ -1337,9 +1336,7 @@
             // Check Religion and select sub........
             $("#sub3").empty();
             $("#sub3p2").empty();
-            var Religion = $("input[name=religion]:checked").val();
-
-
+            var Religion = $("#religion").val();
 
             if(Religion == "1")
             {
@@ -2378,14 +2375,6 @@
             $("#sub7p2").empty();
             $("#sub7p2").append(new Option('<?php  echo  array_search($data[0]['sub7'],$subarray); ?>',sub7));
             $("#sub7p2 option[value='" + sub7 + "']").attr("selected","selected");
-            // var Gender = $("#gend").val();
-            //  
-            //console.log(Religion);
-
-
-            /*$("#sub6").empty();
-            $("#sub6p2").empty();
-            */
 
             $.each(sub8_Hum,function(val,text){
 
@@ -2399,8 +2388,6 @@
                 $("#sub6p2").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
 
             }
-            /* $("#sub7").empty();
-            $("#sub7p2").empty(); */
 
             $.each(sub7_Hum,function(val,text){
 
@@ -3129,65 +3116,44 @@
             if(cat== 0){
                 sub_grp_empty_PI();
                 sub_grp_empty_PII();
-                // alertify.log("Please Select category");
             }
             else if(cat== 1){
                 sub_grp_load_MarksImp_PI();
-                //  alertify.log("You select Part 1 Full cat");
             }
             else if(cat== 2){
                 sub_grp_load__MarksImp_PII();
-                // alertify.log("You select Part 2 Full cat");
+
             }
             else if(cat== 3){
                 sub_grp_load_MarksImp_FULL();
-                //   alertify.log("You select Both Part  Full cat");
+
             }
             else if(cat== 4){
                 sub_grp_load_MarksImp_Subj_wise();
-                // alertify.log("You select subject wise cat");
+
             }
         })
-        /* $('input:radio[name="religion"]').change(function()
-        {
-        // debugger;
-        if($(this).val() == 1) {
 
-        $("#sub3").empty(); 
-        $("#sub3").prepend('<option selected="selected" value="3"> ISLAMIYAT (COMPULSORY) </option>');
-        //$("#ddlList").prepend('<option selected="selected" value="0"> Select </option>');
-        }else{
-        //$("#father_cnic").mask("****************************",{placeholder:""});
-
-        $("#sub3").empty(); 
-        $("#sub3").prepend("<option selected='selected' value='51'> ETHICS </option>");
-        $("#sub3").prepend("<option  value='3'> ISLAMIYAT (COMPULSORY) </option>");
-        }
-        }); */
-        $('input:radio[name="religion"]').change(function()
+        $("#religion").change(function()
             {
+                var rel = $("#religion").val();
                 var exam_type = $('#exam_type').val();
                 if(exam_type == 2)
                 {
-                    if($(this).val() == 1) 
+                    if(rel == 1) 
                     {
-
                         $("#sub3").empty(); 
                         $("#sub3").prepend('<option selected="selected" value="3"> ISLAMIYAT (COMPULSORY) </option>');
-                        //$("#ddlList").prepend('<option selected="selected" value="0"> Select </option>');
                     }
                     else
                     {
-                        //$("#father_cnic").mask("****************************",{placeholder:""});
-
                         $("#sub3").empty(); 
                         $("#sub3").prepend("<option selected='selected' value='51'> ETHICS </option>");
                         $("#sub3").prepend("<option  value='3'> ISLAMIYAT (COMPULSORY) </option>");
                     }
                 }
-
         });
-        $('input:radio[name="gend"]').change(function()
+        $('#gend').change(function()
             {
                 var exam_type = $('#exam_type').val();
                 if(exam_type == 2)
@@ -3201,7 +3167,6 @@
                     }
                     else
                     {
-                        // alert('i am removed');
                         dropdownElement.find('sub8[value=13]').remove();
                         dropdownElement.find('sub8p2[value=13]').remove();
                     }
@@ -3209,11 +3174,6 @@
 
         })
         $('#std_group').change(function(){
-
-
-            debugger;
-
-
 
             var sel_group = $('#std_group').val();
             var old_exam =  $('#oldexam_type').val();
@@ -3223,9 +3183,6 @@
             {
                 $('#oldexam_type').val(crnt_exam)
                 $('#exam_type').val(2);
-
-
-
             }
             else if(crnt_exam == 2 && (old_exam == 4 || old_exam == 5 || old_exam == 6))
             {
@@ -3233,11 +3190,10 @@
                 $('#exam_type').val(old_exam);
 
             }
-            // debugger;
+
             var exam_type_static = $("#exam_type_static").val();
-            if(((((grp_cd == 1 && sub7 == "8") && sel_group ==1) || ((grp_cd == 1 && sub7 == "78") && sel_group ==7) || ((grp_cd == 1 && sub7 == "43") && sel_group ==8) || ((grp_cd == 2) && sel_group ==2) || ((grp_cd == 1 && sub7 == "78")) && sel_group ==7 || ((grp_cd == 1 && sub7 == "43") && sel_group ==8)) || (grp_cd == 2 && sel_group ==2)) && exam_type_static != 2)// (exam_type_static ==4 || exam_type_static ==5 || exam_type_static ==6))
+            if(((((grp_cd == 1 && sub7 == "8") && sel_group ==1) || ((grp_cd == 1 && sub7 == "78") && sel_group ==7) || ((grp_cd == 1 && sub7 == "43") && sel_group ==8) || ((grp_cd == 2) && sel_group ==2) || ((grp_cd == 1 && sub7 == "78")) && sel_group ==7 || ((grp_cd == 1 && sub7 == "43") && sel_group ==8)) || (grp_cd == 2 && sel_group ==2)) && exam_type_static != 2)
             {
-                //$("#isfullAppear").attr("check",false);
                 if(exam_type_static==3)
                 {
                     if($("#isfullAppear").attr("check",false));
@@ -3265,7 +3221,6 @@
                     }
                 }
 
-
                 return false; 
             }
             else
@@ -3277,46 +3232,6 @@
                 $("#isfullAppear").hide();
             } 
 
-
-
-            /*if(sub7=="8"){
-            sel_group ="1";
-            }
-            else if(sub7=="78"){
-            sel_group ="7";
-            }
-            else if(sub7=="43"){
-            sel_group ="8";
-            }
-            else{
-            sel_group ="2";
-            }     */
-            /*if((sel_group == grp_cd && crnt_exam !=2 ) || (crnt_exam == 4 || crnt_exam == 5 || crnt_exam == 6 ))//(sel_group == 1 || sel_group == 7 || sel_group == 8) && grp_cd==1 && crnt_exam ==2) || (sel_group == grp_cd && crnt_exam ==2 )   || (sel_group == grp_cd && crnt_exam !=2 ) || (crnt_exam == 4 || crnt_exam == 5 || crnt_exam == 6 ))
-            {
-            <?php 
-            // if($exam_type == 2 && $grp_cd == 1){
-
-            //   echo 'sub_grp_load_forexamtype2()'; 
-            ?>
-
-
-            <?php //}
-            //  else if ($exam_type == 2 && $grp_cd = 2){
-            //     echo'sub_grp_load_forexamtype2grp2()';
-            //   }
-            //  else{
-            ?> 
-            $("#divIsfullApp").removeClass('hide');
-            $("#isfullAppear").removeClass('hide');
-            $("#isfullAppear").attr("disabled",false);
-
-
-            <?php // echo 'sub_grp_load()'; 
-            //}                                        
-            ?>
-            }
-            else
-            {    */
             if(sel_group == "1")
             {
                 // Check Nationality and select appropriate Subject1 against candidate Nationality :)
@@ -3371,20 +3286,13 @@
                 {
                     if(isElec != 1)
                     {
-                        // $("#sub7")
-                        //$("#sub7 option[value='43']").remove();
-                        //$("#sub8 option[value='43']").remove();
                         $("#sub7 option[value='43']").remove();
                         $("#sub7p2 option[value='43']").remove();
                         $("#sub6 option[value='43']").remove();
                         $("#sub6p2 option[value='43']").remove();
-                        // $("#sub7").find('option[value=43]').remove();
-                        // alert("removed");
                     }  
                 }
-                //  var Gender = $("#gend").val();
 
-                //console.log(Religion);
                 if(Gender == "2")
                 {
                     $("#sub6").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
@@ -3394,7 +3302,6 @@
                 }
                 else
                 {
-                    // alert('i am removed');
                     dropdownElement.find('sub8[value=13]').remove();
                     dropdownElement.find('sub8p2[value=13]').remove();
                 }
@@ -3418,16 +3325,11 @@
                     $("#sub7").append(new Option(text,val));
                     $("#sub7p2").append(new Option(text,val));
                 });
-                /* $.each(sub8_Deaf,function(val,text){
-                $("#sub8").append(new Option(text,val));
-                $("#sub8p2").append(new Option(text,val));
-                }); */
             }
             else if (sel_group == "0")
             {
                 remove_subjects();
             }
-            //}
         })
 
     })
@@ -3469,8 +3371,7 @@
         var MarkOfIdent = $('#MarkOfIden').val();
         var Inst_Rno = $('#Inst_Rno').val();
         var status = 0;
-        // alert('sub6 '+sub6p1+ ' and '+ sub6p2);
-        // debugger;
+
         if(ddlMarksImproveoptions == "" ||  ddlMarksImproveoptions == undefined){
             $('#ErrMsg').show();  
             $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
@@ -3560,35 +3461,8 @@
             return status;    
         }
 
-        /*                  else  if ($("#dist").find('option:selected').val() < 1) 
-        {
-
-        alert('Please select District '); 
-        $("#dist").focus();
-
-        return status;  
-        }
-
-        else   if ($("#teh").find('option:selected').val() < 1) {
-
-        alert('Please select Tehsil');                          
-        $("#teh").focus();
-        return status;  
-        }
-        else  if ($("#zone").find('option:selected').val() < 1) {
-
-        alert('Please select Zone. ');                          
-        $("#zone").focus();
-        return status;  
-        }
-        */
-
         else   if ($("#std_group").find('option:selected').val() < 1) 
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Study Group</b>"); 
-            // alert('Study Group not selected ');                          
             $("#std_group").focus();
             return status;  
         }
@@ -3609,7 +3483,7 @@
             return status;  
         }
 
-        else   if ($("#sub6").find('option:selected').val() < 1) 
+        else if ($("#sub6").find('option:selected').val() < 1) 
         {
             $('#ErrMsg').show(); 
             $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });

@@ -86,7 +86,7 @@
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="preResult">Previous Result:</label>
-                <input type="text" class="form-control" name="preResult" required="required" id="preResult" value="<?php echo  @$data['preResult'] ; ?>" placeholder="i.e 350 or E,U">
+                <input type="text" class="text-uppercase form-control" name="preResult" required="required" id="preResult" value="<?php echo  @$data['preResult'] ; ?>" placeholder="i.e 350 or E,U">
             </div>
         </div>
     </div>
@@ -581,80 +581,80 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub1" class="form-control" name="sub1"></select> 
+                <select id="sub1" class="text-uppercase form-control" name="sub1"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub1p2" class="form-control" name="sub1p2"></select> 
+                <select id="sub1p2" class="text-uppercase form-control" name="sub1p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub2" class="form-control" name="sub2"></select> 
+                <select id="sub2" class="text-uppercase form-control" name="sub2"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub2p2" class="form-control" name="sub2p2"></select> 
+                <select id="sub2p2" class="text-uppercase form-control" name="sub2p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub3" class="form-control" name="sub3"></select> 
+                <select id="sub3" class="text-uppercase form-control" name="sub3"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub3p2" class="form-control" name="sub3p2"></select> 
+                <select id="sub3p2" class="text-uppercase form-control" name="sub3p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub8" class="form-control" name="sub8"></select> 
+                <select id="sub8" class="text-uppercase form-control" name="sub8"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub8p2" class="form-control" name="sub8p2"></select> 
+                <select id="sub8p2" class="text-uppercase form-control" name="sub8p2"></select> 
             </div>
         </div>
     </div>    
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub4" class="form-control" name="sub4"></select> 
+                <select id="sub4" class="text-uppercase form-control" name="sub4"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub4p2" class="form-control" name="sub4p2"></select> 
+                <select id="sub4p2" class="text-uppercase form-control" name="sub4p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub5" class="form-control" name="sub5"></select> 
+                <select id="sub5" class="text-uppercase form-control" name="sub5"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub5p2" class="form-control" name="sub5p2"></select> 
+                <select id="sub5p2" class="text-uppercase form-control" name="sub5p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub6" class="form-control" name="sub6"></select> 
+                <select id="sub6" class="text-uppercase form-control" name="sub6"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub6p2" class="form-control" name="sub6p2"></select> 
+                <select id="sub6p2" class="text-uppercase form-control" name="sub6p2"></select> 
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
-                <select id="sub7" class="form-control" name="sub7"></select> 
+                <select id="sub7" class="text-uppercase form-control" name="sub7"></select> 
             </div>
             <div class="col-md-4">
-                <select id="sub7p2" class="form-control" name="sub7p2"></select> 
+                <select id="sub7p2" class="text-uppercase form-control" name="sub7p2"></select> 
             </div>
         </div>
     </div>
@@ -734,7 +734,7 @@
         var oldrno = $('#oldrno').val();
         var oldboardid = $('#oldboardid').val();
 
-        var gend = $('input[name="gend"]:checked').val();
+        var gend = $('#gend').val();
         // var Inst_Rno = $('#Inst_Rno').val();
         var status = 0;
         var $img = $("#image_upload_preview");
@@ -763,7 +763,7 @@
             $('#ErrMsg').show();  
             $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
             alertify.error("Please Select Your Gender First!")
-            $('input[name="gend"]').focus(); 
+            $('#gend').focus(); 
             return status;
         }
         if(oldrno=="")
@@ -947,6 +947,8 @@
             $.fancybox("#instruction");
     });
     $(document).ready(function(){
+
+        ClearALLDropDowns();
 
         var sub1_Pak_options = {
             1 : 'Urdu'
@@ -1214,7 +1216,7 @@
         function load_Bio_CS_Sub()
         {
 
-            var NationalityVal = $("input[name=nationality]:checked").val();
+            var NationalityVal = $("#nationality").val();
             $('#sub1').empty();
             $('#sub1p2').empty();
 
@@ -1258,7 +1260,7 @@
             } 
             $("#sub3").empty();
             $("#sub3p2").empty();
-            var Religion = $("input[name=religion]:checked").val();
+            var Religion = $("#religion").val();
             //console.log(Religion);
             //console.log(Religion);
 
@@ -1344,7 +1346,7 @@
             //console.log(NationalityVal);
             $('#sub1').empty();
             $('#sub1p2').empty();
-            var Religion = $("input[name=religion]:checked").val();
+            var Religion = $("#religion").val();
 
             $.each(sub1_Pak_options, function(val, text) {
                 $('#sub1').append( new Option(text,val) );
@@ -1797,150 +1799,58 @@
             $("#sub7").val(0);
         })
         $("#sub8").change(function(){
-            debugger;
-            //   console.log('Hi i am sub8 dropdown :) ');
-            // var sub6 = $("#sub6").val();
+
             var sub8 = $("#sub8").val();
-            // var sub8 = $("#sub8").val();
 
-            /*  var a = langascd.indexOf(sub6);
-            var d = langascd.indexOf(sub8);
-
-            if(a >=0  && d>=0)
-            {
-            alertify.error("Please choose Different Subjects as Double Language is not allowed" );
-            $("#sub8").val('0');
-            $("#sub8p2").val('0');
-            $("#sub8").focus();
-            return;  
-            }
-
-
-            // console.log("sub8 = "+ sub8 + "  sub8 = "+ sub8);
-            if( (sub8 == sub6))
-            {
-            alertify.error("Please choose Different Subjects" );
-            $("#sub8").val('0');
-            $("#sub8p2").val('0');
-            return;
-            }     
-            if((sub8 == 20 && sub6 == 21) || (sub8 == 21 && sub6 == 20)  || (sub8 == 19 && sub6 == 20) || (sub8 == 19 && sub6 == 21) || (sub8 == 20 && sub6 == 19) || (sub8 == 21 && sub6 == 19)|| (sub8p2 == 20 && sub6p2 == 21) || (sub8p2 == 21 && sub6p2 == 20)  || (sub8p2 == 19 && sub6p2 == 20) || (sub8p2 == 19 && sub6p2 == 21) || (sub8p2 == 20 && sub6p2 == 19) || (sub8p2 == 21 && sub6p2 == 19)){
-            alertify.error("Please choose Different Subjects as Double History is not allowed" );
-            $("#sub8p2").val('0');
-            $("#sub8").val('0');
-            return;
-            }
-            var valtext = 0;
-            for(var i =0 ; i<langascd.length; i++)
-            {
-            if(sub8 == langascd[i])
-            {
-            valtext =1;
-            }
-            }
-            if(valtext>0)
-            {
-            alertify.error("Please choose Different Subjects as Double Language is not allowed" );
-            $("#sub8").val('0');  
-            $("#sub8p2").val('0');  
-            return;
-            }
-            if ((sub6 == 19 ) && (sub8 == 20) ||(sub6 == 20 ) && (sub8 == 19))
-            {
-            $('#ErrMsg').show(); 
-            alertify.error('Please select One Subject from ADVANCED ISLAMIC STUDIES / ISLAMIC HISTORY / MUSLIM HISTORY ');                   
-            $("#sub8").val('0');
-            $("#sub8p2").val('0');
-            $("#sub8").focus();
-            return;  
-            }                                  */
             $("#sub8p2").val(sub8);
         })
         $("#sub8p2").change(function(){
-            // debugger;
-            //console.log('Hi i am sub8 dropdown :) ');
+
             var sub6 = $("#sub6").val();
             var sub6p2 = $("#sub6p2").val();
             var sub8 = $("#sub8p2").val();
-            /*var sub8p2 = $("#sub8p2").val();
-            var sub8 = $("#sub8").val();
-            var sub8p2 = $("#sub8p2").val();
-            //console.log("sub8 = "+ sub8 + "  sub8 = "+ sub8);
 
-            var a = langascd.indexOf(sub6);
-            var b = langascd.indexOf(sub6p2);
-            var d = langascd.indexOf(sub8);
-            var c = langascd.indexOf(sub8p2);
-
-            if(a >=0  && d>=0)
-            {
-            alertify.error("Please choose Different Subjects as Double Language is not allowed" );
-            $("#sub8").val('0');
-            $("#sub8p2").val('0');
-            $("#sub8").focus();
-            return;  
-            }
-
-
-            if((sub8p2 == sub6)|| (sub8p2 == sub6) || (sub8p2 == sub6p2) || (sub8p2 == sub6p2))
-            {
-            alertify.error("Please choose Different Subjects" );
-            $("#sub8p2").val('0');
-            $("#sub8").val('0');
-            return;
-            }        
-            if((sub7 == 20 && sub6 == 21) || (sub7 == 21 && sub6 == 20)  || (sub7 == 19 && sub6 == 20) || (sub7 == 19 && sub6 == 21) || (sub7 == 20 && sub6 == 19) || (sub7 == 21 && sub6 == 19)|| (sub7p2 == 20 && sub6p2 == 21) || (sub7p2 == 21 && sub6p2 == 20)  || (sub7p2 == 19 && sub6p2 == 20) || (sub7p2 == 19 && sub6p2 == 21) || (sub7p2 == 20 && sub6p2 == 19) || (sub7p2 == 21 && sub6p2 == 19)){
-            alertify.error("Please choose Different Subjects as Double History is not allowed" );
-            $("#sub7p2").val('0');
-            $("#sub7").val('0');
-            return;
-            }
-            var valtext = 0;
-            var doublelang=0;
-            for(var i =0 ; i<langascd.length; i++)
-            {
-            if((sub6) == langascd[i])
-            {
-            doublelang++;
-            }
-            if((sub7) == langascd[i])
-            {
-            doublelang++;
-            }
-
-
-            }
-            if(doublelang>1)
-            {
-            valtext = 1; 
-            }
-            if(valtext>0)
-            {
-            alertify.error("Please choose Different Subjects as Double Language is not allowed" );
-            $("#sub7").val('0');  
-            $("#sub7p2").val('0');  
-            return;
-            }
-            if ((sub6 == 19 || sub6p2 == 19) && (sub7 == 20 || sub7p2== 20))
-            {
-            $('#ErrMsg').show(); 
-            alertify.error('Please select One Subject from ADVANCED ISLAMIC STUDIES / ISLAMIC HISTORY / MUSLIM HISTORY ');                   
-            $("#sub7").val('0');
-            $("#sub7p2").val('0');
-            $("#sub7").focus();
-            return;  
-            }          */
-            //$("#sub8").val(sub8);
         })
 
+        function Empty_All_Dropdowns(){
+            $('#sub1').empty();$('#sub1p2').empty();
+            $('#sub2').empty();$('#sub2p2').empty();
+            $('#sub3').empty();$('#sub3p2').empty();
+            $('#sub4').empty();$('#sub4p2').empty();
+            $('#sub5').empty();$('#sub5p2').empty();
+            $('#sub6').empty(); $('#sub6p2').empty();
+            $('#sub7').empty();$('#sub7p2').empty();
+            $('#sub8').empty(); $('#sub8p2').empty();
+        }
 
-        //Category P-1: MARKS IMPROVEMENT
+        function ClearALLDropDowns() {
 
-        <?php 
-        //DebugBreak();
+            Empty_All_Dropdowns();
 
-        ?>
+            $("#sub1").append('<option value="0">NONE</option>');
+            $("#sub1p2").append('<option value="0">NONE</option>');
 
+            $("#sub2").append('<option value="0">NONE</option>');
+            $("#sub2p2").append('<option value="0">NONE</option>');
+
+            $("#sub3").append('<option value="0">NONE</option>');
+            $("#sub3p2").append('<option value="0">NONE</option>');
+
+            $("#sub4").append('<option value="0">NONE</option>');
+            $("#sub4p2").append('<option value="0">NONE</option>');
+
+            $("#sub5").append('<option value="0">NONE</option>');
+            $("#sub5p2").append('<option value="0">NONE</option>');
+
+            $("#sub6").append('<option value="0">NONE</option>');
+            $("#sub6p2").append('<option value="0">NONE</option>');
+
+            $("#sub7").append('<option value="0">NONE</option>');
+            $("#sub7p2").append('<option value="0">NONE</option>');
+
+            $("#sub8").append('<option value="0">NONE</option>');
+            $("#sub8p2").append('<option value="0">NONE</option>');
+        }
 
         function sub_grp_empty_PI(){
             $("#sub1").empty().append('<option selected="selected" value="0">NONE</option>');
@@ -1964,15 +1874,16 @@
             $("#sub8p2").empty().append('<option selected="selected" value="0">NONE</option>');
         }
 
-
-
         $('#std_group').change(function(){
 
             var sel_group = $("#std_group").val();
-            showallsub();
-            if(sel_group == "1")
+
+            if(sel_group == "0"){
+                ClearALLDropDowns();
+            }
+            else if(sel_group == "1")
             {
-                // Check Nationality and select appropriate Subject1 against candidate Nationality :)
+                ClearALLDropDowns();
                 load_Bio_CS_Sub();
                 $("#sub7").append(new Option('BIOLOGY',8));
                 if(sub7ap1==0)
@@ -1986,6 +1897,7 @@
             }
             else if(sel_group == "7")
             {
+                ClearALLDropDowns();
                 load_Bio_CS_Sub();
                 $("#sub7").append(new Option('COMPUTER SCIENCE',78));
                 if(sub7ap1==0)
@@ -1999,6 +1911,7 @@
             }
             else if (sel_group == "8")
             {
+                ClearALLDropDowns();
                 load_Bio_CS_Sub();
                 $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
                 if(sub7ap1==0)
@@ -2010,12 +1923,16 @@
                 } 
                 $("#sub7p2").append(new Option('ELECTRICAL WIRING (OPT)',43));
                 //ELECTRICAL WIRING (OPT)
-            }  else if(sel_group=="4")
+            } 
+            else if(sel_group=="4")
             {
+                ClearALLDropDowns();
                 AAMA_KHASA_sub_grp_load();
             }
+
             else if(sel_group == "2")
             {
+                ClearALLDropDowns();
                 Hum_Deaf_Subjects();
 
                 $.each(sub5_Hum,function(val,text){
@@ -2030,8 +1947,6 @@
                 else{
                     $('#sub4').append( new Option("NONE",0) );
                 } 
-
-
 
                 $.each(sub6_Hum,function(val,text){
                     $("#sub5").append(new Option(text,val));
@@ -2091,20 +2006,13 @@
                 {
                     if(isElec != 1)
                     {
-                        // $("#sub7")
-                        //$("#sub7 option[value='43']").remove();
-                        //$("#sub8 option[value='43']").remove();
                         $("#sub7 option[value='43']").remove();
                         $("#sub7p2 option[value='43']").remove();
                         $("#sub8 option[value='43']").remove();
                         $("#sub8p2 option[value='43']").remove();
-                        // $("#sub7").find('option[value=43]').remove();
-                        // alert("removed");
                     }  
                 }
-                //  var Gender = $("#gend").val();
-                debugger;
-                //console.log(Religion);
+
                 if(Gender == "2")
                 {
                     $("#sub6").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
@@ -2114,15 +2022,14 @@
                 }
                 else
                 {
-                    // alert('i am removed');
                     dropdownElement.find('sub8[value=13]').remove();
                     dropdownElement.find('sub8p2[value=13]').remove();
                 }
             }
             else if(sel_group == "5")
             {
+                ClearALLDropDowns();
                 Hum_Deaf_Subjects();
-
 
                 $.each(sub5_Deaf,function(val,text){
                     $("#sub4").append(new Option(text,val));
@@ -2171,13 +2078,13 @@
             }
             else if (sel_group == "0")
             {
-                remove_subjects();
+                ClearALLDropDowns();
             }
-
         })
 
         if($("#std_group").val() == "1")
         {
+            ClearALLDropDowns();
             load_Bio_CS_Sub();
             $("#sub7").append(new Option('BIOLOGY',8));
             if(sub7ap1==0)
@@ -2189,12 +2096,10 @@
                 $('#sub7').append( new Option("NONE",0) );
             }
             $("#sub7p2").append(new Option('BIOLOGY',8));
-            //load_Bio_CS_Sub_NewEnrolement();
-            //$("#sub8").append(new Option('Biology',8));
         }
         else if($("#std_group").val() == "7")
         {
-
+            ClearALLDropDowns();
             load_Bio_CS_Sub();
             $("#sub7").append(new Option('COMPUTER SCIENCE',78));
             if(sub7ap1==0)
@@ -2207,15 +2112,10 @@
             }
             $("#sub7p2").append(new Option('COMPUTER SCIENCE',78));
         }
-        /*else if($("#std_group").val() == "8"){
 
-        load_Bio_CS_Sub_NewEnrolement();
-        $("#sub8").append(new Option('ELECTRICAL WIRING (OPT)',43));
-        }  */
-        else if($("#std_group").val() == "2"){
-
-
-
+        else if($("#std_group").val() == "2")
+        {
+            ClearALLDropDowns();
             Hum_Deaf_Subjects();
 
             $.each(sub5_Hum,function(val,text){
@@ -2248,9 +2148,6 @@
                 $('#sub5').append( new Option("NONE",0) );
             }
 
-
-            //  $('#test').find("select option:contains('B')").filter(":selected");
-
             $.each(sub7_Hum,function(val,text){
                 $("#sub6").append(new Option(text,val));
 
@@ -2265,10 +2162,8 @@
             {
                 $('#sub6').append( new Option("NONE",0) );
             } 
-            //  $('#sub6 option[value="<?php echo @$data['sub6'] ?>"]').prop('selected', 'selected');
+
             $('#sub6p2 option[value="<?php echo @$data['sub6'] ?>"]').prop('selected', 'selected'); 
-
-
 
             $.each(sub8_Hum,function(val,text){
                 $("#sub7").append(new Option(text,val));
@@ -2285,10 +2180,8 @@
             {
                 $('#sub7').append( new Option("NONE",0) );
             }
-            // $('#sub7 option[value="<?php echo @$data['sub7'] ?>"]').prop('selected', 'selected');
+
             $('#sub7p2 option[value="<?php echo @$data['sub7'] ?>"]').prop('selected', 'selected');
-
-
 
             var Elecgrp ="<?php echo @$grp_cd; ?>";
             var isgovt ="<?php echo @$isgovt; ?>";
@@ -2305,26 +2198,14 @@
             {
                 if(isElec != 1)
                 {
-                    // $("#sub7")
-                    //$("#sub7 option[value='43']").remove();
-                    //$("#sub8 option[value='43']").remove();
                     $("#sub7 option[value='43']").remove();
                     $("#sub7p2 option[value='43']").remove();
                     $("#sub8 option[value='43']").remove();
                     $("#sub8p2 option[value='43']").remove();
-                    // $("#sub7").find('option[value=43]').remove();
-                    // alert("removed");
                 }  
             }
             var Gender = $("#gend").val();
-            debugger;   
-            // $('#id option[value=theOptionValue]').prop('selected', 'selected').change();
 
-            // $("#sub7").val(<?php //echo @$data['sub7'] ?>);
-            // $("#sub7p2").val(<?php //echo @$data['sub7'] ?>);
-            // $("#sub6").val(<?php //echo @$data['sub6'] ?>);
-            //  $("#sub6p2").val(<?php //echo @$data['sub6'] ?>);
-            //console.log(Religion);
             if(Gender == "2")
             {
                 $("#sub6").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
@@ -2334,19 +2215,14 @@
             }
             else
             {
-                // alert('i am removed');
-                //  dropdownElement.find('sub8[value=13]').remove();
-                //  dropdownElement.find('sub8p2[value=13]').remove();
+                //do nothing;
+
             }
-
-
-
-
         }
         else if($("#std_group").val()==5)
         {
+            ClearALLDropDowns();
             Hum_Deaf_Subjects();
-
 
             $.each(sub5_Deaf,function(val,text){
                 $("#sub4").append(new Option(text,val));
@@ -2400,10 +2276,13 @@
             $("#sub6").val(<?php echo @$data['sub6'] ?>);
             $("#sub5").val(<?php  echo @$data['sub5']; ?>);
         }
+
         else if($("#std_group").val()==4)
         {
+            ClearALLDropDowns();
             AAMA_KHASA_sub_grp_load();
         }
+
         function showallsub(){
             $('#sub4').show();
             $('#sub4p2').show();
@@ -2418,12 +2297,6 @@
         }
         function AAMA_KHASA_sub_grp_load()
         {
-            //
-            //Category P-1: ADDITIONAL
-            //sdfsdfsdfsdfsdf
-
-            // $.each(additional_sub, function(val, text) {
-            // $('#sub1').hide();
             $("#sub1").append(new Option('URDU',1));
             $("#sub1p2").append(new Option('URDU',1));
             $("#sub2").append(new Option('ENGLISH',2));
@@ -2440,10 +2313,8 @@
             $('#sub7p2').hide();
             $('#sub3').hide();
             $('#sub3p2').hide();
-            //}); 
-        }  
-        //   sub_grp_load();                      
 
+        }  
 
         function CancelAlert()
         {
@@ -2458,24 +2329,23 @@
             });
         }
 
-        jQuery(document).ready(function () {
-            //  sub_grp_load();
+        jQuery(document).ready(function (){
+
             $(document.getElementById("bay_form")).mask("99999-9999999-9", { placeholder: "_" });
             $(document.getElementById("father_cnic")).mask("99999-9999999-9", { placeholder: "_" });
             $(document.getElementById("mob_number")).mask("9999-9999999", { placeholder: "_" });
         });
     });
 
-    $('input:radio[name="religion"]').change(function()
+    $('#religion').change(function()
         {
             if($(this).val() == 1) {
 
                 $("#sub3").empty(); 
                 $("#sub3").prepend('<option selected="selected" value="3"> ISLAMIYAT (COMPULSORY) </option>');
-                //$("#ddlList").prepend('<option selected="selected" value="0"> Select </option>');
-            }else{
-                //$("#father_cnic").mask("****************************",{placeholder:""});
-
+            }
+            else
+            {
                 $("#sub3").empty(); 
                 $("#sub3").prepend("<option selected='selected' value='51'> ETHICS </option>");
                 $("#sub3").prepend("<option  value='3'> ISLAMIYAT (COMPULSORY) </option>");
@@ -2485,7 +2355,7 @@
                 $("#sub3p2").prepend("<option  value='3'> ISLAMIYAT (COMPULSORY) </option>");
             }
     });
-    $('input:radio[name="gend"]').change(function()
+    $('#gend').change(function()
         {
             if($(this).val() == 2)
             {
@@ -2496,7 +2366,6 @@
             }
             else
             {
-                // alert('i am removed');
                 dropdownElement.find('sub8[value=13]').remove();
                 dropdownElement.find('sub8p2[value=13]').remove();
             }

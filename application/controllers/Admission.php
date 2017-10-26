@@ -2061,12 +2061,9 @@ class Admission extends CI_Controller
 
             if (!$nxtrnosessyear) 
             {
-                // if query returns null
+               
                 $errNo   = $this->db->error();
 
-                // $data['msg'] = $e;
-                //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-                //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
                 $data['msg'] = "Error(".$errNo['code'].") ";
                 $data['errno'] = "506";
                 $this->load->view('common/commonheader.php');

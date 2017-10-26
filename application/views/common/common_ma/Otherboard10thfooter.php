@@ -361,10 +361,9 @@
         });
         $("#pvtinfo_teh").change(function(){
 
-            // alert("hello");
             var tehId =  $("#pvtinfo_teh").val();
-            var gend = $('input[name="gend"]:checked').val();
-            //  alert("hello "+gend);
+            var gend = $('#gend').val();
+
             if(gend==undefined)
             {
                 alertify.error("Select Gender First.");
@@ -377,7 +376,7 @@
             else{
 
                 $.ajax({
-                    ////debugger;
+                    
                     type: "POST",
                     url: "<?php echo base_url(); ?>" + "Admission/getzone/",
                     dataType: 'json',
@@ -386,45 +385,18 @@
                     complete: function() { $('.mPageloader').hide(); },
                     success: function(json) {
                         var listitems;
-                        //alert('Hi i am success');
-                        // console.log("I am console");
-                        // console.log(url);
+
                         $('#pvtZone').empty();
                         $('#pvtZone').append('<option value="0">SELECT ZONE</option>');
                         $.each(json, function (key, data) {
-
-                            //console.log(key)
 
                             $.each(data, function (index, data) {
 
                                 console.log('Zone Name :', data.zone_name , ' Zone Code : ' ,data.zone_cd)
                                 listitems +='<option value=' + data.zone_cd + '>' + data.zone_name + '</option>';
-                                //$('#pvtZone').append('<option value=' + data.zone_cd + '>' + data.zone_name + '</option>');
-                                //console.log('Zone Name :', data.zone_cd)
-                                //console.log('Zone Name :', data)
                             })
                         })
                         $('#pvtZone').append(listitems)
-                        /*console.log(data.length);
-                        for (var i = 0; i < data.length; i++) {
-
-                        console.log(" Thesil : "+ data[i].zone_name);
-                        // var checkBox = "<input type='checkbox' data-price='" + data[i].Price + "' name='" + data[i].Name + "' value='" + data[i].ID + "'/>" + data[i].Name + "<br/>";
-                        // $(checkBox).appendTo('#modifiersDiv');
-                        }*/
-                        //if (json)
-                        //{
-                        //var obj = jQuery.parseJSON(json);
-                        //  console.log(json.teh[0].zone_name);
-                        //alert( obj['teh']['Class']);
-                        //   alert(res.Sess);
-                        //   alert(res.Class);
-                        //   //debugger;
-                        //   Show Entered Value
-                        //   jQuery("div#result").show();
-                        //   jQuery("div#value").html(res.username);
-                        //   jQuery("div#value_pwd").html(res.pwd);
-                        //}
 
                     },
                     error: function(request, status, error){
@@ -436,13 +408,9 @@
         })
         $("#pvtZone").change(function(){
 
-            // alert("hello"); getcenter
-            //  $.fancybox("#center");
             var tehId =  $("#pvtZone").val();
-            var gend = $('input[name="gend"]:checked').val();
-            console.log('gend '+gend);
-            //var gend = $("#gender").val();
-            //alert("hello "+tehId);
+            var gend = $('#gend').val();
+            
             if(gend==undefined)
             {
                 alertify.error("Select Gender First.");
@@ -460,12 +428,12 @@
                     url: "<?php echo base_url(); ?>Admission/getcenter/",
                     dataType: 'json',
                     data: {'pvtZone': tehId,'gend':gend},
-                    // data: $("#myform").serialize(),
+
                     beforeSend: function() {  $('.mPageloader').show(); },
                     complete: function() { $('.mPageloader').hide();},
                     success: function(json) {
                         var listitems='';
-                        //$('#instruction').empty();
+
                         $.each(json.center, function (key, data) {
 
                             console.log(data);
@@ -483,19 +451,16 @@
 
         })
         $('input[type=radio][name=batch_opt]').change(function() {
-            // //debugger;
-            // alert(this.value + "  Transfer Thai Gayo");
+            
             if (this.value == '1') {
                 window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'96/1/';
-                // alert("Allot Thai Gayo Bhai");
+                
             }
             else  if (this.value == '2') {
                 window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'97/2/';
-                //  alert("Transfer Thai Gayo");
             }
             else  if(this.value == 3){
                 window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'98/3';
-                //alert("Transfer Thai Gayo");
             }
 
         });
@@ -503,23 +468,18 @@
             if (this.value == '1') {
                 // 1 biology   2 humanities   5 deaf and dumb  7 computer science  8 electrical wiring 
                 window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'96/3/1/';
-                //  alert("Allot Thai Gayo Bhai");
             }
             else  if (this.value == '2') {
                 window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'97/3/2/';
-                // alert("Transfer Thai Gayo");
             }
             else  if(this.value == '5'){
                 window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'98/3/5/';
-                // alert("Transfer Thai Gayo");
             }
             else  if(this.value == '7'){
                 window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'98/3/7/';
-                //  alert("Transfer Thai Gayo");
             }
             else  if(this.value == '8'){
                 window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'98/3/8/';
-                //  alert("Transfer Thai Gayo");
             }
 
         })
