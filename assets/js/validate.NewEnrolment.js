@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
-	/*$("#image").change(function(){
+	$("#image").change(function(){
 		readURL(this);
-	});	*/	
+	});		
     $("#MobNo").mask("0999-9999999", {
         placeholder: "_"
     });
@@ -18,20 +18,16 @@ jQuery(document).ready(function() {
         var is_pakistani = $('input:radio[name="nat"]:checked').val();
         var id = $('#grp_cd').val();
     });
-    /*$("#image").change(function() {
+    $("#image").change(function() {
         readURL(this);
-    });*/
+    });
 	
 	$('#data-table').dataTable({
 	  "sPaginationType": "full_numbers"
 	});
 });
-	
-      //configuration
-           
-    
-    	
-/*function readURL(input) {
+		
+function readURL(input) {
 	if (input.files && input.files[0]) {
 		var reader = new FileReader();
 		reader.onload = function (e) {
@@ -40,8 +36,8 @@ jQuery(document).ready(function() {
 		reader.readAsDataURL(input.files[0]);
 	}
 } 
-*/
-/*function readURL(input) {
+
+function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
@@ -49,4 +45,4 @@ jQuery(document).ready(function() {
         }
         reader.readAsDataURL(input.files[0]);
     }
-}*/
+}
