@@ -473,7 +473,7 @@ class Admission_model extends CI_Model
         if($rowcount > 0)
         {
 
-            $query2 = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => Session, 'Start_Date <=' =>$date,'End_Date >='=>$date,'isPrSub'=>$isPratical));
+            $query2 = $this->db->get_where('admission_Online..RuleFeeAdm', array('class' => 10,'sess' => Session, 'Start_Date <=' =>$date,'End_Date >='=>$date,'isPrSub'=>$isPratical));
              if (!$query2) 
             {
                 // if query returns null

@@ -52,8 +52,8 @@ class Admission extends CI_Controller
             $error = "";
         }
         $this->load->view('common/commonheader.php');
-        
-       // DebugBreak();
+
+        // DebugBreak();
         $isActive = $this->isActiveAdm();
         if($isActive == false)
         {
@@ -62,20 +62,21 @@ class Admission extends CI_Controller
         }
         else
         {
-        
-        $ann = $isActive[0]['isadmP2'];
-        $supp = $isActive[0]['isadmP2S'];
-        $mydata = array('error'=>$error);
-        if($ann==1 || $supp == 1)
-        {
-          $this->load->view('Admission/Matric/matric_default.php',$mydata);
-        }
-        else
-        {
-        $mydata = array('error'=>$error);
-        $this->load->view('Admission/Matric/Admission_closed.php',$mydata);
-        }
-         
+
+            $ann = $isActive[0]['isadmP2'];
+            $supp = $isActive[0]['isadmP2S'];
+            $mydata = array('error'=>$error);
+            if($ann==1 || $supp == 1)
+            {
+                $this->load->view('Admission/Matric/matric_default.php',$mydata);
+            }
+            else
+            {
+                $mydata = array('error'=>$error);
+                //$this->load->view('Admission/Matric/Admission_closed.php',$mydata);
+                $this->load->view('Admission/Matric/matric_default.php',$mydata);
+            }
+
         }
         $this->load->view('common/homepagefooter.php');
     }
@@ -108,7 +109,8 @@ class Admission extends CI_Controller
     }
     public function checkFormNo_then_download()
     {
-        //         DebugBreak();
+        //DebugBreak();
+
         $formno_seg = $this->uri->segment(3);
         $dob_seg = '';//$this->uri->segment(4);
         if($formno_seg !=0 ){
@@ -122,10 +124,10 @@ class Admission extends CI_Controller
 
         $this->load->model('Admission_model');
         $this->load->library('session');
-       
-        
-       // DebugBreak();
-       // Check Admission is open or not ? 
+
+
+        // DebugBreak();
+        // Check Admission is open or not ? 
         $isActive = $this->isActiveAdm();
         if($isActive == false)
         {
@@ -134,33 +136,27 @@ class Admission extends CI_Controller
         }
         else
         {
-        
-        $ann = $isActive[0]['isadmP2'];
-        $supp = $isActive[0]['isadmP2S'];
-        $mydata = array('error'=>$error);
-         $this->load->view('common/commonheader.php');
-        if($ann==1 || $supp == 1)
-        {
-          $this->load->view('Admission/Matric/matric_default.php',$mydata);
+
+            $ann = $isActive[0]['isadmP2'];
+            $supp = $isActive[0]['isadmP2S'];
+            $mydata = array('error'=>$error);
+            $this->load->view('common/commonheader.php');
+            if($ann==1 || $supp == 1)
+            {
+                $this->load->view('Admission/Matric/matric_default.php',$mydata);
+            }
+            else
+            {
+                $mydata = array('error'=>$error);
+                $this->load->view('Admission/Matric/Admission_closed.php',$mydata);
+            }
+            $this->load->view('common/homepagefooter.php'); 
         }
-        else
-        {
-        $mydata = array('error'=>$error);
-        $this->load->view('Admission/Matric/Admission_closed.php',$mydata);
-        }
-          $this->load->view('common/homepagefooter.php'); 
-        }
-      
-        // DebugBreak();
+
         $data = $this->Admission_model->get_formno_data($formno);
         if (!$data) 
         {
-            // if query returns null
             $errNo   = $this->db->error();
-
-            // $data['msg'] = $e;
-            //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-            //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
             $data['msg'] = "Error(".$errNo['code'].") ";
             $data['errno'] = "516";
             $this->load->view('common/commonheader.php');
@@ -168,8 +164,6 @@ class Admission extends CI_Controller
             $this->load->view('common/homepagefooter.php');
             return;
         }
-
-
 
         if($data == -1)
         {
@@ -1288,6 +1282,7 @@ class Admission extends CI_Controller
     function feecalculate($data)
     {
         //DebugBreak();
+        
         $isper = 0;
         if( $this->practicalsubjects($data['sub5'])|| $this->practicalsubjects($data['sub6'])|| $this->practicalsubjects($data['sub7']))
         {
@@ -1432,15 +1427,13 @@ class Admission extends CI_Controller
     }
     function isActiveAdm()
     {
-    
-   // DebugBreak();
-      $this->load->library('session');
-      $this->load->model('Admission_model');
-      $val = $this->Admission_model->isActive();
-      return $val;
-      
-    
+        // DebugBreak();
+        $this->load->library('session');
+        $this->load->model('Admission_model');
+        $val = $this->Admission_model->isActive();
+        return $val;
     }
+
     function GetDueDate()
     {
         $dueDate='';
@@ -1640,35 +1633,36 @@ class Admission extends CI_Controller
     }
     public function Pre_Matric_data()
     {
+        //DebugBreak();
 
-        // DebugBreak();
-        //  DebugBreak();
         $this->load->library('session');
         $this->load->model('Admission_model');
-         $isActive = $this->isActiveAdm();
+
+        /*$isActive = $this->isActiveAdm();
         if($isActive == false)
         {
-            $error = "There is an error occured Please try again later";
-            $mydata = array('error'=>$error);
+        $error = "There is an error occured Please try again later";
+        $mydata = array('error'=>$error);
         }
         else
         {
-        
         $ann = $isActive[0]['isadmP2'];
         $supp = $isActive[0]['isadmP2S'];
         $mydata = array('error'=>$error);
-         $this->load->view('common/commonheader.php');
+        $this->load->view('common/commonheader.php');
         if($ann==1 || $supp == 1)
         {
-          $this->load->view('Admission/Matric/matric_default.php',$mydata);
+        $this->load->view('Admission/Matric/matric_default.php',$mydata);
         }
         else
         {
         $mydata = array('error'=>$error);
         $this->load->view('Admission/Matric/Admission_closed.php',$mydata);
         }
-          $this->load->view('common/homepagefooter.php'); 
-        }
+        $this->load->view('common/homepagefooter.php'); 
+        return;
+        }*/
+
         $error = $this->session->flashdata('NewEnrolment_error');
         if($error) 
         {
@@ -1683,19 +1677,14 @@ class Admission extends CI_Controller
             @$cattype   = $data[0]["category"];
 
             $error_msg = $data[0]["excep"];
-            //  DebugBreak();
+
             if($year >=(YEAR-1))
             {
                 $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board);
                 $data = $this->Admission_model->Pre_Matric_data($data);
                 if (!$data) 
                 {
-                    // if query returns null
                     $errNo   = $this->db->error();
-
-                    // $data['msg'] = $e;
-                    //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-                    //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
                     $data['msg'] = "Error(".$errNo['code'].") ";
                     $data['errno'] = "503-4";
                     $this->load->view('common/commonheader.php');
@@ -1708,13 +1697,7 @@ class Admission extends CI_Controller
             $brd_name=$this->Admission_model->Brd_Name($board);
             if (!$brd_name) 
             {
-                // if query returns null
                 $errNo   = $this->db->error();
-
-
-                // $data['msg'] = $e;
-                //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-                //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
                 $data['msg'] = "Error(".$errNo['code'].") ";
                 $data['errno'] = "507";
                 $this->load->view('common/commonheader.php');
@@ -1726,7 +1709,7 @@ class Admission extends CI_Controller
             $data[0]['excep']=$error_msg;
 
             if(!$data){
-                $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'No Any Student Found Against Your Criteria</span>';            
+                $error_msg.= 'No Any Student Found Against Your Criteria';            
                 $data['error'] = $error_msg;
                 $this->load->view('common/commonheader.php');        
                 $this->load->view('Admission/Matric/getinfo.php', $data);
@@ -1735,12 +1718,9 @@ class Admission extends CI_Controller
             }
             if($year < (YEAR-1))
             {
-
-
-
                 if(@$data[0]['status'] == 1)
                 {
-                    $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'You can not appear.</span>';            
+                    $error_msg.= 'You can not appear.';            
                     $data['error'] = $error_msg;
                     $this->load->view('common/commonheader.php');        
                     $this->load->view('Admission/Matric/getinfo.php', $data);
@@ -1749,12 +1729,6 @@ class Admission extends CI_Controller
                 }
                 else
                 {
-                    // DebugBreak();
-                    /*$data[0]['name'] = $data[0]['Name'] ;
-                    $data[0]['BForm'] = $data[0]['bFormNo'] ;
-                    $data[0]['Dob'] = $data[0]['dob'] ;
-                    $data[0]['Iyear'] = $data[0]['iyear'] ;
-                    $data[0]['rno'] = $data[0]['RNo'] ;   */
                     $data[0]['sess'] =    $session;
                     $data[0]['class'] =    $oldClass;
                     $data[0]['status']=2;
@@ -1771,7 +1745,7 @@ class Admission extends CI_Controller
             $nxtrnosessyear = $data[0]['NextRno_Sess_Year'];
             $pic =  explode('Pictures$',@$data[0]['picpath']);
             $picpath = DIRPATH.'\\'.@$pic[1];
-            // echo $picpath;die();
+
             $isexit = is_file($picpath);
             /* if(!$isexit)
             {
@@ -1818,11 +1792,12 @@ class Admission extends CI_Controller
             }
         }
 
-        else{  
+        else
+        {  
             $error_msg = '';   
             if( empty($_POST["dob"]) || empty($_POST["oldRno"]) )
             {
-                $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'No Data Against Your Information.</span>';            
+                $error_msg.= 'No Data Against Your Information.';            
                 $data['error'] = $error_msg;
                 $this->load->view('common/commonheader.php');        
                 $this->load->view('Admission/Matric/getinfo.php', $data);
@@ -1837,25 +1812,23 @@ class Admission extends CI_Controller
             $board   = $_POST["oldBrd_cd"];
             @$cattype   = $_POST["CatType"]; 
             $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board);
-            //DebugBreak();
+
             $data = $this->Admission_model->Pre_Matric_data($data);
 
             if (!$data) 
             {
-                // if query returns null
+
                 $errNo   = $this->db->error();
                 $error_msg = '';
                 if($errNo['code']=="00000"){
-                    $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'No Any Student Found Against Your Criteria</span>';            
+                    $error_msg.= 'No Any Student Found Against Your Criteria';            
                     $data['error'] = $error_msg;
-                    $this->load->view('common/commonheader.php');        
-                    $this->load->view('Admission/Matric/getinfo.php', $data);
-                    $this->load->view('common/footer.php');    
-                    return false;
+                    $this->load->library('session');
+                    $mydata = array('data'=>$_POST,'error_msg'=>$error_msg);
+                    $this->session->set_flashdata('matric_error',$mydata);
+                    redirect('Admission/matric_default');
                 }
-                // $data['msg'] = $e;
-                //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-                //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
+
                 $data['msg'] = "Error(".$errNo['code'].") ";
                 $data['errno'] = "503-4(I)";
                 $this->load->view('common/commonheader.php');
@@ -1864,27 +1837,22 @@ class Admission extends CI_Controller
                 return;
             }
 
-
             $error_msg = '';
 
             if(!$data){
-                $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'No Any Student Found Against Your Criteria</span>';            
+                $error_msg.= 'No Any Student Found Against Your Criteria';            
                 $data['error'] = $error_msg;
                 $this->load->view('common/commonheader.php');        
                 $this->load->view('Admission/Matric/getinfo.php', $data);
                 $this->load->view('common/footer.php');    
                 return false;
             }
-            //  
+
             $brd_name=$this->Admission_model->Brd_Name($board); 
             if (!$brd_name) 
             {
-                // if query returns null
-                $errNo   = $this->db->error();
 
-                // $data['msg'] = $e;
-                //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-                //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
+                $errNo   = $this->db->error();
                 $data['msg'] = "Error(".$errNo['code'].") ";
                 $data['errno'] = "507";
                 $this->load->view('common/commonheader.php');
@@ -1903,17 +1871,10 @@ class Admission extends CI_Controller
 
             if($year < (YEAR-1))
             {
-                //  DebugBreak();
-
                 $nxtrnosessyear = $this->Admission_model->checknextrno($data[0]['RNo'],$data[0]['iyear'],$session,$oldClass);
                 if (!$nxtrnosessyear) 
                 {
-                    // if query returns null
                     $errNo   = $this->db->error();
-
-                    // $data['msg'] = $e;
-                    //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-                    //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
                     $data['msg'] = "Error(".$errNo['code'].") ";
                     $data['errno'] = "505";
                     $this->load->view('common/commonheader.php');
@@ -1921,11 +1882,11 @@ class Admission extends CI_Controller
                     $this->load->view('common/homepagefooter.php');
                     return;
                 }
-                //if($nxtrnosessyear !=  -1)
+
                 if($nxtrnosessyear[0]['NextRno_Sess_Year']!=NULL)
                 {
                     $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
-                    $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'Please use this details:'.$nxtrnosessyear.'</span>';            
+                    $error_msg.= 'Please use this details:'.$nxtrnosessyear.'';            
                     $data['error'] = $error_msg;
                     $this->load->view('common/commonheader.php');        
                     $this->load->view('Admission/Matric/getinfo.php', $data);
@@ -1935,7 +1896,7 @@ class Admission extends CI_Controller
 
                 else  if($data[0]['status'] == 1 && $data[0]['class'] == 10)
                 {
-                    $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'You are already passed due to that can not appear again.</span>';            
+                    $error_msg.= 'You are already passed due to that can not appear again';            
                     $data['error'] = $error_msg;
                     $this->load->view('common/commonheader.php');        
                     $this->load->view('Admission/Matric/getinfo.php', $data);
@@ -1945,7 +1906,7 @@ class Admission extends CI_Controller
 
                 else if($data[0]['Spl_Name'] !="")
                 {
-                    $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'You can not appear due to  '.$data[0]['Spl_Name'].' Condition.</span>';            
+                    $error_msg.= 'You can not appear due to  '.$data[0]['Spl_Name'].' Condition.';            
                     $data['error'] = $error_msg;
                     $this->load->view('common/commonheader.php');        
                     $this->load->view('Admission/Matric/getinfo.php', $data);
@@ -1954,7 +1915,6 @@ class Admission extends CI_Controller
                 }
                 else
                 {
-                    // DebugBreak();
                     $data[0]['name'] = $data[0]['Name'] ;
                     $data[0]['BForm'] = $data[0]['bFormNo'] ;
                     $data[0]['Dob'] = $data[0]['dob'] ;
@@ -1970,11 +1930,10 @@ class Admission extends CI_Controller
                 }
 
             }
-            // DebugBreak();
+
             $pic =  explode('Pictures$',@$data[0]['picpath']);
             $picpath = DIRPATH.'\\'.@$pic[1];
             $data[0]['picpath_'] = @$pic[1];
-            // echo $picpath;die();
             $isexit = is_file($picpath);
             /* if(!$isexit)
             {
@@ -1995,7 +1954,7 @@ class Admission extends CI_Controller
 
             if($exam_type == 19){
 
-                $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'Admission can not be proceeded, Candidate appeared in HSSC Exam.</span>';            
+                $error_msg.= 'Admission can not be proceeded, Candidate appeared in HSSC Exam.';            
                 $data['error'] = $error_msg;
                 $this->load->view('common/commonheader.php');        
                 $this->load->view('Admission/Matric/getinfo.php', $data);
@@ -2027,11 +1986,6 @@ class Admission extends CI_Controller
                 $this->load->view('common/common_ma/commonfooter.php');
             }
         }
-
-
-
-
-
     }
     public function practicalsubjects($_sub_cd)
     {        
@@ -2068,7 +2022,7 @@ class Admission extends CI_Controller
         // DebugBreak();
         $this->load->model('Admission_model');
         $this->load->library('session');
-         $isActive = $this->isActiveAdm();
+        $isActive = $this->isActiveAdm();
         if($isActive == false)
         {
             $error = "There is an error occured Please try again later";
@@ -2076,21 +2030,21 @@ class Admission extends CI_Controller
         }
         else
         {
-        
-        $ann = $isActive[0]['isadmP2'];
-        $supp = $isActive[0]['isadmP2S'];
-        $mydata = array('error'=>$error);
-         $this->load->view('common/commonheader.php');
-        if($ann==1 || $supp == 1)
-        {
-          $this->load->view('Admission/Matric/matric_default.php',$mydata);
-        }
-        else
-        {
-        $mydata = array('error'=>$error);
-        $this->load->view('Admission/Matric/Admission_closed.php',$mydata);
-        }
-          $this->load->view('common/homepagefooter.php'); 
+
+            $ann = $isActive[0]['isadmP2'];
+            $supp = $isActive[0]['isadmP2S'];
+            $mydata = array('error'=>$error);
+            $this->load->view('common/commonheader.php');
+            if($ann==1 || $supp == 1)
+            {
+                $this->load->view('Admission/Matric/matric_default.php',$mydata);
+            }
+            else
+            {
+                $mydata = array('error'=>$error);
+                $this->load->view('Admission/Matric/Admission_closed.php',$mydata);
+            }
+            $this->load->view('common/homepagefooter.php'); 
         }
         $userinfo = '';//$Logged_In_Array['logged_in'];
         $userinfo['isselected'] = 2;
@@ -2107,12 +2061,9 @@ class Admission extends CI_Controller
 
             if (!$nxtrnosessyear) 
             {
-                // if query returns null
+               
                 $errNo   = $this->db->error();
 
-                // $data['msg'] = $e;
-                //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-                //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
                 $data['msg'] = "Error(".$errNo['code'].") ";
                 $data['errno'] = "506";
                 $this->load->view('common/commonheader.php');
@@ -2864,10 +2815,8 @@ class Admission extends CI_Controller
     }
     public function matric_fresh()
     {
-        /* $data = array(
-        'isselected' => '3',
-        ); */
-        // DebugBreak();
+        //DebugBreak();
+
         $this->load->library('session');
         if($this->session->flashdata('NewEnrolment_error'))
         {
@@ -2876,7 +2825,7 @@ class Admission extends CI_Controller
         else{
             $data = array('0'=>"");
         }
-        //DebugBreak();
+
         $this->load->view('common/commonheader.php');
         $this->load->view('Admission/Matric/matricFreshForm.php',array('data'=>$data[0]));
         $this->load->view('common/common_ma/Otherboard10thfooter.php');

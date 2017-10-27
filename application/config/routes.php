@@ -38,8 +38,7 @@
 |
 */
 
-$route['default_controller'] = "login";
-//$route['default_controller'] = "Privateslips";
+$route['default_controller'] = "Admission";
 $route['404_override'] = '';
 
 
