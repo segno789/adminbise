@@ -30,7 +30,7 @@ class Registration extends CI_Controller {
     }
     public function index()
     {
-        //////DebugBreak();    
+          
         $msg = $this->uri->segment(3);
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();  
@@ -427,7 +427,7 @@ class Registration extends CI_Controller {
     public function NewEnrolment_update()
     {
 
-        // ////DebugBreak();
+        //DebugBreak();
         $this->load->model('Registration_model');
 
         $this->load->library('session');
@@ -488,7 +488,8 @@ class Registration extends CI_Controller {
         }
         $target_path = IMAGE_PATH.$Inst_Id.'/';
         // $target_path = '../uploads2/'.$Inst_Id.'/';
-        if (!file_exists($target_path)){
+        if (!file_exists($target_path))
+        {
 
             mkdir($target_path);
         }
@@ -604,7 +605,7 @@ class Registration extends CI_Controller {
         $check = getimagesize($_FILES["image"]["tmp_name"]);
         $this->upload->initialize($config);
         $base64 = '';
-        if($check !== false) {
+    /*    if($check !== false) {
 
             $file_size = round($_FILES['image']['size']/1024, 2);
             if($file_size<=20 && $file_size>=4)
@@ -649,7 +650,7 @@ class Registration extends CI_Controller {
                 redirect('Registration/NewEnrolment_EditForm/'.$formno);
                 return;
             }
-        }
+        }  */
 
 
         //////DebugBreak();
@@ -962,7 +963,7 @@ class Registration extends CI_Controller {
             redirect('Registration/ReAdmission');
             return;
         }
-        else if($Insgender != $user_info[0]['sex'])
+        /*else if($Insgender != $user_info[0]['sex'])
         {
             if($Insgender ==  2)
             {  
@@ -977,7 +978,7 @@ class Registration extends CI_Controller {
             redirect('Registration/ReAdmission');
             return;
 
-        } 
+        }  */
         else
         {
 
@@ -1638,7 +1639,7 @@ class Registration extends CI_Controller {
 
         //$User_info_data = array('Inst_Id'=>$Inst_Id,'RegGrp'=>$RegGrp,'spl_case'=>$Spl_case);
         //$user_info  =  $this->Registration_model->user_info($User_info_data);
-        $this->feeFinalCalculate($User_info_data,$user_info,$Batch_Id);
+       $data_Final = $this->feeFinalCalculate($User_info_data,$user_info,$Batch_Id);
 
         /*if($user['isSpecial']==1 && date('Y-m-d',strtotime($user['isSpecial_Fee']['FeedingDate']))>=date('Y-m-d')  )
         {
@@ -1711,7 +1712,7 @@ class Registration extends CI_Controller {
         $rule_fee   =  $this->Registration_model->getreulefee(); 
         $challanDueDate  = date('d-m-Y',strtotime($rule_fee[0]['End_Date'] )) ;
         }  */
-
+      // DebugBreak();
         $obj    = new NumbertoWord();
         $obj->toWords($result[0]['Amount'],"Only.","");
         // $pdf->Cell( 0.5,0.5,ucwords($obj->words),0,'L');
@@ -1730,7 +1731,7 @@ class Registration extends CI_Controller {
         $yy = 0.05;
         $dyy = 0.1;
         $corcnt = 0;
-        $lastdate = DOUBLE_LAST_DATE;
+        $lastdate = $data_Final['data']['lastdate'];
         $lastdate = date("d-m-Y", strtotime($lastdate));
         for ($j=1;$j<=4;$j++) 
         {
@@ -1924,7 +1925,7 @@ class Registration extends CI_Controller {
     public function feeFinalCalculate($User_info_data,$user_info,$isBatchExists)
 
     {
-        // DebugBreak();
+       // DebugBreak();
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -1993,7 +1994,7 @@ class Registration extends CI_Controller {
             $q1 = $user_info['fee'];
             $total_std = 0;
             $total_record = 0;
-            $rule_fee[0]['readmfine'] = 0;
+            //$rule_fee[0]['readmfine'] = 0;
             $AllUser = array();
             foreach($q1 as $k=>$v) 
             {
@@ -2087,7 +2088,9 @@ class Registration extends CI_Controller {
                 $data['data']["Total_LateRegistrationFee"] =     $TotalLatefee;
                 $data['data']["Amount"] = $tot_fee;
                 $data['data']['batch_info'][0]['Batch_ID'] = $isBatchExists;
+                
                 $data['rulefee']=$rule_fee;
+                $data['lastdate'] = $lastdate;
                 $data['Alluser']=$AllUser;
                 //$data['rule_fee'][];
 
@@ -2138,7 +2141,7 @@ class Registration extends CI_Controller {
         }
 
 
-
+       // DebugBreak();
         return $information = array('data'=>$data,'AllUser'=>$AllUser);
 
     }

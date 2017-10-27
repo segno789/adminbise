@@ -61,12 +61,9 @@ class Dashboard_model extends CI_Model {
     public function Profile_info($inst_cd)
     {
 
-        // //DebugBreak();
+        //DebugBreak();
         //$query = $this->db->get_where('matric_new..tblbiodata', array('sch_cd' => $inst_cd,'class' => 10, 'iyear' => 2016, 'regpvt'=>1,));
         $query = $this->db->query("Registration..Profile_info $inst_cd");
-
-
-
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {

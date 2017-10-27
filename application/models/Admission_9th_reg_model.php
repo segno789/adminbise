@@ -391,7 +391,7 @@ class Admission_9th_reg_model extends CI_Model
     }
     public function checknextrno($name,$dob,$fnic)
     {
-          //DebugBreak();
+          //();
         $query = $this->db->query("admission_online..NextAppearanceSSC 0,9,0,0,'$name','$dob','$fnic','',3");
         
         $rowcount = $query->num_rows();
@@ -428,7 +428,7 @@ class Admission_9th_reg_model extends CI_Model
            return  false;
         }
         $this->db->update_batch('Registration..MA_P1_Reg_Adm2016',$data,'formNo');
-        // DebugBreak();
+        // ();
            if($isformwise == 9)
         {
         $this->db->select('Sum(AdmFee) as sum_AdmFee,sum(AdmProcessFee) as sum_procFee,sum(AdmFine) as sum_admfine,sum(AdmTotalFee) as sum_TotalFee',False);
@@ -472,7 +472,7 @@ class Admission_9th_reg_model extends CI_Model
         }
         //$query = $this->db->get("Registration..MA_P1_Reg_Adm2016");    
         $rowcount = $query->num_rows();
-        //DebugBreak();
+        //();
         if($rowcount > 0)
         {
             return $query->result_array();
@@ -485,7 +485,7 @@ class Admission_9th_reg_model extends CI_Model
     }
     public function Update_AdmissionFeePvt($data)
     {
-             //DebugBreak();
+             //();
             $data['IsAdmission']=1;
             $data['cdate']= date('Y-m-d H:i:s');
             $this->db->where('formNo',$data['formNo']);

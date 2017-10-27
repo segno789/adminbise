@@ -749,14 +749,14 @@ var isReadm = "<?php  echo @$isReAdm; ?>";
 
 if(isReadm == 0)
 {
-    $( "#dob" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, maxDate:new Date(2005, 7, 1),minDate:new Date(1983, 0, 1)}).val();   
+    $( "#dob" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true,maxDate: '0', minDate:new Date(1983, 0, 1)}).val();   //maxDate:new Date(2005, 7, 1),
 }
 
     
     
      //var date2 = $('.pickupDate').datepicker('getDate', '+1d'); 
     $( "#txt_FeedingDate" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, maxDate:"+10D",minDate:-0}).val();
-    $( "#corr_dob" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, maxDate:new Date(2005, 7, 1),minDate:new Date(1983, 0, 1)}).val();
+    $( "#corr_dob" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true,maxDate: '0', minDate:new Date(1983, 0, 1)}).val(); //maxDate:new Date(2005, 7, 1),
     $( "#batch_real_PaidDate" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, startDate:new Date(),maxDate:new Date(),minDate: -60 }).val();
     var myOptions = {
         val1 : 'text1',
