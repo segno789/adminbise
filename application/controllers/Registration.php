@@ -605,7 +605,7 @@ class Registration extends CI_Controller {
         $check = getimagesize($_FILES["image"]["tmp_name"]);
         $this->upload->initialize($config);
         $base64 = '';
-    /*    if($check !== false) {
+        if($check !== false) {
 
             $file_size = round($_FILES['image']['size']/1024, 2);
             if($file_size<=20 && $file_size>=4)
@@ -650,7 +650,7 @@ class Registration extends CI_Controller {
                 redirect('Registration/NewEnrolment_EditForm/'.$formno);
                 return;
             }
-        }  */
+        }  
 
 
         //////DebugBreak();
