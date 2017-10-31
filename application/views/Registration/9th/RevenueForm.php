@@ -148,22 +148,22 @@
         if($rulefee[0]['isfine'] == 1)
         {
            $vals->regFee    = $rulefee[0]['Reg_Fee'];
-           if($vals->IsReAdm == 1)
+          /* if($vals->IsReAdm == 1)
            {
                $vals->RegFineFee = 0;
            }
            else
-           {
+           {   */
              $vals->RegFineFee = $rulefee[0]['Fine']; 
                $data['batch_info'][0]["Total_LateRegistrationFee"] = $data['batch_info'][0]["Total_LateRegistrationFee"] +$vals->RegFineFee; 
-           }
+           //}
          
            $vals->RegProcessFee = $rulefee[0]['Reg_Processing_Fee'];
            $vals->RegTotalFee   = $vals->regFee+$vals->RegFineFee+$vals->RegProcessFee;
         }
         else 
         {
-            if($vals->RegFineFee == '' || $vals->IsReAdm == 1)
+            if($vals->RegFineFee == '' ) //|| $vals->IsReAdm == 1
             {
                 $vals->RegFineFee = 0;
             }

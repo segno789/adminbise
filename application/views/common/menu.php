@@ -10,7 +10,7 @@
                         Dashboard
                     </a>
                 </li>
-                
+
                 <?php 
                 if($appconfig['isreg'] == 1 ){?>
                     <li>
@@ -19,12 +19,12 @@
                             9th Registration
                         </a>
                     </li>
-                    <!--   <li>
-                    <a href="<?php //echo base_url(); ?>NinthCorrection/EditForms" class="<?php //if($isselected == '7') {echo 'selected';}?>" >
+                      <li>
+                    <a href="<?php echo base_url(); ?>NinthCorrection/EditForms" class="<?php if($isselected == '7') {echo 'selected';}?>" >
                     <div class="fs1" aria-hidden="true" data-icon="&#xe0c4;"></div>
                     9th Correction
                     </a>
-                    </li>-->
+                    </li>
                     <?php } 
                 if($appconfig['isadmP1'] == 1){?>
                     <li>
@@ -44,7 +44,7 @@
                         </a>
                     </li>
                     <?php }
-              //  if( $appconfig['isslipP1'] == 1 || $appconfig['isslipP2'] == 1 || $appconfig['isslipP2S'] == 1){?>
+                if( $appconfig['isslipP1'] == 1 || $appconfig['isslipP2'] == 1 || $appconfig['isslipP2S'] == 1){?>
 
                     <li>
                         <a style="width: 115px;" href="<?php echo base_url(); ?>RollNoSlip" class="<?php if($isselected == '4') {echo 'selected';}?>" >
@@ -52,7 +52,7 @@
                             Roll No. Slips
                         </a>
                     </li>
-                    <?php // } 
+                    <?php } 
                 if( $appconfig['isresultP2'] == 1){?>
 
                     <li>
@@ -62,7 +62,10 @@
                         </a>
                     </li>
                     <?php } ?>
-               </ul>
+
+
+
+            </ul>
             <div class="clearfix">
             </div>
         </div>
@@ -89,11 +92,6 @@
                             Batch Restore
                         </a>
                     </li>
-                     <li>
-                        <a href="<?php echo base_url(); ?>BiseCorrection/Registration">
-                            Registration
-                        </a>
-                    </li>
                     <!--   <li>
                     <a href="<?php echo base_url(); ?>BiseCorrection/NewEnrolment">
                     9th New Enrolment
@@ -115,7 +113,7 @@
                     </a>
                     </li>-->
                     <li>
-                        <a style="cursor: pointer;" onclick="return logout();">Logout</a>
+                        <a onclick="return logout();">Logout</a>
                     </li>
                     <!--  <li>
                     <a href="<?php echo base_url(); ?>Registration/ProofReading">
@@ -130,14 +128,8 @@
                 <ul >
                     <li><a href="<?php echo base_url(); ?>Dashboard"  data-original-title="" class="<?php if($isselected == '1') {echo 'heading';}?>">Dashboard</a></li>
                     <li>
-                        <a href="<?php echo base_url(); ?>Dashboard/Profile">
-                            Profile
-                        </a>
+                        <a onclick="return logout();">Logout</a>
                     </li>
-                    <li>
-                        <a style="cursor: pointer;" onclick="return logout();">Logout</a>
-                    </li>
-                     
                 </ul>
                 <?php
             }
@@ -146,7 +138,11 @@
                 ?>
                 <ul >
                     <li><a href="<?php echo base_url(); ?>Registration"   data-original-title="" class="<?php if($isselected == '2') {echo 'heading';}?>">Registration</a></li>
-                     <?php if( ISREADMISSION == 1) {?>
+                    
+                     
+                    <?php  if( $isfeedingallow == 1) {?>
+                        
+                         <?php if( ISREADMISSION == 1) {?>
                            <li >
                         <a href="<?php echo base_url(); ?>Registration/ReAdmission"> 
                         Re-Admissions  <img src="<?php echo base_url(); ?>assets/img/new.gif" border="0" width="19" height="7" alt="new.gif">
@@ -154,8 +150,6 @@
                        
                         </li>
                         <?php } ?>
-                     
-                    <?php  if( $isfeedingallow == 1) {?>
                         <li>
                             <a href="<?php echo base_url(); ?>Registration/NewEnrolment">
                                 New Enrolement
@@ -194,7 +188,11 @@
                             Proof Form Printing
                         </a>
                     </li>
-                   
+                    <li>
+                        <a href="<?php echo base_url(); ?>Registration/Profile">
+                            Profile
+                        </a>
+                    </li>
                     <li>
                         <a style="cursor: pointer" onclick="return logout();">Logout</a>
                     </li>
@@ -243,7 +241,7 @@
                         </a>
                     </li>
                     <li>
-                        <a style="cursor: pointer;" onclick="return logout();">Logout</a>
+                        <a onclick="return logout();">Logout</a>
                     </li>
                 </ul>
                 <?php
@@ -280,7 +278,7 @@
                         </a>
                     </li>
                     <li>
-                        <a style="cursor: pointer;" onclick="return logout();">Logout</a>
+                        <a onclick="return logout();">Logout</a>
                     </li>
 
                 </ul>
@@ -306,22 +304,23 @@
                             </a>
                         </li>
 
-                        <?php } //if($appconfig['isslipP2S'] == 1) {?>
+                        <?php } if($appconfig['isslipP2S'] == 1) {?>
 
                         <li>
                             <a href="<?php echo base_url(); ?>RollNoSlip/TenthStd">
                                 10th Supply Roll No. Slip
                             </a>
                         </li>
-                        <?php //}?>
+                        <?php }?>
                     <li>
-                        <a style="cursor: pointer;" onclick="return logout();">Logout</a>
+                        <a onclick="return logout();">Logout</a>
                     </li>
 
 
                 </ul>
                 <?php
             }
+
             if($isselected == '7'){
                 ?>
                 <ul >
@@ -334,12 +333,13 @@
                         </a>
                     </li>
                     <li>
-                        <a style="cursor: pointer;" onclick="return logout();">Logout</a>
+                        <a onclick="return logout();">Logout</a>
                     </li>
                 </ul>
                 <?php
             }
             ?>
+
             <?php
             // Matric Admission
             if($isselected == '9') { 
@@ -385,6 +385,9 @@
                     </li>
                 </ul>
                 <?php }?>
+
+
+
             <?php
             if($isselected == '5'){
                 ?>
@@ -398,22 +401,21 @@
                             </a>
                         </li>
                         <?php }
-                        //DebugBreak() ;
+                      //  DebugBreak() ;
                     if($appconfig['isresultP1'] == 1 ) {?>
                         <li>
                             <a href="<?php echo base_url(); ?>Result/dashboard9th">
                                 9th Result Cards
                             </a>
                         </li>
-                        
                         <?php } ?>
-                         <li>
-                        <a style="cursor: pointer;" onclick="return logout();">Logout</a>
-                    </li>
                 </ul >
                 <?php
             } 
             ?> 
+
+
+
             <div class="btn-group pull-right">
                 <button class="btn btn-primary">
                     Main Menu
