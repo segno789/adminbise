@@ -1,5 +1,5 @@
 
-<form enctype="multipart/form-data" id="ReturnStatus" name="ReturnStatus" method="post" action="<?php echo base_url() ?>Admission/Pre_Matric_data" >
+<form enctype="multipart/form-data" id="ReturnStatus" name="ReturnStatus" method="post" action="<?php echo base_url() ?>index.php/Admission/Pre_Matric_data" >
 
     <div class="form-group">    
         <div class="row">
@@ -289,17 +289,17 @@ else{
         var msg = "Are You Sure You want to Cancel this Form ?"
         alertify.confirm(msg, function (e) {
             if (e) {
-                window.location.href ='<?php echo base_url(); ?>Admission/index';
+                window.location.href ='<?php echo base_url(); ?>index.php/Admission/index';
             } else {
             }
         });
     }
 
     $("#btnother").click(function(){
-        window.location.href ='<?php echo base_url(); ?>Admission/matric_otherboard' ;
+        window.location.href ='<?php echo base_url(); ?>index.php/Admission/matric_otherboard' ;
     });
     $("#btnfresh").click(function(){
-        window.location.href ='<?php echo base_url(); ?>Admission/matric_fresh' ;
+        window.location.href ='<?php echo base_url(); ?>index.php/Admission/matric_fresh' ;
     });
 
     function checkrno()

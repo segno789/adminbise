@@ -229,12 +229,11 @@
         $("#proceed").click(function(){
             var isreg =  $('input[name=candidate]:checked', '#options').val();
             if(isreg==1){
-                window.location.href='<?php  echo base_url(); ?>Admission/matric_default';
+                window.location.href='<?php  echo base_url(); ?>index.php/Admission/matric_default';
             }
             else{
-                window.location.href='<?php  echo base_url(); ?>login'  
+                window.location.href='<?php  echo base_url(); ?>index.php/login'  
             }
-            console.log(isreg);
         })
 
         $("#proceed9th").click(function(){
@@ -276,7 +275,7 @@
                 downloadform();    
             }
         });
-        
+
         $("#btndwnForm9th").click(function(){
             var formno = $("#formid").val();
             var dob = $("#dob").val();
@@ -380,9 +379,8 @@
                 $("#pvtinfo_teh").append('<option value="17">DASKA</option>');
                 $("#pvtinfo_teh").append('<option value="18">SAMBRIAL</option>');
             }
-
-
         });
+        
         $("#pvtinfo_teh").change(function(){
 
             // alert("hello");

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/alertify.core.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.css">
-    
+
     <style>  
         /* progress bar */
         #progress-wrp {
@@ -21,7 +21,7 @@
             text-align: left;
             background: #fff;
             width:140px;
-            height: 25px;
+            height: 24px;
             box-shadow: inset 1px 3px 6px rgba(0, 0, 0, 0.12);
         }
         #progress-wrp .progress-bar{
@@ -127,6 +127,7 @@
 
 
 </head>
+<!--<body ondragstart="return false;" ondrop="return false;" oncontextmenu="return false" onselectstart="return false">-->
 <body>
 <div class="mPageloader">
     <div class="CSSspinner2 large">
@@ -163,7 +164,8 @@
             $sess =  'Annual';
         else if(Session == '2')
             $sess = 'Supplementary Examination';
-            echo  '<p style="text-align:center;">Online Admission for SSC '.$sess.''.',  ' .Year.' </p>';   
+            //echo  '<p style="text-align:center;">Online Admission for SSC '.$sess.''.',  ' .Year.' </p>';   
+            echo  '<p style="text-align:center;">Online Admission for SSC '.$sess.''.', 2018  </p>';   
         ?>
     </h2>
 </div>

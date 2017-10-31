@@ -245,8 +245,18 @@ class Admission extends CI_Controller
         {
         $pdf->Image(GET_PRIVATE_IMAGE_PATH_10.'/10th/'.$data['picpath'],6.5, 1.30+$Y, 0.95, 1.0, "JPG");
         } */
-        $pdf->Image(DIRPATH.$data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");
-        $pdf->Image("assets/img/logo2.png",0.4, 0.2, 0.65, 0.65, "PNG");
+
+        //DebugBreak();
+
+        if($data['IsNewPic'] == 1){
+            $pdf->Image(GET_PRIVATE_IMAGE_PATH.$data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");    
+        }
+
+        else if($data['IsNewPic'] == 0){
+            $pdf->Image(DIRPATH.$data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");        
+        }
+
+        //$pdf->Image("assets/img/logo2.png",0.4, 0.2, 0.65, 0.65, "PNG");
         $pdf->SetFont('Arial','',8);
 
         //------------- Personal Infor Box
@@ -1190,11 +1200,7 @@ class Admission extends CI_Controller
 
 
 
-
-        //$pdf->Image(PRIVATE_IMAGE_PATH.'100002.jpg',6.5, 10.68+$Y, 0.95, 1.0, "JPG");
-        $pdf->Image(DIRPATH.$data['PicPath'],6.5, 10.68+$Y, 0.95, 1.0, "JPG");
         $pdf->SetFont('Arial','',8);
-
         $pdf->SetXY(0.5,10.70+$Y);
         $pdf->SetTextColor(0,0,0);
         $pdf->SetFont('Arial','',$FontSize);
@@ -1282,7 +1288,7 @@ class Admission extends CI_Controller
     function feecalculate($data)
     {
         //DebugBreak();
-        
+
         $isper = 0;
         if( $this->practicalsubjects($data['sub5'])|| $this->practicalsubjects($data['sub6'])|| $this->practicalsubjects($data['sub7']))
         {
@@ -1433,7 +1439,6 @@ class Admission extends CI_Controller
         $val = $this->Admission_model->isActive();
         return $val;
     }
-
     function GetDueDate()
     {
         $dueDate='';
@@ -1813,11 +1818,15 @@ class Admission extends CI_Controller
             @$cattype   = $_POST["CatType"]; 
             $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board);
 
+            if($board != 1 && ($oldClass == 9 || $oldClass == 10)){
+                redirect('admission/matric_otherboard', $data);
+                return;
+            }
+
             $data = $this->Admission_model->Pre_Matric_data($data);
 
             if (!$data) 
             {
-
                 $errNo   = $this->db->error();
                 $error_msg = '';
                 if($errNo['code']=="00000"){
@@ -2019,7 +2028,8 @@ class Admission extends CI_Controller
     }
     public function NewEnrolment_insert()
     {
-        // DebugBreak();
+        //DebugBreak();
+
         $this->load->model('Admission_model');
         $this->load->library('session');
         $isActive = $this->isActiveAdm();
@@ -2061,7 +2071,7 @@ class Admission extends CI_Controller
 
             if (!$nxtrnosessyear) 
             {
-               
+
                 $errNo   = $this->db->error();
 
                 $data['msg'] = "Error(".$errNo['code'].") ";
@@ -2080,10 +2090,7 @@ class Admission extends CI_Controller
                 redirect('Admission/matric_fresh/');
                 return;
             }
-
-
         }
-
 
         $allinputdata = array('cand_name'=>@$_POST['cand_name'],
             'father_name'=>@$_POST['father_name'],
@@ -2553,7 +2560,7 @@ class Admission extends CI_Controller
             'regFee'=>$regfee,
             'certFee'=>$cerfee,
             'AdmFine'=>$fine,
-
+            'picname'=>@$_POST['picname'],
             'picpath'=>@$_POST['pic'],
             'isotherbrd'=>@$_POST['isotherbrd'],
             'isFresh'=>@$_POST['isFresh'],
@@ -2563,8 +2570,6 @@ class Admission extends CI_Controller
 
         );
 
-        //echo '<pre>'; print_r($_POST);die;
-
         if(@$_POST['isotherbrd']>0)
         {
             if(@$_POST['preResult'] == '' )
@@ -2572,7 +2577,7 @@ class Admission extends CI_Controller
                 $allinputdata['excep'] = 'Please Enter Your Previous Result';
                 $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
                 redirect('Admission/matric_otherboard');
-                return; //"NewEnrolment_EditForm_matric"
+                return;
 
             }
             if(@$_POST['oldrno'] == '' )
@@ -2580,21 +2585,22 @@ class Admission extends CI_Controller
                 $allinputdata['excep'] = 'Please Enter Your Old Rno.';
                 $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
                 redirect('Admission/matric_otherboard');
-                return; //"NewEnrolment_EditForm_matric"
+                return;
 
             }
-            if(!isset($AdmFeeCatWise) || $AdmFeeCatWise == '' || $AdmFeeCatWise)
+            if(!isset($AdmFeeCatWise) || $AdmFeeCatWise == '' || $AdmFeeCatWise ==0)
             {
                 $allinputdata['excep'] = 'Auto Fee Calculation has some error occured.Please try again later.';
                 $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
                 redirect('Admission/matric_otherboard');
-                return; //"NewEnrolment_EditForm_matric"
+                return;
             }
         }
-        $target_path = PRIVATE_IMAGE_PATH;
+
+        /*$target_path = PRIVATE_IMAGE_PATH;
         if (!file_exists($target_path)){
 
-            mkdir($target_path);
+        mkdir($target_path);
         }
 
         // DebugBreak();
@@ -2619,99 +2625,92 @@ class Admission extends CI_Controller
         $this->upload->initialize($config);
         if(@$_POST['isotherbrd']>0 || @$_POST['isFresh']>0)
         {
-            $check = getimagesize(@$_FILES["pic"]["tmp_name"]);
-            if($check !== false) {
+        $check = getimagesize(@$_FILES["pic"]["tmp_name"]);
+        if($check !== false) {
 
-                $file_size = round($_FILES['pic']['size']/1024, 2);
-                if($file_size<=20 && $file_size>=4)
-                {
-                    if ( !$this->upload->do_upload('pic',true))
-                    {
-                        if($this->upload->error_msg[0] != "")
-                        {
-                            $error['excep']= $this->upload->error_msg[0];
-                            $data['excep'] = $this->upload->error_msg[0];
-                            $this->session->set_flashdata('NewEnrolment_error',$data);
-                            //  echo '<pre>'; print_r($allinputdata['excep']);exit();
-                            if(@$_POST['isotherbrd']==1){
-                                redirect('Admission/matric_otherboard');
-                                return;
-                            }
-                            else if(@$_POST['isFresh']==1){
-                                redirect('Admission/matric_fresh');
-                                return;
-                            }
-                            else
-                            {
+        $file_size = round($_FILES['pic']['size']/1024, 2);
+        if($file_size<=20 && $file_size>=4)
+        {
+        if ( !$this->upload->do_upload('pic',true))
+        {
+        if($this->upload->error_msg[0] != "")
+        {
+        $error['excep']= $this->upload->error_msg[0];
+        $data['excep'] = $this->upload->error_msg[0];
+        $this->session->set_flashdata('NewEnrolment_error',$data);
 
-                                redirect('Admission/matric_fresh');
-                                return;
-                            }
-
-
-
-                        }
-
-
-                    }
-                }
-                else
-                {
-                    $data['excep'] = 'The file you are attempting to upload size is between 4 to 20 Kb.';
-                    $this->session->set_flashdata('NewEnrolment_error',$data);
-                    if(@$_POST['isotherbrd']==1){
-                        redirect('Admission/matric_otherboard/');
-                        return;
-                    }
-                    else
-                    {
-                        redirect('Admission/matric_fresh');
-                        return;
-                    }
-
-                }
-            }
-            else
-            {
-                if($check === false)
-                {
-                    $data['excep'] = 'Please Upload Your Picture';
-                    $this->session->set_flashdata('NewEnrolment_error',$data);
-                    if(@$_POST['isotherbrd']==1){
-                        redirect('Admission/matric_otherboard/');
-                        return;
-                    }
-                    else if(@$_POST['isFresh']==1)
-                    {
-                        redirect('Admission/matric_fresh/');
-                        return;
-                    }
-                    else 
-                    {
-                        redirect('Admission/Pre_Matric_data');
-                        return;
-                    }
-                    return;
-                }
-            }  
+        if(@$_POST['isotherbrd']==1){
+        redirect('Admission/matric_otherboard');
+        return;
+        }
+        else if(@$_POST['isFresh']==1){
+        redirect('Admission/matric_fresh');
+        return;
+        }
+        else
+        {
+        redirect('Admission/matric_fresh');
+        return;
+        }
+        }
+        }
+        }
+        else
+        {
+        $data['excep'] = 'The file you are attempting to upload size is between 4 to 20 Kb.';
+        $this->session->set_flashdata('NewEnrolment_error',$data);
+        if(@$_POST['isotherbrd']==1){
+        redirect('Admission/matric_otherboard/');
+        return;
+        }
+        else
+        {
+        redirect('Admission/matric_fresh');
+        return;
+        }
+        }
+        }
+        else
+        {
+        if($check === false)
+        {
+        $data['excep'] = 'Please Upload Your Picture';
+        $this->session->set_flashdata('NewEnrolment_error',$data);
+        if(@$_POST['isotherbrd']==1){
+        redirect('Admission/matric_otherboard/');
+        return;
+        }
+        else if(@$_POST['isFresh']==1)
+        {
+        redirect('Admission/matric_fresh/');
+        return;
+        }
+        else 
+        {
+        redirect('Admission/Pre_Matric_data');
+        return;
+        }
+        return;
+        }
+        }  
         }
         else
         {
 
-            /*$base_path = GET_PRIVATE_IMAGE_PATH_COPY.@$_POST['pic'];
-            $copyimg = $target_path.$formno.'.jpg';
+        /*$base_path = GET_PRIVATE_IMAGE_PATH_COPY.@$_POST['pic'];
+        $copyimg = $target_path.$formno.'.jpg';
 
-            $this->base64_to_jpeg($_POST['pic'],$copyimg)   ;    */
+        $this->base64_to_jpeg($_POST['pic'],$copyimg)   ;    */
 
 
-            /*if (!(copy($base_path, $copyimg))) 
-            {
-            $data['excep'] = 'The picture is not upload.';
-            $this->session->set_flashdata('NewEnrolment_error',$data);
-            //  echo '<pre>'; print_r($allinputdata['excep']);exit();
-            redirect('Admission/Pre_Matric_data/');
-            }          */
-        }
+        /*if (!(copy($base_path, $copyimg))) 
+        {
+        $data['excep'] = 'The picture is not upload.';
+        $this->session->set_flashdata('NewEnrolment_error',$data);
+        //  echo '<pre>'; print_r($allinputdata['excep']);exit();
+        redirect('Admission/Pre_Matric_data/');
+        }          
+        }*/
 
         $this->frmvalidation('Pre_Matric_data',$data,0);       
 
@@ -2720,12 +2719,7 @@ class Admission extends CI_Controller
 
         if (!$logedIn) 
         {
-            // if query returns null
             $errNo   = $this->db->error();
-
-            // $data['msg'] = $e;
-            //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-            //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
             $data['msg'] = "Error(".$errNo['code'].") ";
             $data['errno'] = "509";
             $this->load->view('common/commonheader.php');
@@ -2734,23 +2728,47 @@ class Admission extends CI_Controller
             return;
         }
 
-        //  echo '<pre>'; print_r(is_array ($logedIn));die;
-
         if(is_array ($logedIn))
         {
+            /*
             $allinputdata = "";
-            $allinputdata['excep'] = 'success';
+            $allinputdata['formno'] = 'success';
             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
             $msg = $formno;                                           
             foreach($logedIn[0] as $key=>$val)
             {
+            if($key == 'formno')
+            {
+            $formno = $val;
+            break;
+            }
+            }
+            */
+
+            //DebugBreak();
+
+            $info =  '';
+            foreach($logedIn[0] as $key=>$val)
+            {
                 if($key == 'formno')
                 {
-                    $formno = $val;
-                    break;
+                    if($logedIn[0]['tempath'] != '')
+                    {
+                        $oldpath =  GET_PRIVATE_IMAGE_PATH.$logedIn[0]['tempath'];
+                        $newpath =  GET_PRIVATE_IMAGE_PATH.$val.'.jpg';
+                        $err = rename($oldpath,$newpath); 
+                    }
+                    $info['error'] = 1;
+                    $info['formno'] = $val;
+                }
+                else if($key == 'error')
+                {
+                    $info['error'] = $val;
+                    $info['formno'] = '';
                 }
             }
-            redirect('Admission/'.'formdownloaded/'.$formno.'/'.$dob);
+
+            redirect('Admission/'.'formdownloaded/'.$info['formno'].'/'.$dob);
         }
         else
         {     
@@ -2762,9 +2780,11 @@ class Admission extends CI_Controller
             return;
             echo 'Data NOT Saved Successfully !';
         } 
+
         $this->load->view('common/footer.php');
     }
-    public function formdownloaded(){
+    public function formdownloaded()
+    {
 
         //DebugBreak();
 
@@ -3161,7 +3181,8 @@ class Admission extends CI_Controller
         }
 
     }
-    function base64_to_jpeg($base64_string, $output_file) {
+    function base64_to_jpeg($base64_string, $output_file) 
+    {
         $ifp = fopen($output_file, "wb"); 
 
         $data = explode(',', $base64_string);
@@ -3171,7 +3192,6 @@ class Admission extends CI_Controller
 
         return $output_file; 
     }
-
     public function  comparePic()
     {
         //  DebugBreak();
@@ -3191,7 +3211,6 @@ class Admission extends CI_Controller
 
 
     }
-
     function generatepath($rno,$class,$year,$sess)
     {
         $basepath = 'F:\xampp\htdocs\adminbise\OldPics\\';
@@ -3272,6 +3291,54 @@ class Admission extends CI_Controller
         $foldername =   $clsvr.  $folderno .$picyear;
         $basepath =  $basepath.'\\'.$pic.'\\'. $foldername.'\\';
         return  $basepath.$rno.".jpg";
+    }
+    public function uploadpic() 
+    {
+        //DebugBreak();
+
+        ############ Configuration ##############
+        $config["generate_image_file"]            = true;
+        $config["generate_thumbnails"]            = false;
+        $config["image_max_size"]                 = 150; //Maximum image size (height and width)
+        $config["thumbnail_size"]                  = 200; //Thumbnails will be cropped to 200x200 pixels
+        $config["image_prefix"]                 = "temp_"; //Normal thumb Prefix
+        $config["thumbnail_prefix"]                = "thumb_"; //Normal thumb Prefix
+        $config["destination_folder"]            = GET_PRIVATE_IMAGE_PATH; //upload directory ends with / (slash)
+        $config["thumbnail_destination_folder"]    = ''; //upload directory ends with / (slash)
+        $config["upload_url"]                     = GET_PRIVATE_IMAGE_PATH;//base_url()."/uploads/2017/private/10th/";
+        $config["quality"]                         = 90; //jpeg quality
+        $config["random_file_name"]                = true; //randomize each file name
+
+        if(!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) 
+        {
+            exit;  //try detect AJAX request, simply exist if no Ajax
+        }
+        //specify uploaded file variable
+        $config["file_data"] = $_FILES["__files"]; 
+
+        $this->load->library('ImageResize');
+
+        //create class instance 
+        $im = new ImageResize(); 
+
+        try
+        {
+            $responses = $im->resize($config); //initiate image resize
+            //output images
+            foreach($responses["images"] as $response){
+
+                $config["upload_url"] = $config["upload_url"].$response;
+                $type = pathinfo($config["upload_url"], PATHINFO_EXTENSION);
+                $config["upload_url"] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($config["upload_url"]));
+                echo '<input type="hidden" class="hidden" id="picname" name="picname" value="'.$response.'">
+                <img id="previewImg" style="width:130px; height: 130px;" class="img-responsive" src="'.$config["upload_url"].'" alt="CandidateImage">';
+            }
+        }
+        catch(Exception $e){
+            echo '<div class="error">';
+            echo $e->getMessage();
+            echo '</div>';
+        }
     }
 }
 ?>

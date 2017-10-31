@@ -374,7 +374,7 @@
                 jQuery.ajax({
                     ////
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "Admission/getzone/",
+                    url: "<?php echo base_url(); ?>" + "index.php/Admission/getzone/",
                     dataType: 'json',
                     data: {'tehCode': tehId,'gend':gend},
                     beforeSend: function() {  $('.mPageloader').show(); },
@@ -420,7 +420,7 @@
                 jQuery.ajax({
 
                     type: "POST",
-                    url: "<?php echo base_url(); ?>Admission/getcenter/",
+                    url: "<?php echo base_url(); ?>index.php/Admission/getcenter/",
                     dataType: 'json',
                     data: {'pvtZone': tehId,'gend':gend},
                     beforeSend: function() {  $('.mPageloader').show(); },
@@ -1546,7 +1546,7 @@
         alertify.confirm(msg, function (e) {
 
             if (e) {
-                window.parent.location=<?php base_url() ?>'Admission';
+                window.parent.location=<?php base_url() ?>'index.php/Admission';
             }
         });
     }

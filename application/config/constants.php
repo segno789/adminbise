@@ -38,7 +38,7 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 define('PRIVATE_IMAGE_PATH9TH', 'uploads/2016/9th/private/');
 
-define('PRIVATE_IMAGE_PATH', 'uploads/2016/10th/private/');
+define('PRIVATE_IMAGE_PATH', 'uploads/2017/10th/private/');
 define('RE_ADMISSION_TBL', 'matric_new..vw9th17');
 define('REGULAR_IMAGE_PATH', 'uploads/2016/10th/regular/');
 define('Session','1');  // 1 for Annual and 2 for Supply
@@ -46,7 +46,7 @@ define('Year','2017');
 define('YEAR','2017');  
 define('ISREADMISSION','0');  
 define('lastdate','23-12-2016');
-define('GET_PRIVATE_IMAGE_PATH', '../');
+define('GET_PRIVATE_IMAGE_PATH', 'D:/Xampp/htdocs/adminbise/uploads/2017/private/10th/');
 define('GET_IMAGE_PATH_9th_Admission_Annual', '../uploads/2016/regular/');
 define('GET_IMAGE_PATH_9th_Admission_Annual1', 'uploads/2016/regular/');
 define('GET_PRIVATE_IMAGE_PATH_COPY','');

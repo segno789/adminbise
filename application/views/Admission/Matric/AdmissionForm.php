@@ -1,9 +1,9 @@
 
-<form class="form-horizontal no-margin" action="<?php  echo base_url(); ?>Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
+<form class="form-horizontal no-margin" action="<?php  echo base_url(); ?>index.php/Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
 
     <?php 
-    $type = pathinfo(DIRPATH.@$data[0]['picpath'], PATHINFO_EXTENSION); 
-    @$image_path_selected = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents(DIRPATH.@$data[0]['picpath']));
+    $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION); 
+    @$image_path_selected = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents(@$data[0]['picpath']));
     ?>
 
     <div class="form-group">
@@ -3347,7 +3347,7 @@
         } 
     }
     function  check_NewEnrol_validation_(){
-        debugger;
+
         var name =  $('#cand_name').val();
         var dist_cd= $('#dist option:selected').val();
         var teh_cd= $('#teh').val();
@@ -3681,7 +3681,7 @@
         alertify.confirm(msg, function (e) {
             if (e) {
                 // user clicked "ok"
-                window.location.href ='<?php echo base_url(); ?>Admission/';
+                window.location.href ='<?php echo base_url(); ?>index.php/Admission/';
             } else {
                 // user clicked "cancel"
             }
