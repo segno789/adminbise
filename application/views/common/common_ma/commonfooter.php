@@ -27,7 +27,7 @@
                     alertify.confirm(msg, function (e) {
                         if (e) {
                             // user clicked "ok"
-                            window.location.href ='<?php echo base_url(); ?>Admission/';
+                            window.location.href ='<?php echo base_url(); ?>index.php/Admission/';
                         } else {
                             // user clicked "cancel"
                         }

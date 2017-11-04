@@ -960,6 +960,11 @@
     $(window).load(function()
         {
             $.fancybox("#instruction");
+
+            $('#address').each(function(){
+                $(this).val($(this).val().trim());
+            });
+
     });
     $(document).ready(function(){
 

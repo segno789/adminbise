@@ -503,7 +503,7 @@ class Admission_model extends CI_Model
         $data['cdate']= date('Y-m-d H:i:s');
         $this->db->where('formNo',$data['formNo']);
         $this->db->update(INSERT_TBL,$data);
-        $this->db->select('regFee,AdmFee,AdmProcessFee,AdmFine,AdmTotalFee');
+        $this->db->select('regFee,AdmFee,AdmProcessFee,AdmFine,AdmTotalFee,certFee');
         $query = $this->db->get_where(INSERT_TBL, array('formNo'=>$data['formNo'])); 
         if (!$query) 
         {

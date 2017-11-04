@@ -1,5 +1,5 @@
 
-<form class="form-horizontal no-margin" action="<?php  echo base_url(); ?>index.php/Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
+<form method="post" enctype="multipart/form-data" name="myform" id="myform">
 
     <?php 
     $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION); 
@@ -952,6 +952,7 @@
             $(this).val($(this).val().trim());
         });
     });
+
     $(document).ready(function(){
 
         var sub1_Pak_options = {
@@ -1229,6 +1230,7 @@
         var sub6st2 = "<?php echo @$data[0]['sub6st2']; ?>";
         var sub7st2 ="<?php echo @$data[0]['sub7st2']; ?>";
         var sub8st2 ="<?php  echo @$data[0]['sub8st2']; ?>";
+        var exam_type = "<?php echo @$data[0]['exam_type']; ?>";
         // 
         var Gender = "<?php echo @$gender; ?>";
         function remove_subjects()
@@ -1373,12 +1375,56 @@
             // $("#sub8").empty();
             //  $("#sub8p2").empty();
         }
+
+
+        function Empty_All_Dropdowns(){
+            $('#sub1').empty();$('#sub1p2').empty();
+            $('#sub2').empty();$('#sub2p2').empty();
+            $('#sub3').empty();$('#sub3p2').empty();
+            $('#sub4').empty();$('#sub4p2').empty();
+            $('#sub5').empty();$('#sub5p2').empty();
+            $('#sub6').empty(); $('#sub6p2').empty();
+            $('#sub7').empty();$('#sub7p2').empty();
+            $('#sub8').empty(); $('#sub8p2').empty();
+        }
+
+        function ClearALLDropDowns() {
+
+            Empty_All_Dropdowns();
+
+            $("#sub1").append('<option value="0">NONE</option>');
+            $("#sub1p2").append('<option value="0">NONE</option>');
+
+            $("#sub2").append('<option value="0">NONE</option>');
+            $("#sub2p2").append('<option value="0">NONE</option>');
+
+            $("#sub3").append('<option value="0">NONE</option>');
+            $("#sub3p2").append('<option value="0">NONE</option>');
+
+            $("#sub4").append('<option value="0">NONE</option>');
+            $("#sub4p2").append('<option value="0">NONE</option>');
+
+            $("#sub5").append('<option value="0">NONE</option>');
+            $("#sub5p2").append('<option value="0">NONE</option>');
+
+            $("#sub6").append('<option value="0">NONE</option>');
+            $("#sub6p2").append('<option value="0">NONE</option>');
+
+            $("#sub7").append('<option value="0">NONE</option>');
+            $("#sub7p2").append('<option value="0">NONE</option>');
+
+            $("#sub8").append('<option value="0">NONE</option>');
+            $("#sub8p2").append('<option value="0">NONE</option>');
+        }
+
         var langascd = ['22','23','36','34','35'];
 
         // sub 1 change event 
         $("#sub1").change(function(){
             var sel_sub =$("#sub1").val();
-            $("#sub1p2").val(sel_sub);
+            if(exam_type != "3"){
+                $("#sub1p2").val(sel_sub);
+            }
         });
         $("#sub1p2").change(function(){
             var sel_sub =$("#sub1p2").val();
@@ -1386,8 +1432,13 @@
         });
         // sub 2 change event 
         $("#sub2").change(function(){
+
+
             var sel_sub =$("#sub2").val();
-            $("#sub2p2").val(sel_sub);
+            if(exam_type != "3"){
+                $("#sub2p2").val(sel_sub);    
+            }
+
         });
         $("#sub2p2").change(function(){
             var sel_sub =$("#sub2p2").val();
@@ -1395,8 +1446,12 @@
         });
         // sub 3 change event 
         $("#sub3").change(function(){
+
             var sel_sub =$("#sub3").val();
-            $("#sub3p2").val(sel_sub);
+
+            if(exam_type != "3"){
+                $("#sub3p2").val(sel_sub);
+            }
         });
         $("#sub3p2").change(function(){
             var sel_sub =$("#sub3p2").val();
@@ -1405,7 +1460,9 @@
         // sub 4 change event 
         $("#sub4").change(function(){
             var sel_sub =$("#sub4").val();
-            $("#sub4p2").val(sel_sub);
+            if(exam_type != "3"){
+                $("#sub4p2").val(sel_sub);
+            }
         });
         $("#sub4p2").change(function(){
             var sel_sub =$("#sub4p2").val();
@@ -1413,8 +1470,13 @@
         });
         // sub 5 change event 
         $("#sub5").change(function(){
+
+            debugger;
+
             var sel_sub =$("#sub5").val();
-            $("#sub5p2").val(sel_sub);
+            if(exam_type != "3"){
+                $("#sub5p2").val(sel_sub);
+            }
         });
         $("#sub5p2").change(function(){
             var sel_sub =$("#sub5p2").val();
@@ -1446,16 +1508,14 @@
                 return;  
             }
 
-
-
-            if((sub6 == sub7) || (sub6 == sub5))
+            if((sub6 == sub7 && sub6 != "0") || (sub6 == sub5 && sub6 != "0"))
             {
                 alertify.error("Please choose Different Subjects" );
                 $("#sub6").val('0');
                 $("#sub6p2").val('0');
                 return;
             }
-            if((sub6 == sub7p2))
+            if((sub6 == sub7p2 && sub6 != "0"))
             {
                 alertify.error("Please choose Different Subjects" );
                 $("#sub6").val('0');
@@ -1464,7 +1524,6 @@
             }
             if ((sub6 == 19 || sub6p2 == 19) && (sub7 == 20 || sub7p2== 20))
             {
-                $('#ErrMsg').show(); 
                 alertify.error('Please select One Subject from ADVANCED ISLAMIC STUDIES / ISLAMIC HISTORY / MUSLIM HISTORY ');                   
                 $("#sub6").val('0');
                 $("#sub6p2").val('0');
@@ -1480,7 +1539,9 @@
                 return;
             }         
             // }
-            $("#sub6p2").val(sub6);
+            if(exam_type != "3"){
+                $("#sub6p2").val(sub6);
+            }
         })
         $("#sub6p2").change(function(){
             var sub6 = $("#sub6").val();
@@ -1544,7 +1605,8 @@
             //   console.log('Hi i am sub6 dropdown :) ');
         })
         $("#sub7").change(function(){
-            //
+
+
             //   console.log('Hi i am sub7 dropdown :) ');
             var sub6 = $("#sub6").val();
             var sub7 = $("#sub7").val();
@@ -1562,9 +1624,8 @@
                 return;  
             }
 
-
             // console.log("sub7 = "+ sub7 + "  sub8 = "+ sub8);
-            if( (sub7 == sub6)|| (sub7 == sub5))
+            if( (sub7 == sub6 && sub7 != "0")|| (sub7 == sub5 && sub7 != "0"))
             {
                 alertify.error("Please choose Different Subjects" );
                 $("#sub7").val('0');
@@ -1601,7 +1662,10 @@
                 $("#sub7").focus();
                 return;  
             }    
-            $("#sub7p2").val(sub7);
+
+            if(exam_type != "3"){
+                $("#sub7p2").val(sub7);
+            }
         })
         $("#sub7p2").change(function(){
             // 
@@ -1700,13 +1764,15 @@
 
 
             // console.log("sub8 = "+ sub8 + "  sub8 = "+ sub8);
-            if( (sub5 == sub6)||(sub5 == sub7))
+
+            if( (sub5 == sub6 && sub5 != "0")||(sub5 == sub7 && sub5 != "0"))
             {
                 alertify.error("Please choose Different Subjects" );
                 $("#sub5").val('0');
                 $("#sub5p2").val('0');
                 return;
             }
+
             if((sub5 == 20 && sub6 == 21) || (sub5 == 21 && sub6 == 20)  || (sub5 == 19 && sub6 == 20) || (sub5 == 19 && sub6 == 21) || (sub5 == 20 && sub6 == 19) || (sub5 == 21 && sub6 == 19)|| (sub5p2 == 20 && sub6p2 == 21) || (sub5p2 == 21 && sub6p2 == 20)  || (sub5p2 == 19 && sub6p2 == 20) || (sub5p2 == 19 && sub6p2 == 21) || (sub5p2 == 20 && sub6p2 == 19) || (sub5p2 == 21 && sub6p2 == 19)){
                 alertify.error("Please choose Different Subjects as Double History is not allowed" );
                 $("#sub5p2").val('0');
@@ -1737,7 +1803,9 @@
                 $("#sub5").focus();
                 return;  
             }    
-            $("#sub5p2").val(sub5);
+            if(exam_type != "3"){
+                $("#sub5p2").val(sub5);
+            }
         })
         $("#sub5p2").change(function(){
             // 
@@ -1817,7 +1885,9 @@
         })
         $("#sub8").change(function(){
             var sel_sub =$("#sub8").val();
-            $("#sub8p2").val(sel_sub);
+            if(exam_type != "3"){
+                $("#sub8p2").val(sel_sub);
+            }
         });
         $("#sub8p2").change(function(){
             var sel_sub =$("#sub8p2").val();
@@ -2001,31 +2071,34 @@
         }
         $("#isfullAppear").change( function(){
 
-            //alert("hi i am called :) ");
+            //debugger;
+
             var old_exam =  $('#oldexam_type').val();
             var crnt_exam =  $('#exam_type').val();
+
+            var oldGrp = "<?php echo @$_POST['std_group'] ?>";
+            var changeCurGrp = "<?php echo @$_POST['grppre'] ?>";
+
             if(this.checked)
             {
-
-
-                if(crnt_exam == 4 || crnt_exam == 5 || crnt_exam == 6 || crnt_exam == 3)
+                if(crnt_exam == 4 || crnt_exam == 5 || crnt_exam == 6)
                 {
                     $('#oldexam_type').val(crnt_exam)
                     $('#exam_type').val(2)
                 }
 
-                IsFullAppear();    
+                IsFullAppear();     
             }
-            else{
-
+            else
+            {
                 if(crnt_exam == 2 && (old_exam == 4 || old_exam == 5 || old_exam == 6 ||  old_exam == 3))
                 {
                     $('#oldexam_type').val(2)
                     $('#exam_type').val(old_exam)
                 }
+
                 sub_grp_load();
             }
-
         })
         //Category P-1: MARKS IMPROVEMENT
         function sub_grp_load(){
@@ -2235,8 +2308,6 @@
                 $('#lblpart2cat').text('Category P-2: ADDITIONAL')";  
             }
             ?>
-
-
 
             $("#sub1").append(new Option('<?php  echo  array_search($data[0]['sub1'],$subarray); ?>',sub1));
             $("#sub1 option[value='" + sub1 + "']").attr("selected","selected");
@@ -2544,8 +2615,7 @@
 
         function sub_grp_load_P1_supply_PII_full_exam_type_3()
         {
-            // 
-            // debugger;
+
             $("#sub1").empty();
             if(sub1pf1 == "2" || sub1pf1 == "3" )
             {
@@ -2555,8 +2625,6 @@
 
             }
             $("#sub1").append(new Option('NONE',0));
-
-
             $("#sub1p2").append(new Option('<?php  echo  array_search($data[0]['sub1'],$subarray); ?>',sub1));
             $("#sub1p2 option[value='" + sub1 + "']").attr("selected","selected");
             //$("#sub1p2").append('<option value='+sub1p2+'>'+sub1p2+'</option>');
@@ -3175,11 +3243,16 @@
         })
         $('#std_group').change(function(){
 
+            debugger;
+
             var sel_group = $('#std_group').val();
             var old_exam =  $('#oldexam_type').val();
             var crnt_exam =  $('#exam_type').val();
 
-            if(crnt_exam == 4 || crnt_exam == 5 || crnt_exam == 6)
+            var oldGrp = "<?php echo @$_POST['std_group'] ?>";
+            var changeCurGrp = "<?php echo @$_POST['grppre'] ?>";
+
+            if(crnt_exam == 4 || crnt_exam == 5 || crnt_exam == 6 || crnt_exam == 3)
             {
                 $('#oldexam_type').val(crnt_exam)
                 $('#exam_type').val(2);
@@ -3188,13 +3261,12 @@
             {
                 $('#oldexam_type').val(2)
                 $('#exam_type').val(old_exam);
-
             }
 
             var exam_type_static = $("#exam_type_static").val();
             if(((((grp_cd == 1 && sub7 == "8") && sel_group ==1) || ((grp_cd == 1 && sub7 == "78") && sel_group ==7) || ((grp_cd == 1 && sub7 == "43") && sel_group ==8) || ((grp_cd == 2) && sel_group ==2) || ((grp_cd == 1 && sub7 == "78")) && sel_group ==7 || ((grp_cd == 1 && sub7 == "43") && sel_group ==8)) || (grp_cd == 2 && sel_group ==2)) && exam_type_static != 2)
             {
-                if(exam_type_static==3)
+                if(exam_type_static==3 && oldGrp != changeCurGrp)
                 {
                     if($("#isfullAppear").attr("check",false));
                     $("#isfullAppear").attr("disabled",true);
@@ -3225,6 +3297,7 @@
             }
             else
             {
+
                 if($("#isfullAppear").attr("check",false));
                 $("#isfullAppear").attr("disabled",true);
 
@@ -3341,347 +3414,73 @@
         }
         else
         {
-            $("button[type='submit']").html('Please wait ...').attr('disabled','disabled'); 
-            $("#myform").submit();
-            return true;
-        } 
-    }
-    function  check_NewEnrol_validation_(){
+            //debugger;
+            $.ajax({
 
-        var name =  $('#cand_name').val();
-        var dist_cd= $('#dist option:selected').val();
-        var teh_cd= $('#teh').val();
-        var zone_cd= $('#zone').val();
-        var pp_cent= $('#pp_cent').val();           
-        var sub6p1 = $('#sub5').val();
-        var sub6p2 = $('#sub6').val();           
-        var sub7p1 = $('#sub7').val();
-        var sub7p2 = $('#sub8').val();                      
-        var ex_type = $('#exam_type').val();
-        var mobNo = $('#mob_number').val();
-        var bFormNo = $('#bay_form').val();
-        var grp_cd = $('#std_group').val();
-        var ddlMarksImproveoptions = $('#ddlMarksImproveoptions').val();
-        var brd_cd = $('#brd_cd').val();
-        var fName = $('#father_name').val();
-        var FNic = $('#father_cnic').val();
-        var dob = $('#dob').val();
-        var address = $('#address').val();
-        var image = $('#image').val();
-        var MarkOfIdent = $('#MarkOfIden').val();
-        var Inst_Rno = $('#Inst_Rno').val();
-        var status = 0;
+                type: "POST",
+                url: "<?php  echo site_url('Admission/frmvalidation'); ?>",
+                data: $("#myform").serialize() ,
+                datatype : 'html',
+                cache:false,
 
-        if(ddlMarksImproveoptions == "" ||  ddlMarksImproveoptions == undefined){
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Select Category! </b>");    
-            $('#ddlMarksImproveoptions').focus(); 
-            return status;
+                success: function(data)
+                {                    
+                    var obj = JSON.parse (data);
+                    if(obj.excep == 'Success')
+                    {
+                        $.ajax({
+
+                            type: "POST",
+                            url: "<?php echo base_url(); ?>" + "Admission/NewEnrolment_insert/",
+                            data: $("#myform").serialize() ,
+                            datatype : 'html',
+                            cache:false,
+
+                            beforeSend: function() {  $('.mPageloader').show(); },
+                            complete: function() { $('.mPageloader').hide();},
+
+                            success: function(data){
+
+                                var obj = JSON.parse(data);
+                                if(obj.error ==  1)
+                                {
+                                    window.location.href ='<?php echo base_url(); ?>Admission/formdownloaded/'+obj.formno
+                                    alertify.error('Your Application is Submit Successfully');
+                                    return true;
+                                }   
+                                else
+                                {
+                                    alertify.error(obj.error);
+                                    return false; 
+                                }
+                            },
+
+                            error: function(request, status, error){
+
+                                alertify.error(request.responseText);
+                            }
+                        });
+
+                        return false
+                    }
+                    else
+                    {
+                        alertify.error(obj.excep);
+                        return false;     
+                    }
+                }
+            });
+            return false;   
         }
-        else if(name == "" ||  name == undefined){
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your  Name </b>");    
-
-            $('#cand_name').focus(); 
-            return status;
-        }
-        else if(fName == "" || fName == undefined){
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Father's Name  </b>");    
-            $('#father_name').focus(); 
-            return status;
-        }   
-
-
-        else if(FNic == "" || FNic.length == undefined )
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
-            $('#father_cnic').focus();  
-            return status; 
-        }
-        else if(FNic == bFormNo  )
-        {
-
-            alertify.error("B-form Number and Father CNIC cannot be same.") 
-            $('#bay_form').focus();   
-            return status; 
-        }
-        else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your bay-Form</b>"); 
-            $('#bay_form').focus();  
-            return status; 
-        }
-        else if(dob == "" || dob.length == undefined)
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Date of Birth</b>"); 
-            $('#dob').focus(); 
-            return status;  
-        }
-
-        else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Mobile No.</b>"); 
-            $('#mob_number').focus();   
-            return status;  
-        }
-        else if(Inst_Rno == "" || Inst_Rno == 0 || Inst_Rno== undefined)
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Institute Roll No.</b>"); 
-            $('#Inst_Rno').focus();   
-            return status;  
-        }
-        else if(MarkOfIdent == "" || MarkOfIdent == 0 || MarkOfIdent == undefined)
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Mark of Indentification</b>"); 
-            $('#MarkOfIden').focus();   
-            return status;  
-        }
-        else if(address == "" || address == 0 || address.length ==undefined )
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Address</b>"); 
-            $('#address').focus(); 
-            return status;    
-        }
-
-        else   if ($("#std_group").find('option:selected').val() < 1) 
-        {
-            $("#std_group").focus();
-            return status;  
-        }
-        else   if ($("#sub3").find('option:selected').val() < 1) 
-        {
-            $('#ErrMsg').show(); 
-            alert('Plesae select  Subject');                          
-            $("#sub3").focus();
-
-            return status;  
-        }
-        else   if ($("#sub5").find('option:selected').val() < 1) 
-        {
-            $('#ErrMsg').show(); 
-            alert('Plesae select Subject');                          
-            $("#sub5").focus();
-
-            return status;  
-        }
-
-        else if ($("#sub6").find('option:selected').val() < 1) 
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Plesae select 6th Subject  </b>"); 
-            // alert('Plesae select 6th Subject  ');                          
-            $("#sub6").focus();
-            return status;  
-        }
-
-        else   if ($("#sub7").find('option:selected').val() < 1) 
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Plesae select 7th Subject  </b>"); 
-            //alert('Plesae select 7th Subject ');                          
-            $("#sub7").focus();
-            return status;  
-        }
-
-        else   if ($("#sub8").find('option:selected').val() < 1) 
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Plesae select 8th Subject  </b>"); 
-            //alert('Plesae select 8th Subject ');                          
-            $("#sub8").focus();
-            return status;  
-        }
-
-        status = 1;
-        return status;
-
-
-
-
     }
 
-    $("#sub3").change(function(){
-        var sel_sub =$("#sub3").val();
-        $("#sub3p2").val(sel_sub);
-    });
-    $("#sub3p2").change(function(){
-        var sel_sub =$("#sub3p2").val();
-        $("#sub3").val(sel_sub);
-    });
-
-
-    /* function  check_NewEnrol_validation()
-    {
-
-    var name =  $('#cand_name').val();
-    var dist_cd= $('#pvtinfo_dist option:selected').val();
-    var teh_cd= $('#pvtinfo_teh option:selected').val();
-    var zone_cd= $('#pvtZone option:selected').val();
-    var pp_cent= $('#pp_cent').val();           
-    var sub6p1 = $('#sub6').val();
-    var sub6p2 = $('#sub6p2').val();           
-    var sub7p1 = $('#sub7').val();
-    var sub7p2 = $('#sub7p2').val();  
-    var sub8p1 = $('#sub8').val();                      
-    var sub8p2 = $('#sub8p2').val();                      
-    var ex_type = $('#exam_type').val();
-    var mobNo = $('#mob_number').val();
-    var bFormNo = $('#bay_form').val();
-    var grp_cd = $('#std_group').val();
-    var brd_cd = $('#brd_cd').val();
-    var fName = $('#father_name').val();
-    var FNic = $('#father_cnic').val();
-    var dob = $('#dob').val();
-    var address = $('#address').val();
-    var image = $('#image').val();
-    var MarkOfIdent = $('#MarkOfIden').val();
-    // var Inst_Rno = $('#Inst_Rno').val();
-    var status = 0;
-    var $img = $("#previewImg");
-    var src = $img.attr("src");
-    var grppre = $("#grppre").val();
-    var selected_group_conversion ;
-    var exam_type = $("#exam_type").val();
-    if(grp_cd==1 || grp_cd == 5 || grp_cd ==7)
-    {
-    selected_group_conversion =1;
-    }
-    else
-    {
-    selected_group_conversion =grp_cd;
-    }
-
-    if(src == '') {
-    $img.addClass("highlight");
-    $img.css("border", "3px solid yellow");
-    $('#ErrMsg').show();  
-    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-    alertify.error("Please upload your Picture First.")
-    $img.focus(); 
-    return status;
-    }
-    else if(name == "" ||  name == undefined){
-    $('#ErrMsg').show();  
-    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-    alertify.error("Please Enter your  Name")
-    $('#cand_name').focus(); 
-    return status;
-    }
-    else if(fName == "" || fName == undefined){
-    $('#ErrMsg').show(); 
-    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-    alertify.error("Please Enter your Father's Name  ") 
-    $('#father_name').focus(); 
-    return status;
-    }   
-
-    else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
-    {
-    $('#ErrMsg').show(); 
-    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-
-    alertify.error("Please Enter your bay-Form") 
-    $('#bay_form').focus();  
-    return status; 
-    }
-    else if(FNic == "" || FNic.length == undefined )
-    {
-    $('#ErrMsg').show(); 
-    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-    alertify.error("Please Enter your Father's CNIC") 
-    $('#father_cnic').focus();  
-    return status; 
-    }
-
-    else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
-    {
-    $('#ErrMsg').show(); 
-    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-
-    alertify.error("Please Enter your Mobile No.") 
-    $('#mob_number').focus();   
-    return status;  
-    }
-
-    else if(MarkOfIdent == "" || MarkOfIdent == 0 || MarkOfIdent == undefined)
-    {
-    $('#ErrMsg').show(); 
-    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-
-    alertify.error("Please Enter your Mark of Indentification") 
-    $('#MarkOfIden').focus();   
-    return status;  
-    }
-    else if(address == "" || address == 0 || address.length ==undefined )
-    {
-    $('#ErrMsg').show(); 
-    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-    $('#ErrMsg').html("<b>Please Enter your Address</b>"); 
-    alertify.error("Please Enter your Address")
-    $('#address').focus(); 
-    return status;    
-    }
-
-    else  if (dist_cd < 1) 
-    {
-    alertify.error('Please select District '); 
-    $("#pvtinfo_dist").focus();
-    return status;  
-    }
-
-    else if (teh_cd < 1) {
-
-    alertify.error('Please select Tehsil');                          
-    $("#pvtinfo_teh").focus();
-    return status;  
-    }
-    else if (zone_cd < 1) 
-    {
-    alertify.error('Please select Zone. ');                          
-    $("#pvtZone").focus();
-    return status;  
-    }
-
-    else if (grp_cd == 0) 
-    {
-    $('#ErrMsg').show(); 
-    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-    alertify.error('Please Select your Study Group '); 
-    $("#std_group").focus();
-    return status;  
-    }
-
-    status = 1;
-    return status;
-    }  */
     function CancelAlert()
     {
         var msg = "Are You Sure You want to Cancel this Form ?"
         alertify.confirm(msg, function (e) {
             if (e) {
                 // user clicked "ok"
-                window.location.href ='<?php echo base_url(); ?>index.php/Admission/';
+                window.location.href ='<?php echo base_url(); ?>Admission/';
             } else {
                 // user clicked "cancel"
             }

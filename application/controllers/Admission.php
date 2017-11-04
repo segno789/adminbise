@@ -4,36 +4,39 @@ class Admission extends CI_Controller
 {
     public function __construct() 
     {
-        parent::__construct();
+        /* parent::__construct();
         $this->load->helper('url'); 
         $this->load->library('Browsercache');
         $this->browsercache->dontCache();
         $this->clear_cache();
-        $this->clear_all_cache();
+        $this->clear_all_cache();*/
+        parent::__construct();
+        $this->load->helper('url');   
     }
-    public function clear_all_cache()
+    /* public function clear_all_cache()
     {
-        $CI =& get_instance();
-        $path = $CI->config->item('cache_path');
+    $CI =& get_instance();
+    $path = $CI->config->item('cache_path');
 
-        $cache_path = ($path == '') ? APPPATH.'cache/' : $path;
+    $cache_path = ($path == '') ? APPPATH.'cache/' : $path;
 
-        $handle = opendir($cache_path);
-        while (($file = readdir($handle))!== FALSE) 
-        {
-            //Leave the directory protection alone
-            if ($file != '.htaccess' && $file != 'index.html')
-            {
-                @unlink($cache_path.'/'.$file);
-            }
-        }
-        closedir($handle);
+    $handle = opendir($cache_path);
+    while (($file = readdir($handle))!== FALSE) 
+    {
+    //Leave the directory protection alone
+    if ($file != '.htaccess' && $file != 'index.html')
+    {
+    @unlink($cache_path.'/'.$file);
+    }
+    }
+
+    closedir($handle);
     }
     function clear_cache()
     {
-        $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
-        $this->output->set_header("Pragma: no-cache");
-    }
+    $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
+    $this->output->set_header("Pragma: no-cache");
+    }*/
     public function index()
     {
         $data = array(
@@ -176,21 +179,21 @@ class Admission extends CI_Controller
         $data = $data[0];
         // This 121443 Form No. Result Card issue date is 22-08-2017 as SN. so give special permission in single fee.
 
-        if($formno == '121443' && (strtotime('today') < strtotime('30-08-2017')))
+        /*  if($formno == '121443' && (strtotime('today') < strtotime('30-08-2017')))
         {
-            $data['AdmFee'] = 650;
-            $data['AdmTotalFee'] = 945;
-            $data['AdmFine'] = 0;
-            $lastdate = '01-09-2017';
+        $data['AdmFee'] = 650;
+        $data['AdmTotalFee'] = 945;
+        $data['AdmFine'] = 0;
+        $lastdate = '01-09-2017';
         }
         else
-        {
-            $retfee = $this->feecalculate($data);
-
-            $data['AdmFee'] = $retfee[0]['AdmFee'];
-            $data['AdmTotalFee'] = $retfee[0]['AdmTotalFee'];
-            $lastdate = $this->GetDueDate();
-        }
+        {*/
+        $retfee = $this->feecalculate($data);
+        $data['AdmFee'] = $retfee[0]['AdmFee'];
+        $data['AdmTotalFee'] = $retfee[0]['AdmTotalFee'];
+        $data['certFee'] =  $retfee[0]['certFee'];
+        $lastdate = $this->GetDueDate();
+        // }
 
 
 
@@ -216,7 +219,8 @@ class Admission extends CI_Controller
         $pdf->Cell(0, 0.2, "ADMISSION /REVENUE FORM ", 0.25, "C");
         $pdf->SetFont('Arial','',8);
         $pdf->SetXY(3.85,0.4);
-        $pdf->Cell(0, 0.2,  "(Private Candidate) for SSC " .$session."  Examination , ".Year, 0.25, "C");
+        $mybestyear = Year+1;
+        $pdf->Cell(0, 0.2,  "(Private Candidate) for SSC " .$session."  Examination , ".$mybestyear, 0.25, "C");
 
         //--------------------------- Form No & Rno
         $pdf->SetFont('Arial','B',12);
@@ -227,36 +231,26 @@ class Admission extends CI_Controller
         $pdf->Cell(0.5,0.5, "(For office use only)",0,'L');
         //------ Picture Box on Centre      
 
-        //DebugBreak();
         $Barcode = $data['formNo']."@".$data['class'].'@'.$data['sess'].'@'.$data["Iyear"];
         $image =  $this->set_barcode($Barcode);
         $pdf->Image(BARCODE_PATH.$image,3.2, 0.61  ,1.8,0.20,"PNG");
-        //$data['PicPath']
-        //DebugBreak();
-        //   $pdf->Image(PRIVATE_IMAGE_PATH.'100002.jpg',6.96, 1.15+$Y, 0.95, 1.0, "JPG");
-        // $pdf->Image(DIRPATH.$data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");
-        // $pdf->Image(DIRPATH10TH.$data['PicPath'],6.5, 1.30+$Y, 0.95, 1.0, "JPG");
-        /* if($data ['IsNewPic'] == 0)
-        {
-        $pdf->Image(DIRPATH10TH.$data['picpath'],6.5, 1.30+$Y, 0.95, 1.0, "JPG");
-        }
 
-        else  if($data ['IsNewPic'] == 1)
-        {
-        $pdf->Image(GET_PRIVATE_IMAGE_PATH_10.'/10th/'.$data['picpath'],6.5, 1.30+$Y, 0.95, 1.0, "JPG");
-        } */
-
-        //DebugBreak();
 
         if($data['IsNewPic'] == 1){
             $pdf->Image(GET_PRIVATE_IMAGE_PATH.$data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");    
         }
 
         else if($data['IsNewPic'] == 0){
-            $pdf->Image(DIRPATH.$data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");        
+
+            if(base_url() == "http://slips.bisegrw.com/adminbise/" || base_url() == "http://ssc.bisegrw.com/adminbise/"){
+                $pdf->Image($data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");            
+            }
+
+            else{
+                $pdf->Image(base_url().'assets/img/profile.png',6.96, 1.15+$Y, 0.95, 1.0, "png");        
+            }
         }
 
-        //$pdf->Image("assets/img/logo2.png",0.4, 0.2, 0.65, 0.65, "PNG");
         $pdf->SetFont('Arial','',8);
 
         //------------- Personal Infor Box
@@ -485,8 +479,10 @@ class Admission extends CI_Controller
                 $str ="";
             }    
         }
-        //if()
+
         //DebugBreak();
+
+
         if(@$data['isFresh']==1 && @$data['oldRno']<=0 )
         {
             $pdf->Cell(0.5,0.5,"FRESH COMPOSITE",0,'L');
@@ -920,7 +916,7 @@ class Admission extends CI_Controller
 
         $pdf->SetXY(1.2,6.32+$Y);
         $pdf->SetFont('Arial','b',$FontSize);
-        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".$session." Examination ,".Year." )",0,'C');
+        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".$session." Examination ,".$mybestyear." )",0,'C');
 
 
         $pdf->SetXY(0.2,6.42+$Y);
@@ -1017,7 +1013,7 @@ class Admission extends CI_Controller
         //Board Copy Alogn With Scroll
         $pdf->SetXY(1.2,7.8+$Y);
         $pdf->SetFont('Arial','b',$FontSize);
-        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".$session." Examination ,".Year." )",0,'C');
+        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".$session." Examination ,".$mybestyear." )",0,'C');
 
         $pdf->SetXY(0.2,7.9+$Y);
         $pdf->SetFillColor(0,0,0);                                     
@@ -1155,7 +1151,7 @@ class Admission extends CI_Controller
         $Y = $Y - 0.1;
         $pdf->SetXY(1.2,10.1+$Y);
         $pdf->SetFont('Arial','b',$FontSize);
-        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".$session." Examination ,".Year." )",0,'C');
+        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".$session." Examination ,".$mybestyear." )",0,'C');
 
         $pdf->SetXY(0.2,10.2+$Y);
         $pdf->SetFillColor(0,0,0);                                     
@@ -1285,9 +1281,70 @@ class Admission extends CI_Controller
         return $dueDate;
 
     }
+    function ReturnExamType($cat09,$cat10)
+    {
+        $returnExam = 0;
+        if($cat09 == 0 && $cat10 == 1)
+        {
+            $returnExam = 1;
+        } 
+        else if($cat09 == 1 && $cat10 == 1)
+        {
+            $returnExam = 2;
+        }
+        else if($cat09 == 2 && $cat10 == 1)
+        {
+            $returnExam = 3;
+        }
+        else if($cat09 == 0 && $cat10 == 2)
+        {
+            $returnExam = 4;
+        }
+        else if($cat09 == 2 && $cat10 == 0)
+        {
+            $returnExam = 5;
+        }
+        else if($cat09 == 2 && $cat10 == 2)
+        {
+            $returnExam = 6;
+        }
+        else if($cat09 == 0 && $cat10 == 3)
+        {
+            $returnExam = 7;
+        }
+        else if($cat09 == 3 && $cat10 == 0)
+        {
+            $returnExam = 8;
+        }
+        else if($cat09 == 3 && $cat10 == 3)
+        {
+            $returnExam = 9;
+        }
+        else if($cat09 == 4 && $cat10 == 4)
+        {
+            $returnExam = 10;
+        }
+        else if($cat09 == 5 && $cat10 == 5)
+        {
+            $returnExam = 11;
+        }
+        else if($cat09 == 6 && $cat10 == 6)
+        {
+            $returnExam = 12;
+        }
+        else if($cat09 == 7 && $cat10 == 7)
+        {
+            $returnExam = 13;
+        }
+        else 
+        {
+            $returnExam = -1;
+        }
+        return $returnExam;
+    }
     function feecalculate($data)
     {
-        //DebugBreak();
+        // DebugBreak();
 
         $isper = 0;
         if( $this->practicalsubjects($data['sub5'])|| $this->practicalsubjects($data['sub6'])|| $this->practicalsubjects($data['sub7']))
@@ -1298,16 +1355,13 @@ class Admission extends CI_Controller
         {
             $isper = 1; 
         }
+
         $User_info_data = array('Inst_Id'=>999999, 'date' => date('Y-m-d'),'isPratical'=>$isper);
         $user_info  =  $this->Admission_model->getuser_infoPVT($User_info_data); 
+        $examType = $this->ReturnExamType($data['cat09'],$data['cat10']);
         if (!$user_info) 
         {
-            // if query returns null
             $errNo   = $this->db->error();
-
-            // $data['msg'] = $e;
-            //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-            //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
             $data['msg'] = "Error(".$errNo['code'].") ";
             $data['errno'] = "519-20";
             $this->load->view('common/commonheader.php');
@@ -1315,14 +1369,14 @@ class Admission extends CI_Controller
             $this->load->view('common/homepagefooter.php');
             return;
         }
-        // echo  '<pre>';print_r($user_info);die;
 
         $isfine = 0;
         $Total_fine = 0;
         $processFee = 295;
         $admfee = 1300;
         $admfeecmp = 1300;
-        // Declare Science & Arts Fee's According to Fee Table .  Note: this will assign to Triple date fee. After triple date it will not asign fees.
+        $certFee = 550;
+
         if(!empty($user_info['rule_fee'])) 
         {    $endDate =date('Y-m-d', strtotime($user_info['rule_fee'][0]['End_Date'])); 
             $singleDate = $endDate;
@@ -1347,12 +1401,7 @@ class Admission extends CI_Controller
             $user_info  =  $this->Admission_model->getuser_infoPVT($User_info_data);
             if (!$user_info) 
             {
-                // if query returns null
                 $errNo   = $this->db->error();
-
-                // $data['msg'] = $e;
-                //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-                //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
                 $data['msg'] = "Error(".$errNo['code'].") ";
                 $data['errno'] = "519-20";
                 $this->load->view('common/commonheader.php');
@@ -1360,6 +1409,7 @@ class Admission extends CI_Controller
                 $this->load->view('common/homepagefooter.php');
                 return;
             }
+
             if($user_info['rule_fee'][0]['isPrSub'] == 1)
             {
                 $admfee = $user_info['rule_fee'][0]['PVT_Amount'];
@@ -1372,7 +1422,6 @@ class Admission extends CI_Controller
                 $admfee = $user_info['rule_fee'][0]['PVT_Amount'];
                 $processFee = $user_info['rule_fee'][0]['Processing_Fee'];;
                 $admfeecmp = $user_info['rule_fee'][0]['Comp_Pvt_Amount'];
-
             }
 
             $TripleDate = date('Y-m-d',strtotime(TripleDateFee9th)); 
@@ -1384,8 +1433,7 @@ class Admission extends CI_Controller
             $admfee =  ($admfee*3); 
             $admfeecmp =  ($admfeecmp*3); 
             $Total_fine = $days*$fine;
-
-        }  // DebugBreak();
+        } 
         $finalFee = '';
         if($data['cat09'] !=  NULL && $data['cat10'] != NULL)
         {
@@ -1395,6 +1443,17 @@ class Admission extends CI_Controller
         {
             $finalFee = $admfee;
         }
+
+        if($examType == 1 || $examType == 2 || $examType == 3 )
+        {
+            $data['certFee'] = $certFee;
+
+        }
+        else if($examType == -1)
+        {
+            return; 
+        }
+
         if($data['Spec']>0 && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th) ))
         {
             $regfee =  1000;
@@ -1402,26 +1461,25 @@ class Admission extends CI_Controller
             {
                 $regfee = 0; 
             }
+
             $data['AdmFee'] = $finalFee;
             $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee']+$data['certFee'];
-            $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmTotalFee'=> $data['AdmTotalFee']);
+
+            $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmTotalFee'=> $data['AdmTotalFee'],'certFee'=>$data['certFee']);
         }
         else
         {
             $data['AdmFee'] = $finalFee;
             $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee']+$data['certFee']+$finalFee;
-            $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']);
+            $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee'],'certFee'=>$data['certFee']);
         }
 
-        $info =   $this->Admission_model->Update_AdmissionFeePvt($AllStdFee);
+        $info = $this->Admission_model->Update_AdmissionFeePvt($AllStdFee);
         if (!$info) 
         {
-            // if query returns null
+
             $errNo   = $this->db->error();
 
-            // $data['msg'] = $e;
-            //show_error($errNo['message'],504,'Please try again later, if the problem persists contact <a href="https://www.w3schools.com">BISE online Support center.</a>'.$errNo['code']);
-            //$data['msg'] = "Error(".$errNo['code'].") ".$msg;
             $data['msg'] = "Error(".$errNo['code'].") ";
             $data['errno'] = "521";
             $this->load->view('common/commonheader.php');
@@ -1561,8 +1619,9 @@ class Admission extends CI_Controller
                                                                                                                                                                                                                                                                                                                                                                                 else if($_sub_cd == 92)  $ret_val = "General Math"; 
                                                                                                                                                                                                                                                                                                                                                                                     else if($_sub_cd == 93)  $ret_val = "COMPUTER SCIENCES_DFD";    
                                                                                                                                                                                                                                                                                                                                                                                         else if($_sub_cd == 94)  $ret_val = "HEALTH & PHYSICAL EDUCATION_DFD";   
-                                                                                                                                                                                                                                                                                                                                                                                            return $ret_val ;             
+                                                                                                                                                                                                                                                                                                                                                                                            return strtoupper($ret_val);             
     }
+
     function getCatName($cat)
     {
         if ($cat==1) return "Full Appear";
@@ -1571,71 +1630,119 @@ class Admission extends CI_Controller
                 else if ($cat ==5 ) return "Additional";
                     else return -1;
     }
-    private function makecat($cattype, $exam_type,$marksImp,$is9th)
+    private function makecat($cattype,$exam_type,$marksImp,$is9th)
     {
-
+        //DebugBreak();
 
         $cate =  array();
 
         if($exam_type == 2)
-
         {
             $cate['cat09'] = 1;
             $cate['cat10'] = 1;
         }
-        else  if($exam_type == 1)
 
+        else if($exam_type == 1)
         {
             $cate['cat09'] = 0;
             $cate['cat10'] = 1;
         }
-        else
-            if($exam_type == 3)
+
+        else if($exam_type == 3)
+        {
+            if($is9th==1 && $_POST['std_group'] == $_POST['grppre'])
             {
-                if($is9th==1)
-                {
-                    $cate['cat09'] = 2;     
-                }
-                else{
-                    $cate['cat09'] = 0;          
-                }
-                $cate['cat10'] = 1;
-            }
-            else if($exam_type == 4){
-                $cate['cat09'] = 0;
-                $cate['cat10'] = 2;
-            }
-            else if($exam_type == 5){
-                $cate['cat09'] = 2;
-                $cate['cat10'] = 0;
-            }
-            else if($exam_type == 6){
-                $cate['cat09'] = 2;
-                $cate['cat10'] = 2;
-            }
-            else if(($exam_type == 14 || ($exam_type == 16 && $cattype == 1)) && $marksImp == 2){
-                $cate['cat09'] = 0;
-                $cate['cat10'] = 3;
-            }
-            else if(($exam_type == 14 || ($exam_type == 16 && $cattype == 1))  && $marksImp == 1){
-                $cate['cat09'] = 3;
-                $cate['cat10'] = 0;
-            }
-            else if(($exam_type == 14 || ($exam_type == 16 && $cattype == 1))  && $marksImp == 3){
-                $cate['cat09'] = 3;
-                $cate['cat10'] = 3;
-            }
-            else if(($exam_type == 14 || ($exam_type == 16 && $cattype == 1))  && $marksImp ==4){
-                $cate['cat09'] = 7;
-                $cate['cat10'] = 7;
+                $cate['cat09'] = 2;     
             }
 
-            else if($exam_type == 15 || ($exam_type == 16 && $cattype == 2)){
-                $cate['cat09'] =  5;
-                $cate['cat10'] = 5;
-            }        
-            return $cate;
+            else  if($is9th==1 && $_POST['std_group'] != $_POST['grppre'])
+            {
+                $cate['cat09'] = 1;     
+            }
+
+            else
+            {
+                $cate['cat09'] = 0;          
+            }
+
+            $cate['cat10'] = 1;
+        }
+
+        else if($exam_type == 4)
+        {
+            $cate['cat09'] = 0;
+            $cate['cat10'] = 2;
+        }
+
+        else if($exam_type == 5)
+        {
+            $cate['cat09'] = 2;
+            $cate['cat10'] = 0;
+        }
+
+        else if($exam_type == 6)
+        {
+            $cate['cat09'] = 2;
+            $cate['cat10'] = 2;
+        }
+
+        else if(($exam_type == 14 || ($exam_type == 16 && $cattype == 1)) && $marksImp == 2)
+        {
+            $cate['cat09'] = 0;
+            $cate['cat10'] = 3;
+        }
+
+        else if(($exam_type == 14 || ($exam_type == 16 && $cattype == 1))  && $marksImp == 1)
+        {
+            $cate['cat09'] = 3;
+            $cate['cat10'] = 0;
+        }
+
+        else if(($exam_type == 14 || ($exam_type == 16 && $cattype == 1))  && $marksImp == 3)
+        {
+            $cate['cat09'] = 3;
+            $cate['cat10'] = 3;
+        }
+
+        else if(($exam_type == 14 || ($exam_type == 16 && $cattype == 1))  && $marksImp ==4)
+        {
+            $cate['cat09'] = 7;
+            $cate['cat10'] = 7;
+        }
+
+        else if($exam_type == 16 && $marksImp == 1)
+        {
+            $cate['cat09'] = 3;
+            $cate['cat10'] = 0;
+        }
+
+        else if($exam_type == 16 && $marksImp == 2)
+        {
+            $cate['cat09'] = 0;
+            $cate['cat10'] = 3;
+        }
+
+        else if($exam_type == 16 && $marksImp == 3)
+        {
+            $cate['cat09'] = 3;
+            $cate['cat10'] = 3;
+        }
+
+        else if($exam_type == 16 && $marksImp == 4)
+        {
+            $cate['cat09'] = 7;
+            $cate['cat10'] = 7;
+        }
+
+        else if($exam_type == 15 || ($exam_type == 16 && $cattype == 2))
+        {
+            $cate['cat09'] =  5;
+            $cate['cat10'] = 5;
+        }        
+
+        return $cate;
     }
+
     public function Pre_Matric_data()
     {
         //DebugBreak();
@@ -1679,7 +1786,7 @@ class Admission extends CI_Controller
             $year    = $data[0]["Iyear"];
             $session = $data[0]["sess"];
             $board   = $data[0]["Brd_cd"];
-            @$cattype   = $data[0]["category"];
+            @$cattype= $data[0]["category"];
 
             $error_msg = $data[0]["excep"];
 
@@ -1719,7 +1826,7 @@ class Admission extends CI_Controller
                 $this->load->view('common/commonheader.php');        
                 $this->load->view('Admission/Matric/getinfo.php', $data);
                 $this->load->view('common/footer.php');    
-                return false;
+                return;
             }
             if($year < (YEAR-1))
             {
@@ -1740,7 +1847,7 @@ class Admission extends CI_Controller
                     $this->load->view('common/commonheader.php');
                     $this->load->view('Admission/Matric/matricFreshForm.php', array('data'=>$data[0]));
                     $this->load->view('common/common_ma/Otherboard10thfooter.php');
-                    return false;  
+                    return;  
                 }
 
             }
@@ -1807,7 +1914,7 @@ class Admission extends CI_Controller
                 $this->load->view('common/commonheader.php');        
                 $this->load->view('Admission/Matric/getinfo.php', $data);
                 $this->load->view('common/footer.php');    
-                return false;
+                return;
             }     
             $dob     = $_POST["dob"];
             $mrollno = $_POST["oldRno"];
@@ -1819,33 +1926,33 @@ class Admission extends CI_Controller
             $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board);
 
             if($board != 1 && ($oldClass == 9 || $oldClass == 10)){
-                redirect('admission/matric_otherboard', $data);
+                redirect('index.php/admission/matric_otherboard', $data);
                 return;
             }
 
             $data = $this->Admission_model->Pre_Matric_data($data);
 
-            if (!$data) 
+            /*if (!$data) 
             {
-                $errNo   = $this->db->error();
-                $error_msg = '';
-                if($errNo['code']=="00000"){
-                    $error_msg.= 'No Any Student Found Against Your Criteria';            
-                    $data['error'] = $error_msg;
-                    $this->load->library('session');
-                    $mydata = array('data'=>$_POST,'error_msg'=>$error_msg);
-                    $this->session->set_flashdata('matric_error',$mydata);
-                    redirect('Admission/matric_default');
-                }
-
-                $data['msg'] = "Error(".$errNo['code'].") ";
-                $data['errno'] = "503-4(I)";
-                $this->load->view('common/commonheader.php');
-                $this->load->view('errors/cli/error_custom.php',$data);
-                $this->load->view('common/homepagefooter.php');
-                return;
+            $errNo   = $this->db->error();
+            $error_msg = '';
+            if($errNo['code']=="00000"){
+            $error_msg.= 'No Any Student Found Against Your Criteria';            
+            $data['error'] = $error_msg;
+            $this->load->library('session');
+            $mydata = array('data'=>$_POST,'error_msg'=>$error_msg);
+            $this->session->set_flashdata('matric_error',$mydata);
+            redirect('Admission/matric_default');
             }
 
+            $data['msg'] = "Error(".$errNo['code'].") ";
+            $data['errno'] = "503-4(I)";
+            $this->load->view('common/commonheader.php');
+            $this->load->view('errors/cli/error_custom.php',$data);
+            $this->load->view('common/homepagefooter.php');
+            return;
+            }
+            */
             $error_msg = '';
 
             if(!$data){
@@ -1854,7 +1961,7 @@ class Admission extends CI_Controller
                 $this->load->view('common/commonheader.php');        
                 $this->load->view('Admission/Matric/getinfo.php', $data);
                 $this->load->view('common/footer.php');    
-                return false;
+                return;
             }
 
             $brd_name=$this->Admission_model->Brd_Name($board); 
@@ -2029,33 +2136,33 @@ class Admission extends CI_Controller
     public function NewEnrolment_insert()
     {
         //DebugBreak();
-
         $this->load->model('Admission_model');
         $this->load->library('session');
         $isActive = $this->isActiveAdm();
-        if($isActive == false)
+        /*if($isActive == false)
         {
-            $error = "There is an error occured Please try again later";
-            $mydata = array('error'=>$error);
+        $error = "There is an error occured Please try again later";
+        $mydata = array('error'=>$error);
         }
         else
         {
 
-            $ann = $isActive[0]['isadmP2'];
-            $supp = $isActive[0]['isadmP2S'];
-            $mydata = array('error'=>$error);
-            $this->load->view('common/commonheader.php');
-            if($ann==1 || $supp == 1)
-            {
-                $this->load->view('Admission/Matric/matric_default.php',$mydata);
-            }
-            else
-            {
-                $mydata = array('error'=>$error);
-                $this->load->view('Admission/Matric/Admission_closed.php',$mydata);
-            }
-            $this->load->view('common/homepagefooter.php'); 
+        $ann = $isActive[0]['isadmP2'];
+        $supp = $isActive[0]['isadmP2S'];
+        $mydata = array('error'=>$error);
+        $this->load->view('common/commonheader.php');
+        if($ann==1 || $supp == 1)
+        {
+        $this->load->view('Admission/Matric/matric_default.php',$mydata);
         }
+        else
+        {
+        $mydata = array('error'=>$error);
+        $this->load->view('Admission/Matric/Admission_closed.php',$mydata);
+        }
+
+        $this->load->view('common/homepagefooter.php'); 
+        }*/
         $userinfo = '';//$Logged_In_Array['logged_in'];
         $userinfo['isselected'] = 2;
         $Inst_Id = 999999;
@@ -2395,8 +2502,6 @@ class Admission extends CI_Controller
 
             $Total_fine = $days*$fine;
 
-            // if query returns null
-
         }
 
         $AdmFeeCatWise = '1300';
@@ -2424,7 +2529,7 @@ class Admission extends CI_Controller
                 $AdmFeeCatWise = $AdmFee[0]['PVT_Amount'];
             } 
         }
-        //     DebugBreak();
+
         if(@$_POST['isotherbrd']>0 || @$_POST['isFresh']>0)
         {
             $regfee =   $AdmFee[0]['Reg_Fee'];
@@ -2712,83 +2817,56 @@ class Admission extends CI_Controller
         }          
         }*/
 
-        $this->frmvalidation('Pre_Matric_data',$data,0);       
+        //$this->frmvalidation('Pre_Matric_data',$data,0);       
 
 
         $logedIn = $this->Admission_model->Insert_NewEnorlement($data);
 
-        if (!$logedIn) 
+        /* if (!$logedIn) 
         {
-            $errNo   = $this->db->error();
-            $data['msg'] = "Error(".$errNo['code'].") ";
-            $data['errno'] = "509";
-            $this->load->view('common/commonheader.php');
-            $this->load->view('errors/cli/error_custom.php',$data);
-            $this->load->view('common/homepagefooter.php');
-            return;
+        $errNo   = $this->db->error();
+        $data['msg'] = "Error(".$errNo['code'].") ";
+        $data['errno'] = "509";
+        $this->load->view('common/commonheader.php');
+        $this->load->view('errors/cli/error_custom.php',$data);
+        $this->load->view('common/homepagefooter.php');
+        return;
         }
-
-        if(is_array ($logedIn))
-        {
-            /*
-            $allinputdata = "";
-            $allinputdata['formno'] = 'success';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            $msg = $formno;                                           
-            foreach($logedIn[0] as $key=>$val)
-            {
-            if($key == 'formno')
-            {
-            $formno = $val;
-            break;
-            }
-            }
-            */
-
-            //DebugBreak();
-
-            $info =  '';
-            foreach($logedIn[0] as $key=>$val)
-            {
-                if($key == 'formno')
-                {
-                    if($logedIn[0]['tempath'] != '')
-                    {
-                        $oldpath =  GET_PRIVATE_IMAGE_PATH.$logedIn[0]['tempath'];
-                        $newpath =  GET_PRIVATE_IMAGE_PATH.$val.'.jpg';
-                        $err = rename($oldpath,$newpath); 
-                    }
-                    $info['error'] = 1;
-                    $info['formno'] = $val;
-                }
-                else if($key == 'error')
-                {
-                    $info['error'] = $val;
-                    $info['formno'] = '';
-                }
-            }
-
-            redirect('Admission/'.'formdownloaded/'.$info['formno'].'/'.$dob);
-        }
-        else
-        {     
-            $allinputdata = "";
-            $allinputdata['excep'] = 'An error has occoured. Please try again later. ';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            // redirect(checkFormNo_then_download);
-            redirect('Admission');
-            return;
-            echo 'Data NOT Saved Successfully !';
-        } 
-
-        $this->load->view('common/footer.php');
-    }
-    public function formdownloaded()
-    {
+        */
 
         //DebugBreak();
 
-        $msg = $this->uri->segment(3);
+        $info =  '';
+
+        foreach($logedIn[0] as $key=>$val)
+        {
+            if($key == 'formno')
+            {
+                if($logedIn[0]['tempath'] != '')
+                {
+                    $oldpath =  GET_PRIVATE_IMAGE_PATH.$logedIn[0]['tempath'];
+                    $newpath =  GET_PRIVATE_IMAGE_PATH.$val.'.jpg';
+                    $err = rename($oldpath,$newpath); 
+                }
+                $info['error'] = 1;
+                $info['formno'] = $val;
+            }
+            else if($key == 'error')
+            {
+                $info['error'] = $val;
+                $info['formno'] = '';
+            }
+        }
+
+        echo  json_encode($info);
+        exit();
+
+    }
+    public function formdownloaded()
+    {
+        //DebugBreak();
+
+        /* $msg = $this->uri->segment(3);
         $dob = $this->uri->segment(4);
         $this->load->model('Admission_model');
         $this->load->library('session');
@@ -2796,7 +2874,16 @@ class Admission extends CI_Controller
         $this->load->view('common/commonheader.php');
         $this->load->view('Admission/Matric/FormDownloaded.php',$myarray);
         $this->load->view('common/commonfooter.php');
+        */
+        $msg = $this->uri->segment(3);
+        $this->load->model('Admission_model');
+        $this->load->library('session');
+        $myarray = array('msg'=>$msg);
+        $this->load->view('common/commonheader.php');
+        $this->load->view('Admission/Matric/FormDownloaded.php',$myarray);
+        $this->load->view('common/commonfooter.php');
     }
+
     public function matric_default()
     {
         //  DebugBreak();
@@ -2808,7 +2895,8 @@ class Admission extends CI_Controller
         {
             $spl_cd = array('spl_cd'=>$this->session->flashdata('matric_error'));  
         }
-        else{
+        else
+        {
             $spl_cd = array('spl_cd'=>"");
         }
         $this->load->view('common/commonheader.php');
@@ -2918,8 +3006,10 @@ class Admission extends CI_Controller
         $data = $arrfilePath;
         $this->load->view('common/footer.php',$data);
     }
-    function frmvalidation($viewName,$allinputdata,$isupdate)
+    function frmvalidation()
     {
+        $allinputdata['excep'] == '';
+
         $_POST['address']  = str_replace("'", "", $_POST['address'] );
 
         if(@$_POST['dob'] != null)
@@ -2931,154 +3021,83 @@ class Admission extends CI_Controller
         if(@$_POST['cand_name'] == '' )
         {
             $allinputdata['excep'] = 'Please Enter Your Name';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return; //"NewEnrolment_EditForm_matric"
-
         }
         else if (@$_POST['father_name'] == '')
         {
             $allinputdata['excep'] = 'Please Enter Your Father Name';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
 
         else if(@$_POST['bay_form'] == '' || @$_POST['bay_form'] == '00000-0000000-0')
         {
             $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            $this->$viewName($allinputdata['formNo']);
-            return;
-
-
         }
 
         else if(@$_POST['father_cnic'] == '' || @$_POST['father_cnic'] == '00000-0000000-0' )
         {
             $allinputdata['excep'] = 'Please Enter Your Father CNIC';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
-
         }
 
         else if (@$_POST['dob'] == '' )
         {
             $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
         else if(@$_POST['mob_number'] == '')
         {
             $allinputdata['excep'] = 'Please Enter Your Mobile Number';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
         else if(@$_POST['medium'] == 0)
         {
             $allinputdata['excep'] = 'Please Select Your Medium';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
 
         else if(@$_POST['MarkOfIden']== '')
         {
             $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
 
         else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
         {
             $allinputdata['excep'] = 'Please Select Your medium';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
         else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
         {
             $allinputdata['excep'] = 'Please Select Your Nationality';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
         else if((@$_POST['gend'] != '1' && @$_POST['isotherbrd'] != '1' ) and (@$_POST['gend'] != '2' &&  @$_POST['isotherbrd'] != '1'))
         {
             $allinputdata['excep'] = 'Please Select Your Gender';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
+
         else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
         {
             $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
         else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
         {
             $allinputdata['excep'] = 'Please Select Your religion';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
         else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
         {
             $allinputdata['excep'] = 'Please Select Your Residency';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
+
         else if(@$_POST['address'] =='')
         {
             $allinputdata['excep'] = 'Please Enter Your Address';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
         else if(@$_POST['std_group'] == 0)
         {
             $allinputdata['excep'] = 'Please Select Your Study Group';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
-
         }
 
         else if((@$_POST['sub7p2'] ==20) && (@$_POST['sub8p2']==21))
         {
             $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
 
         }
         else if((@$_POST['sub8p2'] ==20) && (@$_POST['sub7p2']==21))
         {
             $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission/'.$viewName);
-            return;
 
         }
 
@@ -3087,9 +3106,7 @@ class Admission extends CI_Controller
             if(@$_POST['sub1p2'] ==0 && @$_POST['sub2p2'] ==0 && @$_POST['sub3p2'] ==0 && @$_POST['sub4p2'] ==0 && @$_POST['sub5p2'] ==0 && @$_POST['sub6p2'] ==0 && @$_POST['sub7p2'] ==0 && @$_POST['sub8p2'] ==0)
             {
                 $allinputdata['excep'] = 'Please Select Part-II Subjects ';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
+
             }
         }
         else if(@$_POST['exam_type'] == 2 &&  (@$allinputdata['grp_cd'] != 4))
@@ -3097,73 +3114,55 @@ class Admission extends CI_Controller
             if(@$_POST['sub1p2'] == 0)
             {
                 $allinputdata['excep'] = 'Please Select Part-II Subject 1';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
+
 
             }
             else if(@$_POST['sub2p2'] == 0)
             {
                 $allinputdata['excep'] = 'Please Select Part-II Subject 2';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
+
             }
             else if(@$_POST['sub3p2'] == 0)
             {
                 $allinputdata['excep'] = 'Please Select Part-II Subject 3';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
+
 
             }
             else if(@$_POST['sub4p2'] == 0 && @$_POST['std_group'] != 4)
             {
                 $allinputdata['excep'] = 'Please Select Part-II Subject 4';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
+
 
             }
             else if(@$_POST['sub5p2'] == 0 && @$_POST['std_group'] != 4)
             {
                 $allinputdata['excep'] = 'Please Select Part-II Subject 5';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
+
 
             }
             else if(@$_POST['sub6p2'] == 0 && @$_POST['std_group'] != 4)
             {
                 $allinputdata['excep'] = 'Please Select Part-II Subject 6';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
+
 
             }
             else if(@$_POST['sub7p2'] == 0 && @$_POST['std_group'] != 4)
             {
                 $allinputdata['excep'] = 'Please Select Part-II Subject 7';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
+
 
             }
             else if(@$_POST['sub8p2'] == 0 && @$_POST['std_group'] != 4)
             {
                 $allinputdata['excep'] = 'Please Select Part-II Subject 8';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
+
 
             }
             else if((@$_POST['sub6'] == 19 || @$_POST['sub6p2'] == 19) && (@$_POST['sub7'] == 20 || @$_POST['sub7p2'] == 20) ||  (@$_POST['sub6'] == 20 || @$_POST['sub6p2'] == 20) && (@$_POST['sub7'] == 19 || @$_POST['sub7p2'] == 19))
 
             {
                 $allinputdata['excep'] = 'Please Select One Subject from Advanced Islamic Studies / Islamic History';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
+
 
             }
 
@@ -3173,14 +3172,18 @@ class Admission extends CI_Controller
             if( (@$_POST['sub5'] == 0 && @$_POST['sub5p2'] == 0) && (@$_POST['sub6'] == 0 && @$_POST['sub6p2'] == 0) && (@$_POST['sub7'] == 0 && @$_POST['sub7p2'] == 0)  )
             {
                 $allinputdata['excep'] = 'Please Select Part-II Subject 6';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/'.$viewName);
-                return;
-
             }
         }
 
+        if($allinputdata['excep'] == '')
+        {
+            $allinputdata['excep'] =  'Success';
+        }
+
+        echo json_encode($allinputdata);
+
     }
+
     function base64_to_jpeg($base64_string, $output_file) 
     {
         $ifp = fopen($output_file, "wb"); 

@@ -301,9 +301,8 @@
                 alertify.log("Please wait while your form is downloading....")    
                 downloadform();    
             }
-
-
-        })
+        });
+        
         function downloadform(){
             //debugger;
             var formno = $("#formid").val();
@@ -314,7 +313,8 @@
             if(dob == ""){
                 return false;
             }
-            window.location.href='<?php  echo base_url(); ?>Admission/checkFormNo_then_download/'+formno+'/'+dob;  
+
+            window.location.href='<?php echo base_url(); ?>index.php/Admission/checkFormNo_then_download/'+formno+'/'+dob;  
         }
 
         function validateForm() {

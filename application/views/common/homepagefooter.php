@@ -416,7 +416,7 @@
                                 listitems +='<option value=' + data.zone_cd + '>' + data.zone_name + '</option>';
                                 //$('#pvtZone').append('<option value=' + data.zone_cd + '>' + data.zone_name + '</option>');
                                 //console.log('Zone Name :', data.zone_cd)
-                                //console.log('Zone Name :', data)
+                                //console.log('Zone Name :', data);
                             })
                         })
                         $('#pvtZone').append(listitems)
