@@ -1,5 +1,17 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+require_once( BASEPATH .'database/DB.php');
+$db =& DB();
+
+$query = $db->select('End_Date')
+           -> where(array('class'=>10,'sess'=> 1,'isPrSub' => 1))->get('admission_online..RuleFeeAdm');
+
+$result = $query->result();
+
+$singleDate = date('d-m-Y',strtotime($result[0]->End_Date)) ;
+$DoubleDate = date('d-m-Y',strtotime($result[1]->End_Date));
+$TripleDate = date('d-m-Y',strtotime($result[2]->End_Date));
+
 /*
 |--------------------------------------------------------------------------
 | File and Directory Modes
@@ -46,7 +58,7 @@ define('Year','2017');
 define('YEAR','2017');  
 define('ISREADMISSION','0');  
 define('lastdate','23-12-2016');
-define('GET_PRIVATE_IMAGE_PATH', 'D:/Xampp/htdocs/adminbise/uploads/2017/private/10th/');
+define('GET_PRIVATE_IMAGE_PATH', 'C:/inetpub/vhosts/bisegrw.edu.pk/Share Images/uploads/SSC/admission/2018/10th/annual/private/');
 define('GET_IMAGE_PATH_9th_Admission_Annual', '../uploads/2016/regular/');
 define('GET_IMAGE_PATH_9th_Admission_Annual1', 'uploads/2016/regular/');
 define('GET_PRIVATE_IMAGE_PATH_COPY','');
@@ -78,12 +90,13 @@ define('DOB_LIMIT','01-07-2005'); // dd-mm-Y format;
 
 //===============10TH Regular/Private Admission Matric challan varaible
 define('currdate','date("d-m-Y");');
-define('SingleDateFee','23-12-2016');
-define('DoubleDateFee', '03-01-2017');
-define('TripleDateFee', '10-01-2017');
-define('SingleDateFee9th','12-12-2017');
-define('DoubleDateFee9th', '30-12-2017');
-define('TripleDateFee9th', '07-01-2018');
+define('SingleDateFee',$singleDate);
+define('DoubleDateFee', $DoubleDate);
+define('TripleDateFee', $TripleDate);
+
+define('SingleDateFee9th',$singleDate);
+define('DoubleDateFee9th', $DoubleDate);
+define('TripleDateFee9th', $TripleDate);
 define('getinfo','admission_online..tblAdmissionDataForSSC');
 //define('DIRPATH','C:\inetpub\vhosts\bisegrw.com\Share Images\OldPics'); 
 define('DIRPATH','C:\inetpub\vhosts\bisegrw.com\Share Images\\'); 
