@@ -37,13 +37,13 @@
                 <label class="control-label" for="cand_name" >
                     Candidate Name:
                 </label>        
-                <input class="text-uppercase form-control"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>" >
+                <input class="text-uppercase form-control"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>"  <?php if(@$data['name']!= "") echo "readonly='readonly'";  ?>  >
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="father_name">
                     Father's Name :
                 </label>        
-                <input class="text-uppercase form-control" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo  @$data['Fname']; ?>" > 
+                <input class="text-uppercase form-control" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo @$data['Fname']; ?>" <?php if(@$data['Fname']!= "") echo "readonly='readonly'";  ?> > 
             </div>
         </div>
     </div>

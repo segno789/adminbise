@@ -278,6 +278,8 @@ class Admission_model extends CI_Model
         if($regFee == '')
             $regFee=0 ;
 
+        //DebugBreak();
+            
         $query = $this->db->query(Insert_sp." '$formno',10,$iyear,$ses_s,'$name','$fname','$BForm','$FNIC','$Dob','$CellNo',$medium,'".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,$oldrno,$oldyear,$oldsess,$old_class,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$cat09,$cat10,$sub1ap2,$sub2ap2,$sub3ap2,$sub4ap2,$sub5ap2,$sub6ap2,$sub7ap2,$sub8ap2,$dist_cd,$teh_cd,$zone_cd,$Brd_cd,$isotherbrd,'$preResult',$exam_type,$isFresh,$AdmFee,$AdmProcessFee,$AdmTotalFee,$regFee,$certFee,$AdmFine,'$strRegNo','$picpath', $IsNewPic, '$temppath' ");    
         if (!$query) 
         {
@@ -503,7 +505,7 @@ class Admission_model extends CI_Model
         $data['cdate']= date('Y-m-d H:i:s');
         $this->db->where('formNo',$data['formNo']);
         $this->db->update(INSERT_TBL,$data);
-        $this->db->select('regFee,AdmFee,AdmProcessFee,AdmFine,AdmTotalFee');
+        $this->db->select('AdmFee,AdmFine,AdmTotalFee');
         $query = $this->db->get_where(INSERT_TBL, array('formNo'=>$data['formNo'])); 
         if (!$query) 
         {
@@ -520,7 +522,6 @@ class Admission_model extends CI_Model
         {
             return  false;
         }
-
     }
 
     public function getAdmissionData($rno, $inst_cd){

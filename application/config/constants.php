@@ -55,7 +55,7 @@ define('Batch_tbl','Admission_online..tblRegBatch10th'); // For Matric Admission
 define('INSERT_TBL','Admission_online..tblMAdm'); // for insertion matric supply
 define('Insert_sp','admission_online..MAdm_sp_insert'); // for insertion matric supply
 define('Insert_sp_matric_annual','Admission_online..tblMAdmInsert'); // for insertion matric Annual
-define('formprint_sp','Admission_online..sp_form_data_temp');    // for selection matric supply
+define('formprint_sp','Admission_online..sp_form_data');    // for selection matric supply
 define('formprint_sp_9th','Registration..sp_form_data_9thAdm');    // for selection 9th Annual
 define('formprint_sp_matric_annual','Admission_online..sp_form_data');    // for selection matric Annual
 define('return_pdf_isPicture','1');
