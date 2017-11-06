@@ -26,6 +26,7 @@
                     </a>
                     </li>
                     <?php } 
+                    $appconfig['isadmP1'] =1;
                 if($appconfig['isadmP1'] == 1){?>
                     <li>
                         <a href="<?php echo base_url(); ?>Admission_9th_reg" class="<?php if($isselected == '14') {echo 'selected';}?>" >
@@ -248,7 +249,8 @@
             }
             ?>
             <?php   // 9th admission
-            if($isselected == '14'){
+            if($isselected == '14')
+            {
                 ?>
                 <ul >
                     <li><a href="<?php echo base_url(); ?>Admission_9th_reg"   data-original-title="" >Admission</a></li>
@@ -262,23 +264,33 @@
                             Edit Forms
                         </a>
                     </li>
-                    <li>
-                        <a href="<?php echo base_url(); ?>Admission_9th_reg/EditPicForms">
+                     <li>
+                        <a href="<?php echo base_url(); ?>Admission_9th_reg/CreateBatch">
+                            Create Batch
+                        </a>
+                    </li>
+                   <!-- <li>
+                        <a href="<?php //echo base_url(); ?>Admission_9th_reg/EditPicForms">
                             Edit Pictures Forms
                         </a>
-                    </li>
+                    </li>-->
                     <li>
-                        <a href="<?php echo base_url(); ?>Admission_9th_reg/FormPrinting">
-                            Form Printing
+                        <a href="<?php echo base_url(); ?>Admission_9th_reg/BatchList">
+                            Batch List
                         </a>
                     </li>
-                    <li>
-                        <a href="<?php echo base_url(); ?>Admission_9th_reg/RevenueList">
+                   <!-- <li>
+                        <a href="<?php //echo base_url(); ?>Admission_9th_reg/FormPrinting">
+                            Proof Printing
+                        </a>
+                    </li>     -->
+                    <!--<li>
+                        <a href="<?php //echo base_url(); ?>Admission_9th_reg/RevenueList">
                             Revenue List Printing
                         </a>
-                    </li>
+                    </li>-->
                     <li>
-                        <a onclick="return logout();">Logout</a>
+                        <a onclick="return logout();" style="cursor: pointer;">Logout</a>
                     </li>
 
                 </ul>

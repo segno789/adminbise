@@ -21,218 +21,180 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/alertify.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
 
-
-
-
 </body>
 </html>
 
 <script type="text/javascript">
-    
-     function issubmit_sel()
-     {
-     debugger;
-            var msg = "Are You Sure You want to Make Admissions of Selected Students ?"
-            
-             //var option =  $('input[type=radio][name=chk]:checked').val(); 
+
+    var otable =   $('#data-table').dataTable({
+        "sPaginationType": "full_numbers",
+        "cache": true
+    });
+
+    function issubmit_sel_cancel()
+    {
+        //debugger;
+        var msg = "Are You Sure You want to Cancel Admissions of Selected Students ?"
+
+        //var option =  $('input[type=radio][name=chk]:checked').val(); 
         if( $('input[name="chk[]"]:checked').length > 0 )
         {
-         alertify.confirm(msg, function (e) {
-
-                    if (e) {
-                    $("#isformwise").val("1");
-                    $('#form_make_adm').submit();
-                       // window.location.href = '<?=base_url()?>index.php/Admission_9th_reg/NewEnrolment_update/'
-                    } 
-
-
-                });
-        }
-            else{  
-            alertify.error("Please Select Checkbox First !")
-            }
-        
-       
-        return false;
-
             alertify.confirm(msg, function (e) {
 
                 if (e) {
-                    // user clicked "ok"
-                    window.location.href = '<?=base_url()?>index.php/Admission_9th_reg/NewEnrolment_update/'
-                } else {
-                    // user clicked "cancel"
-
-                }
-            }); 
-       }
-     function issubmit_sel_cancel()
-     {
-     //debugger;
-            var msg = "Are You Sure You want to Cancel Admissions of Selected Students ?"
-            
-             //var option =  $('input[type=radio][name=chk]:checked').val(); 
-        if( $('input[name="chk[]"]:checked').length > 0 )
-        {
-         alertify.confirm(msg, function (e) {
-
-                    if (e) {
                     $("#isformwise").val("3");
                     $('#form_make_adm').submit();
-                       // window.location.href = '<?=base_url()?>index.php/Admission_9th_reg/NewEnrolment_update/'
-                    } 
+                    // window.location.href = '<?=base_url()?>index.php/Admission_9th_reg/NewEnrolment_update/'
+                } 
 
 
-                });
+            });
         }
-            else{  
+        else{  
             alertify.error("Please Select Checkbox First !")
-            }
-        
-       
+        }
+
+
         return false;
 
+        alertify.confirm(msg, function (e) {
+
+            if (e) {
+                // user clicked "ok"
+                window.location.href = '<?=base_url()?>index.php/Admission_9th_reg/NewEnrolment_update/'
+            } else {
+                // user clicked "cancel"
+
+            }
+        }); 
+    }
+    function issubmit_all()
+    {
+        if($("#make_adm9th_groups").val() == ""  || $("#make_adm9th_groups").val() == 0)
+        {
+            alertify.error("Please Select Group First!") ;
+        }
+        else{
+            var msg = "Are you Sure You want to make Admissions to All Students of Selected Group ?"
+            //var msg = "Are You Sure You want to Cancel this Form ? <img src='<?php //echo base_url(); ?>assets/img/note_for_batch.jpg' alt='logo' style='width:30px; height: 50px;' />"
             alertify.confirm(msg, function (e) {
 
                 if (e) {
-                    // user clicked "ok"
-                    window.location.href = '<?=base_url()?>index.php/Admission_9th_reg/NewEnrolment_update/'
-                } else {
-                    // user clicked "cancel"
-
-                }
-            }); 
-       }
-       function issubmit_all()
-       {
-        if($("#make_adm9th_groups").val() == ""  || $("#make_adm9th_groups").val() == 0)
-            {
-                alertify.error("Please Select Group First!") ;
-            }
-            else{
-                var msg = "Are you Sure You want to make Admissions to All Students of Selected Group ?"
-                //var msg = "Are You Sure You want to Cancel this Form ? <img src='<?php //echo base_url(); ?>assets/img/note_for_batch.jpg' alt='logo' style='width:30px; height: 50px;' />"
-                alertify.confirm(msg, function (e) {
-
-                    if (e) {
                     $("#isformwise").val("2");
-                       $('#form_make_adm').submit(); 
-                    } 
+                    $('#form_make_adm').submit(); 
+                } 
 
 
-                });
-            
-       }
-       }
+            });
+
+        }
+    }
     $(document).ready(function(){
-    
-         function Checkfiles_corr()
-    {
-    var fup = document.getElementById('image');
-    var fileName = fup.value;
-    // alert('File Name is = '+ fileName);
-    var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
-    if(ext == "jpg" )
-    {
-    //$("#corr_previewImg")
-    $('#previewImg').attr('src');
-    return true;
-    } 
-    else
-    {
-    alert("Upload  .jpg images only");
-    fup.value = null;
-    fup.focus();
-    return false;
-    }
-    }
-     function BatchRelease_INSERT()
-    {
 
-        var Batch_Id = $('#batch_real_Id').val();
-        var reason  = $('#batch_real_reason').val();;
-        var bank_branch  = $('#batch_real_bankbranch').val();;
-        var bank_challan  = $('#batch_real_challanno').val();;
-        var paidAmount  = $('#batch_real_PaidAmount').val();;
-        var paidDate  = $('#batch_real_PaidDate').val();;
-
-
-        if(Batch_Id == 0)
+        function Checkfiles_corr()
+        {
+            var fup = document.getElementById('image');
+            var fileName = fup.value;
+            // alert('File Name is = '+ fileName);
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if(ext == "jpg" )
+            {
+                //$("#corr_previewImg")
+                $('#previewImg').attr('src');
+                return true;
+            } 
+            else
+            {
+                alert("Upload  .jpg images only");
+                fup.value = null;
+                fup.focus();
+                return false;
+            }
+        }
+        function BatchRelease_INSERT()
         {
 
-            alertify.error("Please Select Batch Again From Batch List.");
-            $('#batch_real_Id').focus();
-            return false;
+            var Batch_Id = $('#batch_real_Id').val();
+            var reason  = $('#batch_real_reason').val();;
+            var bank_branch  = $('#batch_real_bankbranch').val();;
+            var bank_challan  = $('#batch_real_challanno').val();;
+            var paidAmount  = $('#batch_real_PaidAmount').val();;
+            var paidDate  = $('#batch_real_PaidDate').val();;
 
 
+            if(Batch_Id == 0)
+            {
+
+                alertify.error("Please Select Batch Again From Batch List.");
+                $('#batch_real_Id').focus();
+                return false;
+
+
+            }
+            if(reason.length < 5)
+            {
+
+                alertify.error("Please Give Strong Reason.(More than 5 words..)");
+                $('#batch_real_reason').focus();
+                return false;
+
+
+            }
+            if(bank_branch == 0)
+            {
+
+                alertify.error("Please Select Bank Branch.");
+                $('#batch_real_bankbranch').focus();
+                return false;
+
+
+            }
+            if(bank_challan == 0)
+            {
+
+                alertify.error("Please Give Bank Challan.");
+                $('#batch_real_challanno').focus();
+                return false;
+
+
+            }
+            if(paidAmount == 0)
+            {
+
+                alertify.error("Please Give Bank Paid Amount.");
+                $('#batch_real_PaidAmount').focus();
+                return false;
+
+
+            }
+            if(paidDate == '')
+            {
+
+                alertify.error("Please Give Bank Paid Amount.");
+                $('#batch_real_PaidDate').focus();
+                return false;
+
+
+            }
+
+
+            window.location.href = '<?=base_url()?>Admission_9th_reg/Batchlist_INSERT/';
         }
-        if(reason.length < 5)
-        {
-
-            alertify.error("Please Give Strong Reason.(More than 5 words..)");
-            $('#batch_real_reason').focus();
-            return false;
 
 
-        }
-        if(bank_branch == 0)
-        {
-
-            alertify.error("Please Select Bank Branch.");
-            $('#batch_real_bankbranch').focus();
-            return false;
 
 
-        }
-        if(bank_challan == 0)
-        {
-
-            alertify.error("Please Give Bank Challan.");
-            $('#batch_real_challanno').focus();
-            return false;
 
 
-        }
-        if(paidAmount == 0)
-        {
-
-            alertify.error("Please Give Bank Paid Amount.");
-            $('#batch_real_PaidAmount').focus();
-            return false;
-
-
-        }
-        if(paidDate == '')
-        {
-
-            alertify.error("Please Give Bank Paid Amount.");
-            $('#batch_real_PaidDate').focus();
-            return false;
-
-
-        }
-
-
-        window.location.href = '<?=base_url()?>Admission_9th_reg/Batchlist_INSERT/';
-    }
-   
-        
-      var otable =   $('#data-table').dataTable({
-            "sPaginationType": "full_numbers",
-            "cache": false
-        });
-                 
-       
-       
-       $('.check').toggle(function(){
-         var allPages = otable.fnGetNodes();
+        $('.check').toggle(function(){
+            var allPages = otable.fnGetNodes();
             $('input[type="checkbox"]', allPages).prop('checked', true);
             $(this).text('Uncheck All')
             },function(){
-               $('input[type="checkbox"]', allPages).prop('checked', false);
+                $('input[type="checkbox"]', allPages).prop('checked', false);
                 $(this).text('Check All');        
         });
-      
+
 
         $("#bay_form,#father_cnic").mask("99999-9999999-9",{placeholder:"_"});
         $("#dob,#dateofadmission").mask("99-99-9999",{placeholder:"_"});
@@ -244,21 +206,21 @@
         var spl_cd = "<?php   echo @$spl_cd; ?>";
         var err ='<?php echo @$error; ?>';
         if(err != ""){
-            alertify.error("Dear Student! No data found against your submitted record! Please check you informaiton again.");
+            alertify.error("No data found against your submitted record! Please check your informaiton again.");
         }
-        if(spl_cd != "")
+        else if(spl_cd != "")
         {
             if(spl_cd == "chance")
             {
-                alertify.error("Dear Student! You are not eligible due to NO chance in this exam!");
+                alertify.error("This Candidate is not eligible due to NO chance in this exam!");
             } //exam_type3
             else if(spl_cd == "exam_type3")
             {
-                alertify.error("Dear Student! You are not eligible due to FULL FAIL!");
+                alertify.error("This Candidate is not eligible due to FULL FAIL!");
             } 
             else if(spl_cd != "3")
             {
-                alertify.error("Dear Student! Please  rectify  "+spl_cd+" before proceeding further from MATRIC BRANCH !"); 
+                alertify.error("Please  rectify  "+spl_cd+" before proceeding further from MATRIC BRANCH !"); 
             }   
 
         } 
@@ -492,17 +454,17 @@
             }
             window.location.href='<?php  echo base_url(); ?>Admission_9th_pvt/checkFormNo_then_download/'+formno+'/'+dob;  
         }
-          function ReturnForm_Final_groupwise(grp_cd){
-        window.location.href = '<?=base_url()?>Admission_9th_reg/return_pdf/'+grp_cd + '/2'
-    }
-    // window.location.href = '<?=base_url()?>Admission_matric/revenue_pdf/'+Batch_ID
-    function ReturnForm_Final_groupwise(grp_cd){
-        window.location.href = window.location.href = '<?=base_url()?>Admission_matric/revenue_pdf/'+grp_cd/'2'; 
-    }
-    function ReturnForm_Final_Formnowise(startformno,endformno){
-        window.location.href = '<?=base_url()?>Admission_9th_reg/return_pdf/'+startformno + '/3' +'/'+endformno +'/';
-    }
-   
+        function ReturnForm_Final_groupwise(grp_cd){
+            window.location.href = '<?=base_url()?>Admission_9th_reg/return_pdf/'+grp_cd + '/2'
+        }
+        // window.location.href = '<?=base_url()?>Admission_matric/revenue_pdf/'+Batch_ID
+        function ReturnForm_Final_groupwise(grp_cd){
+            window.location.href = window.location.href = '<?=base_url()?>Admission_matric/revenue_pdf/'+grp_cd/'2'; 
+        }
+        function ReturnForm_Final_Formnowise(startformno,endformno){
+            window.location.href = '<?=base_url()?>Admission_9th_reg/return_pdf/'+startformno + '/3' +'/'+endformno +'/';
+        }
+
         function validateForm() 
         {
 
@@ -667,15 +629,15 @@
             // //debugger;
             // alert(this.value + "  Transfer Thai Gayo");
             if (this.value == '1') {
-                window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'96/1/';
+                window.location.href = '<?=base_url()?>Admission_9th_reg/CreateBatch/'+'96/1/';
                 // alert("Allot Thai Gayo Bhai");
             }
             else  if (this.value == '2') {
-                window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'97/2/';
+                window.location.href = '<?=base_url()?>Admission_9th_reg/CreateBatch/'+'97/2/';
                 //  alert("Transfer Thai Gayo");
             }
             else  if(this.value == 3){
-                window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'98/3';
+                window.location.href = '<?=base_url()?>Admission_9th_reg/CreateBatch/'+'98/3';
                 //alert("Transfer Thai Gayo");
             }
 
@@ -683,32 +645,111 @@
         $( "#std_groups" ).change(function () {
             if (this.value == '1') {
                 // 1 biology   2 humanities   5 deaf and dumb  7 computer science  8 electrical wiring 
-                window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'96/3/1/';
+                window.location.href = '<?=base_url()?>Admission_9th_reg/CreateBatch/'+'96/3/1/';
                 //  alert("Allot Thai Gayo Bhai");
             }
             else  if (this.value == '2') {
-                window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'97/3/2/';
+                window.location.href = '<?=base_url()?>Admission_9th_reg/CreateBatch/'+'97/3/2/';
                 // alert("Transfer Thai Gayo");
             }
             else  if(this.value == '5'){
-                window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'98/3/5/';
+                window.location.href = '<?=base_url()?>Admission_9th_reg/CreateBatch/'+'98/3/5/';
                 // alert("Transfer Thai Gayo");
             }
             else  if(this.value == '7'){
-                window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'98/3/7/';
+                window.location.href = '<?=base_url()?>Admission_9th_reg/CreateBatch/'+'98/3/7/';
                 //  alert("Transfer Thai Gayo");
             }
             else  if(this.value == '8'){
-                window.location.href = '<?=base_url()?>Admission_matric/CreateBatch/'+'98/3/8/';
+                window.location.href = '<?=base_url()?>Admission_9th_reg/CreateBatch/'+'98/3/8/';
                 //  alert("Transfer Thai Gayo");
             }
 
         })
 
     })
-     function ChallanForm_Adm10th_Regular(Batch_ID)
+    var valArray = [];
+    var $valuesContainer = $('#CheckedFormno');
+    var $batchformSelectedid = $("#CheckedFormno_createBatch");
+    //var $countContainer = $('.selectCount');
+    
+    $("input:checkbox").live('change', function () {
+
+        var value = $(this).val();
+
+        if(this.checked) {
+            valArray.push(value);    // record the value of the checkbox to valArray
+        } else {
+            valArray.pop(value);    // remove the recorded value of the checkbox
+        }
+
+    });
+  
+    function issubmit_sel()
+    {
+        //debugger;
+        var msg = "Are You Sure You want to Make Admissions of Selected Students ?"
+         
+        //var option =  $('input[type=radio][name=chk]:checked').val(); 
+        
+        if( valArray.length > 0 )
+        {
+        
+             $valuesContainer.val(valArray.join(','));
+            // alert(valArray);
+            alertify.confirm(msg, function (e) {
+
+                if (e) {
+
+                    $("#isformwise").val("1");
+                    
+                    /*var allPages = otable.fnGetNodes();
+                    $('input[type="checkbox"]', allPages).prop('checked', true); */
+                    /*var protCaseInstArray = [];
+                    $(otable.fnGetNodes()).find("input[name='chk[]']:checked").each(function() { protCaseInstArray.push($(this).val()); }); 
+                    console.log(protCaseInstArray);
+                    */ 
+                    //$('#form_make_adm').submit();
+
+                    // $('#form_make_adm').submit(function(e){
+
+
+                    $('#form_make_adm').submit();
+                    // });
+                    // window.location.href = '<?=base_url()?>index.php/Admission_9th_reg/NewEnrolment_update/'
+                } 
+
+
+            });
+        }
+        else{  
+            alertify.error("Please Select Checkbox First !")
+        }
+
+
+        return false;
+
+        alertify.confirm(msg, function (e) {
+
+            if (e) {
+                // user clicked "ok"
+                window.location.href = '<?=base_url()?>index.php/Admission_9th_reg/NewEnrolment_update/'
+            } else {
+                // user clicked "cancel"
+
+            }
+        }); 
+    }
+    function ChallanForm_Adm9th_Regular(Batch_ID)
+    {
+        window.location.href = '<?=base_url()?>Admission_9th_reg/ChallanForm_Reg9th_Regular/'+Batch_ID
+    }
+    function ChallanForm_Adm10th_Regular(Batch_ID)
     {
         window.location.href = '<?=base_url()?>/index.php/Admission_9th_reg/ChallanForm_Adm10th_Regular/'+Batch_ID
+    }
+    function Revenue_list_batchwise_9thAdm(grp_cd){
+        window.location.href =  '<?=base_url()?>Admission_9th_reg/revenue_pdf/'+grp_cd + '/9'
     }
     function Revenue_list_groupwise(grp_cd){
         window.location.href =  '<?=base_url()?>Admission_9th_reg/revenue_pdf/'+grp_cd + '/4'
@@ -718,6 +759,9 @@
     }
     function Print_Admission_Form_Proofreading_Groupwise(grp_cd){
         window.location.href =  '<?=base_url()?>Admission_9th_reg/Print_Admission_Form_Groupwise/'+grp_cd + '/1'
+    }
+    function Print_Admission_Form_BatchId(grp_cd){
+        window.location.href =  '<?=base_url()?>Admission_9th_reg/Print_Admission_Form_Groupwise/'+grp_cd + '/3'
     }
     function Print_Admission_Form_Proofreading_Formnowise(startformno,endformno){
         window.location.href =  '<?=base_url()?>Admission_9th_reg/Print_Admission_Form_Groupwise/'+startformno + '/2' +'/'+endformno+'/';
@@ -764,7 +808,7 @@
                 alertify.confirm(msg, function (e) {
 
                     if (e) {
-                        window.location.href = '<?=base_url()?>Admission_matric/Make_Batch_Group_wise/'+$("#std_groups").val()+'/0';
+                        window.location.href = '<?=base_url()?>Admission_9th_reg/Make_Batch_Group_wise/'+$("#std_groups").val()+'/0';
                     } 
 
 
@@ -773,137 +817,137 @@
         }
         else if(option == "1" || option == "2")
         {
-            window.location.href = '<?=base_url()?>Admission_matric/Make_Batch_Group_wise/'+'0/'+option+'/';
+            window.location.href = '<?=base_url()?>Admission_9th_reg/Make_Batch_Group_wise/'+'0/'+option+'/';
         }
         return false;
 
 
 
     }
-     $("#std_group").change(function()
-    {
-
-
-        var grp_cd = $("#std_group").val();
-        //alert(grp_cd);
-
-        // If Science with Biology group selected then 
-        if(grp_cd == "1")
+    $("#std_group").change(function()
         {
 
-            // Check Nationality and select appropriate Subject1 against candidate Nationality :)
-            load_Bio_CS_Sub();
-            $("#sub8").append(new Option('Biology',8));
 
-        }
-        else if(grp_cd == "7")
-        {
-            load_Bio_CS_Sub();
-            $("#sub8").append(new Option('COMPUTER SCIENCE',78));
-            //    alert('hello  Sweet Heart ! I love You UMMMMAH :) ') 
-        }
-        else if (grp_cd == "8")
-        {
-            load_Bio_CS_Sub();
-            $("#sub8").append(new Option('ELECTRICAL WIRING (OPT)',43));
-            //ELECTRICAL WIRING (OPT)
-        }
+            var grp_cd = $("#std_group").val();
+            //alert(grp_cd);
 
-        else if(grp_cd == "2")
-        {
+            // If Science with Biology group selected then 
+            if(grp_cd == "1")
+            {
 
-            Hum_Deaf_Subjects();
-            $.each(sub5_Hum,function(val,text){
-                $("#sub5").append(new Option(text,val));
-            });
-            $.each(sub6_Hum,function(val,text){
-                $("#sub6").append(new Option(text,val));
-            });
+                // Check Nationality and select appropriate Subject1 against candidate Nationality :)
+                load_Bio_CS_Sub();
+                $("#sub7").append(new Option('Biology',8));
 
-            $.each(sub7_Hum,function(val,text){
+            }
+            else if(grp_cd == "7")
+            {
+                load_Bio_CS_Sub();
+                $("#sub7").append(new Option('COMPUTER SCIENCE',78));
+                //    alert('hello  Sweet Heart ! I love You UMMMMAH :) ') 
+            }
+            else if (grp_cd == "8")
+            {
+                load_Bio_CS_Sub();
+                $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                //ELECTRICAL WIRING (OPT)
+            }
 
-                $("#sub7").append(new Option(text,val));
-            });
-            $.each(sub8_Hum,function(val,text){
+            else if(grp_cd == "2")
+            {
 
-                $("#sub8").append(new Option(text,val));
-            });
-            var Elecgrp ="<?php echo @$grp_cd; ?>";
-            var isgovt ="<?php echo @$isgovt; ?>";
-            var b = ['8'];
-            var isElec = '0';
-            $.each(Elecgrp,function(i,val){
-                var result=$.inArray(val,b);
+                Hum_Deaf_Subjects();
+                $.each(sub5_Hum,function(val,text){
+                    $("#sub4").append(new Option(text,val));
+                });
+                $.each(sub6_Hum,function(val,text){
+                    $("#sub5").append(new Option(text,val));
+                });
 
-                if(result!=-1)
+                $.each(sub7_Hum,function(val,text){
+
+                    $("#sub6").append(new Option(text,val));
+                });
+                $.each(sub8_Hum,function(val,text){
+
+                    $("#sub7").append(new Option(text,val));
+                });
+                var Elecgrp ="<?php echo @$grp_cd; ?>";
+                var isgovt ="<?php echo @$isgovt; ?>";
+                var b = ['8'];
+                var isElec = '0';
+                $.each(Elecgrp,function(i,val){
+                    var result=$.inArray(val,b);
+
+                    if(result!=-1)
+                    {
+                        isElec = 1;
+                    }
+                })
+
+                if(isgovt == 2)
                 {
-                    isElec = 1;
+                    if(isElec != 1)
+                    {
+                        // $("#sub7")
+                        //$("#sub7 option[value='43']").remove();
+                        //$("#sub8 option[value='43']").remove();
+                        $("#sub6 option[value='43']").remove();
+                        $("#sub7 option[value='43']").remove();
+
+                        // $("#sub7").find('option[value=43]').remove();
+                        // alert("removed");
+                    }  
                 }
-            })
 
-            if(isgovt == 2)
-            {
-                if(isElec != 1)
+
+                var Gender = $("input[name=gender]:checked").val();
+                //console.log(Religion);
+                if(Gender == "2")
                 {
-                    // $("#sub7")
-                    //$("#sub7 option[value='43']").remove();
-                    //$("#sub8 option[value='43']").remove();
-                    $("#sub7 option[value='43']").remove();
-                    $("#sub8 option[value='43']").remove();
 
-                    // $("#sub7").find('option[value=43]').remove();
-                    // alert("removed");
-                }  
+                    $("#sub6").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                    $("#sub7").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                }
+                else
+                {
+                    // alert('i am removed');
+                    dropdownElement.find('sub7[value=13]').remove();
+
+
+                }
+
+
             }
-
-
-            var Gender = $("input[name=gender]:checked").val();
-            //console.log(Religion);
-            if(Gender == "2")
+            else if(grp_cd == "5")
             {
-
-                $("#sub8").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
-                $("#sub7").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                Hum_Deaf_Subjects();
+                $.each(sub5_Deaf,function(val,text){
+                    $("#sub4").append(new Option(text,val));
+                });
+                $.each(sub6_Deaf,function(val,text){
+                    $("#sub5").append(new Option(text,val));
+                });
+                $.each(sub7_Deaf,function(val,text){
+                    $("#sub6").append(new Option(text,val));
+                });
+                $.each(sub8_Deaf,function(val,text){
+                    $("#sub7").append(new Option(text,val));
+                });
             }
-            else
+            else if (grp_cd == "0")
             {
-                // alert('i am removed');
-                dropdownElement.find('sub8[value=13]').remove();
-
-
+                remove_subjects();
             }
-
-
-        }
-        else if(grp_cd == "5")
-        {
-            Hum_Deaf_Subjects();
-            $.each(sub5_Deaf,function(val,text){
-                $("#sub5").append(new Option(text,val));
-            });
-            $.each(sub6_Deaf,function(val,text){
-                $("#sub6").append(new Option(text,val));
-            });
-            $.each(sub7_Deaf,function(val,text){
-                $("#sub7").append(new Option(text,val));
-            });
-            $.each(sub8_Deaf,function(val,text){
-                $("#sub8").append(new Option(text,val));
-            });
-        }
-        else if (grp_cd == "0")
-        {
-            remove_subjects();
-        }
 
 
     });
     function makebatch_formnowise(){
-
-        if( $('input[name="chk[]"]:checked').length > 0 )
+         
+        if(valArray.length > 0 )
         {
             var msg = "Are you sure you want to make Batch ?" //var msg = "<img src='<?php echo base_url(); ?>assets/img/note_for_batch.jpg' alt='logo' style='width:800px; height: auto;' />"
-
+             $batchformSelectedid.val(valArray.join(','));
             alertify.confirm(msg, function (e) {
 
                 if (e) {
@@ -983,7 +1027,7 @@
     }
     function RevenueForm(Batch_ID)
     {
-     var option =  $('input[type=radio][name=opt]:checked').val(); 
+        var option =  $('input[type=radio][name=opt]:checked').val(); 
         // alert(option);
         // return;
         if(option == "1")
@@ -1009,7 +1053,7 @@
         else{
             return;
         }
-       
+
     }
     function ReleaseForm(Batch_ID)
     {
@@ -1045,7 +1089,7 @@
         }
     })
     $('#get_Proof_reg').click( function(){
-    debugger;
+        debugger;
         var option =  $('input[type=radio][name=opt]:checked').val(); 
         // alert(option);
         // return;
@@ -1074,36 +1118,36 @@
         }
     })
     $('#get_revenue').click( function()
-    {
-        var option =  $('input[type=radio][name=opt]:checked').val(); 
-        // alert(option);
-        // return;
-        if(option == "1")
         {
-            var std_group = $('#std_group').val();
-            if(std_group == "0"){
-                alertify.error("Please Select a Group First !");
-                return;
-            }
-            Revenue_list_groupwise(std_group);
-        }
-        else if(option =="2")
-        {
-            var startformno = $('#strt_formNo').val();
-            var endformno = $('#ending_formNo').val();
-            if((startformno.length < 10 ||  startformno.length > 10) && (endformno.length < 10 ||  endformno.length > 10))
+            var option =  $('input[type=radio][name=opt]:checked').val(); 
+            // alert(option);
+            // return;
+            if(option == "1")
             {
-                alertify.error("Invalid Form No.");
+                var std_group = $('#std_group').val();
+                if(std_group == "0"){
+                    alertify.error("Please Select a Group First !");
+                    return;
+                }
+                Revenue_list_groupwise(std_group);
+            }
+            else if(option =="2")
+            {
+                var startformno = $('#strt_formNo').val();
+                var endformno = $('#ending_formNo').val();
+                if((startformno.length < 10 ||  startformno.length > 10) && (endformno.length < 10 ||  endformno.length > 10))
+                {
+                    alertify.error("Invalid Form No.");
+                    return;
+                }
+                Revenue_list_Formnowise(startformno,endformno);
+            }
+            else{
                 return;
             }
-            Revenue_list_Formnowise(startformno,endformno);
-        }
-        else{
-            return;
-        }
     })
-    
-    
+
+
     $('input[type=radio][name=opt]').change(function() {
         if (this.value == '1') {
             // alert("Allot Thai Gayo Bhai");
@@ -1117,8 +1161,8 @@
             //  alert("Transfer Thai Gayo");
         }
     });
-   
-    
+
+
     function  check_NewEnrol_validation()
     {
         // debugger;

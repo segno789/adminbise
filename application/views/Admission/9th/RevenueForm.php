@@ -71,20 +71,20 @@
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table2">
                 <tr>
                     <td style="width:150px;"><strong>Total No. Of Candidates:</strong></td>
-                    <td><?php   echo count($AllFeeData); $AllFeeData[1]['AdmFine']?></td>
+                    <td><?php   echo $calcFeedata['TotalStd']?></td>
                     <td><strong>Challan No:</strong> <?php //echo $data["Challan_No"];?></td>
                 </tr>
                 <tr>
                     <td><strong>Amount Of Admission Fee:</strong></td>
                     <td><?php $TotalAdmFee=0; $TotalProcFee=0; $TotalLateFee=0; $TotalAmount=0; $GrandTotal=0;  $totalco =  count($AllFeeData);
 
-                        foreach ($AllFeeData as $i)
-                        {  $TotalAdmFee = $TotalAdmFee + $i['AdmFee'];
-                            $TotalProcFee = $TotalProcFee + $i['AdmProcessFee'];
-                            $TotalLateFee = $TotalLateFee + $i['AdmFine'];
-                            $GrandTotal = $GrandTotal + $i['AdmTotalFee'];
+                        
+                           $TotalAdmFee = $calcFeedata['Total_AdmFee'];
+                            $TotalProcFee = $calcFeedata['Total_ProcesFee'];
+                            $TotalLateFee = $calcFeedata['Total_LateAdmFee'];
+                            $GrandTotal = $calcFeedata['Amount'];
 
-                        };
+                        
                         // DebugBreak();
                     echo  $TotalAdmFee;?></td>
                     <td><strong>Deposit Date:</strong> ____/____/______</td>
@@ -127,7 +127,7 @@
     <?php
     //DebugBreak();
     $n = 0; 
-
+      $data = $userinfo['fee'];
     foreach ($data as $key=>$vals) {
         $n++;
 
@@ -161,9 +161,9 @@
 
                     
             }
-             if(($vals["sub8"] == 78 || $vals["sub8"] == 43) && $vals["grp_cd"] == 1)
+             if(($vals["sub7"] == 78 || $vals["sub7"] == 43) && $vals["grp_cd"] == 1)
                     {
-                        $grp_name = $vals["sub8"];
+                        $grp_name = $vals["sub7"];
                         switch ($grp_name) {
                             case '78':
                                 $grp_name = 'SCIENCE  WITH COMPUTER SCIENCE';

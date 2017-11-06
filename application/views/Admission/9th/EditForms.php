@@ -40,10 +40,10 @@
                                         <th style="width:11%" class="hidden-phone">
                                             Selected Subjects
                                         </th>
-                                         <th style="width:4%" class="hidden-phone">
+                                        <!-- <th style="width:4%" class="hidden-phone">
                                             Picture
-                                        </th>
-                                         <th scope="col" align="center"><a href="javascript:void(0);" style="color:red;" class="check">Check All</a></th>
+                                        </th> -->
+                                        <!-- <th scope="col" align="center"><a href="javascript:void(0);" style="color:red;" class="check">Check All</a></th>    -->
                                         <th style="width:18%" class="hidden-phone" >
                                             Download
                                         </th>
@@ -74,7 +74,7 @@
                                             $grp_name = 'GENERAL';
                                             break;
                                         case '5':
-                                            $grp_name = 'Deaf and Dumb';
+                                            $grp_name = 'DEAF AND DUMB';
                                             break;
                                         default:
                                             $grp_name = "No Group Selected.";
@@ -90,14 +90,13 @@
                                     <td>'.$vals["Fname"].'</td>
                                     <td>'.date("d-m-Y", strtotime($vals["Dob"])).'</td>
                                     <td>'.$grp_name.'</td>
-                                    <td>'.$vals["sub1_abr"].','.$vals["sub2_abr"].','.$vals["sub3_abr"].','.$vals["sub4_abr"].','.$vals["sub5_abr"].','.$vals["sub6_abr"].','.$vals["sub7_abr"].','.$vals["sub8_abr"].'</td>
-                                     <td><img id="previewImg" style="width:40px; height: 40px;" src="'.$vals['PicPath'].'" alt="Candidate Image"></td>
-                                     <td align="center"><input style="    width: 24px;
-    height: 24px;" type="checkbox" name="chk[]" value="'.$formno.'" /></td>';
-                                    
+                                    <td>'.$vals["sub1_abr"].','.$vals["sub2_abr"].','.$vals["sub3_abr"].','.$vals["sub4_abr"].','.$vals["sub5_abr"].','.$vals["sub6_abr"].','.$vals["sub7_abr"].','.$vals["sub8_abr"].'</td>                                   
+                                     ';
+                                      /*<td><img id="previewImg" style="width:40px; height: 40px;" src="'.$vals['PicPath'].'" alt="Candidate Image"></td><td align="center"><input style="    width: 24px;
+    height: 24px;" type="checkbox" name="chk[]" value="'.$formno.'" /></td> */
                                     echo'<td>
                                     <button type="button" class="btn btn-info" value="'.$formno.'" onclick="NewForm('.$formno.')">Form Detail</button>
-                                    <button type="button" class="btn btn-danger" value="'.$formno.'" onclick="DeleteForm('.$formno.')">Cancel Admission</button>
+                                    <button type="button" class="btn btn-danger" value="'.$formno.'" onclick="DeleteForm('.$formno.')">Delete Form</button>
                                     </td>
                                     </tr>';
                                     endforeach;

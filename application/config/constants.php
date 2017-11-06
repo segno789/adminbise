@@ -26,6 +26,7 @@ define('DIR_WRITE_MODE', 0777);
 | These modes are used when working with fopen()/popen()
 |
 */
+
 define('FOPEN_READ',							'rb');
 define('FOPEN_READ_WRITE',						'r+b');
 define('FOPEN_WRITE_CREATE_DESTRUCTIVE',		'wb'); // truncates existing file data, use with care
@@ -34,15 +35,18 @@ define('FOPEN_WRITE_CREATE',					'ab');
 define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
+
 define('PRIVATE_IMAGE_PATH9TH', 'uploads/2016/9th/private/');
-define('PRIVATE_IMAGE_PATH', 'uploads/2016/10th/private/');
+
+define('PRIVATE_IMAGE_PATH', 'uploads/2017/10th/private/');
 define('RE_ADMISSION_TBL', 'matric_new..vw9th17');
 define('REGULAR_IMAGE_PATH', 'uploads/2016/10th/regular/');
 define('Session','1');  // 1 for Annual and 2 for Supply
 define('Year','2017');  
-define('ISREADMISSION','1');  
+define('YEAR','2017');  
+define('ISREADMISSION','0');  
 define('lastdate','23-12-2016');
-define('GET_PRIVATE_IMAGE_PATH', '../');
+define('GET_PRIVATE_IMAGE_PATH', 'D:/Xampp/htdocs/adminbise/uploads/2017/private/10th/');
 define('GET_IMAGE_PATH_9th_Admission_Annual', '../uploads/2016/regular/');
 define('GET_IMAGE_PATH_9th_Admission_Annual1', 'uploads/2016/regular/');
 define('GET_PRIVATE_IMAGE_PATH_COPY','');
@@ -83,15 +87,15 @@ define('TripleDateFee9th', '07-01-2018');
 define('getinfo','admission_online..tblAdmissionDataForSSC');
 //define('DIRPATH','C:\inetpub\vhosts\bisegrw.com\Share Images\OldPics'); 
 define('DIRPATH','C:\inetpub\vhosts\bisegrw.com\Share Images\\'); 
-define('DIRPATH9th','C:\inetpub\vhosts\bisegrw.com\registration.bisegrw.com\uploads\2016'); 
+define('DIRPATH9th','C:\inetpub\vhosts\bisegrw.com\ssc.bisegrw.com\uploads\2017\reg'); 
 define('DIRPATHOTHER','C:\inetpub\vhosts\bisegrw.com\registration.bisegrw.com\uploads\other'); 
 define('corr_bank_chall_class1','10th');
-define('CURRENT_SESS1','2017'); 
-define('CURRENT_SESS1_year','2017'); 
+define('CURRENT_SESS1','2018'); 
+define('CURRENT_SESS1_year','2018'); 
 define('class_for_9th_Adm','9th');
 define('formnovalid',100000);// Starting Form No. for Pvt 10th candidates.
 define('formno_9thpvt',600000); // Starting Form No. for Pvt 9th candidates. 
-
+define('IMAGEPATH', '\\\\192.168.0.4\pictures$\\');
 //================ RollNumber Slips variables ========================
 define('mClass','10'); 
 define('mClass1','12'); 
@@ -99,8 +103,8 @@ define('mSession','2');
 define('mSession1','1'); 
 define('mClass2','9'); 
 define('mYear','2017'); 
-define('PVT_TITLE','Download Roll Number Slip For S.S.C Supplementary 2017'); 
+define('PVT_TITLE','Download Roll Number Slip For S.S.C Supply 2017'); 
 define('PVT_TITLE_INTER','Download Roll Number Slip For H.S.S.C Supply 2016'); 
 
-//================ Controller Stamp ========================
-define('CESIGN','C:\inetpub\vhosts\bisegrw.com\Share Images\Controller Stamp\CE_Signature.png'); 
+
+
