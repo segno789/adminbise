@@ -1344,7 +1344,7 @@ class Admission extends CI_Controller
     }
     function feecalculate($data)
     {
-        // DebugBreak();
+        //DebugBreak();
 
         $isper = 0;
         if( $this->practicalsubjects($data['sub5'])|| $this->practicalsubjects($data['sub6'])|| $this->practicalsubjects($data['sub7']))
@@ -1444,10 +1444,11 @@ class Admission extends CI_Controller
             $finalFee = $admfee;
         }
 
-        if($examType == 1 || $examType == 2 || $examType == 3 )
+        //DebugBreak();
+
+        if($examType == 1 || $examType == 2 || ($examType == 3 && @$data['Prev_result2'] != 'ABSENT') )
         {
             $data['certFee'] = $certFee;
-
         }
         else if($examType == -1)
         {

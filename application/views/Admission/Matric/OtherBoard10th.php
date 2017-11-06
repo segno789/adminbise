@@ -1,5 +1,5 @@
 
-<form class="form-horizontal no-margin" action="<?php echo base_url(); ?>index.php/Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
+<form class="form-horizontal no-margin" action="<?php echo base_url(); ?>Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-5 col-md-5">

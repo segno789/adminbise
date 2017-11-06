@@ -24,7 +24,7 @@
         window.onbeforeunload = function(){
             if(out)
             {
-                //$.ajax({url:"http://ssc.bisegrw.com/index.php/login/log_out", async:false});
+                //$.ajax({url:"http://ssc.bisegrw.com/login/log_out", async:false});
             }
         }
     });
@@ -314,7 +314,7 @@
                 return false;
             }
 
-            window.location.href='<?php echo base_url(); ?>index.php/Admission/checkFormNo_then_download/'+formno+'/'+dob;  
+            window.location.href='<?php echo base_url(); ?>Admission/checkFormNo_then_download/'+formno+'/'+dob;  
         }
 
         function validateForm() {
@@ -860,7 +860,7 @@
     }
     function ChallanForm_Adm10th_Regular(Batch_ID)
     {
-        window.location.href = '<?=base_url()?>/index.php/Admission_matric/ChallanForm_Adm10th_Regular/'+Batch_ID
+        window.location.href = '<?=base_url()?>/Admission_matric/ChallanForm_Adm10th_Regular/'+Batch_ID
     }
     function ReturnForm_ProofReading_groupwise(grp_cd){
         window.location.href =  '<?=base_url()?>Admission_matric/return_pdf/'+grp_cd + '/4'

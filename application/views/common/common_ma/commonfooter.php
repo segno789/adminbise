@@ -27,7 +27,7 @@
                     alertify.confirm(msg, function (e) {
                         if (e) {
                             // user clicked "ok"
-                            window.location.href ='<?php echo base_url(); ?>index.php/Admission/';
+                            window.location.href ='<?php echo base_url(); ?>Admission/';
                         } else {
                             // user clicked "cancel"
                         }
@@ -374,7 +374,7 @@
                 jQuery.ajax({
                     ////
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Admission/getzone/",
+                    url: "<?php echo base_url(); ?>" + "Admission/getzone/",
                     dataType: 'json',
                     data: {'tehCode': tehId,'gend':gend},
                     beforeSend: function() {  $('.mPageloader').show(); },
@@ -420,7 +420,7 @@
                 jQuery.ajax({
 
                     type: "POST",
-                    url: "<?php echo base_url(); ?>index.php/Admission/getcenter/",
+                    url: "<?php echo base_url(); ?>Admission/getcenter/",
                     dataType: 'json',
                     data: {'pvtZone': tehId,'gend':gend},
                     beforeSend: function() {  $('.mPageloader').show(); },
@@ -786,7 +786,7 @@
     }
     function ChallanForm_Adm10th_Regular(Batch_ID)
     {
-        window.location.href = '<?=base_url()?>/index.php/Admission_matric/ChallanForm_Adm10th_Regular/'+Batch_ID
+        window.location.href = '<?=base_url()?>/Admission_matric/ChallanForm_Adm10th_Regular/'+Batch_ID
     }
     function ReturnForm_ProofReading_groupwise(grp_cd){
         window.location.href =  '<?=base_url()?>Admission_matric/return_pdf/'+grp_cd + '/4'
@@ -1546,7 +1546,7 @@
         alertify.confirm(msg, function (e) {
 
             if (e) {
-                window.parent.location=<?php base_url() ?>'index.php/Admission';
+                window.parent.location=<?php base_url() ?>'Admission';
             }
         });
     }

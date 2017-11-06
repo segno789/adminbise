@@ -229,10 +229,10 @@
         $("#proceed").click(function(){
             var isreg =  $('input[name=candidate]:checked', '#options').val();
             if(isreg==1){
-                window.location.href='<?php  echo base_url(); ?>index.php/Admission/matric_default';
+                window.location.href='<?php  echo base_url(); ?>Admission/matric_default';
             }
             else{
-                window.location.href='<?php  echo base_url(); ?>index.php/login'  
+                window.location.href='<?php  echo base_url(); ?>login'  
             }
         })
 

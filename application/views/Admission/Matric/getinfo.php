@@ -1,5 +1,5 @@
 
-<form enctype="multipart/form-data" id="ReturnStatus" name="ReturnStatus" method="post" action="<?php echo base_url() ?>index.php/Admission/Pre_Matric_data" >
+<form enctype="multipart/form-data" id="ReturnStatus" name="ReturnStatus" method="post" action="<?php echo base_url() ?>Admission/Pre_Matric_data" >
 
     <div class="form-group">    
         <div class="row">
@@ -85,13 +85,13 @@
         <div class="row">
             <div class="col-md-offset-3 col-md-3">
                 <label class="control-label" for="dob" >Date of Birth</label>
-                <!--<input type="text" class="form-control"  id="dob" name="dob"  value="<?php echo @$_POST['dob'] ?>">-->
-                <input type="text" class="form-control"  id="dob" name="dob"  value="11-09-2003">
+                <input type="text" class="form-control"  id="dob" name="dob"  value="<?php echo @$_POST['dob'] ?>">
+                <!--<input type="text" class="form-control"  id="dob" name="dob"  value="11-09-2003">-->
             </div>
             <div class="col-md-3">
                 <label class="control-label" for="oldRno" >Old Roll No</label>
-                <!--<input class="form-control" required="required" type="text" id="oldRno" name="oldRno" value="<?php echo @$_POST['oldRno'] ?>" maxlength="6" />-->
-                <input class="form-control" required="required" type="text" id="oldRno" name="oldRno" value="231392" maxlength="6" />
+                <input class="form-control" required="required" type="text" id="oldRno" name="oldRno" value="<?php echo @$_POST['oldRno'] ?>" maxlength="6" />
+                <!--<input class="form-control" required="required" type="text" id="oldRno" name="oldRno" value="231392" maxlength="6" />-->
             </div>
         </div>
     </div>
@@ -291,17 +291,17 @@ else{
         var msg = "Are You Sure You want to Cancel this Form ?"
         alertify.confirm(msg, function (e) {
             if (e) {
-                window.location.href ='<?php echo base_url(); ?>index.php/Admission/index';
+                window.location.href ='<?php echo base_url(); ?>Admission/index';
             } else {
             }
         });
     }
 
     $("#btnother").click(function(){
-        window.location.href ='<?php echo base_url(); ?>index.php/Admission/matric_otherboard' ;
+        window.location.href ='<?php echo base_url(); ?>Admission/matric_otherboard' ;
     });
     $("#btnfresh").click(function(){
-        window.location.href ='<?php echo base_url(); ?>index.php/Admission/matric_fresh' ;
+        window.location.href ='<?php echo base_url(); ?>Admission/matric_fresh' ;
     });
 
     function checkrno()

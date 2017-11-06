@@ -1,5 +1,5 @@
 
-<form class="form-horizontal no-margin" action="<?php  echo base_url(); ?>index.php/Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
+<form class="form-horizontal no-margin" action="<?php  echo base_url(); ?>Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
 
     <div class="form-group">
         <div class="row">
@@ -595,7 +595,7 @@
         alertify.confirm(msg, function (e) {
             if (e) {
                 // user clicked "ok"
-                window.location.href ="<?php echo base_url(); ?>index.php/Admission/";
+                window.location.href ="<?php echo base_url(); ?>Admission/";
             } else {
                 // user clicked "cancel"
 

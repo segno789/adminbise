@@ -323,7 +323,7 @@ class Admission_model extends CI_Model
         $tehcd = $data['tehCode'];
         $gend = $data['gend'];
         $ses_s = Session;
-        $iyear = Year;
+        $iyear = Year+1;
         //$query = $this->db->get_where('matric_new..tblZones', array('mYear' => 2017,'Class' => 10,'Sess'=>1, 'teh_cd' => $tehcd));
         // //DebugBreak();
         $sess = Session;
@@ -354,7 +354,7 @@ class Admission_model extends CI_Model
         $zone = $data['zoneCode'];
         $gend = $data['gen'];
         $sess = Session;
-        $iyear = Year;
+        $iyear = Year+1;
         $where = " mYear = $iyear  AND class = 10 AND  sess = $sess AND Zone_cd =  $zone  AND  (cent_Gen = $gend OR cent_Gen = 3) ";      
         $query = $this->db->query("SELECT * FROM matric_new..tblcentre WHERE $where");
         if (!$query) 

@@ -75,7 +75,7 @@ else if(Session == '2')
         </div>
     </div>
 </div>
-<form method="post" action="<?php base_url(); ?>index.php/Admission/checkFormNo_then_download">
+<form method="post" action="<?php base_url(); ?>Admission/checkFormNo_then_download">
     <div class="form-group">    
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
