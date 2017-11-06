@@ -30,7 +30,7 @@ else if(Session == '2')
     <div class="row">
         <div class="col-md-12">
             <h3 align="center" class="bold">
-                Online Admission for SSC <?php echo $sess.', '.Year ?>
+                Online Admission for SSC <?php echo $sess.', 2018' ?>
             </h3>
         </div>
     </div>
@@ -60,7 +60,7 @@ else if(Session == '2')
         <div class="row">
             <div class="col-md-12">
                 <div class="pull-right">
-                    <img src="<?php echo base_url(); ?>assets/img/inqurey.jpg" class="img-responsive" alt="Terms & Conditions">
+                    <img src="<?php echo base_url(); ?>assets/img/inqurey.jpg" class="img-responsive btn-block" alt="inquiry.jpg">
                 </div>
             </div>
         </div>

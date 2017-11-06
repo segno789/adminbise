@@ -12,8 +12,6 @@
 
     //DebugBreak();
 
-    @$error = '';
-
     if(@$_GET['nrno'] >0)
     {
         if(@$_GET['nsession'] == 1)
@@ -62,7 +60,7 @@
         <div class="form-group">
             <div class="col-md-12">
                 <div class="alert alert-danger" align="center">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">x</a>
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close"></a>
                     <strong><?php echo $error; ?></strong>
                 </div>
             </div>
@@ -75,7 +73,7 @@
         <div class="form-group">
             <div class="col-md-12">
                 <div class="alert alert-danger" align="center">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">x</a>
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close"></a>
                     <strong><?php echo @$spl_cd['error_msg']; ?></strong>
                 </div>
             </div>
@@ -87,11 +85,13 @@
         <div class="row">
             <div class="col-md-offset-3 col-md-3">
                 <label class="control-label" for="dob" >Date of Birth</label>
-                <input type="text" class="form-control"  id="dob" name="dob"  value="<?= @$dob?>">
+                <input type="text" class="form-control"  id="dob" name="dob"  value="<?php echo @$_POST['dob'] ?>">
+                <!--<input type="text" class="form-control"  id="dob" name="dob"  value="11-09-2003">-->
             </div>
             <div class="col-md-3">
                 <label class="control-label" for="oldRno" >Old Roll No</label>
-                <input class="form-control" required="required" type="text" id="oldRno" name="oldRno" value="<?= @$oldRno ?>" maxlength="6" />
+                <input class="form-control" required="required" type="text" id="oldRno" name="oldRno" value="<?php echo @$_POST['oldRno'] ?>" maxlength="6" />
+                <!--<input class="form-control" required="required" type="text" id="oldRno" name="oldRno" value="231392" maxlength="6" />-->
             </div>
         </div>
     </div>
@@ -101,30 +101,30 @@
                 <label class="control-label" for="oldClass" >Last Appearing Class</label>
                 <select id="oldClass" class="form-control" name="oldClass">
                     <?php if(Session == 1) {?>
-                        <option value="9" <?php if(@$oldClass == 9) echo 'selected'?> >9th</option>
+                        <option value="9" <?php if (@$_POST['oldClass'] == 9) echo 'selected' ?>>9th</option>
                         <?php }?>
-                    <option value="10" <?php if(@$oldClass == 10) echo 'selected'?>>10th</option>
+                    <option value="10" <?php if (@$_POST['oldClass'] == 10) echo 'selected' ?>>10th</option>
                 </select>
             </div>
             <div class="col-md-3">
                 <label class="control-label" for="oldYear" >Last Appearing Year</label>
                 <select id="oldYear" class="form-control" name="oldYear">
-                    <option value="2017" <?php if(@$oldYear == 2017) echo 'selected' ?>>2017</option>
-                    <option value="2016" <?php if(@$oldYear == 2016) echo 'selected' ?>>2016</option>
+                    <option value="2017" <?php if (@$_POST['oldYear'] == "2017") echo 'selected' ?>>2017</option>
+                    <option value="2016" <?php if (@$_POST['oldYear'] == "2016") echo 'selected' ?>>2016</option>
                     <?php if(Session == 1) {?>
-                        <option value="2015" <?php if(@$oldYear == 2015) echo 'selected' ?> >2015</option>
-                        <option value="2014">2014</option>
-                        <option value="2013">2013</option>
-                        <option value="2012">2012</option>
-                        <option value="2011">2011</option>
-                        <option value="2010">2010</option>
-                        <option value="2009">2009</option>
-                        <option value="2008">2008</option>
-                        <option value="2007">2007</option>
-                        <option value="2006">2006</option>
-                        <option value="2005">2005</option>
-                        <option value="2004">2004</option>
-                        <option value="2003">2003</option>
+                        <option value="2015" <?php if (@$_POST['oldYear'] == "2015") echo 'selected' ?>>2015</option>
+                        <option value="2014" <?php if (@$_POST['oldYear'] == "2014") echo 'selected' ?>>2014</option>
+                        <option value="2013" <?php if (@$_POST['oldYear'] == "2013") echo 'selected' ?>>2013</option>
+                        <option value="2012" <?php if (@$_POST['oldYear'] == "2012") echo 'selected' ?>>2012</option>
+                        <option value="2011" <?php if (@$_POST['oldYear'] == "2011") echo 'selected' ?>>2011</option>
+                        <option value="2010" <?php if (@$_POST['oldYear'] == "2010") echo 'selected' ?>>2010</option>
+                        <option value="2009" <?php if (@$_POST['oldYear'] == "2009") echo 'selected' ?>>2009</option>
+                        <option value="2008" <?php if (@$_POST['oldYear'] == "2008") echo 'selected' ?>>2008</option>
+                        <option value="2007" <?php if (@$_POST['oldYear'] == "2007") echo 'selected' ?>>2007</option>
+                        <option value="2006" <?php if (@$_POST['oldYear'] == "2006") echo 'selected' ?>>2006</option>
+                        <option value="2005" <?php if (@$_POST['oldYear'] == "2005") echo 'selected' ?>>2005</option>
+                        <option value="2004" <?php if (@$_POST['oldYear'] == "2004") echo 'selected' ?>>2004</option>
+                        <option value="2003" <?php if (@$_POST['oldYear'] == "2003") echo 'selected' ?>>2003</option>
                         <?php }?>
                 </select>
             </div>
@@ -135,48 +135,48 @@
             <div class="col-md-offset-3 col-md-3">
                 <label class="control-label" for="oldSess" >Last Appearing Session</label>
                 <select id="oldSess" class="form-control" name="oldSess">
-                    <option value="1"  <?php if(@$oldSess == 1) echo 'selected' ?> >Annual</option>
-                    <option value="2"  <?php if(@$oldSess == 2) echo 'selected' ?>>Supplementary</option>
+                    <option value="1"  <?php if(@$_POST['oldSess'] == 1) echo 'selected' ?> >Annual</option>
+                    <option value="2"  <?php if(@$_POST['oldSess'] == 2) echo 'selected' ?>>Supplementary</option>
                 </select>
             </div>
             <div class="col-md-3">
                 <label class="control-label" for="oldBrd_cd" >Last Appearing Board</label>
-                <select id="sec_board" class="form-control" name="oldBrd_cd">
-                    <option value="1" <?php if(@$oldBrd_cd == 1) echo 'selected' ?>>BISE, GUJRANWALA</option>
+                <select id="oldBrd_cd" class="form-control" name="oldBrd_cd">
+                    <option value="1" <?php if(@$_POST['oldBrd_cd'] == 1) echo 'selected' ?>>BISE, GUJRANWALA</option>
                     <?php if(Session == 1) {?>
-                        <option value="2" <?php if(@$oldBrd_cd == 2) echo 'selected' ?>>BISE,  LAHORE</option>
-                        <option value="3" <?php if(@$oldBrd_cd == 3) echo 'selected' ?>>BISE,  RAWALPINDI</option>
-                        <option value="4" <?php if(@$oldBrd_cd == 4) echo 'selected' ?>>BISE,  MULTAN</option>
-                        <option value="5" <?php if(@$oldBrd_cd == 5) echo 'selected' ?>>BISE,  FAISALABAD</option>
-                        <option value="6" <?php if(@$oldBrd_cd == 6) echo 'selected' ?>>BISE,  BAHAWALPUR</option>
-                        <option value="7" <?php if(@$oldBrd_cd == 7) echo 'selected' ?>>BISE,  SARGODHA</option>
-                        <option value="8" <?php if(@$oldBrd_cd == 8) echo 'selected' ?>>BISE,  DERA GHAZI KHAN</option>
-                        <option value="9" <?php if(@$oldBrd_cd == 9) echo 'selected' ?>>FBISE, ISLAMABAD</option>
-                        <option value="10" <?php if(@$oldBrd_cd == 10) echo 'selected' ?>>BISE, MIRPUR</option>
-                        <option value="11" <?php if(@$oldBrd_cd == 11) echo 'selected' ?>>BISE, ABBOTTABAD</option>
-                        <option value="12" <?php if(@$oldBrd_cd == 12) echo 'selected' ?>>BISE, PESHAWAR</option>
-                        <option value="13" <?php if(@$oldBrd_cd == 13) echo 'selected' ?>>BISE, KARACHI</option>
-                        <option value="14" <?php if(@$oldBrd_cd == 14) echo 'selected' ?>>BISE, QUETTA</option>
-                        <option value="15" <?php if(@$oldBrd_cd == 15) echo 'selected' ?>>BISE, MARDAN</option>
-                        <option value="16" <?php if(@$oldBrd_cd == 16) echo 'selected' ?>>FBISE, ISLAMABAD</option>
-                        <option value="17" <?php if(@$oldBrd_cd == 17) echo 'selected' ?>>CAMBRIDGE</option>
-                        <option value="18" <?php if(@$oldBrd_cd == 18) echo 'selected' ?>>AIOU, ISLAMABAD</option>
-                        <option value="19" <?php if(@$oldBrd_cd == 19) echo 'selected' ?>>BISE, KOHAT</option>
-                        <option value="20" <?php if(@$oldBrd_cd == 20) echo 'selected' ?>>KARAKURUM</option>
-                        <option value="21" <?php if(@$oldBrd_cd == 21) echo 'selected' ?>>MALAKAN</option>
-                        <option value="22" <?php if(@$oldBrd_cd == 22) echo 'selected' ?>>BISE, BANNU</option>
-                        <option value="23" <?php if(@$oldBrd_cd == 23) echo 'selected' ?>>BISE, D.I.KHAN</option>
-                        <option value="24" <?php if(@$oldBrd_cd == 24) echo 'selected' ?>>AKUEB, KARACHI</option>
-                        <option value="25" <?php if(@$oldBrd_cd == 25) echo 'selected' ?>>BISE, HYDERABAD</option>
-                        <option value="26" <?php if(@$oldBrd_cd == 26) echo 'selected' ?>>BISE, LARKANA</option>
-                        <option value="27" <?php if(@$oldBrd_cd == 27) echo 'selected' ?>>BISE, MIRPUR(SINDH)</option>
-                        <option value="28" <?php if(@$oldBrd_cd == 28) echo 'selected' ?>>BISE, SUKKUR</option>
-                        <option value="29" <?php if(@$oldBrd_cd == 29) echo 'selected' ?>>BISE, SWAT</option>
-                        <option value="30" <?php if(@$oldBrd_cd == 30) echo 'selected' ?>>SBTE KARACHI</option>
-                        <option value="31" <?php if(@$oldBrd_cd == 31) echo 'selected' ?>>PBTE, LAHORE</option>
-                        <option value="32" <?php if(@$oldBrd_cd == 32) echo 'selected' ?>>AFBHE RAWALPINDI</option>
-                        <option value="33" <?php if(@$oldBrd_cd == 33) echo 'selected' ?>>BIE, KARACHI</option>
-                        <option value="34" <?php if(@$oldBrd_cd == 34) echo 'selected' ?>>BISE SAHIWAL</option>
+                        <option value="2" <?php if(@$_POST['oldBrd_cd'] == 2) echo 'selected' ?>>BISE,  LAHORE</option>
+                        <option value="3" <?php if(@$_POST['oldBrd_cd'] == 3) echo 'selected' ?>>BISE,  RAWALPINDI</option>
+                        <option value="4" <?php if(@$_POST['oldBrd_cd'] == 4) echo 'selected' ?>>BISE,  MULTAN</option>
+                        <option value="5" <?php if(@$_POST['oldBrd_cd'] == 5) echo 'selected' ?>>BISE,  FAISALABAD</option>
+                        <option value="6" <?php if(@$_POST['oldBrd_cd'] == 6) echo 'selected' ?>>BISE,  BAHAWALPUR</option>
+                        <option value="7" <?php if(@$_POST['oldBrd_cd'] == 7) echo 'selected' ?>>BISE,  SARGODHA</option>
+                        <option value="8" <?php if(@$_POST['oldBrd_cd'] == 8) echo 'selected' ?>>BISE,  DERA GHAZI KHAN</option>
+                        <option value="9" <?php if(@$_POST['oldBrd_cd'] == 9) echo 'selected' ?>>FBISE, ISLAMABAD</option>
+                        <option value="10" <?php if(@$_POST['oldBrd_cd'] == 10) echo 'selected' ?>>BISE, MIRPUR</option>
+                        <option value="11" <?php if(@$_POST['oldBrd_cd'] == 11) echo 'selected' ?>>BISE, ABBOTTABAD</option>
+                        <option value="12" <?php if(@$_POST['oldBrd_cd'] == 12) echo 'selected' ?>>BISE, PESHAWAR</option>
+                        <option value="13" <?php if(@$_POST['oldBrd_cd'] == 13) echo 'selected' ?>>BISE, KARACHI</option>
+                        <option value="14" <?php if(@$_POST['oldBrd_cd'] == 14) echo 'selected' ?>>BISE, QUETTA</option>
+                        <option value="15" <?php if(@$_POST['oldBrd_cd'] == 15) echo 'selected' ?>>BISE, MARDAN</option>
+                        <option value="16" <?php if(@$_POST['oldBrd_cd'] == 16) echo 'selected' ?>>FBISE, ISLAMABAD</option>
+                        <option value="17" <?php if(@$_POST['oldBrd_cd'] == 17) echo 'selected' ?>>CAMBRIDGE</option>
+                        <option value="18" <?php if(@$_POST['oldBrd_cd'] == 18) echo 'selected' ?>>AIOU, ISLAMABAD</option>
+                        <option value="19" <?php if(@$_POST['oldBrd_cd'] == 19) echo 'selected' ?>>BISE, KOHAT</option>
+                        <option value="20" <?php if(@$_POST['oldBrd_cd'] == 20) echo 'selected' ?>>KARAKURUM</option>
+                        <option value="21" <?php if(@$_POST['oldBrd_cd'] == 21) echo 'selected' ?>>MALAKAN</option>
+                        <option value="22" <?php if(@$_POST['oldBrd_cd'] == 22) echo 'selected' ?>>BISE, BANNU</option>
+                        <option value="23" <?php if(@$_POST['oldBrd_cd'] == 23) echo 'selected' ?>>BISE, D.I.KHAN</option>
+                        <option value="24" <?php if(@$_POST['oldBrd_cd'] == 24) echo 'selected' ?>>AKUEB, KARACHI</option>
+                        <option value="25" <?php if(@$_POST['oldBrd_cd'] == 25) echo 'selected' ?>>BISE, HYDERABAD</option>
+                        <option value="26" <?php if(@$_POST['oldBrd_cd'] == 26) echo 'selected' ?>>BISE, LARKANA</option>
+                        <option value="27" <?php if(@$_POST['oldBrd_cd'] == 27) echo 'selected' ?>>BISE, MIRPUR(SINDH)</option>
+                        <option value="28" <?php if(@$_POST['oldBrd_cd'] == 28) echo 'selected' ?>>BISE, SUKKUR</option>
+                        <option value="29" <?php if(@$_POST['oldBrd_cd'] == 29) echo 'selected' ?>>BISE, SWAT</option>
+                        <option value="30" <?php if(@$_POST['oldBrd_cd'] == 30) echo 'selected' ?>>SBTE KARACHI</option>
+                        <option value="31" <?php if(@$_POST['oldBrd_cd'] == 31) echo 'selected' ?>>PBTE, LAHORE</option>
+                        <option value="32" <?php if(@$_POST['oldBrd_cd'] == 32) echo 'selected' ?>>AFBHE RAWALPINDI</option>
+                        <option value="33" <?php if(@$_POST['oldBrd_cd'] == 33) echo 'selected' ?>>BIE, KARACHI</option>
+                        <option value="34" <?php if(@$_POST['oldBrd_cd'] == 34) echo 'selected' ?>>BISE SAHIWAL</option>
                         <?php }?>
                 </select>
             </div>
@@ -184,20 +184,22 @@
     </div>
     <?php
     if(@$exam_type == 16){
-        ?>
-        <div class="form-group" id="option">
-            <div class="row">
-                <div class="col-md-offset-5 col-md-5">
-                    <label class="radio-inline" for="CatType1">
-                        <input type="radio" class="nationality_class" id="CatType1" value="1" checked="checked" name="CatType">Marks Improvement
-                    </label>
-                    <label class="radio-inline" for="CatType2">
-                        <input type="radio" class="nationality_class" id="CatType2" value="2" name="CatType">Additional
-                    </label>
+        if($error == ''){
+            ?>
+            <div class="form-group" id="option">
+                <div class="row">
+                    <div class="col-md-offset-5 col-md-5">
+                        <label class="radio-inline" for="CatType1">
+                            <input type="radio" class="nationality_class" id="CatType1" value="1" checked="checked" name="CatType">Marks Improvement
+                        </label>
+                        <label class="radio-inline" for="CatType2">
+                            <input type="radio" class="nationality_class" id="CatType2" value="2" name="CatType">Additional
+                        </label>
+                    </div>
                 </div>
             </div>
-        </div>
-        <?php } ?>
+            <?php } 
+    }?>
     <div class="form-group">    
         <div class="row">
             <div class="col-md-offset-3 col-md-3">

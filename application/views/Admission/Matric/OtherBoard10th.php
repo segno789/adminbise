@@ -1,5 +1,5 @@
 
-<form class="form-horizontal no-margin" action="<?php  echo base_url(); ?>index.php/Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
+<form method="post" enctype="multipart/form-data" name="myform" id="myform">
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-5 col-md-5">
@@ -9,15 +9,25 @@
     </div>
     <div class="form-group">
         <div class="row">
-            <div class="col-md-offset-5 col-md-5">
-                <img id="image_upload_preview" src="<?php echo base_url(); ?>assets/img/profile.png" style="width:130px; height: 130px;" alt="Candidate Image" />
+            <div class="col-md-offset-3 col-md-5">
+                <img src="<?php echo base_url(); ?>assets/img/upalodimage.jpg" class="img-responsive" alt="" >
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
-            <div class="col-md-offset-5 col-md-5">
-                <input type="file" id="inputFile" name="pic" onchange="return ValidateFileUpload(this);"/>
+            <div class="col-md-offset-5 col-md-5" id="output">
+                <img id="previewImg" style="width:130px; height: 130px;" class="img-responsive" src="<?php echo base_url(); ?>assets/img/profile.png" alt="CandidateImage">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-3" id="progress-wrp">
+                <div class="progress-bar"></div><div class="status">0%</div>
+            </div>
+            <div class="col-md-2">
+                <input type="file" id="image" name="__files[]">
             </div>
         </div>
     </div>
@@ -75,11 +85,21 @@
                     // $med = 2; 
                     if($med == 1)
                     {
-                        echo  "<option value='1' selected='selected'>Urdu</option> <option value='1'>English</option>";
+                        echo  "
+                        <option value='0'>None</option>
+                        <option value='1' selected='selected'>Urdu</option>
+                        <option value='1'>English</option>";
                     }
-                    else
+                    else if($med == 2)
                     {
-                        echo  "<option value='2' >Urdu</option><option value='2' selected='selected'>English</option>";
+                        echo  "<option value='0'>None</option>
+                        <option value='1'>Urdu</option>
+                        <option value='2' selected='selected'>English</option>";
+                    }
+                    else{
+                        echo  "<option value='0'selected='selected'>None</option>
+                        <option value='1'>Urdu</option>
+                        <option value='2'>English</option>";
                     }
                     ?>
                 </select>
@@ -103,21 +123,21 @@
                     $spec =  @$data['Speciality'];
                     if($spec==1)
                     {
-                        echo  "<option value='0' >None</option>  
+                        echo  "<option value='0'>None</option>  
                         <option value='1' selected='selected'>Deaf &amp; Dumb</option>
                         <option value='2'>Board Employee</option>
                         <option value='3'>Blind</option>";
                     }
                     else if($spec ==2)
                     {
-                        echo  "<option value='0' >None</option>  
+                        echo"<option value='0'>None</option>
                         <option value='1'>Deaf &amp; Dumb</option>
                         <option value='2' selected='selected'>Board Employee</option>
                         <option value='3'>Blind</option>";
                     }
                     else
                     {
-                        echo  "<option value='0' selected='selected'>None</option>  
+                        echo"<option value='0' selected='selected'>None</option>  
                         <option value='1'>Deaf &amp; Dumb</option>
                         <option value='2'>Board Employee</option>
                         <option value='3'>Blind</option>";
@@ -139,18 +159,22 @@
                     if($nat == 1)
                     {
                         echo  
-                        "<option value='1' selected='selected'>Pakistani</option>
+                        "<option value='0'>None</option>
+                        <option value='1' selected='selected'>Pakistani</option>
                         <option value='2'>Non Pakistani</option>";
                     }
                     else if ($nat == 2)
                     {
                         echo  
-                        "<option value='1'>Pakistani</option> 
+                        "<option value='0'>None</option>
+                        <option value='1'>Pakistani</option> 
                         <option value='2' selected='selected'>Non Pakistani</option>";
                     }
-                    else{
+                    else
+                    {
                         echo  
-                        "<option value='1'>Pakistani</option> 
+                        "<option value='0'selected='selected'>None</option>
+                        <option value='1'>Pakistani</option> 
                         <option value='2'>Non Pakistani</option>";
                     }
                     ?>
@@ -165,16 +189,23 @@
                     @$gender = @$data['sex'];
                     if($gender == 1)
                     {
-                        echo"<option value='1' selected='selected'>MALE</option> 
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1' selected='selected'>MALE</option> 
                         <option value='2'>FEMALE</option>";
                     }
                     else if ($gender == 2)
                     {
-                        echo"<option value='1'>MALE</option> 
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1'>MALE</option> 
                         <option value='2' selected='selected'>FEMALE</option>";
                     }
-                    else{
-                        echo"<option value='1'>MALE</option> 
+                    else
+                    {
+                        echo"
+                        <option value='0'selected='selected'>None</option>
+                        <option value='1'>MALE</option> 
                         <option value='2'>FEMALE</option>";
                     }
                     ?>
@@ -193,16 +224,20 @@
                     $rel = @$data['rel'];
                     if($rel == 1)
                     {
-                        echo"<option value='1' selected='selected'>MUSLIM</option> 
+                        echo"
+                        <option value='1' selected='selected'>MUSLIM</option> 
                         <option value='2'>NON MUSLIM</option>";
                     }
                     else if ($rel == 2)
                     {
-                        echo"<option value='1'>MUSLIM</option> 
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1'>MUSLIM</option> 
                         <option value='2' selected='selected'>NON MUSLIM</option>";
                     }
                     else{
-                        echo"<option value='1' selected='selected'>MUSLIM</option> 
+                        echo"
+                        <option value='1'  selected='selected' >MUSLIM</option> 
                         <option value='2'>NON MUSLIM</option>";
                     }
                     ?>
@@ -212,7 +247,7 @@
                 <label class="control-label" for="hafiz" >
                     Hafiz-e-Quran :
                 </label>        
-                <select name="hafiz" class="form-control text-uppercase" id="hafiz"> 
+                <select name="hafiz" class="form-control text-uppercase" id="hafiz">
                     <option value='1' selected='selected'>NO</option> 
                     <option value='2'>YES</option> 
                 </select>
@@ -230,17 +265,23 @@
                     $resid = @$data['RuralORUrban'];
                     if($resid == 1 )
                     {
-                        echo"<option value='1' selected='selected'>URBAN</option> 
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1' selected='selected'>URBAN</option> 
                         <option value='2'>RURAL</option>";
                     }
                     else if($resid == 2)
                     {
-                        echo"<option value='1'>URBAN</option> 
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1'>URBAN</option> 
                         <option value='2' selected='selected'>RURAL</option>";
                     }
                     else
                     {
-                        echo"<option value='1' selected='selected'>URBAN</option> 
+                        echo"
+                        <option value='0'selected='selected'>None</option>
+                        <option value='1'>URBAN</option> 
                         <option value='2'>RURAL</option>";
                     }
                     ?>
@@ -678,7 +719,7 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-3">
-                <input type="submit" value="Save Form" id="btnsubmitUpdateEnrol" name="btnsubmitUpdateEnrol" class="btn btn-primary btn-block" onclick="return checks()">
+                <input type="submit" value="Save Form" id="btnsubmitUpdateEnrol" name="btnsubmitUpdateEnrol" class="btn btn-primary btn-block" onclick="return checksOtherBoard10th()">
             </div>
             <div class="col-md-2">
                 <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg" download="instructions" class="btn btn-info btn-block">Download Instruction</a>
@@ -691,35 +732,88 @@
 </form>
 <script src="<?php echo base_url(); ?>assets/js_matric/jquery-1.8.3.js"></script>
 <script type="text/javascript">
-    function checks(){
-        var status  =  check_NewEnrol_validation();
+
+    function checksOtherBoard10th(){
+        var status  =  check_NewEnrol_validation_otherBoard10th();
         if(status == 0)
         {
             return false;    
         }
         else
         {
-            $("button[type='submit']").html('Please wait ...').attr('disabled','disabled'); 
-            $("#myform").submit();
-            return true;
+            //debugger;
+            $.ajax({
+
+                type: "POST",
+                url: "<?php  echo site_url('Admission/frmvalidation_otherBoard'); ?>",
+                data: $("#myform").serialize() ,
+                datatype : 'html',
+                cache:false,
+
+                success: function(data)
+                {                    
+                    var obj = JSON.parse (data);
+                    if(obj.excep == 'Success')
+                    {
+                        $.ajax({
+
+                            type: "POST",
+                            url: "<?php echo base_url(); ?>" + "Admission/NewEnrolment_insert/",
+                            data: $("#myform").serialize() ,
+                            datatype : 'html',
+                            cache:false,
+
+                            beforeSend: function() {  $('.mPageloader').show(); },
+                            complete: function() { $('.mPageloader').hide();},
+
+                            success: function(data){
+
+                                var obj = JSON.parse(data);
+                                if(obj.error ==  1)
+                                {
+                                    window.location.href ='<?php echo base_url(); ?>Admission/formdownloaded/'+obj.formno
+                                    alertify.error('Your Application is Submit Successfully');
+                                    return true;
+                                }   
+                                else
+                                {
+                                    alertify.error(obj.error);
+                                    return false; 
+                                }
+                            },
+
+                            error: function(request, status, error){
+
+                                alertify.error(request.responseText);
+                            }
+                        });
+
+                        return false
+                    }
+                    else
+                    {
+                        alertify.error(obj.excep);
+                        return false;     
+                    }
+                }
+            });
+            return false;   
         } 
     }
-    function  check_NewEnrol_validation()
+    function  check_NewEnrol_validation_otherBoard10th()
     {
-
+        //debugger;
         var name =  $('#cand_name').val();
         var dist_cd= $('#pvtinfo_dist option:selected').val();
         var teh_cd= $('#pvtinfo_teh option:selected').val();
         var zone_cd= $('#pvtZone option:selected').val();
         var terms = $("input[name='terms']:checked").val();
-        // var pp_cent= $('#pp_cent').val();           
         var sub6p1 = $('#sub6').val();
         var sub6p2 = $('#sub6p2').val();           
         var sub7p1 = $('#sub7').val();
         var sub7p2 = $('#sub7p2').val();  
         var sub8p1 = $('#sub8').val();                      
         var sub8p2 = $('#sub8p2').val();                      
-        //  var ex_type = $('#exam_type').val();
         var mobNo = $('#mob_number').val();
         var bFormNo = $('#bay_form').val();
         var grp_cd = $('#std_group').val();
@@ -727,29 +821,32 @@
         var fName = $('#father_name').val();
         var FNic = $('#father_cnic').val();
         var dob = $('#dob').val();
+        var medium = $('#medium').val();
         var address = $('#address').val();
+        var nationality = $('#nationality').val();
         var image = $('#image').val();
         var MarkOfIdent = $('#MarkOfIden').val();
+        var religion = $('#religion').val();
+        var UrbanRural = $('#UrbanRural').val();
         var preResult = $('#preResult').val();
         var oldrno = $('#oldrno').val();
         var oldboardid = $('#oldboardid').val();
-
         var gend = $('#gend').val();
-        // var Inst_Rno = $('#Inst_Rno').val();
         var status = 0;
-        var $img = $("#image_upload_preview");
+        var $img = $("#previewImg");
         var src = $img.attr("src");
-        //  var grppre = $("#grppre").val();
         var selected_group_conversion ;
-        //  var exam_type = $("#exam_type").val();
-        debugger;
-        var fuData = document.getElementById('inputFile');
+
+        var fuData = document.getElementById('image');
         var FileUploadPath = fuData.value;
         if (FileUploadPath == '') {
             alertify.error("Please upload an image");
-            jQuery('#image_upload_preview').removeAttr('src');
+            jQuery('#previewImg').removeAttr('src');
+            $("#previewImg").attr("src","<?php echo base_url(); ?>assets/img/profile.png");
+            $("#image").focus();
             return status;
-        } 
+        }
+
         if(grp_cd==1 || grp_cd == 5 || grp_cd ==7)
         {
             selected_group_conversion =1;
@@ -758,66 +855,15 @@
         {
             selected_group_conversion =grp_cd;
         }
-        if(gend==undefined)
-        {
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            alertify.error("Please Select Your Gender First!")
-            $('#gend').focus(); 
-            return status;
-        }
-        if(oldrno=="")
-        {
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            alertify.error("Please Enter Your Old Rno First!")
-            $('#oldrno').focus(); 
-            return status;
-        }
-        if(oldboardid==0)
-        {
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            alertify.error("Please Select Your Board First!")
-            $('#oldboardid').focus(); 
-            return status;
-        }
 
-        if($("#terms").is(":not(:checked)"))
+        if(name == "" ||  name == undefined)
         {
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            alertify.error("Please Accept Terms and Conditions First!")
-            $('input[name="terms"]').focus(); 
-            return status;
-        }
-        else if(preResult=="")
-        {
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            alertify.error("Please Write Your Previous Result First!")
-            $('#preResult').focus(); 
-            return status;
-        }
-        else if(src == '') {
-            $img.addClass("highlight");
-            $img.css("border", "3px solid yellow");
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            alertify.error("Please upload your Picture First.")
-            $img.focus(); 
-            return status;
-        }
-        else if(name == "" ||  name == undefined){
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
             alertify.error("Please Enter your  Name")
             $('#cand_name').focus(); 
             return status;
         }
-        else if(fName == "" || fName == undefined){
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+        else if(fName == "" || fName == undefined)
+        {
             alertify.error("Please Enter your Father's Name  ") 
             $('#father_name').focus(); 
             return status;
@@ -825,55 +871,105 @@
 
         else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-
             alertify.error("Please Enter your bay-Form") 
             $('#bay_form').focus();  
             return status; 
         }
         else if(FNic == "" || FNic.length == undefined )
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
             alertify.error("Please Enter your Father's CNIC") 
             $('#father_cnic').focus();  
             return status; 
         }
         else if(FNic == bFormNo  )
         {
-
             alertify.error("B-form Number and Father CNIC cannot be same.") 
             $('#bay_form').focus();   
             return status; 
         }
+
+        else if(dob == "" || dob == undefined)
+        {
+            alertify.error("Please Enter your Date of Birth.") 
+            $('#dob').focus();   
+            return status;  
+        }
+
         else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-
             alertify.error("Please Enter your Mobile No.") 
             $('#mob_number').focus();   
             return status;  
         }
 
-        else if(MarkOfIdent == "" || MarkOfIdent == 0 || MarkOfIdent == undefined)
+        else if(medium == "" || medium == 0 || medium == undefined)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+            alertify.error("Please Select Medium.") 
+            $('#medium').focus();   
+            return status;  
+        }
 
+        else if(preResult=="")
+        {
+            alertify.error("Please Write Your Previous Result First!")
+            $('#preResult').focus(); 
+            return status;
+        }
+
+        else if(MarkOfIdent == "" || MarkOfIdent == undefined)
+        {
             alertify.error("Please Enter your Mark of Indentification") 
             $('#MarkOfIden').focus();   
             return status;  
         }
+
+        else if(nationality == "" || nationality == 0 || nationality == undefined)
+        {
+            alertify.error("Please Select Nationality") 
+            $('#nationality').focus();   
+            return status;  
+        }
+
+        else if(gend==undefined || gend == 0)
+        {
+            alertify.error("Please Select Your Gender First!")
+            $('#gend').focus(); 
+            return status;
+        }
+
+        else if(religion == undefined || religion == 0)
+        {
+            alertify.error("Please Select Your Religion First!")
+            $('#religion').focus();
+            return status;
+        }
+
+        else if(UrbanRural == undefined || UrbanRural == 0)
+        {
+            alertify.error("Please Select Your Locilaty First!")
+            $('#UrbanRural').focus();
+            return status;
+        }
+
         else if(address == "" || address == 0 || address.length ==undefined )
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Address</b>"); 
             alertify.error("Please Enter your Address")
             $('#address').focus(); 
             return status;    
+        }
+
+        else if(oldrno=="")
+        {
+            alertify.error("Please Enter Your Old Rno First!")
+            $('#oldrno').focus(); 
+            return status;
+        }
+
+        else if(oldboardid==0)
+        {
+            alertify.error("Please Select Your Board First!")
+            $('#oldboardid').focus(); 
+            return status;
         }
 
         else  if (dist_cd < 1) 
@@ -883,12 +979,13 @@
             return status;  
         }
 
-        else if (teh_cd < 1) {
-
+        else if (teh_cd < 1) 
+        {
             alertify.error('Please select Tehsil');                          
             $("#pvtinfo_teh").focus();
             return status;  
         }
+
         else if (zone_cd < 1) 
         {
             alertify.error('Please select Zone. ');                          
@@ -898,53 +995,30 @@
 
         else if (grp_cd == 0) 
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
             alertify.error('Please Select your Study Group '); 
             $("#std_group").focus();
             return status;  
         }
 
+        else if($("#terms").is(":not(:checked)"))
+        {
+            alertify.error("Please Accept Terms and Conditions First!")
+            $('input[name="terms"]').focus(); 
+            return status;
+        }
+
         status = 1;
         return status;
     }
-    function ValidateFileUpload() {                                                                                                        
-        var fuData = document.getElementById('inputFile');
-        var FileUploadPath = fuData.value;
-        if (FileUploadPath == '') {
-            alert("Please upload an image");
-            jQuery('#image_upload_preview').removeAttr('src');
-        } 
-        else {
-            var Extension = FileUploadPath.substring(
-                FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-            if (Extension == "jpeg" || Extension == "jpg") {
-                if (fuData.files && fuData.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#image_upload_preview').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(fuData.files[0]);
-                }
-            } 
-            else {
-                $('#inputFile').removeAttr('value');
-                jQuery('#image_upload_preview').removeAttr('src');
-                alert("Image only allows file types of JPEG. ");
-                return false;
-            }
-        }
-        var file_size = $('#inputFile')[0].files[0].size;
-        if(file_size>20480) {                                    
-            $('#inputFile').removeAttr('value');
-            jQuery('#image_upload_preview').removeAttr('src');
-            alert("File size can be between 20KB"); 
-            return false;
-        } 
-    }
+
     $(window).load(function()
         {
             $.fancybox("#instruction");
+
+            $('#address').each(function(){
+                $(this).val($(this).val().trim());
+            });
+
     });
     $(document).ready(function(){
 
@@ -1081,9 +1155,7 @@
             73 : 'TYPE WRITING',
             74 : 'WEAVING'
         }
-        /*var sub1 = {
-        1:'URDU'
-        }*/
+
         var sub2_arr = {
             2:'ENGLISH'
         }
@@ -1571,7 +1643,7 @@
             }
             if ((sub6 == 19 || sub6p2 == 19) && (sub7 == 20 || sub7p2== 20))
             {
-                $('#ErrMsg').show(); 
+
                 alertify.error('Please select One Subject from ADVANCED ISLAMIC STUDIES / ISLAMIC HISTORY / MUSLIM HISTORY ');                   
                 $("#sub6").val('0');
                 $("#sub6p2").val('0');
@@ -1631,7 +1703,7 @@
             }          
             if ((sub6 == 19 || sub6p2 == 19) && (sub7 == 20 || sub7p2== 20))
             {
-                $('#ErrMsg').show(); 
+
                 alertify.error('Please select One Subject from ADVANCED ISLAMIC STUDIES / ISLAMIC HISTORY / MUSLIM HISTORY ');                   
                 $("#sub6").val('0');
                 $("#sub6p2").val('0');
@@ -1713,7 +1785,7 @@
             }
             if ((sub6 == 19 ) && (sub7 == 20) ||(sub6 == 20 ) && (sub7 == 19))
             {
-                $('#ErrMsg').show(); 
+
                 alertify.error('Please select One Subject from ADVANCED ISLAMIC STUDIES / ISLAMIC HISTORY / MUSLIM HISTORY ');                   
                 $("#sub7").val('0');
                 $("#sub7p2").val('0');
@@ -1789,7 +1861,6 @@
             }
             if ((sub6 == 19 || sub6p2 == 19) && (sub7 == 20 || sub7p2== 20))
             {
-                $('#ErrMsg').show(); 
                 alertify.error('Please select One Subject from ADVANCED ISLAMIC STUDIES / ISLAMIC HISTORY / MUSLIM HISTORY ');                   
                 $("#sub7").val('0');
                 $("#sub7p2").val('0');
@@ -1875,6 +1946,8 @@
         }
 
         $('#std_group').change(function(){
+
+            ClearALLDropDowns();
 
             var sel_group = $("#std_group").val();
 
@@ -2339,16 +2412,20 @@
 
     $('#religion').change(function()
         {
-            if($(this).val() == 1) {
+
+            var std_group = $('#std_group').val();
+
+            if($(this).val() == 1 && std_group > 0) {
 
                 $("#sub3").empty(); 
-                $("#sub3").prepend('<option selected="selected" value="3"> ISLAMIYAT (COMPULSORY) </option>');
+                $("#sub3").prepend('<option selected="selected" value="0">NONE</option>');
+                $("#sub3").prepend('<option value="3"> ISLAMIYAT (COMPULSORY) </option>');
             }
-            else
-            {
+            else if($(this).val() == 2 && std_group > 0) {
                 $("#sub3").empty(); 
-                $("#sub3").prepend("<option selected='selected' value='51'> ETHICS </option>");
-                $("#sub3").prepend("<option  value='3'> ISLAMIYAT (COMPULSORY) </option>");
+                $("#sub3").prepend('<option selected="selected" value="0">NONE</option>');
+                $("#sub3").prepend("<option value='51'> ETHICS </option>");
+                $("#sub3").prepend("<option value='3'> ISLAMIYAT (COMPULSORY) </option>");
 
                 $("#sub3p2").empty(); 
                 $("#sub3p2").prepend("<option selected='selected' value='51'> ETHICS </option>");
@@ -2357,6 +2434,46 @@
     });
     $('#gend').change(function()
         {
+            if($(this).val() == 0)
+            {    
+                var distId =  $("#pvtinfo_dist").val();
+                $('#pvtinfo_teh').empty();
+                $('#pvtinfo_teh').append('<option value="0">SELECT TEHSIL</option>');
+                $('#pvtZone').empty();
+                $('#pvtZone').append('<option value="0">SELECT ZONE</option>');
+                if(distId == 1){
+                    $("#pvtinfo_teh").append('<option value="1">KAMOKE</option>');
+                    $("#pvtinfo_teh").append('<option value="2">GUJRANWALA</option>');
+                    $("#pvtinfo_teh").append('<option value="3">WAZIRABAD</option>');
+                    $("#pvtinfo_teh").append('<option value="4">NOWSHERA VIRKAN</option>'); 
+                }
+                else if(distId == 2){
+                    $("#pvtinfo_teh").append('<option value="5">GUJRAT</option>');
+                    $("#pvtinfo_teh").append('<option value="6">KHARIAN</option>');
+                    $("#pvtinfo_teh").append('<option value="7">SARAI ALAMGIR</option>');
+                }
+                else if(distId == 3){
+                    $("#pvtinfo_teh").append('<option value="8">HAFIZABAD</option>');
+                    $("#pvtinfo_teh").append('<option value="9">PINDI BHATTIAN</option>');
+                }
+                else if(distId == 4){
+                    $("#pvtinfo_teh").append('<option value="10">MANDI BAHA-UD-DIN</option>');
+                    $("#pvtinfo_teh").append('<option value="11">PHALIA</option>');
+                    $("#pvtinfo_teh").append('<option value="12">MALAKWAL</option>');
+                }
+                else if(distId == 5){
+                    $("#pvtinfo_teh").append('<option value="13">NAROWAL</option>');
+                    $("#pvtinfo_teh").append('<option value="14">SHAKARGARH</option>');
+                    $("#pvtinfo_teh").append('<option value="19">ZAFARWAL</option>');
+                }
+                else if(distId == 6){
+                    $("#pvtinfo_teh").append('<option value="15">SIALKOT</option>');
+                    $("#pvtinfo_teh").append('<option value="16">PASRUR</option>');
+                    $("#pvtinfo_teh").append('<option value="17">DASKA</option>');
+                    $("#pvtinfo_teh").append('<option value="18">SAMBRIAL</option>');
+                } 
+            }
+
             if($(this).val() == 2)
             {
                 $("#sub6").append(new Option('ELEMENTS OF HOME ECONOMICS',13));

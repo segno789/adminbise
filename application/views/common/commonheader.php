@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/alertify.core.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.css">
-    
+
     <style>  
         /* progress bar */
         #progress-wrp {
@@ -21,7 +21,7 @@
             text-align: left;
             background: #fff;
             width:140px;
-            height: 25px;
+            height: 24px;
             box-shadow: inset 1px 3px 6px rgba(0, 0, 0, 0.12);
         }
         #progress-wrp .progress-bar{
@@ -71,7 +71,7 @@
         }
         /*End Check box styling */
 
-        .footer{width:100%; float:right; background:#003a6a ; height:40px; color: wheat; margin-top: 25px; margin-bottom: 3px; border-radius: 4px; text-align: center;}
+        .footer{width:100%; float:right; background:#003a6a ; height:40px; color: wheat; margin-top: 25px; margin-bottom: 2px; border-radius: 4px; text-align: center;}
 
         .mPageloader, .mpOverlay { position: fixed; width: 100%; height: 100%; background: rgba(0,0,0,.3); top: 0; left: 0; z-index: 99999; overflow: hidden; }
         .CSSspinner2 { width: 22px; height: 20px; position: relative; margin: 0 auto; display: inline-block; vertical-align: middle; }
@@ -127,6 +127,7 @@
 
 
 </head>
+<!--<body ondragstart="return false;" ondrop="return false;" oncontextmenu="return false" onselectstart="return false">-->
 <body>
 <div class="mPageloader">
     <div class="CSSspinner2 large">
@@ -153,8 +154,8 @@
 
 <div class="container">
 <div class="row-fluid">
-    <h2 style="background:#003a6a !important; color: wheat; text-align: center;" class="jumbotron">
-        <img src="<?php echo base_url(); ?>assets/img/BISEGRW_Icon.png" class="img-circle" width="125px" height="125px" alt="Logo">
+    <h3 style="background:#003a6a !important; color: wheat; text-align: center; height: 140px;" class="jumbotron">
+        <img src="<?php echo base_url(); ?>assets/img/BISEGRW_Icon.png" class="rounded float-left" width="50px" height="50px" alt="Logo">
         Board of Intermediate & Secondary Education, Gujranwala
         <br>
         <?php 
@@ -163,7 +164,8 @@
             $sess =  'Annual';
         else if(Session == '2')
             $sess = 'Supplementary Examination';
-            echo  '<p style="text-align:center;">Online Admission for SSC '.$sess.''.',  ' .Year.' </p>';   
+            @$Year=Year+1;
+        echo  '<p style="text-align:center;">Online Admission for SSC '.$sess.''.',  ' .@$Year.' </p>'; 
         ?>
-    </h2>
+    </h3>
 </div>

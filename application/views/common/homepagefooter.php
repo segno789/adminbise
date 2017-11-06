@@ -234,7 +234,6 @@
             else{
                 window.location.href='<?php  echo base_url(); ?>login'  
             }
-            console.log(isreg);
         })
 
         $("#proceed9th").click(function(){
@@ -276,7 +275,7 @@
                 downloadform();    
             }
         });
-        
+
         $("#btndwnForm9th").click(function(){
             var formno = $("#formid").val();
             var dob = $("#dob").val();
@@ -380,9 +379,8 @@
                 $("#pvtinfo_teh").append('<option value="17">DASKA</option>');
                 $("#pvtinfo_teh").append('<option value="18">SAMBRIAL</option>');
             }
-
-
         });
+        
         $("#pvtinfo_teh").change(function(){
 
             // alert("hello");
@@ -418,7 +416,7 @@
                                 listitems +='<option value=' + data.zone_cd + '>' + data.zone_name + '</option>';
                                 //$('#pvtZone').append('<option value=' + data.zone_cd + '>' + data.zone_name + '</option>');
                                 //console.log('Zone Name :', data.zone_cd)
-                                //console.log('Zone Name :', data)
+                                //console.log('Zone Name :', data);
                             })
                         })
                         $('#pvtZone').append(listitems)

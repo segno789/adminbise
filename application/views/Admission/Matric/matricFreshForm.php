@@ -1,6 +1,5 @@
 
-<form class="form-horizontal no-margin" action="<?php  echo base_url(); ?>index.php/Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
-
+<form method="post" enctype="multipart/form-data" name="myform" id="myform">
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-5 col-md-5">
@@ -10,15 +9,25 @@
     </div>
     <div class="form-group">
         <div class="row">
-            <div class="col-md-offset-5 col-md-5">
-                <img id="image_upload_preview" src="<?php echo base_url(); ?>assets/img/profile.png" style="width:130px; height: 130px;" alt="Candidate Image" />
+            <div class="col-md-offset-3 col-md-5">
+                <img src="<?php echo base_url(); ?>assets/img/upalodimage.jpg" class="img-responsive" alt="" >
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
-            <div class="col-md-offset-5 col-md-5">
-                <input type="file" id="inputFile" name="pic" onchange="return ValidateFileUpload(this);"/>
+            <div class="col-md-offset-5 col-md-5" id="output">
+                <img id="previewImg" style="width:130px; height: 130px;" class="img-responsive" src="<?php echo base_url(); ?>assets/img/profile.png" alt="CandidateImage">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-3" id="progress-wrp">
+                <div class="progress-bar"></div><div class="status">0%</div>
+            </div>
+            <div class="col-md-2">
+                <input type="file" id="image" name="__files[]">
             </div>
         </div>
     </div>
@@ -28,13 +37,13 @@
                 <label class="control-label" for="cand_name" >
                     Candidate Name:
                 </label>        
-                <input class="text-uppercase form-control"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>" >
+                <input class="text-uppercase form-control"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>"  <?php if(@$data['name']!= "") echo "readonly='readonly'";  ?>  >
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="father_name">
                     Father's Name :
                 </label>        
-                <input class="text-uppercase form-control" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo  @$data['Fname']; ?>" > 
+                <input class="text-uppercase form-control" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo @$data['Fname']; ?>" <?php if(@$data['Fname']!= "") echo "readonly='readonly'";  ?> > 
             </div>
         </div>
     </div>
@@ -66,7 +75,6 @@
             </div>
         </div>
     </div>
-
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
@@ -77,11 +85,20 @@
                     // $med = 2; 
                     if($med == 1)
                     {
-                        echo  "<option value='1' selected='selected'>Urdu</option> <option value='1'>English</option>";
+                        echo  "<option value='0'>None</option>
+                        <option value='1' selected='selected'>Urdu</option>
+                        <option value='1'>English</option>";
                     }
-                    else
+                    else if($med == 2)
                     {
-                        echo  "<option value='2' >Urdu</option><option value='2' selected='selected'>English</option>";
+                        echo  "<option value='0'>None</option>
+                        <option value='2'>Urdu</option>
+                        <option value='2' selected='selected'>English</option>";
+                    }
+                    else{
+                        echo  "<option value='0' selected='selected'>None</option>
+                        <option value='1'>Urdu</option>
+                        <option value='2'>English</option>";
                     }
                     ?>
                 </select>
@@ -104,18 +121,20 @@
                     if($nat == 1)
                     {
                         echo  
-                        "<option value='1' selected='selected'>Pakistani</option>
+                        "<option value='0'>None</option>
+                        <option value='1' selected='selected'>Pakistani</option>
                         <option value='2'>Non Pakistani</option>";
                     }
                     else if ($nat == 2)
                     {
                         echo  
-                        "<option value='1'>Pakistani</option> 
+                        "<option value='0'>None</option><option value='1'>Pakistani</option> 
                         <option value='2' selected='selected'>Non Pakistani</option>";
                     }
                     else{
                         echo  
-                        "<option value='1'>Pakistani</option> 
+                        "<option value='0' selected='selected'>None</option>
+                        <option value='1'>Pakistani</option> 
                         <option value='2'>Non Pakistani</option>";
                     }
                     ?>
@@ -137,7 +156,7 @@
                     }
                     else if($spec ==2)
                     {
-                        echo  "<option value='0' >None</option>  
+                        echo  "<option value='0'>None</option>  
                         <option value='1'>Deaf &amp; Dumb</option>
                         <option value='2' selected='selected'>Board Employee</option>
                         <option value='3'>Blind</option>";
@@ -149,13 +168,11 @@
                         <option value='2'>Board Employee</option>
                         <option value='3'>Blind</option>";
                     }
-
                     ?>
                 </select>
             </div>
         </div>
     </div>
-
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
@@ -167,17 +184,23 @@
                     $resid = @$data['RuralORUrban'];
                     if($resid == 1 )
                     {
-                        echo"<option value='1' selected='selected'>URBAN</option> 
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1' selected='selected'>URBAN</option> 
                         <option value='2'>RURAL</option>";
                     }
                     else if($resid == 2)
                     {
-                        echo"<option value='1'>URBAN</option> 
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1'>URBAN</option> 
                         <option value='2' selected='selected'>RURAL</option>";
                     }
                     else
                     {
-                        echo"<option value='1' selected='selected'>URBAN</option> 
+                        echo"
+                        <option value='0' selected='selected'>None</option>
+                        <option value='1' selected='selected'>URBAN</option>
                         <option value='2'>RURAL</option>";
                     }
                     ?>
@@ -192,16 +215,20 @@
                     @$gender = @$data['sex'];
                     if($gender == 1)
                     {
-                        echo"<option value='1' selected='selected'>MALE</option> 
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1' selected='selected'>MALE</option> 
                         <option value='2'>FEMALE</option>";
                     }
                     else if ($gender == 2)
                     {
-                        echo"<option value='1'>MALE</option> 
+                        echo"
+                        <option value='0'>None</option><option value='1'>MALE</option> 
                         <option value='2' selected='selected'>FEMALE</option>";
                     }
                     else{
-                        echo"<option value='1'>MALE</option> 
+                        echo"<option value='0' selected='selected'>None</option>
+                        <option value='1'>MALE</option> 
                         <option value='2'>FEMALE</option>";
                     }
                     ?>
@@ -220,16 +247,22 @@
                     @$rel = @$data['rel'];
                     if($rel == 1)
                     {
-                        echo"<option value='1' selected='selected'>MUSLIM</option> 
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1' selected='selected'>MUSLIM</option> 
                         <option value='2'>NON MUSLIM</option>";
                     }
                     else if ($rel == 2)
                     {
-                        echo"<option value='1'>MUSLIM</option> 
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1'>MUSLIM</option> 
                         <option value='2' selected='selected'>NON MUSLIM</option>";
                     }
                     else{
-                        echo"<option value='1' selected='selected'>MUSLIM</option> 
+                        echo"
+                        <option value='0' selected='selected'>None</option>
+                        <option value='1' selected='selected'>MUSLIM</option> 
                         <option value='2'>NON MUSLIM</option>";
                     }
                     ?>
@@ -528,6 +561,7 @@
 
     <div class="hidden">
         <input type="hidden" value="<?=  @$data['grp_cd']?>" name="pergrp">
+        <input type="hidden" value="1" name="oldboardid">
         <input type="hidden" class="span3" id="oldClass" name="oldClass"  value="<?php  echo @$data['class']; ?>"/>     
         <input type="hidden" name="oldsess" id ="oldsess" value="<?php echo @$data['sess'] == 1 ? "Annual" :"Supplementary";  ?>" > 
         <input type="hidden" name="oldyear" id ="oldyear" value="<?php echo @$data['Iyear']; ?>" >
@@ -540,38 +574,111 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-3">
-                <input type="submit" value="Save Form" id="btnsubmitUpdateEnrol" name="btnsubmitUpdateEnrol" class="btn btn-primary btn-block" onclick="return checks()">
+                <input type="submit" value="Save Form" id="btnsubmitUpdateEnrol" name="btnsubmitUpdateEnrol" class="btn btn-primary btn-block" onclick="return checks_fresh_10th()">
             </div>
             <div class="col-md-2">
                 <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg" download="instructions" class="btn btn-info btn-block">Download Instruction</a>
             </div>
             <div class="col-md-3">
-                <input type="button" class="btn btn-danger btn-block" value="Cancel" id="btnCancel" name="btnCancel" onclick="return gotodefaultpage();">
+                <input type="button" class="btn btn-danger btn-block" value="Cancel" id="btnCancel" name="btnCancel" onclick="return CancelAlert();">
             </div>
         </div>
     </div>
 </form>
 <script src="<?php echo base_url(); ?>assets/js_matric/jquery-1.8.3.js"></script>
 <script type="text/javascript">
-    function checks(){
-        var status  =  check_NewEnrol_validation();
+
+    function CancelAlert()
+    {
+        var msg = "Are You Sure You want to Cancel this Form ?"
+        alertify.confirm(msg, function (e) {
+            if (e) {
+                // user clicked "ok"
+                window.location.href ="<?php echo base_url(); ?>Admission/";
+            } else {
+                // user clicked "cancel"
+
+            }
+        });
+    }
+
+
+    function checks_fresh_10th(){
+        var status  =  check_NewEnrol_validation_fresh();
         if(status == 0)
         {
             return false;    
         }
         else
         {
-            $("button[type='submit']").html('Please wait ...').attr('disabled','disabled'); 
-            $("#myform").submit();
-            return true;
-        } 
+            //debugger;
+            $.ajax({
+
+                type: "POST",
+                url: "<?php  echo site_url('Admission/frmvalidation_matricFresh'); ?>",
+                data: $("#myform").serialize() ,
+                datatype : 'html',
+                cache:false,
+
+                success: function(data)
+                {                    
+                    var obj = JSON.parse (data);
+                    if(obj.excep == 'Success')
+                    {
+                        $.ajax({
+
+                            type: "POST",
+                            url: "<?php echo base_url(); ?>" + "Admission/NewEnrolment_insert/",
+                            data: $("#myform").serialize() ,
+                            datatype : 'html',
+                            cache:false,
+
+                            beforeSend: function() {  $('.mPageloader').show(); },
+                            complete: function() { $('.mPageloader').hide();},
+
+                            success: function(data){
+
+                                var obj = JSON.parse(data);
+                                if(obj.error ==  1)
+                                {
+                                    window.location.href ='<?php echo base_url(); ?>Admission/formdownloaded/'+obj.formno
+                                    alertify.error('Your Application is Submit Successfully');
+                                    return true;
+                                }   
+                                else
+                                {
+                                    alertify.error(obj.error);
+                                    return false; 
+                                }
+                            },
+
+                            error: function(request, status, error){
+
+                                alertify.error(request.responseText);
+                            }
+                        });
+
+                        return false
+                    }
+                    else
+                    {
+                        alertify.error(obj.excep);
+                        return false;     
+                    }
+                }
+            });
+            return false;   
+        }
     }
-    function  check_NewEnrol_validation()
+
+    function check_NewEnrol_validation_fresh()
     {
+        //debugger;
         var name =  $('#cand_name').val();
         var dist_cd= $('#pvtinfo_dist option:selected').val();
         var teh_cd= $('#pvtinfo_teh option:selected').val();
         var zone_cd= $('#pvtZone option:selected').val();
+        var terms = $("input[name='terms']:checked").val();
         var sub6p1 = $('#sub6').val();
         var sub6p2 = $('#sub6p2').val();           
         var sub7p1 = $('#sub7').val();
@@ -585,22 +692,32 @@
         var fName = $('#father_name').val();
         var FNic = $('#father_cnic').val();
         var dob = $('#dob').val();
+        var medium = $('#medium').val();
         var address = $('#address').val();
+        var nationality = $('#nationality').val();
         var image = $('#image').val();
         var MarkOfIdent = $('#MarkOfIden').val();
+        var religion = $('#religion').val();
+        var UrbanRural = $('#UrbanRural').val();
+        var preResult = $('#preResult').val();
+        var oldrno = $('#oldrno').val();
+        var oldboardid = $('#oldboardid').val();
+        var gend = $('#gend').val();
         var status = 0;
-        var $img = $("#inputFile");
+        var $img = $("#previewImg");
         var src = $img.attr("src");
         var selected_group_conversion ;
-        var gend = $('#gend').val();
 
-        var fuData = document.getElementById('inputFile');
+        var fuData = document.getElementById('image');
         var FileUploadPath = fuData.value;
         if (FileUploadPath == '') {
             alertify.error("Please upload an image");
-            jQuery('#image_upload_preview').removeAttr('src');
+            jQuery('#previewImg').removeAttr('src');
+            $("#previewImg").attr("src","<?php echo base_url(); ?>assets/img/profile.png");
+            $("#image").focus();
             return status;
-        } 
+        }
+
         if(grp_cd==1 || grp_cd == 5 || grp_cd ==7)
         {
             selected_group_conversion =1;
@@ -609,31 +726,15 @@
         {
             selected_group_conversion =grp_cd;
         }
-        if(gend==undefined)
+
+        if(name == "" ||  name == undefined)
         {
-            alertify.error("Please Select Your Gender First!")
-            $('#gend').focus(); 
-            return status;
-        }
-        if(!$("#terms").is(":checked"))
-        {
-            alertify.error("Please Accept Terms and Conditions First!")
-            $('input[name="terms"]').focus(); 
-            return status;
-        }
-        if(src == '') {
-            $img.addClass("highlight");
-            $img.css("border", "3px solid yellow");
-            alertify.error("Please upload your Picture First.")
-            $img.focus(); 
-            return status;
-        }
-        else if(name == "" ||  name == undefined){
             alertify.error("Please Enter your  Name")
             $('#cand_name').focus(); 
             return status;
         }
-        else if(fName == "" || fName == undefined){
+        else if(fName == "" || fName == undefined)
+        {
             alertify.error("Please Enter your Father's Name  ") 
             $('#father_name').focus(); 
             return status;
@@ -651,13 +752,20 @@
             $('#father_cnic').focus();  
             return status; 
         }
-
         else if(FNic == bFormNo  )
         {
             alertify.error("B-form Number and Father CNIC cannot be same.") 
             $('#bay_form').focus();   
             return status; 
         }
+
+        else if(dob == "" || dob == undefined)
+        {
+            alertify.error("Please Enter your Date of Birth.") 
+            $('#dob').focus();   
+            return status;  
+        }
+
         else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
         {
             alertify.error("Please Enter your Mobile No.") 
@@ -665,17 +773,74 @@
             return status;  
         }
 
-        else if(MarkOfIdent == "" || MarkOfIdent == 0 || MarkOfIdent == undefined)
+        else if(medium == "" || medium == 0 || medium == undefined)
+        {
+            alertify.error("Please Select Medium.") 
+            $('#medium').focus();   
+            return status;  
+        }
+
+        else if(preResult=="")
+        {
+            alertify.error("Please Write Your Previous Result First!")
+            $('#preResult').focus(); 
+            return status;
+        }
+
+        else if(MarkOfIdent == "" || MarkOfIdent == undefined)
         {
             alertify.error("Please Enter your Mark of Indentification") 
             $('#MarkOfIden').focus();   
             return status;  
         }
+
+        else if(nationality == "" || nationality == 0 || nationality == undefined)
+        {
+            alertify.error("Please Select Nationality") 
+            $('#nationality').focus();   
+            return status;  
+        }
+
+        else if(gend==undefined || gend == 0)
+        {
+            alertify.error("Please Select Your Gender First!")
+            $('#gend').focus(); 
+            return status;
+        }
+
+        else if(religion == undefined || religion == 0)
+        {
+            alertify.error("Please Select Your Religion First!")
+            $('#religion').focus();
+            return status;
+        }
+
+        else if(UrbanRural == undefined || UrbanRural == 0)
+        {
+            alertify.error("Please Select Your Locilaty First!")
+            $('#UrbanRural').focus();
+            return status;
+        }
+
         else if(address == "" || address == 0 || address.length ==undefined )
         {
             alertify.error("Please Enter your Address")
             $('#address').focus(); 
             return status;    
+        }
+
+        else if(oldrno=="")
+        {
+            alertify.error("Please Enter Your Old Rno First!")
+            $('#oldrno').focus(); 
+            return status;
+        }
+
+        else if(oldboardid==0)
+        {
+            alertify.error("Please Select Your Board First!")
+            $('#oldboardid').focus(); 
+            return status;
         }
 
         else  if (dist_cd < 1) 
@@ -685,12 +850,13 @@
             return status;  
         }
 
-        else if (teh_cd < 1) {
-
+        else if (teh_cd < 1) 
+        {
             alertify.error('Please select Tehsil');                          
             $("#pvtinfo_teh").focus();
             return status;  
         }
+
         else if (zone_cd < 1) 
         {
             alertify.error('Please select Zone. ');                          
@@ -705,46 +871,25 @@
             return status;  
         }
 
+        else if($("#terms").is(":not(:checked)"))
+        {
+            alertify.error("Please Accept Terms and Conditions First!")
+            $('input[name="terms"]').focus(); 
+            return status;
+        }
+
         status = 1;
         return status;
     }
-    function ValidateFileUpload() {                                                                                                        
-        var fuData = document.getElementById('inputFile');
-        var FileUploadPath = fuData.value;
-        if (FileUploadPath == '') {
-            alert("Please upload an image");
-            jQuery('#image_upload_preview').removeAttr('src');
-        } 
-        else {
-            var Extension = FileUploadPath.substring(
-                FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-            if (Extension == "jpeg" || Extension == "jpg") {
-                if (fuData.files && fuData.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#image_upload_preview').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(fuData.files[0]);
-                }
-            } 
-            else {
-                $('#inputFile').removeAttr('value');
-                jQuery('#image_upload_preview').removeAttr('src');
-                alert("Image only allows file types of JPEG. ");
-                return false;
-            }
-        }
-        var file_size = $('#inputFile')[0].files[0].size;
-        if(file_size>20480) {                                    
-            $('#inputFile').removeAttr('value');
-            jQuery('#image_upload_preview').removeAttr('src');
-            alert("File size can be between 20KB"); 
-            return false;
-        } 
-    }
+
+
     $(window).load(function()
         {
             $.fancybox("#instruction");
+
+            $('#address').each(function(){
+                $(this).val($(this).val().trim());
+            });
 
     });
     $(document).ready(function(){
@@ -1974,4 +2119,5 @@
             }
         }
     });
+
 </script>

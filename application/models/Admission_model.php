@@ -19,21 +19,18 @@ class Admission_model extends CI_Model
             'cDate'=> date('Y-m-d H:i:s')
         );
         $this->db->where('formNo',$formno);
-      /*$query = $this->db->update('Admission_Online..MSAdm2016',$data);
-         if (!$query) 
-            {
-                // if query returns null
-            $errNo   = $this->db->error();
-            return;
-            }   */
+        /*$query = $this->db->update('Admission_Online..MSAdm2016',$data);
+        if (!$query) 
+        {
+        // if query returns null
+        $errNo   = $this->db->error();
+        return;
+        }   */
         return true;
 
     }
     public function Pre_Matric_data($data)
     {
-
-      // DebugBreak();
-      
         $rno = $data['mrno'];
         $iyear = $data['year'];
         $sess = $data['session'];
@@ -46,26 +43,20 @@ class Admission_model extends CI_Model
 
             if (!$query) 
             {
-                // if query returns null
-            $errNo   = $this->db->error();
-            return;
+                $errNo   = $this->db->error();
+                return;
             }
-            
-
         }
+
         else
         {
-
             $class= $data['class'];
-            $query = $this->db->query("matric_new..Matric_Results $rno,$class,$iyear,$sess");
+            $query = $this->db->query("exec matric_new..Matric_Results $rno,$class,$iyear,$sess");
             if (!$query) 
             {
-                // if query returns null
-            $errNo   = $this->db->error();
-            return;
+                $errNo   = $this->db->error();
+                return;
             }
-            //admission_online..NextAppearance_SSC @rno,@IYear,@Sess
-
         }
 
         $rowcount = $query->num_rows();
@@ -82,13 +73,13 @@ class Admission_model extends CI_Model
 
     public function checknextrno($rno,$IYear,$Sess,$class)
     {
-        $query = $this->db->query("admission_online..NextAppearanceSSC $rno,$class,$IYear,$Sess,'0','0','',1");
-         if (!$query) 
-            {
-                // if query returns null
+        $query = $this->db->query("admission_online..NextAppearanceSSC $rno,$class,$IYear,$Sess,'0','0','','',1");
+        if (!$query) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -102,13 +93,13 @@ class Admission_model extends CI_Model
     }
     public function checkalready($name,$fnic,$dob)
     {
-        $query = $this->db->query("admission_online..NextAppearanceSSC 0,0,0,0,'$name','$dob','$fnic',2");
-         if (!$query) 
-            {
-                // if query returns null
+        $query = $this->db->query("exec admission_online..NextAppearanceSSC 0,0,0,0,'$name','$dob','$fnic','',2");
+        if (!$query) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -123,12 +114,12 @@ class Admission_model extends CI_Model
     public function Brd_Name($brd_cd)
     {
         $brd_name = $this->db->get_where("matric..tblboard", array('Brd_cd'=>$brd_cd));
-         if (!$brd_name) 
-            {
-                // if query returns null
+        if (!$brd_name) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $brd_name->num_rows();
         if($rowcount>0)
         {
@@ -141,13 +132,13 @@ class Admission_model extends CI_Model
         $this->db->order_by("formno", "DESC");
         $formno =$this->db->get_where(INSERT_TBL,array('regpvt'=>2));
         if (!$formno) 
-            {
-                // if query returns null
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $formno->num_rows();
-          
+
         if($rowcount == 0 )
         {
             $formno = formnovalid+1;
@@ -159,11 +150,12 @@ class Admission_model extends CI_Model
             $formno = $row[0]['formno']+1;
             return $formno;
         }
-
     }
 
     public function Insert_NewEnorlement($data){    
-        //   DebugBreak();
+
+        //DebugBreak();
+
         $name = strtoupper($data['name']);
         $fname =strtoupper($data['Fname']);
         $BForm = $data['BForm'];
@@ -247,7 +239,23 @@ class Admission_model extends CI_Model
         $regFee = @$data['regFee'];
         $certFee = @$data['certFee'] ;
         $AdmFine = @$data['AdmFine'];
-        $pic = @$data['picpath'];
+        $picpath = @$data['picpath'];
+
+        //DebugBreak();
+
+        if($picpath == '')
+        {
+            $IsNewPic = 1;
+            $temppath = $data['picname'];
+        }
+
+        else
+        {
+            $IsNewPic = 0; 
+            $temppath = '';
+        }
+
+
         if($isotherbrd == 1 || $isFresh == 1 )
         {
             $old_class =  9;
@@ -270,14 +278,15 @@ class Admission_model extends CI_Model
         if($regFee == '')
             $regFee=0 ;
 
-        //  echo  '<pre>';print_r($data);echo '</pre>';exit();
-        $query = $this->db->query(Insert_sp." '$formno',10,$iyear,$ses_s,'$name','$fname','$BForm','$FNIC','$Dob','$CellNo',$medium,'".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,$oldrno,$oldyear,$oldsess,$old_class,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$cat09,$cat10,$sub1ap2,$sub2ap2,$sub3ap2,$sub4ap2,$sub5ap2,$sub6ap2,$sub7ap2,$sub8ap2,$dist_cd,$teh_cd,$zone_cd,$Brd_cd,$isotherbrd,'$preResult',$exam_type,$isFresh,$AdmFee,$AdmProcessFee,$AdmTotalFee,$regFee,$certFee,$AdmFine,'$strRegNo','$pic'");    
-         if (!$query) 
-            {
-                // if query returns null
+        //DebugBreak();
+            
+        $query = $this->db->query(Insert_sp." '$formno',10,$iyear,$ses_s,'$name','$fname','$BForm','$FNIC','$Dob','$CellNo',$medium,'".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,$oldrno,$oldyear,$oldsess,$old_class,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$cat09,$cat10,$sub1ap2,$sub2ap2,$sub3ap2,$sub4ap2,$sub5ap2,$sub6ap2,$sub7ap2,$sub8ap2,$dist_cd,$teh_cd,$zone_cd,$Brd_cd,$isotherbrd,'$preResult',$exam_type,$isFresh,$AdmFee,$AdmProcessFee,$AdmTotalFee,$regFee,$certFee,$AdmFine,'$strRegNo','$picpath', $IsNewPic, '$temppath' ");    
+        if (!$query) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -293,12 +302,12 @@ class Admission_model extends CI_Model
     public function get_spl_name($splcd){
         $query = $this->db->get_where('Admission_online..tblSplCase', array('spl_cd' => $splcd));
         // //DebugBreak();
-         if (!$query) 
-            {
-                // if query returns null
+        if (!$query) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -316,19 +325,19 @@ class Admission_model extends CI_Model
         $tehcd = $data['tehCode'];
         $gend = $data['gend'];
         $ses_s = Session;
-        $iyear = Year;
+        $iyear = Year+1;
         //$query = $this->db->get_where('matric_new..tblZones', array('mYear' => 2017,'Class' => 10,'Sess'=>1, 'teh_cd' => $tehcd));
         // //DebugBreak();
         $sess = Session;
         $iyear = Year;
         $where = " mYear = $iyear  AND class = 10 AND  sess = $sess and Flag= 1 AND teh_cd =  $tehcd  AND  (Gender = $gend OR Gender = 3) ";      
         $query = $this->db->query("SELECT * FROM matric_new..tblZones WHERE $where");
-         if (!$query) 
-            {
-                // if query returns null
+        if (!$query) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -347,15 +356,15 @@ class Admission_model extends CI_Model
         $zone = $data['zoneCode'];
         $gend = $data['gen'];
         $sess = Session;
-        $iyear = Year;
+        $iyear = Year+1;
         $where = " mYear = $iyear  AND class = 10 AND  sess = $sess AND Zone_cd =  $zone  AND  (cent_Gen = $gend OR cent_Gen = 3) ";      
         $query = $this->db->query("SELECT * FROM matric_new..tblcentre WHERE $where");
-          if (!$query) 
-            {
-                // if query returns null
+        if (!$query) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         //$query = $this->db->get_where('matric_new..tblcentre', array('mYear' => 2016,'class' => 10,'sess'=>2, 'Zone_cd' => $zone, 'cent_Gen' => $gend)); 
         //DebugBreak();
         $rowcount = $query->num_rows();
@@ -392,12 +401,12 @@ class Admission_model extends CI_Model
         //sp_form_data
         //SELECT * FROM  fl_dataforMa15 WHERE  (isSubmit is null or isSubmit= 0) and class = 9 and iyear = 2014 and sch_cd = ".$user->inst_cd
         $query = $this->db->query('Admission_onlinesp_form_data', array('sch_cd' => $inst_cd,'class' => 9, 'iyear' => 2014, 'isSubmit'=>0));
-          if (!$query) 
-            {
-                // if query returns null
+        if (!$query) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -413,12 +422,12 @@ class Admission_model extends CI_Model
 
         //DebugBreak();
         $query = $this->db->query(formprint_sp."'$formno'");
-          if (!$query) 
-            {
-                // if query returns null
+        if (!$query) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -436,12 +445,12 @@ class Admission_model extends CI_Model
         $date = $User_info_data['date'];
 
         $query = $this->db->get_where('Admission_online..tblinstitutes_all',  array('Inst_cd' => $Inst_cd));
-         if (!$query) 
-            {
-                // if query returns null
+        if (!$query) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -463,22 +472,22 @@ class Admission_model extends CI_Model
         $isPratical = $User_info_data['isPratical'];
 
         $query = $this->db->get_where('Admission_online..tblinstitutes_all',  array('Inst_cd' => $Inst_cd));
-         if (!$query) 
-            {
-                // if query returns null
+        if (!$query) 
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
 
             $query2 = $this->db->get_where('admission_Online..RuleFeeAdm', array('class' => 10,'sess' => Session, 'Start_Date <=' =>$date,'End_Date >='=>$date,'isPrSub'=>$isPratical));
-             if (!$query2) 
+            if (!$query2) 
             {
                 // if query returns null
-            $errNo   = $this->db->error();
-            return;
+                $errNo   = $this->db->error();
+                return;
             }
             $resultarr = array("info"=>$query->result_array(),"rule_fee"=>$query2->result_array());
 
@@ -496,14 +505,14 @@ class Admission_model extends CI_Model
         $data['cdate']= date('Y-m-d H:i:s');
         $this->db->where('formNo',$data['formNo']);
         $this->db->update(INSERT_TBL,$data);
-        $this->db->select('regFee,AdmFee,AdmProcessFee,AdmFine,AdmTotalFee');
+        $this->db->select('AdmFee,AdmFine,AdmTotalFee');
         $query = $this->db->get_where(INSERT_TBL, array('formNo'=>$data['formNo'])); 
         if (!$query) 
-            {
-                // if query returns null
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -513,18 +522,17 @@ class Admission_model extends CI_Model
         {
             return  false;
         }
-
     }
 
     public function getAdmissionData($rno, $inst_cd){
 
         $query = $this->db->get_where('fl_dataforMa15', array('rno' => $rno, 'sch_cd' => $inst_cd,'class' => 9, 'iyear' => 2014, 'isSubmit'=>0));
         if (!$query) 
-            {
-                // if query returns null
+        {
+            // if query returns null
             $errNo   = $this->db->error();
             return;
-            }
+        }
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -536,7 +544,7 @@ class Admission_model extends CI_Model
         }
     }
     public function getrulefee($isPrSub){
-       //  DebugBreak();
+        //  DebugBreak();
         $date =  date('Y-m-d') ;
         //  $query = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => 2, 'isPrSub' => $isPrSub, 'Start_Date <='=>$date,'End_Date >='=>$date));
         $query = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => Session, 'isPrSub' => $isPrSub, 'Start_Date <='=>$date,'End_Date >='=>$date));
@@ -551,7 +559,7 @@ class Admission_model extends CI_Model
         }
     }
     public function getrulefee_singFee($isPrSub){
-       //  DebugBreak();
+        //  DebugBreak();
         $date =  date('Y-m-d',strtotime(SingleDateFee9th)) ;
         //  $query = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => 2, 'isPrSub' => $isPrSub, 'Start_Date <='=>$date,'End_Date >='=>$date));
         $query = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => Session, 'isPrSub' => $isPrSub, 'Start_Date <='=>$date,'End_Date >='=>$date));
@@ -682,8 +690,8 @@ class Admission_model extends CI_Model
         }
     }
     public function isActive(){
-    
-    $data = $this->db->get_where("online_BAK..tblAppConfig", array('iyear'=>Year,'class'=>9));
+
+        $data = $this->db->get_where("online_BAK..tblAppConfig", array('iyear'=>Year,'class'=>9));
         $rowcount = $data->num_rows();
         if($rowcount>0)
         {
@@ -691,7 +699,7 @@ class Admission_model extends CI_Model
         }
         else
         {
-           return false;
+            return false;
         }
     }
     public function getSubjects($rno, $inst_cd){
