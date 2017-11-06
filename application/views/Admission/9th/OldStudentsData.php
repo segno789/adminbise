@@ -12,30 +12,30 @@
                     </div>
                     <form action="<?=base_url()?>index.php/Admission_9th_reg/NewEnrolment_update/" method="post" id="form_make_adm">
                         <div class="widget-body">
-                      <!--  <div class='control-group'>
-                              <label class='control-label span1'>
-                                    Select Options:
-                                </label>
-                                <div class="controls controls-row">
-                                <input type="radio" name="opt"  checked="checked" value="3" />Group Wise <br />
-                                </div>
-                                </div>
-                                 <div class='control-group'>
-                                   <label class='control-label span1'>  </label>
-                                    <div class="controls controls-row">
-                                <input type="radio" name="opt" value="2" />Special Case(Board Employee) <br />   
-                                
-                                 </div>
-                                  </div>
-                                   <div class='control-group'>
-                                   <label class='control-label span1'>  </label>
-                                    <div class="controls controls-row">
-                                <input  type="radio" name="opt" value="1" />Special Case(Disable) <br /> 
-                                
-                                 </div>
-                                  </div>   -->
-                               
-                 
+                            <!--  <div class='control-group'>
+                            <label class='control-label span1'>
+                            Select Options:
+                            </label>
+                            <div class="controls controls-row">
+                            <input type="radio" name="opt"  checked="checked" value="3" />Group Wise <br />
+                            </div>
+                            </div>
+                            <div class='control-group'>
+                            <label class='control-label span1'>  </label>
+                            <div class="controls controls-row">
+                            <input type="radio" name="opt" value="2" />Special Case(Board Employee) <br />   
+
+                            </div>
+                            </div>
+                            <div class='control-group'>
+                            <label class='control-label span1'>  </label>
+                            <div class="controls controls-row">
+                            <input  type="radio" name="opt" value="1" />Special Case(Disable) <br /> 
+
+                            </div>
+                            </div>   -->
+
+
                             <div class='control-group'>
                                 <label class='control-label span1'>
                                     Select Group:
@@ -141,9 +141,9 @@
                                                     <th style="width:10%" class="hidden-phone">
                                                         Selected Subjects
                                                     </th>
-                                                    <th style="width:5%" class="hidden-phone">
-                                                        Picture
-                                                    </th>
+                                                    <!-- <th style="width:5%" class="hidden-phone">
+                                                    Picture
+                                                    </th>  -->
                                                     <th style="width:6%" class="hidden-phone">
                                                         View Form
                                                     </th>
@@ -195,11 +195,11 @@
                                                                 $grp_name = "No Group Selected.";
                                                         }
 
-                                                        $picpath =  DIRPATH9th.'/'.$Inst_Id.'/'.$vals["picpath"];
-                                                       // echo $picpath;
-                                                        $type = pathinfo($picpath, PATHINFO_EXTENSION);
-                                                        $vals["picpath"] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($picpath));
-                                                        
+                                                        //$picpath =  DIRPATH9th.'/'.$Inst_Id.'/'.$vals["picpath"];
+                                                        // echo $picpath;
+                                                        // $type = pathinfo($picpath, PATHINFO_EXTENSION);
+                                                        //$vals["picpath"] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($picpath));
+
                                                         //  DebugBreak();
                                                         echo '<tr  >
                                                         <td>'.$n.'</td>
@@ -208,16 +208,28 @@
                                                         <td>'.$vals["Fname"].'</td>
                                                         <td>'.date("d-m-Y", strtotime($vals["Dob"])).'</td>
                                                         <td>'.$grp_name.'</td>
-                                                        <td>'.$vals["sub1_abr"].','.$vals["sub2_abr"].','.$vals["sub3_abr"].','.$vals["sub4_abr"].','.$vals["sub5_abr"].','.$vals["sub6_abr"].','.$vals["sub7_abr"].','.$vals["sub8_abr"].'</td>
-                                                        <td><img id="previewImg" style="width:40px; height: 40px;" src="'.$vals["picpath"] .'" alt="Candidate Image"></td>
-                                                        <td> <button type="button" class="btn btn-info" value="'.$formno.'" onclick="NewForm('.$formno.')">View Form</button></td>
-                                                        <td><input style="width: 24px; height: 24px;" type="checkbox" name="chk[]" value="'.$formno.'" /></td> </tr>';
+                                                        <td>'.$vals["sub1_abr"].','.$vals["sub2_abr"].','.$vals["sub3_abr"].','.$vals["sub4_abr"].','.$vals["sub5_abr"].','.$vals["sub6_abr"].','.$vals["sub7_abr"].','.$vals["sub8_abr"].'</td>';
+
+                                                        if(isset($vals["spl_cd"]))
+                                                        {
+                                                            // DebugBreak();
+                                                            echo '<td class="alert alert-danger" style="background-color:red">
+                                                            <strong>Admission Can not proceed due to </strong>'.$vals["spl_cd_exp"].'
+                                                            </td><td></td> </tr>';
+                                                        }
+                                                        else
+                                                        {
+                                                            echo '<td> <button type="button" class="btn btn-info" value="'.$formno.'" onclick="NewForm('.$formno.')">View Form</button></td>
+                                                            <td><input style="width: 24px; height: 24px;" type="checkbox" name="chk[]" value="'.$formno.'" /></td> </tr>';
+                                                        }
+
                                                         /*<td><img id="previewImg" style="width:40px; height: 40px;" src="/'.IMAGE_PATH.$Inst_Id.'/'.$vals['PicPath'].'" alt="Candidate Image"></td>';*/
                                                         /* echo'<td>
                                                         <button type="button" class="btn btn-info" value="'.$formno.'" onclick="NewForm('.$formno.')">Save Form</button>
 
                                                         </td>
                                                         </tr>';  */
+                                                        //<td><img id="previewImg" style="width:40px; height: 40px;" src="'.$vals["picpath"] .'" alt="Candidate Image"></td>
                                                         endforeach;
                                                 }
                                                 ?>
@@ -231,12 +243,12 @@
                                     <div class="row">
 
                                         <div class="col-lg-12" style="float: right;">
-                                        
-                                        <button type="button" class="btn btn-large btn-info" name="make_adm_all" id="make_adm_all" value="1" onclick="return issubmit_all();" >Submit Admissions Of All Students</button>
-                                        <button type="button" class="btn btn-large btn-info" name="make_adm_all" id="make_adm_sel" value="2" onclick="return issubmit_sel();" >Submit Admissions Of Selected Students</button>
+
+                                            <button type="button" class="btn btn-large btn-info" name="make_adm_all" id="make_adm_all" value="1" onclick="return issubmit_all();" >Save Forms Of All Students</button>
+                                            <button type="button" class="btn btn-large btn-info" name="make_adm_all" id="make_adm_sel" value="2" onclick="return issubmit_sel();" >Save Forms Of Selected Students</button>
                                         </div>
                                     </div>
-
+                                    <input type="text" style="display: none;" name="CheckedFormno" id="CheckedFormno"> 
                                     <div class="control-group">
                                         <div class="controls controls-row">
                                             <label class="label label-important" style="font-size: large;">

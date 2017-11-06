@@ -67,7 +67,7 @@ define('Batch_tbl','Admission_online..tblRegBatch10th'); // For Matric Admission
 define('INSERT_TBL','Admission_online..tblMAdm'); // for insertion matric supply
 define('Insert_sp','admission_online..MAdm_sp_insert'); // for insertion matric supply
 define('Insert_sp_matric_annual','Admission_online..tblMAdmInsert'); // for insertion matric Annual
-define('formprint_sp','Admission_online..sp_form_data_temp');    // for selection matric supply
+define('formprint_sp','Admission_online..sp_form_data');    // for selection matric supply
 define('formprint_sp_9th','Registration..sp_form_data_9thAdm');    // for selection 9th Annual
 define('formprint_sp_matric_annual','Admission_online..sp_form_data');    // for selection matric Annual
 define('return_pdf_isPicture','1');
@@ -100,11 +100,11 @@ define('TripleDateFee9th', $TripleDate);
 define('getinfo','admission_online..tblAdmissionDataForSSC');
 //define('DIRPATH','C:\inetpub\vhosts\bisegrw.com\Share Images\OldPics'); 
 define('DIRPATH','C:\inetpub\vhosts\bisegrw.com\Share Images\\'); 
-define('DIRPATH9th','C:\inetpub\vhosts\bisegrw.com\registration.bisegrw.com\uploads\2016'); 
+define('DIRPATH9th','C:\inetpub\vhosts\bisegrw.com\ssc.bisegrw.com\uploads\2017\reg'); 
 define('DIRPATHOTHER','C:\inetpub\vhosts\bisegrw.com\registration.bisegrw.com\uploads\other'); 
 define('corr_bank_chall_class1','10th');
-define('CURRENT_SESS1','2017'); 
-define('CURRENT_SESS1_year','2017'); 
+define('CURRENT_SESS1','2018'); 
+define('CURRENT_SESS1_year','2018'); 
 define('class_for_9th_Adm','9th');
 define('formnovalid',100000);// Starting Form No. for Pvt 10th candidates.
 define('formno_9thpvt',600000); // Starting Form No. for Pvt 9th candidates. 

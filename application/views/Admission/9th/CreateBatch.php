@@ -1,555 +1,432 @@
 <div class="dashboard-wrapper class wysihtml5-supported">
-          <div class="left-sidebar">
-            <div class="row-fluid">
-              <div class="span12">
-                <div class="widget no-margin">
-                  <div class="widget-header">
-                    <div class="title">
-                      Create batch 10th Admission<a data-original-title="" id="notifications">s</a>
-                    </div>
-                    <span class="tools">
-                      <a data-original-title="" class="fs1" aria-hidden="true" data-icon=""></a>
-                    </span>
-                  </div>
-                  <div class="widget-body">
-                                     <div class="control-group">
+<div class="left-sidebar">
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget no-margin">
+            <div class="widget-header">
+                <div class="title">
+                    Create batch for Admission<a data-original-title="" id="notifications">s</a>
+                </div>
+
+            </div>
+            <div class="widget-body">
+                <div class="control-group">
                     <h4 class="title">
-                    Create Batch:
+                        Create Batch:
                     </h4>
-                     </div>
-                     <hr>
-                     <!--<div class="control-group">
-                         <label class="control-label">
-                        <b> Please Select the option and Provide input for Report:</b>
-                         </label>
-                     </div> -->
-                     <div class="control-group">
-                     <label class="control-label span1">
-                     Select Option:
-                     </label>
-                     <div class="controls controls-row">
-                     <label class="radio inline span1">
-                     <input type="radio" name="opt" checked="checked" value="3">Group Wise <br>
-                     </label>
-                     <label class="radio inline span2">
-                        <input type="radio" name="opt" value="2">Special Case(Board Employee) <br>
-                     </label>
-                      <label class="radio inline span2">
-                      <input type="radio" name="opt" value="1">Special Case(Disable) 
-                      </label>
-                     </div>
-                     </div>
-                     <div class="control-group">
-                     <label class="control-label span1">
-                     Select Group:
-                     </label>
-                     <div class="controls controls-row">
-                    <select id="std_group" name="std_group">
-                              <option value="">-- Show All Groups --</option>
-                            <option value="1">SCIENCE GROUP WITH BIOLOGY</option>
-                            <option value="7">SCIENCE GROUP WITH COMPUTER SCIENCE</option>
-                             <option value="2">HUMANTIES</option>
-                            <option value="5">DEAF AND DUMB</option>
-                       </select>
-                     </div>
-                     </div>
-                     <div class="control-group">
-                     <div class="controls controls-row">
-                     <input type="submit" id="create_batch" name="create_batch" class="btn btn-large btn-info" value="Create Batch of Complete Group" disabled="disabled">
-                     <input type="submit" id="create_batch2" name="create_batch2" class="btn btn-large btn-info" value="Create Batch Of Selected Forms" disabled="disabled">
-                     
-                     </div>
-                     </div>
-                    <!--   <div id="dt_example" class="example_alt_pagination">
-                    <table class="table table-condensed table-striped table-hover table-bordered pull-left" id="data-table">
-                      <div id="data-table_wrapper" class="dataTables_wrapper" role="grid">
-                      <div id="data-table_length" class="dataTables_length">
-                      <label>Show <select size="1" name="data-table_length" aria-controls="data-table"><option value="10" selected="selected">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div class="dataTables_filter" id="data-table_filter"><label>Search: <input type="text" aria-controls="data-table"></label></div><table class="table table-condensed table-striped table-hover table-bordered pull-left dataTable" id="data-table" aria-describedby="data-table_info">
-                        
-                        <thead>
-                          <tr role="row"><th style="width: 251px;" class="sorting_asc" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="
-                              Month
-                            : activate to sort column descending">
-                              Month
-                            </th><th style="width: 298px;" class="sorting" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="
-                              Internet Explorer
-                            : activate to sort column ascending">
-                              Internet Explorer
-                            </th><th style="width: 235px;" class="sorting" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="
-                              Firefox
-                            : activate to sort column ascending">
-                              Firefox
-                            </th><th style="width: 235px;" class="hidden-phone sorting" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="
-                              Chrome
-                            : activate to sort column ascending">
-                              Chrome
-                            </th><th style="width: 235px;" class="hidden-phone sorting" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="
-                              Safari
-                            : activate to sort column ascending">
-                              Safari
-                            </th><th style="width: 220px;" class="hidden-phone sorting" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="
-                              Opera
-                            : activate to sort column ascending">
-                              Opera
-                            </th>
-                            <th style="width:10%" class="hidden-phone">
-                            Actions
-                          </th>
-                            </tr>
-                        </thead>
-                        
-                      <tbody role="alert" aria-live="polite" aria-relevant="all"><tr class="gradeA error odd">
-                            <td class=" sorting_1">
-                              April
-                            </td>
-                            <td class=" ">
-                              18.3 %
-                            </td>
-                            <td class=" ">
-                              35.8 %
-                            </td>
-                            <td class="hidden-phone ">
-                              38.3 %
-                            </td>
-                            <td class="hidden-phone ">
-                              4.5 %
-                            </td>
-                            <td class="hidden-phone ">
-                              2.3 %
-                            </td>
-                            <td>
-                            <div class="btn-group">
-                              <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
-                                Action 
-                                <span class="caret">
-                                </span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Edit
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Delete
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>    </td>
-                          </tr><tr class="gradeA even">
-                            <td class=" sorting_1">
-                              April
-                            </td>
-                            <td class=" ">
-                              24.3 %
-                            </td>
-                            <td class=" ">
-                              42.9 %
-                            </td>
-                            <td class="hidden-phone ">
-                              25.6 %
-                            </td>
-                            <td class="hidden-phone ">
-                              4.1 %
-                            </td>
-                            <td class="hidden-phone ">
-                              2.6 %
-                            </td>
-                              <td>
-                            <div class="btn-group">
-                              <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
-                                Action 
-                                <span class="caret">
-                                </span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Edit
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Delete
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>    </td>
-                          </tr><tr class="gradeA success odd">
-                            <td class=" sorting_1">
-                              April
-                            </td>
-                            <td class=" ">
-                              33.4 %
-                            </td>
-                            <td class=" ">
-                              46.4 %
-                            </td>
-                            <td class="hidden-phone ">
-                              13.6 %
-                            </td>
-                            <td class="hidden-phone ">
-                              3.7 %
-                            </td>
-                            <td class="hidden-phone ">
-                              2.2 %
-                            </td>
-                            <td>
-                            <div class="btn-group">
-                              <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
-                                Action 
-                                <span class="caret">
-                                </span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Edit
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Delete
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>    </td>
-                          </tr><tr class="gradeA even">
-                            <td class=" sorting_1">
-                              April
-                            </td>
-                            <td class=" ">
-                              33.4 %
-                            </td>
-                            <td class=" ">
-                              46.4 %
-                            </td>
-                            <td class="hidden-phone ">
-                              13.6 %
-                            </td>
-                            <td class="hidden-phone ">
-                              3.7 %
-                            </td>
-                            <td class="hidden-phone ">
-                              2.2 %
-                            </td>
-                            <td>
-                            <div class="btn-group">
-                              <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
-                                Action 
-                                <span class="caret">
-                                </span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Edit
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Delete
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>    </td>
-                          </tr><tr class="gradeA success odd">
-                            <td class=" sorting_1">
-                              April
-                            </td>
-                            <td class=" ">
-                              33.4 %
-                            </td>
-                            <td class=" ">
-                              46.4 %
-                            </td>
-                            <td class="hidden-phone ">
-                              13.6 %
-                            </td>
-                            <td class="hidden-phone ">
-                              3.7 %
-                            </td>
-                            <td class="hidden-phone ">
-                              2.2 %
-                            </td>
-                            <td>
-                            <div class="btn-group">
-                              <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
-                                Action 
-                                <span class="caret">
-                                </span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Edit
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Delete
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>    </td>
-                          </tr><tr class="gradeA warning even">
-                            <td class=" sorting_1">
-                              August
-                            </td>
-                            <td class=" ">
-                              16.2 %
-                            </td>
-                            <td class=" ">
-                              32.8 %
-                            </td>
-                            <td class="hidden-phone ">
-                              43.7 %
-                            </td>
-                            <td class="hidden-phone ">
-                              4.0 %
-                            </td>
-                            <td class="hidden-phone ">
-                              2.2 %
-                            </td>
-                            <td>
-                            <div class="btn-group">
-                              <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
-                                Action 
-                                <span class="caret">
-                                </span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Edit
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Delete
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>    </td>
-                          </tr><tr class="gradeA error odd">
-                            <td class=" sorting_1">
-                              August
-                            </td>
-                            <td class=" ">
-                              22.4 %
-                            </td>
-                            <td class=" ">
-                              40.6 %
-                            </td>
-                            <td class="hidden-phone ">
-                              30.3 %
-                            </td>
-                            <td class="hidden-phone ">
-                              3.8 %
-                            </td>
-                            <td class="hidden-phone ">
-                              2.3 %
-                            </td>
-                            <td>
-                            <div class="btn-group">
-                              <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
-                                Action 
-                                <span class="caret">
-                                </span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Edit
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Delete
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>    </td>
-                          </tr><tr class="gradeU info even">
-                            <td class=" sorting_1">
-                              August
-                            </td>
-                            <td class=" ">
-                              30.7 %
-                            </td>
-                            <td class=" ">
-                              45.8 %
-                            </td>
-                            <td class="hidden-phone ">
-                              17.0 %
-                            </td>
-                            <td class="hidden-phone ">
-                              3.5 %
-                            </td>
-                            <td class="hidden-phone ">
-                              2.3 %
-                            </td>
-                            <td>
-                            <div class="btn-group">
-                              <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
-                                Action 
-                                <span class="caret">
-                                </span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Edit
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Delete
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>    </td>
-                          </tr><tr class="gradeX warning odd">
-                            <td class=" sorting_1">
-                              December
-                            </td>
-                            <td class=" ">
-                              14.7 %
-                            </td>
-                            <td class=" ">
-                              31.1 %
-                            </td>
-                            <td class="hidden-phone ">
-                              46.9 %
-                            </td>
-                            <td class="hidden-phone ">
-                              4.2 %
-                            </td>
-                            <td class="hidden-phone ">
-                              2.1 %
-                            </td>
-                            <td>
-                            <div class="btn-group">
-                              <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
-                                Action 
-                                <span class="caret">
-                                </span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Edit
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Delete
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>    </td>
-                          </tr><tr class="gradeA info even">
-                            <td class=" sorting_1">
-                              December
-                            </td>
-                            <td class=" ">
-                              20.2 %
-                            </td>
-                            <td class=" ">
-                              37.7 %
-                            </td>
-                            <td class="hidden-phone ">
-                              34.6 %
-                            </td>
-                            <td class="hidden-phone ">
-                              4.2 %
-                            </td>
-                            <td class="hidden-phone ">
-                              2.5 %
-                            </td> <td>
-                            <div class="btn-group">
-                              <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
-                                Action 
-                                <span class="caret">
-                                </span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Edit
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="#" data-original-title="">
-                                    Delete
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>    </td>
-                          </tr></tbody></table>
-                          <div class="dataTables_info" id="data-table_info">Showing 1 to 10 of 40 entries</div><div class="dataTables_paginate paging_full_numbers" id="data-table_paginate"><a tabindex="0" class="first paginate_button paginate_button_disabled" id="data-table_first">First</a><a tabindex="0" class="previous paginate_button paginate_button_disabled" id="data-table_previous">Previous</a><span><a tabindex="0" class="paginate_active">1</a><a tabindex="0" class="paginate_button">2</a><a tabindex="0" class="paginate_button">3</a><a tabindex="0" class="paginate_button">4</a></span><a tabindex="0" class="next paginate_button" id="data-table_next">Next</a><a tabindex="0" class="last paginate_button" id="data-table_last">Last</a></div></div>
-                      <div class="clearfix">
-                      </div>
-                    </div>    -->
-                    <div id="dt_example" class="example_alt_pagination">
-                      <table class="table table-condensed table-striped table-hover table-bordered pull-left" id="data-table">
-                       <thead> 
-                        <tr>
-                          <th scope="col">Sr#</th>
-                          <th scope="col">FormNo</th>
-                          <th scope="col">Student Name</th>
-                          <th scope="col">Father Name</th>
-                          <th scope="col">DateofBirth</th>
-                          <th scope="col">ClassRNo</th>
-                          <th scope="col">Admission Date</th>
-                          <th scope="col">Print</th>
-                          <th scope="col">Pic</th>
-                          <th scope="col" style="text-align:center;">Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                </div>
+                <hr>
+                <div class="control-group" style="text-align: center;">
+              <!-- <img src="<?=base_url()?>/assets/img/note_for_batch.jpg" align="middle" style="height: 69px;" alt="">-->
+                </div> 
+                <div class="control-group">
+                    <label class="control-label span1">
+                        Select Option:
+                    </label>
+                    <div class="controls controls-row">
+                        <label class="radio inline span1">
                         <?php
-                        $n = 0;
-                        if(is_array($data)){
-                            foreach($data as $key=>$vals):
-                            $n++;
-                            $stdRno = '';
-                            echo '
-                               <tr>
-                                    <td>'.$n.'</td>
-                                    <td>'.$vals["formNo"].'</td>
-                                    <td>'.$vals["name"].'</td>                        
-                                    <td>'.$vals["fName"].'</td>
-                                    <td>'.$vals["dob"].'</td>
-                                    <td>'.$vals["classRno"].'</td>
-                                    <td>'.$vals["grp_cd"].'</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><a href="deleteRecord/'.$vals['rno'].'">Delete Record</a></td>
-                              </tr>';
-                           endforeach;
-                        } else {
-                            echo '<tr>
-                                    <td colspan=10>No Data</td>
-                              </tr>';
+                        ////DebugBreak();
+                        //echo $spl_cd;
+                        if(@$spl_cd == "1")
+                        {
+                            echo "<input type='radio' name='batch_opt'  value='3'>Group Wise <br>
+                            </label>
+                            <label class='radio inline span2'>
+                            <input type='radio' name='batch_opt' value='2'>Special Case(Board Employee) <br>
+                            </label>
+                            <label class='radio inline span2'>
+                            <input type='radio' name='batch_opt' checked='checked' value='1'>Special Case(Disable) 
+                            </label>
+                            <label class='control-label span1'>
+
+                            </label>
+                            <div class='controls controls-row'>
+
+                            </div>
+                            </div>
+                            <div class='control-group'>";
+                            if($data == FALSE)
+                            {
+                                echo " <div class='controls controls-row'>
+                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();' >  </div>
+                                </div>";
+                            }
+                            else
+                            {
+                                echo " <div class='controls controls-row'>
+                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();' >  </div>
+                                </div>";
+                            }
+                        }
+                        else if(@$spl_cd == "2"){
+                            echo "<input type='radio' name='batch_opt' value='3'>Group Wise <br>
+                            </label>
+                            <label class='radio inline span2'>
+                            <input type='radio' name='batch_opt'  checked='checked' value='2'>Special Case(Board Employee) <br>
+                            </label>
+                            <label class='radio inline span2'>
+                            <input type='radio' name='batch_opt' value='1'>Special Case(Disable) 
+                            </label>
+
+                            <label class='control-label span1'>
+
+                            </label>
+                            <div class='controls controls-row'>
+
+                            </div>
+                            </div>
+                            <div class='control-group'>";
+                            if($data == FALSE)
+                            {
+                                echo " <div class='controls controls-row'>
+                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();' >  </div>
+                                </div>";
+                            }
+                            else
+                            {
+                                echo " <div class='controls controls-row'>
+                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();' >  </div>
+                                </div>";
+                            }
+
+
+
+
+
+                        }
+                        else if(@$spl_cd == "3"){
+                            echo "<input type='radio' name='batch_opt' checked='checked' value='3'>Group Wise <br>
+                            </label>
+                            <label class='radio inline span2'>
+                            <input type='radio' name='batch_opt' value='2'>Special Case(Board Employee) <br>
+                            </label>
+                            <label class='radio inline span2'>
+                            <input type='radio' name='batch_opt' value='1'>Special Case(Disable) 
+                            </label>
+                            </div>
+                            </div>
+                            <div class='control-group'>
+                            <label class='control-label span1'>
+                            Select Group:
+                            </label>
+                            <div class='controls controls-row'>
+                            <select id='std_groups' name='std_group'>
+                            ";
+
+
+                            // //DebugBreak();
+                            $subgroups =  split(',',$grp_cd);
+                            echo "<option value='0' >SELECT GROUP</option>";
+                            for($i =0 ; $i<count($subgroups); $i++)
+                            {
+                                if($subgroups[$i] == 1)
+                                {
+                                    if($grp_selected == 1)
+                                    {
+                                        echo "<option value='1' selected='selected'>SCIENCE WITH BIOLOGY</option>";  
+                                    }
+                                    else 
+                                    {
+                                        echo "<option value='1' >SCIENCE WITH BIOLOGY</option>";    
+                                    }
+                                }
+                                else if($subgroups[$i] == 7)
+                                {
+                                    if($grp_selected == 7 )
+                                    {
+                                        echo "<option value='7' selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>";
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>"; 
+                                    }
+
+                                }
+                                else if($subgroups[$i] == 8)
+                                {
+                                    if($grp_selected == 8)
+                                    {
+                                        echo "<option value='8' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";  
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>";  
+                                    }
+
+                                }
+                                else if($subgroups[$i] == 2)
+                                {
+                                    if($grp_selected == 2 )
+                                    {
+                                        echo "<option value='2' selected='selected'>GENERAL</option>";  
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='2'>GENERAL</option>";   
+                                    }
+
+                                }
+                                else if($subgroups[$i] == 5)
+                                {
+                                    if($grp_selected == 5 )
+                                    {
+                                        echo "<option value='5' selected='selected'>DEAF AND DUMB</option>";  
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='5'>DEAF AND DUMB</option>";  
+                                    }
+
+                                }
+                            }
+                            /* <option value='1'>SCIENCE GROUP WITH BIOLOGY</option>
+                            <option value='7'>SCIENCE GROUP WITH COMPUTER SCIENCE</option>
+                            <option value='2'>GENERAL</option>
+                            <option value='5'>DEAF AND DUMB</option>*/
+                            echo "</select>
+                            </div>
+                            </div>
+                            <div class='control-group'>
+                            <div class='controls controls-row'>";
+                            if($data == false){
+                                echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();' >
+                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  disabled='disabled' makebatch_formnowise();'  > </div>
+                                </div>";
+                            }
+                            else {
+                                echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();' >
+                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  makebatch_formnowise();'  > </div>
+                                </div>";
+                            }
+                        }
+                        else if(@$spl_cd == FALSE){
+                            echo "<input type='radio' name='batch_opt' checked='checked' value='3'>Group Wise <br>
+                            </label>
+                            <label class='radio inline span2'>
+                            <input type='radio' name='batch_opt' value='2'>Special Case(Board Employee) <br>
+                            </label>
+                            <label class='radio inline span2'>
+                            <input type='radio' name='batch_opt' value='1'>Special Case(Disable) 
+                            </label>
+                            </div>
+                            </div>
+                            <div class='control-group'>
+                            <label class='control-label span1'>
+                            Select Group:
+                            </label>
+                            <div class='controls controls-row'>
+                            <select id='std_groups' name='std_group'>
+                            ";
+                           //   //DebugBreak();
+
+                            
+                           // @$msg_status;
+                            @$subgroups =  split(',',@$grp_cd);
+                            echo "<option value='0' >SELECT GROUP</option>";
+                            for($i =0 ; $i<count($subgroups); $i++)
+                            {
+                                if($subgroups[$i] == 1)
+                                {
+                                    if(@$grp_selected == 1 )
+                                    {
+                                        echo "<option value='1' selected='selected'>SCIENCE WITH BIOLOGY</option>";  
+                                    }
+                                    else 
+                                    {
+                                        echo "<option value='1' >SCIENCE WITH BIOLOGY</option>";    
+                                    }
+                                }
+                                else if($subgroups[$i] == 7)
+                                {
+                                    if(@$grp_selected == 7)
+                                    {
+                                        echo "<option value='7' selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>";
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>"; 
+                                    }
+
+                                }
+                                else if($subgroups[$i] == 8)
+                                {
+                                    if(@$grp_selected== 8 )
+                                    {
+                                        echo "<option value='8' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";  
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>";  
+                                    }
+
+                                }
+                                else if($subgroups[$i] == 2)
+                                {
+                                    if(@$grp_selected == 2)
+                                    {
+                                        echo "<option value='2' selected='selected'>GENERAL</option>";  
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='2'>GENERAL</option>";   
+                                    }
+
+                                }
+                                else if($subgroups[$i] == 5)
+                                {
+                                    if(@$grp_selected == 5)
+                                    {
+                                        echo "<option value='5' selected='selected'>DEAF AND DUMB</option>";  
+                                    }
+                                    else
+                                    {
+                                        echo "<option value='5'>DEAF AND DUMB</option>";  
+                                    }
+
+                                }
+                            }
+                            echo "</select>
+                            </div>
+                            </div>
+                            <div class='control-group'>
+                            <div class='controls controls-row'>";
+                            if($data == false){
+                                echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();' >
+                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  disabled='disabled' makebatch_formnowise();'  > </div>
+                                </div>";
+                            }
+                            else {
+                                echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();' >
+                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  makebatch_formnowise();'  > </div>
+                                </div>";
+                            }
+
+
+
+
                         }
                         ?>
-                        </tbody>
-                      </table>
-                      <div class="clearfix">
-                      </div>
+
+
+
+                        <div id="dt_example" class="example_alt_pagination">
+                            <form method="POST" id="frmchk" action="<?=base_url()?>/index.php/Admission_9th_reg/Make_Batch_Formwise">
+                                <table class="table table-condensed table-striped table-hover table-bordered pull-left"  id="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%;">
+                                                Sr.No.
+                                            </th>
+                                            <th style="width:5%">
+                                                Form No.
+                                            </th>
+                                            <th style="width:20%">
+                                                Name
+                                            </th>
+                                            <th style="width:20%">
+                                                Father's Name
+                                            </th>
+                                            <th style="width:6%" class="hidden-phone">
+                                                DOB
+                                            </th>
+                                            <th style="width:20%" class="hidden-phone">
+                                                Subject Group
+                                            </th>
+                                            <th style="width:10%" class="hidden-phone">
+                                                Selected Subjects
+                                            </th>
+                                          
+                                            <?php
+                                            if($spl_cd ==FALSE || $spl_cd =="3" )
+                                            {
+                                                echo '<th style="width:4%" class="hidden-phone">
+                                                Select
+                                                </th>';
+                                            }
+                                            ?>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <?php
+                                        //  //DebugBreak();
+
+                                        //$msg_status;
+                                        if($data != false)
+                                        {
+                                            $n=0;  
+                                            $grp_name='';                             
+                                            foreach($data as $key=>$vals):
+                                                $n++;
+                                                $formno = !empty($vals["formNo"])?$vals["formNo"]:"N/A";
+                                                /*     $grp_name = $vals["grp_cd"];
+                                                switch ($grp_name) {
+                                                case '1':
+                                                $grp_name = 'Science';
+                                                break;
+                                                case '2':
+                                                $grp_name = 'GENERAL';
+                                                break;
+                                                case '5':
+                                                $grp_name = 'Deaf and Dumb';
+                                                break;
+                                                default:
+                                                $grp_name = "No Group Selected.";
+                                                }*/
+                                                $grp_name = $vals["RegGrp"];
+                                                switch ($grp_name) {
+                                                    case '1':
+                                                        $grp_name = 'SCIENCE WITH BIOLOGY';
+                                                        break;
+                                                    case '7':
+                                                        $grp_name = 'SCIENCE  WITH COMPUTER SCIENCE';
+                                                        break;
+                                                    case '8':
+                                                        $grp_name = 'SCIENCE  WITH ELECTRICAL WIRING';
+                                                        break;
+                                                    case '2':
+                                                        $grp_name = 'GENERAL';
+                                                        break;
+                                                    case '5':
+                                                        $grp_name = 'Deaf and Dumb';
+                                                        break;
+                                                    default:
+                                                        $grp_name = "No Group Selected.";
+                                                }
+
+                                                echo '<tr  >
+                                                <td>'.$n.'</td>
+                                                <td>'.$formno.'</td>
+                                                <td>'.$vals["name"].'</td>
+                                                <td>'.$vals["Fname"].'</td>
+                                                <td>'.date("d-m-Y", strtotime($vals["Dob"])).'</td>
+                                                <td>'.$grp_name.'</td>
+                                                <td>'.$vals["sub1_abr"].','.$vals["sub2_abr"].','.$vals["sub3_abr"].','.$vals["sub4_abr"].','.$vals["sub5_abr"].','.$vals["sub6_abr"].','.$vals["sub7_abr"].','.$vals["sub8_abr"].'</td>';
+
+                                                if($spl_cd ==FALSE || $spl_cd =="3" )
+                                                    echo'<td>
+                                                    <input type="checkbox" name="chk[]" value="'.$formno.'" style="width: 25px;    height: 28px;"/></td></tr>';
+                                                endforeach;
+                                        }
+                                        ?>
+
+
+
+                                    </tbody>
+                                </table>
+                                <input type="text" style="display: none;" name="CheckedFormno_createBatch" id="CheckedFormno_createBatch"> 
+                            </form>
+                            <div class="clearfix"></div>
+                        </div>
+
+
                     </div>
-                    <label class="label label-important" >
-                    Note:<br>
-                     Please write "No Image" in the above search to check if any image of candidate is missing or not.<br>
-                     Forms with "No Image" will not be batched. So please make sure all images are uploaded properly before creating batches. 
-                    </label>
-                    
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-        
+    </div>
+</div>
+<script type="text/javascript">
+</script>

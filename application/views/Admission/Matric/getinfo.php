@@ -60,7 +60,7 @@
         <div class="form-group">
             <div class="col-md-12">
                 <div class="alert alert-danger" align="center">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">x</a>
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close"></a>
                     <strong><?php echo $error; ?></strong>
                 </div>
             </div>
@@ -73,7 +73,7 @@
         <div class="form-group">
             <div class="col-md-12">
                 <div class="alert alert-danger" align="center">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">x</a>
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close"></a>
                     <strong><?php echo @$spl_cd['error_msg']; ?></strong>
                 </div>
             </div>

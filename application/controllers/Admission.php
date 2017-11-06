@@ -54,7 +54,7 @@ class Admission extends CI_Controller
         else{
             $error = "";
         }
-        
+
         $this->load->view('common/commonheader.php');
 
         // DebugBreak();
@@ -242,11 +242,9 @@ class Admission extends CI_Controller
         }
 
         else if($data['IsNewPic'] == 0){
-
             if(base_url() == "http://slips.bisegrw.com/adminbise/" || base_url() == "http://ssc.bisegrw.com/adminbise/" || base_url() == "https://www.bisegrw.edu.pk/ssc"){
                 $pdf->Image($data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");            
             }
-
             else{
                 $pdf->Image(base_url().'assets/img/profile.png',6.96, 1.15+$Y, 0.95, 1.0, "png");        
             }
@@ -1448,7 +1446,7 @@ class Admission extends CI_Controller
 
         //DebugBreak();
 
-      if($examType == -1)
+        if($examType == -1)
         {
             return; 
         }
@@ -2002,8 +2000,14 @@ class Admission extends CI_Controller
 
                 if($nxtrnosessyear[0]['NextRno_Sess_Year']!=NULL)
                 {
+                    //DebugBreak();
+
                     $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
-                    $error_msg.= 'Please use this details:'.$nxtrnosessyear.'';            
+                    $parts = explode(",", $nxtrnosessyear);
+                    $nxtrno = $parts[0];
+                    $nxtsess = $parts[1];
+                    $nxtyear = $parts[2];
+                    $error_msg.= 'You have already appeared in matric ' . $nxtsess.', '.$nxtyear.' against Roll No = '.$nxtrno.'';            
                     $data['error'] = $error_msg;
                     $this->load->view('common/commonheader.php');        
                     $this->load->view('Admission/Matric/getinfo.php', $data);
@@ -2011,9 +2015,11 @@ class Admission extends CI_Controller
                     return false; 
                 }        
 
-                else  if($data[0]['status'] == 1 && $data[0]['class'] == 10)
+                else  if($data[0]['status'] == 1 && $data[0]['Class'] == 10)
                 {
-                    $error_msg.= 'You are already passed due to that can not appear again';            
+                    @$sessOld = ($data[0]['sess'] == 1 ? 'Annual' : 'Supplementary');
+
+                    $error_msg.= 'You have already passed in matric '.$sessOld.', '.$data[0]['iyear'].' against Roll No : '.$data[0]['RNo'].'';            
                     $data['error'] = $error_msg;
                     $this->load->view('common/commonheader.php');        
                     $this->load->view('Admission/Matric/getinfo.php', $data);
@@ -2578,9 +2584,9 @@ class Admission extends CI_Controller
         {
             $cerfee =   0; 
         }
-        
-      
-        
+
+
+
         $fine = $this->GetFeeWithdue( $AdmFeeCatWise);
 
         $TotalAdmFee = $AdmFee[0]['Processing_Fee'] +$AdmFeeCatWise +$fine + $regfee+$cerfee ;

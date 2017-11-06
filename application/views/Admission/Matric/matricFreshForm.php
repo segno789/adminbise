@@ -1,6 +1,5 @@
 
-<form class="form-horizontal no-margin" action="<?php  echo base_url(); ?>Admission/NewEnrolment_insert" method="post" enctype="multipart/form-data" name="myform" id="myform">
-
+<form method="post" enctype="multipart/form-data" name="myform" id="myform">
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-5 col-md-5">
@@ -38,13 +37,13 @@
                 <label class="control-label" for="cand_name" >
                     Candidate Name:
                 </label>        
-                <input class="text-uppercase form-control"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>" >
+                <input class="text-uppercase form-control"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>"  <?php if(@$data['name']!= "") echo "readonly='readonly'";  ?>  >
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="father_name">
                     Father's Name :
                 </label>        
-                <input class="text-uppercase form-control" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo  @$data['Fname']; ?>" > 
+                <input class="text-uppercase form-control" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo @$data['Fname']; ?>" <?php if(@$data['Fname']!= "") echo "readonly='readonly'";  ?> > 
             </div>
         </div>
     </div>
@@ -612,10 +611,64 @@
         }
         else
         {
-            $("button[type='submit']").html('Please wait ...').attr('disabled','disabled'); 
-            $("#myform").submit();
-            return true;
-        } 
+            //debugger;
+            $.ajax({
+
+                type: "POST",
+                url: "<?php  echo site_url('Admission/frmvalidation_matricFresh'); ?>",
+                data: $("#myform").serialize() ,
+                datatype : 'html',
+                cache:false,
+
+                success: function(data)
+                {                    
+                    var obj = JSON.parse (data);
+                    if(obj.excep == 'Success')
+                    {
+                        $.ajax({
+
+                            type: "POST",
+                            url: "<?php echo base_url(); ?>" + "Admission/NewEnrolment_insert/",
+                            data: $("#myform").serialize() ,
+                            datatype : 'html',
+                            cache:false,
+
+                            beforeSend: function() {  $('.mPageloader').show(); },
+                            complete: function() { $('.mPageloader').hide();},
+
+                            success: function(data){
+
+                                var obj = JSON.parse(data);
+                                if(obj.error ==  1)
+                                {
+                                    window.location.href ='<?php echo base_url(); ?>Admission/formdownloaded/'+obj.formno
+                                    alertify.error('Your Application is Submit Successfully');
+                                    return true;
+                                }   
+                                else
+                                {
+                                    alertify.error(obj.error);
+                                    return false; 
+                                }
+                            },
+
+                            error: function(request, status, error){
+
+                                alertify.error(request.responseText);
+                            }
+                        });
+
+                        return false
+                    }
+                    else
+                    {
+                        alertify.error(obj.excep);
+                        return false;     
+                    }
+                }
+            });
+            return false;   
+        }
     }
 
     function check_NewEnrol_validation_fresh()

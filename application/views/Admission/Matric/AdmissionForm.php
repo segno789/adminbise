@@ -909,7 +909,8 @@
         </div>
     </div>
 </form>
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<script src="<?php echo base_url(); ?>assets/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
     function ValidateFileUpload() {                                                                                                        
         var fuData = document.getElementById('inputFile');
@@ -3407,6 +3408,7 @@
 
     })
     function checks(){
+        
         var status  =  check_NewEnrol_validation_matric();
         if(status == 0)
         {
