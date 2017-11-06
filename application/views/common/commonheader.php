@@ -155,7 +155,7 @@
 <div class="container">
 <div class="row-fluid">
     <h3 style="background:#003a6a !important; color: wheat; text-align: center; height: 140px;" class="jumbotron">
-        <img src="<?php echo base_url(); ?>assets/img/BISEGRW_Icon.png" class="img-circle" width="50px" height="50px" alt="Logo">
+        <img src="<?php echo base_url(); ?>assets/img/BISEGRW_Icon.png" class="rounded float-left" width="50px" height="50px" alt="Logo">
         Board of Intermediate & Secondary Education, Gujranwala
         <br>
         <?php 
