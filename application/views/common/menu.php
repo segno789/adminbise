@@ -269,26 +269,14 @@
                             Create Batch
                         </a>
                     </li>
-                   <!-- <li>
-                        <a href="<?php //echo base_url(); ?>Admission_9th_reg/EditPicForms">
-                            Edit Pictures Forms
-                        </a>
-                    </li>-->
+                  
                     <li>
                         <a href="<?php echo base_url(); ?>Admission_9th_reg/BatchList">
                             Batch List
                         </a>
+                 
+                    
                     </li>
-                   <!-- <li>
-                        <a href="<?php //echo base_url(); ?>Admission_9th_reg/FormPrinting">
-                            Proof Printing
-                        </a>
-                    </li>     -->
-                    <!--<li>
-                        <a href="<?php //echo base_url(); ?>Admission_9th_reg/RevenueList">
-                            Revenue List Printing
-                        </a>
-                    </li>-->
                     <li>
                         <a onclick="return logout();" style="cursor: pointer;">Logout</a>
                     </li>
