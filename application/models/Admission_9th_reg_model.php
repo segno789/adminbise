@@ -92,7 +92,7 @@ class Admission_9th_reg_model extends CI_Model
     }
     public function getuser_infoPVT($User_info_data)
     {
-        //  DebugBreak();
+        //DebugBreak();
         $Inst_cd = $User_info_data['Inst_Id'];
         $date = $User_info_data['date'];
         $isPratical = $User_info_data['isPratical'];
@@ -104,7 +104,8 @@ class Admission_9th_reg_model extends CI_Model
         {
 
 
-            $query2 = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => 1, 'Start_Date <=' =>$date,'End_Date >='=>$date,'isPrSub'=>$isPratical));
+            //$query2 = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => 1, 'Start_Date <=' =>$date,'End_Date >='=>$date,'isPrSub'=>$isPratical));
+            $query2 = $this->db->query('select * from Admission_online..RuleFeeAdm where class = 9 and sess = 1 and GETDATE() between start_date and End_date and isPrSub ='.$isPratical);
             $resultarr = array("info"=>$query->result_array(),"rule_fee"=>$query2->result_array());
 
             $qry =  $this->db->last_query();
@@ -271,8 +272,18 @@ class Admission_9th_reg_model extends CI_Model
         $dist = $data['dist'];
         $teh = $data['teh'];
         $zone = $data['zone'];
+        $Year = Year;
+        /*$regFee = $data['fee']['regFee'];
+        $AdmProcessFee = $data['fee']['AdmProcessFee'];
+        $AdmFee = $data['fee']['AdmFee'];
+        $AdmFine = $data['fee']['AdmFine'];  */
+        $AdmTotalFee = $data['fee']['AdmTotalFee']+$data['fee']['regFee']+$data['fee']['AdmFine'];
+        //'formNo'=>$data['formNo'],'regFee'=>0,'AdmProcessFee'=>$processFee,'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']
         //$Dob = date('Y-m-d', strtotime($Dob)); 
-        $query = $this->db->query("Registration..MA_P1_PVT_Adm2016_sp_insert '$formno',9,2016,1,'$name','$fname','$BForm','$FNIC','$Dob','$CellNo',$medium,'".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,0,0,0,0,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$dist,$teh,$zone");
+        $query = $this->db->query("Registration..MA_P1_PVT_Adm_sp_insert '$formno',9,$Year,1,'$name','$fname','$BForm','$FNIC','$Dob'
+        ,'$CellNo',$medium,'".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1
+        ,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,0,0,0,0,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$dist,$teh,$zone
+        ,$AdmTotalFee");
         //$query = $this->db->insert('msadmissions2015', $data);//,'Fname' => $father_name,'BForm'=>$bay_form,'FNIC'=>$father_cnic,'Dob'=>$dob,'CellNo'=>$mob_number));
 
         return $query->result_array();
@@ -506,12 +517,12 @@ class Admission_9th_reg_model extends CI_Model
         $data['IsAdmission']=1;
         $data['cdate']= date('Y-m-d H:i:s');
         $this->db->where('formNo',$data['formNo']);
-        $this->db->update('Registration..MA_P1_Reg_Adm2016',$data);
+        $this->db->update(tblreg9th,$data);
         // $this->db->update_batch('Registration..MA_P1_Reg_Adm2016',$data,'formNo');
         // DebugBreak();
 
         $this->db->select('regFee,AdmFee,AdmProcessFee,AdmFine,AdmTotalFee');
-        $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('formNo'=>$data['formNo'])); 
+        $query = $this->db->get_where(tblreg9th, array('formNo'=>$data['formNo'])); 
 
         //$query = $this->db->get("Registration..MA_P1_Reg_Adm2016");    
         $rowcount = $query->num_rows();
@@ -728,7 +739,7 @@ class Admission_9th_reg_model extends CI_Model
         $this->db->select('formno');
         //  $this->db->order_by("formno", "DESC");
         $this->db->order_by("cast(formno as int)", "DESC");
-        $formno = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('regpvt' => 2));
+        $formno = $this->db->get_where('Registration..tblreg9th', array('regpvt' => 2));
         $rowcount = $formno->num_rows();
 
         if($rowcount == 0 )
