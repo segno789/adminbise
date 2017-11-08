@@ -10,7 +10,7 @@ class Admission_matric_model extends CI_Model
 
 
     }
-     public function Incomplete_inst($allinfo,$inst_cd)
+    public function Incomplete_inst($allinfo,$inst_cd)
     {
         //  //DebugBreak();
         $data = array(
@@ -24,12 +24,12 @@ class Admission_matric_model extends CI_Model
         $res = $this->db->insert('Registration..Instexam_Info', $data); 
         return $res;
     }
-    
-      public function iszoneset($inst_cd){
-       
+
+    public function iszoneset($inst_cd){
+
         $query = $this->db->get_where('Registration..Instexam_Info', array('iyear' => Year,'class'=>10,'sess'=>Session,'inst_cd'=>$inst_cd));
         $rowcount = $query->num_rows();
-       
+
         if($rowcount > 0)
         {
             return $rowcount;
@@ -39,11 +39,11 @@ class Admission_matric_model extends CI_Model
             return  0;
         }
     }
-       public function forwarding_pdf_final($fetch_data)
+    public function forwarding_pdf_final($fetch_data)
     {
         //DebugBreak();
         $Inst_cd = $fetch_data['Inst_cd'];
-       // $query = $this->db->query("Admission_online..sp_Forwading_letter_final_10TH $Inst_cd");
+        // $query = $this->db->query("Admission_online..sp_Forwading_letter_final_10TH $Inst_cd");
         $query = $this->db->query("Admission_online..sp_ForwardingLetter_MAADM $Inst_cd");
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -56,13 +56,11 @@ class Admission_matric_model extends CI_Model
         }
     }
     public function getStudentsData($data){
-        //sp_form_data
-        //SELECT * FROM  fl_dataforMa15 WHERE  (isSubmit is null or isSubmit= 0) and class = 9 and iyear = 2014 and sch_cd = ".$user->inst_cd
-     //   DebugBreak();
+
         $inst_cd = $data['Inst_Id'];
         $gender = $data['gender'];
         $year = YEAR;
-        $query = $this->db->query("Admission_online..SP_SELECT_tblMAdm $inst_cd,9,2016,1,$gender");
+        $query = $this->db->query("Admission_online..SP_SELECT_tblMAdm $inst_cd,9,2017,1,$gender");
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -70,12 +68,12 @@ class Admission_matric_model extends CI_Model
         }
         else
         {
-           return  false;
+            return  false;
         }
     }
     public function Incomplete_inst_info_INSERT($allinfo)
     {
-        //  //DebugBreak();
+
         $data = array(
 
             'Inst_cd' => $allinfo['Inst_Id'] ,
@@ -94,10 +92,7 @@ class Admission_matric_model extends CI_Model
     }
     public function get_zone()
     {
-
-        //$this->db->select('zone_cd','zone_name');
-        //$this->db->order_by("formno", "DESC"); myear = 2016 and class = 10 and sess = 1 
-           $year = Year;
+        $year = Year;
         $session = Session;
         $query = $this->db->get_where('matric_new..tblZones', array('myear' => $year,'class'=>10,'sess'=>$session));
         $rowcount = $query->num_rows();
@@ -115,7 +110,7 @@ class Admission_matric_model extends CI_Model
         //DebugBreak();
         $Inst_cd = $fetch_data['Inst_cd'];
         $session = Session;
-       // $query = $this->db->query("Admission_online..sp_Forwading_letter_final_10TH $Inst_cd");
+        // $query = $this->db->query("Admission_online..sp_Forwading_letter_final_10TH $Inst_cd");
         $query = $this->db->query("Admission_online..sp_ForwardingLetter_Finance_tblMAdm $Inst_cd,$session");
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -130,7 +125,7 @@ class Admission_matric_model extends CI_Model
     public function Dashboard($inst_cd)
     {
 
-      
+
         // //DebugBreak();
         //$query = $this->db->get_where('matric_new..tblbiodata', array('sch_cd' => $inst_cd,'class' => 10, 'iyear' => 2016, 'regpvt'=>1,));
         $query = $this->db->query("Admission_online..Dashboard_adm_10th $inst_cd");
@@ -256,35 +251,35 @@ class Admission_matric_model extends CI_Model
         $pic = $data['pic'];
         if($isupdate==2)
         {
-             $oldrno =  $data['oldRno'];
+            $oldrno =  $data['oldRno'];
         }
         $year = Year;
         $session = Session;
-      // DebugBreak();
+        // DebugBreak();
         $query = $this->db->query(Insert_sp_matric_annual." '$formno',10,$year,$session,'$name','$fname','$BForm','$FNIC','$Dob','$CellNo',$medium,'$Inst_Rno','".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,$oldrno,$oldyear,$oldsess,0,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$cat09,$cat10,$sub1ap2,$sub2ap2,$sub3ap2,$sub4ap2,$sub5ap2,$sub6ap2,$sub7ap2,$sub8ap2,$Brd_cd,$AdmProcFee,$AdmFee,$TotalAdmFee,$isupdate,'$Inst_grd','$pic'");
         //$query = $this->db->insert('msadmissions2015', $data);//,'Fname' => $father_name,'BForm'=>$bay_form,'FNIC'=>$father_cnic,'Dob'=>$dob,'CellNo'=>$mob_number));
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
             $result = $query->result_array();
-       
-        if($result == true)
-        {
-        return true;    
+
+            if($result == true)
+            {
+                return true;    
+            }
+            else{
+                return false;    
+            }
+
         }
-        else{
-            return false;    
-        }
-        
-    }
     }
     public function EditEnrolement($inst_cd)
     {
 
-         ////DebugBreak();
+        ////DebugBreak();
         //$query = $this->db->get_where('matric_new..tblbiodata', array('sch_cd' => $inst_cd,'class' => 10, 'iyear' => 2016, 'regpvt'=>1,));
         //sp_get_regInfo_spl_case
-         $year = Year;
+        $year = Year;
         $session = Session;
         $query = $this->db->query("Admission_online..tblMAdmGetEdit $inst_cd,10,$year,$session");    
 
@@ -308,10 +303,10 @@ class Admission_matric_model extends CI_Model
             return  false;
         }
     }
-     public function EditEnrolement_singleForm($formno)
+    public function EditEnrolement_singleForm($formno)
     {
 
-         ////DebugBreak();
+        ////DebugBreak();
         //$query = $this->db->get_where('matric_new..tblbiodata', array('sch_cd' => $inst_cd,'class' => 10, 'iyear' => 2016, 'regpvt'=>1,));
         //sp_get_regInfo_spl_case
         $year = Year;
@@ -340,25 +335,25 @@ class Admission_matric_model extends CI_Model
     }
     public function ReleaseBatch_INSERT($allinputdata){
         // //DebugBreak();
-         $Inst_cd = $allinputdata['Inst_Id'];
-         $batchid = $allinputdata['batchId'];
-         $reason = $allinputdata['reason'];
-         $branch = $allinputdata['branch'];
-         $challan = $allinputdata['challan'];
-         $amount = $allinputdata['amount'];
-         $date = $allinputdata['date'];
-         
-          $query = $this->db->query("Admission_online..ReleaseBatch_INSERT $Inst_cd,$batchid,'$reason','$branch',$challan,$amount,'$date'");
+        $Inst_cd = $allinputdata['Inst_Id'];
+        $batchid = $allinputdata['batchId'];
+        $reason = $allinputdata['reason'];
+        $branch = $allinputdata['branch'];
+        $challan = $allinputdata['challan'];
+        $amount = $allinputdata['amount'];
+        $date = $allinputdata['date'];
+
+        $query = $this->db->query("Admission_online..ReleaseBatch_INSERT $Inst_cd,$batchid,'$reason','$branch',$challan,$amount,'$date'");
         //$query = $this->db->insert('msadmissions2015', $data);//,'Fname' => $father_name,'BForm'=>$bay_form,'FNIC'=>$father_cnic,'Dob'=>$dob,'CellNo'=>$mob_number));
         return true;
     }
-    
+
     public function EditEnrolement_data($formno,$year,$inst_cd,$brd_cd)
     {
-           //  //DebugBreak();
-                $year = 2016;
+        //  //DebugBreak();
+        $year = 2016;
         $query = $this->db->get_where('Admission_online..tblAdmissionDataForSSC',  array('rno' => $formno,'class'=>9,'iyear'=>$year,'sess'=>1,'sch_cd'=>$inst_cd,"brd_cd"=>$brd_cd));     
-         
+
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -379,7 +374,7 @@ class Admission_matric_model extends CI_Model
     }
     public function GetFormNo($Inst_Id)
     {
-       // DebugBreak();
+        // DebugBreak();
         $this->db->select('formno');
         $this->db->order_by("formno", "DESC");
         $formno = $this->db->get_where(Insertion_tbl, array('sch_cd' => $Inst_Id));
@@ -445,8 +440,8 @@ class Admission_matric_model extends CI_Model
         $Inst_cd = $User_info_data['Inst_Id'];
         $RollNo = $User_info_data['RollNo'];
         $spl_cd = $User_info_data['spl_case'];
-              $year = Year;
-       // $session = Session;
+        $year = Year;
+        // $session = Session;
         // $forms_id = $User_info_data['forms_id'];
         $query = $this->db->get_where('matric_new..tblbiodata',  array('rno' => $RollNo,'spl_cd' => 17,'Sch_cd'=>$Inst_cd,'class'=>9,'Iyear'=>$year,'sess'=>Session));
         $rowcount = $query->num_rows();
@@ -454,7 +449,7 @@ class Admission_matric_model extends CI_Model
         {
 
             $result_1 = $query->result_array();
-           
+
             return  $result_1;
         }
         else
@@ -495,10 +490,10 @@ class Admission_matric_model extends CI_Model
             return  false;
         }
     }
-       public function getrulefee($date){
+    public function getrulefee($date){
         //SELECT * FROM  fl_dataforMa15 WHERE  (isSubmit is null or isSubmit= 0) and class = 9 and iyear = 2014 and sch_cd = ".$user->inst_cd
-           $date =  date('Y-m-d',strtotime($date)) ;
-          // DebugBreak();
+        $date =  date('Y-m-d',strtotime($date)) ;
+        // DebugBreak();
         $query = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => Session, 'Start_Date <='=>$date,'End_Date >='=>$date));
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -510,12 +505,12 @@ class Admission_matric_model extends CI_Model
             return  false;
         }
     }
-     public function Print_challan_Form($fetch_data)
+    public function Print_challan_Form($fetch_data)
     {
         $Inst_cd = $fetch_data['Inst_cd'];
         $Batch_Id = $fetch_data['Batch_Id'];
-      
-     // DebugBreak();
+
+        // DebugBreak();
         $query = $this->db->query("Admission_online..tblMAdmBatch $Inst_cd,$Batch_Id");
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -531,9 +526,9 @@ class Admission_matric_model extends CI_Model
     {
         $Inst_cd = $fetch_data['Inst_cd'];
         $Batch_Id = $fetch_data['Batch_Id'];
-          $year = YEAR;
+        $year = YEAR;
         $sess = Session;
-     // DebugBreak();
+        // DebugBreak();
         $query = $this->db->query("Admission_online..tblMadmCutlist $Inst_cd,$Batch_Id,$year,$sess");
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -545,15 +540,15 @@ class Admission_matric_model extends CI_Model
             return  false;
         }
     }
-   /* public function getreulefee($ruleID)
+    /* public function getreulefee($ruleID)
     {
-        $ruleID = 1;
-        $q2         = $this->db->get_where('Registration..RuleFee_Reg_Nineth',array('Rule_Fee_ID'=>$ruleID));
-        $resultarr = $q2->result_array();
+    $ruleID = 1;
+    $q2         = $this->db->get_where('Registration..RuleFee_Reg_Nineth',array('Rule_Fee_ID'=>$ruleID));
+    $resultarr = $q2->result_array();
     }*/
     public function Batch_Insertion($data)
     {
-     // DebugBreak();
+        // DebugBreak();
 
         $inst_cd = $data['inst_cd'];
         $total_fee = $data['total_fee'];
@@ -613,7 +608,7 @@ class Admission_matric_model extends CI_Model
             return  false;
         }
     }
-     public function Print_Form_Groupwise_Final($fetch_data)
+    public function Print_Form_Groupwise_Final($fetch_data)
     {
         $Inst_cd = $fetch_data['Inst_cd'];
         $Grp_cd = $fetch_data['grp_cd'];
@@ -728,7 +723,7 @@ class Admission_matric_model extends CI_Model
         $inst_cd = $myinfo['Inst_cd'];
         $spl_cd = $myinfo['spl_cd'];
         $grp_selected = $myinfo['grp_selected'];
-         $year = Year;
+        $year = Year;
         $session = Session;
         if($grp_selected == FALSE)
         {
@@ -793,11 +788,11 @@ class Admission_matric_model extends CI_Model
         }
     }
 
-      public function Update_AdmissionFee($data)
+    public function Update_AdmissionFee($data)
     {
-         if(empty($data))
+        if(empty($data))
         {
-           return  false;
+            return  false;
         }
         $this->db->update_batch(Insertion_tbl,$data,'formNo');
     }
