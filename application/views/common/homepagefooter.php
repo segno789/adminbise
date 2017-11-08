@@ -264,11 +264,7 @@
                 $("#formid").focus();
                 return false;    
             }
-            else if(dob == "")
-            {
-                alertify.error("Please write Date of Birth.");
-                return false;        
-            }
+            
             else
             {
                 alertify.log("Please wait while your form is downloading....")    
@@ -291,7 +287,11 @@
                 alertify.error("Please write Valid Form No.");
                 return false;    
             }
-           
+            else if(dob == "")
+            {
+                alertify.error("Please write Date of Birth.");
+                return false;        
+            }
             else
             {
                 alertify.log("Please wait while your form is downloading....")    
@@ -317,11 +317,12 @@
             var formno = $("#formid").val();
             var dob = $("#dob").val();
             if(formno == ""){
+                alertify.error("Please write Valid Form No.");
                 return false;
             }
-            if(dob == ""){
+           /* if(dob == ""){
                 return false;
-            }
+            }*/
             window.location.href='<?php  echo base_url(); ?>Admission/checkFormNo_then_download/'+formno;  
         }
 
@@ -1006,7 +1007,7 @@
         });
 
     }
-     $("#btndelForm").click(function(){
+      $("#btndelForm").click(function(){
             var formno = $("#delformid").val();
             var btval = $("#btndelForm").val();
             
@@ -1083,9 +1084,9 @@
                         {
                             if($.trim(data) ==  1)
                             {
-                                alertify.success("Form Deleted Successfully.");
-                                $("#delformid").attr("disabled", ""); 
-                                $("#dob").attr("disabled", ""); 
+                                 alertify.success("Form Deleted Successfully.");
+                                $("#delformid").removeAttr('disabled'); 
+                                $("#dob").removeAttr('disabled'); 
                                 $('#btndelForm').val('Delete Form');
                                 $("#delformid").val('');
                                 $("#dob").val('');
@@ -1109,8 +1110,6 @@
 
          return false;
      })
-        
-    
 </script>
 </body>
 </html>
