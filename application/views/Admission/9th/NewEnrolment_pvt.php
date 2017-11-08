@@ -372,6 +372,7 @@
             </div>
             <div class="col-md-2">
                  <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg" download="instructions.jpg" class="btn btn-info btn-block">Download Instruction</a>
+                 
             </div>
             <div class="col-md-3">
                 <input type="button" class="btn btn-danger btn-block" value="Cancel" id="btnCancel" name="btnCancel" onclick="return CancelAlertpvt9th();">
