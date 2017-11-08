@@ -29,15 +29,13 @@ class Admission_9th_reg extends CI_Controller {
             redirect('login');
         }
     }
-     function clear_cache()
+    function clear_cache()
     {
         $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
         $this->output->set_header("Pragma: no-cache");
     }
     public function index()
     {
-      // DebugBreak(); 
-        
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -48,23 +46,16 @@ class Admission_9th_reg extends CI_Controller {
 
         $inst_cd = '';
         $isset = $this->Admission_9th_reg_model->iszoneset($Inst_Id);
-        //DebugBreak();
-       if($Inst_Id == $inst_cd)
+        
+        if($Inst_Id == $inst_cd)
         {
-            $this->load->view('Admission/Matric/errorPage.php',$userinfo);
+            $this->load->view('Admission/9th/errorPage.php',$userinfo);
             $this->load->view('common/footer.php'); 
-        }
-        else if($isset == 0)
-        {
-            
-            // $this->load->view('common/menu.php',$userinfo);
-            $this->load->view('Admission/9th/Incomplete_inst_info.php',$userinfo);
-            $this->load->view('common/footer.php');
         }
         else{
             $userinfo['isselected'] = 14;
             $userinfo['isdashbord'] = 1;
-          //  $userinfo['zone'] = $isset[0]['zone_cd'];
+            //  $userinfo['zone'] = $isset[0]['zone_cd'];
             $count = $this->Admission_9th_reg_model->Dashboard($Inst_Id);
             $this->load->view('common/menu.php',$userinfo);
             $info = array('count'=>$count,'Inst_id'=>$Inst_Id,'Inst_name'=>$Inst_name);
@@ -83,29 +74,23 @@ class Admission_9th_reg extends CI_Controller {
         $this->load->model('Admission_9th_reg_model');
         $Inst_Id = $userinfo['Inst_Id'];
         $isres = $this->Admission_9th_reg_model->Incomplete_inst($_POST,$Inst_Id);
-        
         if($isres == 1)
         {
-         redirect('Admission_9th_reg');
+            redirect('Admission_9th_reg');
         }
-       
-        
-    }
+        }
     public function forwarding_pdf()
     {
-
-        //  DebugBreak();
-
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $user = $Logged_In_Array['logged_in'];
         $this->load->model('Admission_9th_reg_model');
         $fetch_data = array('Inst_cd'=>$user['Inst_Id']);
         $result = array('data'=>$this->Admission_9th_reg_model->forwarding_pdf_final($fetch_data),'inst_Name'=>$user['inst_Name']);  
-        // DebugBreak();  
-        if(empty($result['data'])){
-
-            return; }
+        if(empty($result['data']))
+        {
+            return; 
+        }
         $temp = $user['Inst_Id'].'@9@'.CURRENT_SESS;
         $image =  $this->set_barcode($temp);
         // $pdf->Image(base_url().'assets/pdfs/'.'/'.$image,6.3,0.5, 1.8, 0.20, "PNG");
@@ -161,35 +146,35 @@ class Admission_9th_reg extends CI_Controller {
         $pdf->SetFont('Arial','B',10);
         $pdf->SetXY(0.9+$x,0.7+$y);
         $pdf->Cell(0, 0.25, "______________________________________", 0.25, "C");
-        
+
         $pdf->SetFont('Arial','B',10);
         $pdf->SetXY(4.9+$x,1.5+$y);
         $pdf->Cell(0, 0.25, "Dated:________________________________", 0.25, "C");
-        
-       
+
+
 
         $pdf->SetFont('Arial','',10);
         $pdf->SetXY(0.4+$x,1.2+$y);
         $pdf->Cell(0, 0.25, "TEH:__________________", 0.25, "C");
 
-         $pdf->SetFont('Arial','',10);
+        $pdf->SetFont('Arial','',10);
         $pdf->SetXY(2.1+$x,1.2+$y);
         $pdf->Cell(0, 0.25, " DISTT:________________", 0.25, "C");
-        
-        
+
+
         $pdf->SetFont('Arial','',10);
         $pdf->SetXY(0.4+$x,1.5+$y);
         $pdf->Cell(0, 0.25, "NO:__________________", 0.25, "C");
-        
+
         $pdf->SetFont('Arial','B',10);
         $pdf->SetXY(4.9+$x,.7+$y);
         $pdf->Cell(0, 0.25, "INST. Phone:___________________________", 0.25, "C");
-        
+
         $pdf->SetFont('Arial','B',10);
         $pdf->SetXY(4.9+$x,1.2+$y);
         $pdf->Cell(0, 0.25, "INST. Mob No:__________________________", 0.25, "C");
 
-      
+
 
         $y = $y-0.8;
         $pdf->SetFont('Arial','B',10);
@@ -316,8 +301,8 @@ class Admission_9th_reg extends CI_Controller {
         /* $pdf->Cell($boxWidth-1.8,0.2,$result['data'][0]['lateFee5'],1,0,'C',1);
         $pdf->Cell($boxWidth-1.7,0.2,$result['data'][0]['wlateFee5'],1,0,'C',1); */
         $pdf->Cell($boxWidth-1.5,0.2,$result['data'][0]['grpFee5'],1,0,'C',1);
-        
-         $pdf->SetXY($xx,5+$yy);
+
+        $pdf->SetXY($xx,5+$yy);
         $pdf->SetFont('Arial','',7);
         $pdf->Cell($boxWidth-2.2,0.2,'6',1,0,'C',1);
         $pdf->Cell($boxWidth-0.7,0.2,'ETICHS FOR NON MUSLIMS',1,0,'L',1);
@@ -351,7 +336,7 @@ class Admission_9th_reg extends CI_Controller {
         $pdf->SetXY(0.9,8.0+$y);    
         $pdf->MultiCell(8.5,0.2,"Proposed Exam. Centre:______________________________________________________________________",0,"L",0)    ;
 
-       
+
 
         $pdf->SetFont('Arial','B',10);
         $pdf->SetXY(0.9,8.35+$y); 
@@ -362,7 +347,7 @@ class Admission_9th_reg extends CI_Controller {
         $pdf->SetXY(0.9,8.7+$y);    
         $pdf->MultiCell(8.5,0.2,"Zone Code:_________________________________________________________________________________",0,"L",0)    ;   
 
-       
+
         $pdf->SetFont('Arial','B',10);
         $pdf->SetXY(0.9,9.4+$y);    
         $pdf->MultiCell(6.6,0.2,"Yours Obediently,",0,"R",0)    ;   
@@ -391,15 +376,15 @@ class Admission_9th_reg extends CI_Controller {
         $pdf->SetXY(0.9,11.15+$y);    
         $pdf->MultiCell(8.5,0.2,"5.____________________________",0,"L",0)    ;  
 
-        
+
         $pdf->SetFont('Arial','B',10);
         $pdf->SetXY(5.4,9.95+$y);    
         $pdf->MultiCell(8.5,0.2,"NAME.____________________________",0,"L",0)    ; 
-        
+
         $pdf->SetFont('Arial','B',10);
         $pdf->SetXY(5.4,10.25+$y);    
         $pdf->MultiCell(8.5,0.2,"CNIC NO.__________________________",0,"L",0)    ; 
-        
+
         $pdf->SetFont('Arial','UB',10);
         $pdf->SetXY(5.4,11.05+$y);    
         $pdf->MultiCell(8.5,0.2,"Signature & Stamp of Principal",0,"L",0)    ; 
@@ -411,7 +396,6 @@ class Admission_9th_reg extends CI_Controller {
         $pdf->Output('123'.'.pdf', 'I');
     }
     public function Profile(){
-
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
         $userinfo['isselected'] = 14;
@@ -455,7 +439,6 @@ class Admission_9th_reg extends CI_Controller {
     }
     public function StudentsData()
     {    
-        //DebugBreak();
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -496,49 +479,9 @@ class Admission_9th_reg extends CI_Controller {
         $this->load->view('common/commonfooter9th.php');
 
     }
-    public function StudentsData_cancelAdm()
-    {    
-        //DebugBreak();
-        $this->load->library('session');
-        $Logged_In_Array = $this->session->all_userdata();
-        $userinfo = $Logged_In_Array['logged_in'];
-        $this->load->view('common/header.php',$userinfo);
-        $data = array(
-            'isselected' => '14',
-
-        );
-
-        $this->load->library('session');
-        if($this->session->flashdata('error')){
-
-            $error_msg = $this->session->flashdata('error');    
-
-        }
-        else{
-            $error_msg = 0;
-        }
-
-        $Logged_In_Array = $this->session->all_userdata();
-        $user = $Logged_In_Array['logged_in'];
-        $this->load->model('Admission_9th_reg_model');
-        $myinfo = array('Inst_cd'=>$user['Inst_Id']);
-        $data = array(
-            'data' => $this->Admission_9th_reg_model->Cancel_adm($myinfo),
-            'isselected' => '14',
-
-        );
-        $data['msg_status'] = $error_msg;
-        $userinfo = $Logged_In_Array['logged_in'];
-        $this->load->view('common/header.php',$userinfo);
-        $this->load->view('common/menu.php',$data);
-        $this->load->view('Admission/9th/CancelAdm.php',$data);
-        $this->load->view('common/commonfooter9th.php');
-
-    }
     public function Profile_Update()
     {
         $this->load->model('Admission_9th_reg_model');
-        // DebugBreak();
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -546,7 +489,6 @@ class Admission_9th_reg extends CI_Controller {
         $Inst_Id = $userinfo['Inst_Id'];
         $this->commonheader($userinfo);
         $error = array();
-
         if (!isset($Inst_Id))
         {
             //$error['excep'][1] = 'Please Login!';
@@ -578,11 +520,10 @@ class Admission_9th_reg extends CI_Controller {
 
 
     }
+    
 
-  
     public function NewEnrolment()
     {    
-        // DebugBreak();
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -590,7 +531,6 @@ class Admission_9th_reg extends CI_Controller {
         $data = array(
             'isselected' => '14',
         );
-        //  DebugBreak();
         if($this->session->flashdata('NewEnrolment_error')){
 
             $error['excep'] = $this->session->flashdata('NewEnrolment_error');    
@@ -634,8 +574,6 @@ class Admission_9th_reg extends CI_Controller {
         $formno = $this->uri->segment(3);
         $this->load->model('Admission_9th_reg_model');
         if($this->session->flashdata('NewEnrolment_error')){
-            //DebugBreak();
-
             $RegStdData['data'][0] = $this->session->flashdata('NewEnrolment_error');   
             $isReAdm = $RegStdData['data'][0]['isreadm'];
             $RegStdData['isReAdm']=$isReAdm;
@@ -665,8 +603,7 @@ class Admission_9th_reg extends CI_Controller {
     }
     public function NewEnrolment_update()
     {
-         ///DebugBreak();
-
+       // DebugBreak();
         $this->load->model('Admission_9th_reg_model');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
@@ -689,7 +626,7 @@ class Admission_9th_reg extends CI_Controller {
         $this->session->set_flashdata('error', 'success');
         if($seltedOption == 1 || $seltedOption == 2)
         {
-            redirect('Admission_9th_reg/StudentsData_cancelAdm');
+            redirect('Admission_9th_reg/EditForms');
         }
         else if($seltedOption == 3)
         {
@@ -700,7 +637,6 @@ class Admission_9th_reg extends CI_Controller {
     }
     public function NewEnrolment_Delete($formno)
     {
-        // DebugBreak();
         $this->load->model('Admission_9th_reg_model');
         $RegStdData = array('data'=>$this->Admission_9th_reg_model->Delete_NewEnrolement($formno));
         $this->load->library('session');
@@ -710,62 +646,61 @@ class Admission_9th_reg extends CI_Controller {
     }
     /* public function financeReoprt()
     {
-        $this->load->library('PDFFWithOutPage');
-        $pdf=new PDFFWithOutPage();   
-        $pdf->SetAutoPageBreak(true,2);
-        $pdf->AddPage('P',"A4");
+    $this->load->library('PDFFWithOutPage');
+    $pdf=new PDFFWithOutPage();   
+    $pdf->SetAutoPageBreak(true,2);
+    $pdf->AddPage('P',"A4");
 
-        $fontSize = 10; 
-        $marge    = .95;   // between barcode and hri in pixel
-        $bx        = 170.6;  // barcode center
-        $by        = 28.75;  // barcode center
-        $height   = 5.7;   // barcode height in 1D ; module size in 2D
-        $width    = .26;  // barcode height in 1D ; not use in 2D
-        $angle    = 0;   // rotation in degrees
+    $fontSize = 10; 
+    $marge    = .95;   // between barcode and hri in pixel
+    $bx        = 170.6;  // barcode center
+    $by        = 28.75;  // barcode center
+    $height   = 5.7;   // barcode height in 1D ; module size in 2D
+    $width    = .26;  // barcode height in 1D ; not use in 2D
+    $angle    = 0;   // rotation in degrees
 
-        $code     = '222020';     // barcode (CP852 encoding for Polish and other Central European languages)
-        $type     = 'code128';
-        $black    = '000000'; // color in hex
-        
-        $data['iyear'] = 2017;
-        
-        $Barcode = "9@2016@1@122345";
+    $code     = '222020';     // barcode (CP852 encoding for Polish and other Central European languages)
+    $type     = 'code128';
+    $black    = '000000'; // color in hex
 
-        $pdf->Image("assets/img/9thletterFinance.png",5,6, 200,270, "PNG");
+    $data['iyear'] = 2017;
 
-        $bardata = Barcode::fpdf($pdf, $black, $bx, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
+    $Barcode = "9@2016@1@122345";
 
-        $len = $pdf->GetStringWidth($bardata['hri']);
-        Barcode::rotate(-$len / 2, ($bardata['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
-        
-        $pdf->SetFont('Arial','B',11.5);
-        $pdf->SetXY(70.5, 43);
-        $pdf->Cell(0,0,$data['iyear'],0,0,'L',0);
-        
-       // $pdf->Image("assets/img/Supply.jpg",79.5,38, 14,8, "JPG");
-        
-        
-        //Single Fee
-        $Y = 59;
-        $font = 9;
-        $x = 13; 
-        for($i =0 ; $i<7 ; $i++)
-        {
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x, $Y);
-            $pdf->Cell(0,0,'1000/-',0,0,'L',0);
-            if($i==1)
-            $x= $x+25; 
-           
-            else
-                $x= $x+18; 
-        }
-        $pdf->Output('financeReoprt.pdf', 'I'); 
-    }*/
-     public function financeReoprt()
+    $pdf->Image("assets/img/9thletterFinance.png",5,6, 200,270, "PNG");
+
+    $bardata = Barcode::fpdf($pdf, $black, $bx, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
+
+    $len = $pdf->GetStringWidth($bardata['hri']);
+    Barcode::rotate(-$len / 2, ($bardata['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
+
+    $pdf->SetFont('Arial','B',11.5);
+    $pdf->SetXY(70.5, 43);
+    $pdf->Cell(0,0,$data['iyear'],0,0,'L',0);
+
+    // $pdf->Image("assets/img/Supply.jpg",79.5,38, 14,8, "JPG");
+
+
+    //Single Fee
+    $Y = 59;
+    $font = 9;
+    $x = 13; 
+    for($i =0 ; $i<7 ; $i++)
     {
-        //DebugBreak();
-    $this->load->library('session');
+    $pdf->SetFont('Arial','B',$font);
+    $pdf->SetXY($x, $Y);
+    $pdf->Cell(0,0,'1000/-',0,0,'L',0);
+    if($i==1)
+    $x= $x+25; 
+
+    else
+    $x= $x+18; 
+    }
+    $pdf->Output('financeReoprt.pdf', 'I'); 
+    }*/
+    public function financeReoprt()
+    {
+        $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $user = $Logged_In_Array['logged_in'];
         $this->load->model('Admission_9th_reg_model');
@@ -773,18 +708,15 @@ class Admission_9th_reg extends CI_Controller {
         $result = array('data'=>$this->Admission_9th_reg_model->forwarding_pdf_Finance_final($fetch_data),'inst_Name'=>$user['inst_Name']);    
         if(empty($result['data']))
         {
-     //   return; 
+            //   return; 
         }
-      //  print_r($result);die();
+        //  print_r($result);die();
         $temp = $user['Inst_Id'].'@'.Year.'@'.Session;
         //$image =  $this->set_barcode($temp);
-        
         $this->load->library('PDFFWithOutPage');
         $pdf=new PDFFWithOutPage();   
         $pdf->SetAutoPageBreak(true,2);
-        
         $pdf->AddPage('P',"A4");
-
         $fontSize = 10; 
         $marge    = .95;   // between barcode and hri in pixel
         $bx        = 170.6;  // barcode center
@@ -792,222 +724,215 @@ class Admission_9th_reg extends CI_Controller {
         $height   = 5.7;   // barcode height in 1D ; module size in 2D
         $width    = .26;  // barcode height in 1D ; not use in 2D
         $angle    = 0;   // rotation in degrees
-
         $code     = '222020';     // barcode (CP852 encoding for Polish and other Central European languages)
         $type     = 'code128';
         $black    = '000000'; // color in hex
-        
         $data['iyear'] = Year;
         $data['sess'] = Session;
-        
+
         $Barcode = $temp;
-        
+
         $result[0] = $result['data'][0];
-         // DebugBreak();
+        // DebugBreak();
         $pdf->Image("assets/img/9thForwardingLetterIncome.png",5,6, 200,280, "PNG");
-       // $pdf->Image("assets/img/M2.jpg",100, 2.8, 10, 10, "jpg");
+        // $pdf->Image("assets/img/M2.jpg",100, 2.8, 10, 10, "jpg");
         $bardata = Barcode::fpdf($pdf, $black, $bx, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
 
         $len = $pdf->GetStringWidth($bardata['hri']);
         Barcode::rotate(-$len / 2, ($bardata['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
-        
+
         $pdf->SetFont('Arial','B',11.5);
         $pdf->SetXY(70.5, 44);
         $pdf->Cell(0,0,$data['iyear'],0,0,'L',0);
-        
-        
-        
-      //  DebugBreak();
         //Finance Page
         $Y = 67;
         $font = 12;
         $x = 13; 
         for($i =0 ; $i<7 ; $i++)
         {
-       
+
             $pdf->SetFont('Arial','B',$font);
             $pdf->SetXY($x-2, $Y-7.5);
             //$result[0]['Total_sci']
             if($i == 6)
             {
                 $pdf->SetXY($x-8, $Y-7.5);
-            $pdf->Cell(0,0,$result[0]['Total_sci'],0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_sci'],0,0,'L',0);
             }
             else if($i == 5)
             {
-            $pdf->Cell(0,0,$result[0]['Total_Arts'],0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_Arts'],0,0,'L',0);
             }
             else if($i == 4)
             {
-            $pdf->Cell(0,0,$result[0]['Total_ArtsPr'],0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_ArtsPr'],0,0,'L',0);
             }
             else if($i == 3)
             {
-            $pdf->Cell(0,0,$result[0]['Total_ReApSc'],0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_ReApSc'],0,0,'L',0);
             }
             else if($i == 2)
             {
-            $pdf->Cell(0,0,$result[0]['Total_ReApArts'],0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_ReApArts'],0,0,'L',0);
             }
-             else if($i == 1)
+            else if($i == 1)
             {
-            $pdf->Cell(0,0,$result[0]['Total_ReApArtsPr'],0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_ReApArtsPr'],0,0,'L',0);
             }
             else if($i == 0)
             {
                 $pdf->SetFont('Arial','B',$font-3);
                 $pdf->SetXY($x-5, $Y-6.5);
-            $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
             }
-             if($i==1)
+            if($i==1)
             {
-            $x= $x+26; 
+                $x= $x+26; 
             }
             else if($i<6)
             {
                 $x= $x+22; 
-                
+
                 if($i==4)
                 {
-                $x= $x-5; 
+                    $x= $x-5; 
                 }
             }
-            
-            
-            
+
+
+
         }
-        
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-115, $Y+32);
-            $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
-            
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-59, $Y+32);
-            $pdf->Cell(0,0,$result[0]['Total_SpeCandidate'],0,0,'L',0);
-        
-       // DebugBreak();
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-30, $Y+172);
-            $pdf->Cell(0,0,$user['Inst_Id'],0,0,'L',0);
-            $font = 9;
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-68, $Y+178);
-            $pdf->MultiCell(80,2.9,$user['inst_Name'],0,"L");
-            $font = 12;
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-30, $Y+198);
-            $pdf->Cell(0,0,$user['phone'],0,0,'L',0);
-            
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-30, $Y+206);
-            $pdf->Cell(0,0,$user['cell'],0,0,'L',0);
+
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-115, $Y+32);
+        $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
+
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-59, $Y+32);
+        $pdf->Cell(0,0,$result[0]['Total_SpeCandidate'],0,0,'L',0);
+
+        // DebugBreak();
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-30, $Y+172);
+        $pdf->Cell(0,0,$user['Inst_Id'],0,0,'L',0);
+        $font = 9;
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-68, $Y+178);
+        $pdf->MultiCell(80,2.9,$user['inst_Name'],0,"L");
+        $font = 12;
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-30, $Y+198);
+        $pdf->Cell(0,0,$user['phone'],0,0,'L',0);
+
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-30, $Y+206);
+        $pdf->Cell(0,0,$user['cell'],0,0,'L',0);
         /////Matric Branch Copy
         $Y = 64;
         $font = 12;
         $x = 13; 
-         $pdf->AddPage('P',"A4");
-          for($i =0 ; $i<7 ; $i++)
+        $pdf->AddPage('P',"A4");
+        for($i =0 ; $i<7 ; $i++)
         {
             $pdf->SetFont('Arial','B',$font);
             $pdf->SetXY($x-1.5, $Y-2);
-             if($i == 6)
+            if($i == 6)
             {
                 $pdf->SetXY($x-8, $Y-2);
-            $pdf->Cell(0,0,$result[0]['Total_sci'],0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_sci'],0,0,'L',0);
             }
             else if($i == 5)
             {
-            $pdf->Cell(0,0,$result[0]['Total_Arts'],0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_Arts'],0,0,'L',0);
             }
             else if($i == 4)
             {
-            $pdf->Cell(0,0,$result[0]['Total_ArtsPr'],0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_ArtsPr'],0,0,'L',0);
             }
             else if($i == 3)
             {
-            $pdf->Cell(0,0,$result[0]['Total_ReApSc'],0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_ReApSc'],0,0,'L',0);
             }
             else if($i == 2)
             {
-                
-            $pdf->Cell(0,0,$result[0]['Total_ReApArts'],0,0,'L',0);
+
+                $pdf->Cell(0,0,$result[0]['Total_ReApArts'],0,0,'L',0);
             }
-             else if($i == 1)
+            else if($i == 1)
             {
-                 
-            $pdf->Cell(0,0,$result[0]['Total_ReApArtsPr'],0,0,'L',0);
+
+                $pdf->Cell(0,0,$result[0]['Total_ReApArtsPr'],0,0,'L',0);
             }
             else if($i == 0)
             {
                 $pdf->SetFont('Arial','B',$font-3);
                 $pdf->SetXY($x-5, $Y-2);
-            $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
+                $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
             }
             if($i==1)
             {
-            $x= $x+26; 
+                $x= $x+26; 
             }
             else if($i<6)
             {
-            if($i == 3)
-            {
-                $x= $x+24; 
-            }
-            
-            else
-            {
-            
-                $x= $x+20; 
-            
-            
-            }
-            
+                if($i == 3)
+                {
+                    $x= $x+24; 
+                }
+
+                else
+                {
+
+                    $x= $x+20; 
+
+
+                }
+
             }
         }
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-115, $Y+37);
-            $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
-            
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-59, $Y+37);
-            $pdf->Cell(0,0,$result[0]['Total_SpeCandidate'],0,0,'L',0);
-            
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-30, $Y+178);
-            $pdf->Cell(0,0,$user['Inst_Id'],0,0,'L',0);
-            
-            $font = 9;
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-58, $Y+185);
-            $pdf->MultiCell(80,2.9,$user['inst_Name'],0,"L");
-            
-            $font = 12;
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-30, $Y+204);
-            $pdf->Cell(0,0,$user['phone'],0,0,'L',0);
-            
-            $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-30, $Y+213);
-            $pdf->Cell(0,0,$user['cell'],0,0,'L',0);
-            
-         $pdf->Image("assets/img/9thForwardingLetter9th.png",5,8, 200,280, "PNG");
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-115, $Y+37);
+        $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
+
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-59, $Y+37);
+        $pdf->Cell(0,0,$result[0]['Total_SpeCandidate'],0,0,'L',0);
+
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-30, $Y+178);
+        $pdf->Cell(0,0,$user['Inst_Id'],0,0,'L',0);
+
+        $font = 9;
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-58, $Y+185);
+        $pdf->MultiCell(80,2.9,$user['inst_Name'],0,"L");
+
+        $font = 12;
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-30, $Y+204);
+        $pdf->Cell(0,0,$user['phone'],0,0,'L',0);
+
+        $pdf->SetFont('Arial','B',$font);
+        $pdf->SetXY($x-30, $Y+213);
+        $pdf->Cell(0,0,$user['cell'],0,0,'L',0);
+
+        $pdf->Image("assets/img/9thForwardingLetter9th.png",5,8, 200,280, "PNG");
         //$pdf->Image("assets/img/M3.jpg",100, 2.8, 10, 10, "jpg");
         $bardata = Barcode::fpdf($pdf, $black, $bx+2, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
 
         $len = $pdf->GetStringWidth($bardata['hri']);
         Barcode::rotate(-$len / 2, ($bardata['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
-        
+
         $pdf->SetFont('Arial','B',11.5);
         $pdf->SetXY(70.5, 46);
         $pdf->Cell(0,0,$data['iyear'],0,0,'L',0);
-        
-       
-         
+
+
+
         $pdf->Output('financeReoprt.pdf', 'I'); 
     }
     public function EditForms()
     {
-        // DebugBreak();
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -1043,7 +968,46 @@ class Admission_9th_reg extends CI_Controller {
 
 
     }
-  
+    public function CreateBatch()
+    {
+        $data = array(
+            'isselected' => '14',
+
+        );
+        $msg = $this->uri->segment(3);
+        $spl_cd = $this->uri->segment(4);
+        $grp_selected = $this->uri->segment(5);
+
+        $this->load->library('session');
+        if($this->session->flashdata('error')){
+
+            $error_msg = $this->session->flashdata('error');    
+
+        }
+        else{
+            $error_msg = 0;
+        }
+        $Logged_In_Array = $this->session->all_userdata();
+        $user = $Logged_In_Array['logged_in'];
+        $this->load->model('Admission_9th_reg_model');
+        $myinfo = array('Inst_cd'=>$user['Inst_Id'],'spl_cd'=>$spl_cd,'grp_cd'=>$user['grp_cd'],'grp_selected'=>$grp_selected);
+        $RegStdData = array('data'=>$this->Admission_9th_reg_model->Spl_case_std_list_new($myinfo),'spl_cd'=>$spl_cd,'grp_selected'=>$grp_selected);
+        if($RegStdData['data'] == FALSE)
+        {
+        $RegStdData['error'] = "No any Record found against this option";
+        }
+        else
+        {
+        $RegStdData['msg_status'] = $error_msg;
+        }
+        $RegStdData['spl_cd'] =  $spl_cd;
+        $userinfo = $Logged_In_Array['logged_in'];
+        $this->load->view('common/header.php',$userinfo);
+        $this->load->view('common/menu.php',$data);
+
+        $this->load->view('Admission/9th/CreateBatch.php',$RegStdData);
+        $this->load->view('common/commonfooter9th.php');
+    }
     public function ProofReading()
     {
         $data = array(
@@ -1054,13 +1018,12 @@ class Admission_9th_reg extends CI_Controller {
         $this->load->view('Admission/9th/ProofReading.php');
         $this->commonfooter();
     }
-
+    
     public function Make_Batch_Group_wise()
     {
-        ///DebugBreak();
+       //DebugBreak();
         $RegGrp = $this->uri->segment(3);
         $Spl_case = $this->uri->segment(4);
-
         $this->load->model('Admission_9th_reg_model');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
@@ -1070,130 +1033,34 @@ class Admission_9th_reg extends CI_Controller {
         $page_name  = "Create Batch";
         $User_info_data = array('Inst_Id'=>$Inst_Id,'RegGrp'=>$RegGrp,'spl_case'=>$Spl_case);
         $user_info  =  $this->Admission_9th_reg_model->user_info($User_info_data); 
+        //$forms_id =   implode(",",$user_info['']); 
         if($user_info == false)
         {
             $this->session->set_flashdata('error', '3');
             redirect('Admission_9th_reg/CreateBatch');
             return;
         }
-        $is_gov            =  $user_info['info'][0]['IsGovernment'];  
-        /*====================  Counting Fee  ==============================*/
-        $processing_fee = 100;
-        $reg_fee           = 1000;
-        $Lreg_fee          = 0;
-        $TotalRegFee = 0;
-        $TotalLatefee = 0;
-        $Totalprocessing_fee = 0;
-        $netTotal = 0;
-        /*====================  Counting Fee  ==============================*/    
-        if(date('Y-m-d',strtotime(SINGLE_LAST_DATE))>=date('Y-m-d'))
-        {
-            $rule_fee   =  $this->Admission_9th_reg_model->getreulefee(1); 
-            $lastdate  = date('Y-m-d',strtotime($rule_fee[0]['End_Date'] )) ;
-        }
-        else if($user_info['info'][0]['feedingDate'] != null)
-        {
-            $lastdate  = date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])) ;
-            if(date('Y-m-d')<=$lastdate)
-            {
-                $rule_fee  =  $this->Admission_9th_reg_model->getreulefee(1); 
-            }
-        }
-        else if(date('Y-m-d',strtotime(DOUBLE_LAST_DATE))>=date('Y-m-d'))
-        {
-            $rule_fee   =  $this->Admission_9th_reg_model->getreulefee(2); 
-            $lastdate  = date('Y-m-d',strtotime($rule_fee[0]['End_Date'] )) ;
-        }
-
-        if($is_gov == 1 && $rule_fee[0]['Rule_Fee_ID'] ==1)
-        {
-            $reg_fee = 0;
-            $Lreg_fee = $rule_fee[0]['Fine'];
-            $processing_fee = $rule_fee[0]['Reg_Processing_Fee'];
-        }
-        else
-        {
-            $reg_fee = $rule_fee[0]['Reg_Fee'];
-            $Lreg_fee = $rule_fee[0]['Fine'];
-            $processing_fee = $rule_fee[0]['Reg_Processing_Fee'];
-
-        }
-        // DebugBreak();
-        $q1 = $user_info['fee'];
-        $total_std = 0;
-        foreach($q1 as $k=>$v) 
-        {
-            $ids[] = $v["formNo"];
-            $total_std++;
-
-
-
-            if(date('Y-m-d', strtotime($v["edate"] ))<= $lastdate) 
-            {
-
-                if($is_gov == 1 && $rule_fee[0]['Rule_Fee_ID'] ==1)
-                {
-                    $reg_fee = 0;
-                    $Lreg_fee = $rule_fee[0]['Fine'];
-                    $processing_fee = $rule_fee[0]['Reg_Processing_Fee'];
-                }
-                else
-                {
-                    $reg_fee = $rule_fee[0]['Reg_Fee'];
-                    $Lreg_fee = $rule_fee[0]['Fine'];
-                    $processing_fee = $rule_fee[0]['Reg_Processing_Fee'];
-
-                }
-
-                if($v["Spec"] == 1 || $v["Spec"] ==  2)
-                {
-                    $reg_fee = 0;
-                    $TotalLatefee = $TotalLatefee + $Lreg_fee;
-                    $Totalprocessing_fee = $Totalprocessing_fee + $processing_fee;
-                }
-                else 
-                {
-
-                    $TotalRegFee = $TotalRegFee + $reg_fee;
-                    $TotalLatefee = $TotalLatefee + $Lreg_fee;
-                    $Totalprocessing_fee = $Totalprocessing_fee + $processing_fee;
-                } 
-            } 
-            else
-            {
-                $reg_fee = $rule_fee[0]['Reg_Fee'];
-                $TotalRegFee = $TotalRegFee + $reg_fee;
-                $TotalLatefee = $TotalLatefee + $Lreg_fee;
-                $Totalprocessing_fee = $Totalprocessing_fee + $processing_fee;
-            } // end of Else
-
-            $netTotal = (int)$netTotal +$reg_fee + $Lreg_fee+$processing_fee;
-        }
-
-
-        $forms_id   = implode(",",$ids);        
-        $tot_fee     = $Totalprocessing_fee+$TotalRegFee+$TotalLatefee;
-        // $challan_No = 0;
+        $mydata = $this->calcFee($user_info);
         $today = date("Y-m-d H:i:s");
-        $data = array('inst_cd'=>$Inst_Id,'total_fee'=>$tot_fee,'proces_fee'=>$processing_fee,'reg_fee'=>$reg_fee,'fine'=>$Lreg_fee,'TotalRegFee'=>$TotalRegFee,'TotalLatefee'=>$TotalLatefee,'Totalprocessing_fee'=>$Totalprocessing_fee,'forms_id'=>$forms_id,'todaydate'=>$today,'total_std'=>$total_std);
-        $this->Admission_9th_reg_model->Batch_Insertion($data); 
+        $forms_id =   implode(",",$mydata['formNo']); 
+        $data = array('inst_cd'=>$Inst_Id,'forms_id'=>$forms_id,'todaydate'=>$today,'updatedFee'=>$mydata);
+        $this->Admission_9th_reg_model->Batch_Insertion($data);  
         redirect('Admission_9th_reg/BatchList');
         return;
 
     }
     public function Make_Batch_Formwise()
     {
-        //DebugBreak();
-        if(!empty($_POST["chk"]))
+        if(!empty($_POST["CheckedFormno_createBatch"]))
         {
 
-            $forms_id =   "'".implode("','",$_POST["chk"])."'";    
+            $forms_id =  $_POST["CheckedFormno_createBatch"];// implode(",",$_POST["CheckedFormno_createBatch"]);    
         }
         else{
             return;
         }
-
         $RegGrp = $this->uri->segment(3);
+        $Spl_case = $this->uri->segment(4);
         $this->load->model('Admission_9th_reg_model');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
@@ -1203,111 +1070,49 @@ class Admission_9th_reg extends CI_Controller {
         $page_name  = "Create Batch";
         $User_info_data = array('Inst_Id'=>$Inst_Id,'forms_id'=>$forms_id);
         $user_info  =  $this->Admission_9th_reg_model->user_info_Formwise($User_info_data); //$db->first("SELECT * FROM  Admission_online..tblinstitutes_all WHERE Inst_Cd = " .$user->inst_cd);
-        $is_gov            =  $user_info['info'][0]['IsGovernment'];  //getValue("IsGovernment", " Admission_online..tblinstitutes_all", "Inst_cd =".$user->inst_cd);
-        /*====================  Counting Fee  ==============================*/
-        $processing_fee = 0;
-        $reg_fee           = 1000;
-        $Lreg_fee          = 0;
-        $TotalRegFee = 0;
-        $TotalLatefee = 0;
-        $Totalprocessing_fee = 0;
-        $netTotal = 0;
-        /*====================  Counting Fee  ==============================*/    
-        if(date('Y-m-d',strtotime(SINGLE_LAST_DATE))>=date('Y-m-d'))
-        {
-            $rule_fee   =  $this->Admission_9th_reg_model->getreulefee(1); 
-            $lastdate  = date('Y-m-d',strtotime($rule_fee[0]['End_Date'] )) ;
-        }
-        else if($user_info['info'][0]['feedingDate'] != null)
-        {
-            $lastdate  = date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])) ;
-            if(date('Y-m-d')<=$lastdate)
-            {
-                $rule_fee  =  $this->Admission_9th_reg_model->getreulefee(1); 
-            }
-            else
-            {
-                $rule_fee  =  $this->Admission_9th_reg_model->getreulefee(2); 
-            }
-        }
-        else if(date('Y-m-d',strtotime(DOUBLE_LAST_DATE))>=date('Y-m-d'))
-        {
-            $rule_fee   =  $this->Admission_9th_reg_model->getreulefee(2); 
-            $lastdate  = date('Y-m-d',strtotime($rule_fee[0]['End_Date'] )) ;
-        }
-
-        if($is_gov == 1 && $rule_fee[0]['Rule_Fee_ID'] ==1)
-        {
-            $reg_fee = 0;
-            $Lreg_fee = $rule_fee[0]['Fine'];
-            $processing_fee = $rule_fee[0]['Reg_Processing_Fee'];
-        }
-        else
-        {
-            $reg_fee = $rule_fee[0]['Reg_Fee'];
-            $Lreg_fee = $rule_fee[0]['Fine'];
-            $processing_fee = $rule_fee[0]['Reg_Processing_Fee'];
-
-        }
-        // DebugBreak();
-        $q1 = $user_info['fee'];
-        $total_std = 0;
-        foreach($q1 as $k=>$v) 
-        {
-            $ids[] = $v["formNo"];
-            $total_std++;
-            if(date('Y-m-d', strtotime($v["edate"] ))<= $lastdate) 
-            {
-                if($is_gov == 1 &&   $rule_fee[0]['Rule_Fee_ID'] ==1)
-                {
-                    $reg_fee = 0;
-                    $Lreg_fee = $rule_fee[0]['Fine'];
-                    $processing_fee = $rule_fee[0]['Reg_Processing_Fee'];
-                }
-                else
-                {
-                    $reg_fee = $rule_fee[0]['Reg_Fee'];
-                    $Lreg_fee = $rule_fee[0]['Fine'];
-                    $processing_fee = $rule_fee[0]['Reg_Processing_Fee'];
-
-                }
-                if($v["Spec"] == 1 || $v["Spec"] ==  2)
-                {
-                    $reg_fee = 0;
-                    $TotalLatefee = $TotalLatefee + $Lreg_fee;
-                    $Totalprocessing_fee = $Totalprocessing_fee + $processing_fee;
-                }
-                else 
-                {
-                    $TotalRegFee = $TotalRegFee + $reg_fee;
-                    $TotalLatefee = $TotalLatefee + $Lreg_fee;
-                    $Totalprocessing_fee = $Totalprocessing_fee + $processing_fee;
-                } 
-            } 
-            else
-            {
-                $reg_fee = $rule_fee[0]['Reg_Fee'];
-                $TotalRegFee = $TotalRegFee + $reg_fee;
-                $TotalLatefee = $TotalLatefee + $Lreg_fee;
-                $Totalprocessing_fee = $Totalprocessing_fee + $processing_fee;
-            } // end of Else
-
-            $netTotal = (int)$netTotal +$reg_fee + $Lreg_fee+$processing_fee;
-        }
-
-
-        $forms_id   = implode(",",$ids);        
-        $tot_fee     = $Totalprocessing_fee+$TotalRegFee+$TotalLatefee;
-        // $challan_No = 0;
+        $is_gov     =  $user_info['info'][0]['IsGovernment'];  //getValue("IsGovernment", " Admission_online..tblinstitutes_all", "Inst_cd =".$user->inst_cd);
+        $mydata =$this->calcFee($user_info);
         $today = date("Y-m-d H:i:s");
-        $data = array('inst_cd'=>$Inst_Id,'total_fee'=>$tot_fee,'proces_fee'=>$processing_fee,'reg_fee'=>$reg_fee,'fine'=>$Lreg_fee,'TotalRegFee'=>$TotalRegFee,'TotalLatefee'=>$TotalLatefee,'Totalprocessing_fee'=>$Totalprocessing_fee,'forms_id'=>$forms_id,'todaydate'=>$today,'total_std'=>$total_std);
+        $data = array('inst_cd'=>$Inst_Id,'forms_id'=>$forms_id,'todaydate'=>$today,'updatedFee'=>$mydata);
         $this->Admission_9th_reg_model->Batch_Insertion($data); 
         redirect('Admission_9th_reg/BatchList');
         return;
     }
+     public function BatchList()
+    {
+        $data = array(
+            'isselected' => '14',
+
+        );
+        // $this->commonheader($data);
+        $this->load->model('Admission_9th_reg_model');
+        $this->load->library('session');
+        $Logged_In_Array = $this->session->all_userdata();
+        $userinfo = $Logged_In_Array['logged_in'];
+        $userinfo['isselected'] = 14;
+        $Inst_Id = $userinfo['Inst_Id'];
+        //$page_name  = "Create Batch";
+        if($this->session->flashdata('BatchList_error')){
+
+            $error_msg = $this->session->flashdata('BatchList_error');    
+
+        }
+        else{
+            $error_msg = '';
+        }
+        $data1 = array('Inst_Id'=>$Inst_Id);
+        $user_info  =  $this->Admission_9th_reg_model->Batch_List($data1);
+        $user_info_arr = array('info'=>$user_info,'errors'=>$error_msg);
+        $this->load->view('common/header.php',$userinfo);
+        $this->load->view('common/menu.php',$data);
+        $this->load->view('Admission/9th//BatchList.php',$user_info_arr);
+        $this->commonfooter();
+        //$this->commonheader($data);
+        //  $this->load->view('Registration/9th/BatchList.php');
+        //$this->commonfooter();
+    }
     public function FormPrinting()
     {
-
         $this->load->library('session');
         //DebugBreak();
         if(!( $this->session->flashdata('error'))){
@@ -1323,7 +1128,6 @@ class Admission_9th_reg extends CI_Controller {
         $data = array(
             'isselected' => '14',
         );
-        //  DebugBreak();
         $error = array();
         $error['excep'] = '';
         $error['gender'] = $userinfo['gender'];
@@ -1338,7 +1142,6 @@ class Admission_9th_reg extends CI_Controller {
     }
     public function RevenueList()
     {
-
         $this->load->library('session');
         //DebugBreak();
         if(!( $this->session->flashdata('error'))){
@@ -1369,7 +1172,6 @@ class Admission_9th_reg extends CI_Controller {
     }
     private function set_barcode($code)
     {
-        //DebugBreak()  ;
         //load library
         $this->load->library('zend');
         //load in folder Zend
@@ -1384,8 +1186,6 @@ class Admission_9th_reg extends CI_Controller {
     }
     public function return_pdf()
     {
-
-
         $Condition = $this->uri->segment(4);
         /*
         $Condition  1 == Batch Id wise printing.
@@ -1437,7 +1237,6 @@ class Admission_9th_reg extends CI_Controller {
 
         }
 
-        // DebugBreak();
         if(empty($result['data'])){
             $this->session->set_flashdata('error', $Condition);
             redirect('Admission_9th_reg/FormPrinting');
@@ -1653,33 +1452,33 @@ class Admission_9th_reg extends CI_Controller {
     }
     public function GetTehName($id)
     {
-       $retVal = "";
+        $retVal = "";
         if($id == 1) $retVal = "KAMOKE";
         else if($id == 2)  $retVal = "GUJRANWALA";
             else if($id == 3)  $retVal = "WAZIRABAD";
                 else if($id == 4)  $retVal = "NOWSHERA VIRKAN";
                     else if($id == 9)  $retVal = "PINDI BHATTIAN";
                         else if($id == 10)  $retVal = "MANDI BAHA-UD-DIN";
-                        else if($id == 11)  $retVal = "PHALIA";
-                        else if($id == 8)  $retVal = "HAFIZABAD";
-                        else if($id == 12)  $retVal = "MALAKWAL";
-                        else if($id == 13)  $retVal = "NAROWAL";
-                        else if($id == 14)  $retVal = "SHAKARGARH";
-                        else if($id == 5)  $retVal = "GUJRAT";
-                        else if($id == 6)  $retVal = "KHARIAN";
-                        else if($id == 7)  $retVal = "SARAI ALAMGIR";
-                        else if($id == 15)  $retVal = "SIALKOT";
-                        else if($id == 16)  $retVal = "PASRUR";
-                        else if($id == 17)  $retVal = "DASKA";
-                        else if($id == 18)  $retVal = "SAMBRIAL";
-                        else if($id == 19)  $retVal = "ZAFARWAL";
-                        else if($id == 20)  $retVal = "GUJAR KHAN";
-                        else if($id == 21)  $retVal = "JHANG";
-                        else if($id == 22)  $retVal = "BURNALA";
-                        else if($id == 23)  $retVal = "GUJAR KHAN";
-                        else if($id == 24)  $retVal = "JEHLUM";
-                       
-                            return $retVal; 
+                            else if($id == 11)  $retVal = "PHALIA";
+                                else if($id == 8)  $retVal = "HAFIZABAD";
+                                    else if($id == 12)  $retVal = "MALAKWAL";
+                                        else if($id == 13)  $retVal = "NAROWAL";
+                                            else if($id == 14)  $retVal = "SHAKARGARH";
+                                                else if($id == 5)  $retVal = "GUJRAT";
+                                                    else if($id == 6)  $retVal = "KHARIAN";
+                                                        else if($id == 7)  $retVal = "SARAI ALAMGIR";
+                                                            else if($id == 15)  $retVal = "SIALKOT";
+                                                                else if($id == 16)  $retVal = "PASRUR";
+                                                                    else if($id == 17)  $retVal = "DASKA";
+                                                                        else if($id == 18)  $retVal = "SAMBRIAL";
+                                                                            else if($id == 19)  $retVal = "ZAFARWAL";
+                                                                                else if($id == 20)  $retVal = "GUJAR KHAN";
+                                                                                    else if($id == 21)  $retVal = "JHANG";
+                                                                                        else if($id == 22)  $retVal = "BURNALA";
+                                                                                            else if($id == 23)  $retVal = "GUJAR KHAN";
+                                                                                                else if($id == 24)  $retVal = "JEHLUM";
+
+                                                                                                    return $retVal; 
     }
     public function GetZoneName($zone_cd)
     {
@@ -1747,293 +1546,25 @@ class Admission_9th_reg extends CI_Controller {
             $fetch_data['startformno'] = $startformno;
             $fetch_data['endformno'] = $endformno;
         }
+        else if($option == 9)
+        {
+            $batch_id = $this->uri->segment(3);
+            $fetch_data = array('Inst_Id'=>$user['Inst_Id'],'Batch_Id'=>$batch_id);
+           // DebugBreak();
+            $user_info =$this->Admission_9th_reg_model->user_info_Batch_Id($fetch_data);
+            $mydata = $this->calcFee($user_info);
+            $this->Admission_9th_reg_model->UpdateFee_Final($mydata);
+        }
 
 
         $temp = $user['Inst_Id'].'@9@'.Session;
         $image =  $this->set_barcode($temp);
-        // --------------------------------------- Fee Calculation Section ------------------------------------------------
-        //DebugBreak();
-        $User_info_data = array('Inst_Id'=>$user['Inst_Id'], 'date' => date('Y-m-d'));
-        $user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data); 
-        $isfine = 0;
-        $Total_fine = 0;
-        // Declare Science & Arts Fee's According to Fee Table .  Note: this will assign to Triple date fee. After triple date it will not asign fees.
-        if(!empty($user_info['rule_fee'])) 
-        {
-            if($user_info['rule_fee'][0]['isPrSub']==1)
-            {
-                $SciAdmFee = $user_info['rule_fee'][0]['Amount'];
-                $SciProcFee = $user_info['rule_fee'][0]['Processing_Fee'];
-                // For ReAdmission Fee
-                $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-                $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-
-            } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
-            {
-                $SciAdmFee = $user_info['rule_fee'][1]['Amount'];
-                $SciProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
-                // For ReAdmission Fee
-                $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-                $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-
-            }
-            if($user_info['rule_fee'][0]['isPrSub']==0)
-            {
-                $ArtsAdmFee = $user_info['rule_fee'][0]['Amount'];
-                $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
-                // For ReAdmission Fee
-                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-                //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-            }
-            else if($user_info['rule_fee'][1]['isPrSub']== 0 )
-            {
-                $ArtsAdmFee = $user_info['rule_fee'][1]['Amount'];
-                $ArtsProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
-                // For ReAdmission Fee
-                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-                //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-            }
-        }
-        else
-        {
-            $date = new DateTime(SingleDateFee9th);
-            $singleDate =  $date->format('Y-m-d');                                                                     
-            $User_info_data = array('Inst_Id'=>$user['Inst_Id'], 'date' => $singleDate);
-            $user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data);
-            if($user_info['rule_fee'][0]['isPrSub']==1)
-            {
-                $SciAdmFee = $user_info['rule_fee'][0]['Amount'];
-                $SciProcFee = 195;// $user_info['rule_fee'][0]['Processing_Fee'];
-                // For ReAdmission Fee
-                $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-                $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-
-            } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
-            {
-                $SciAdmFee = $user_info['rule_fee'][1]['Amount'];
-                $SciProcFee = 195;//$user_info['rule_fee'][1]['Processing_Fee'];
-                // For ReAdmission Fee
-                $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-                $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-
-            }
-            if($user_info['rule_fee'][0]['isPrSub']==0)
-            {
-                $ArtsAdmFee = $user_info['rule_fee'][0]['Amount'];
-                $ArtsProcFee =195;//$user_info['rule_fee'][0]['Processing_Fee'];
-                // For ReAdmission Fee
-                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-               // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-            }
-            else if($user_info['rule_fee'][1]['isPrSub']== 0 )
-            {
-                $ArtsAdmFee = $user_info['rule_fee'][1]['Amount'];
-                $ArtsProcFee = 195;//$user_info['rule_fee'][1]['Processing_Fee'];
-                // For ReAdmission Fee
-                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-                //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-            }
-
-            $TripleDate = date('Y-m-d',strtotime(TripleDateFee9th)); 
-            $now = date('Y-m-d'); // or your date as well
-            $days = (strtotime($TripleDate) - strtotime($now)) / (60 * 60 * 24);
-            $fine = 500;
-            $days = abs($days);
-
-            $SciAdmFee =  ($SciAdmFee*3); 
-            $ArtsAdmFee = ($ArtsAdmFee*3); 
-            $Total_fine = $days*$fine;
-            // For ReAdmission 
-            $SciAdmFee_ReAdm =  ($SciAdmFee_ReAdm*3); 
-            $ArtsAdmFee_ReAdm = ($ArtsAdmFee_ReAdm*3);
-
-
-
-        }
-
-        // Newly Affiliated Admission Fee   Deals Private and Govt. institutes 
-        $lastdate  = date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])) ;
-        if($user_info['info'][0]['feedingDate'] != null && (date('Y-m-d')<=$lastdate) )
-        {
-            $Total_fine = 0;
-            if($user_info['info'][0]['IsGovernment'] == 2)
-            {
-                $date = new DateTime(SingleDateFee9th);
-                $singleDate =  $date->format('Y-m-d'); 
-                $User_info_data = array('Inst_Id'=>$user['Inst_Id'], 'date' => $singleDate);
-                $user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data); 
-                if($user_info['rule_fee'][0]['isPrSub']==1)
-                {
-                    $SciAdmFee = $user_info['rule_fee'][0]['Amount'];
-                    $SciProcFee = $user_info['rule_fee'][0]['Processing_Fee'];
-                    // For ReAdmission Fee
-                    $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-                    $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-
-                } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
-                {
-                    $SciAdmFee = $user_info['rule_fee'][1]['Amount'];
-                    $SciProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
-                    // For ReAdmission Fee
-                    $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-                    $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-
-                }
-                if($user_info['rule_fee'][0]['isPrSub']==0)
-                {
-                    $ArtsAdmFee = $user_info['rule_fee'][0]['Amount'];
-                    $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
-                    // For ReAdmission Fee
-                    $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-                    //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                }
-                else if($user_info['rule_fee'][1]['isPrSub']== 0 )
-                {
-                    $ArtsAdmFee = $user_info['rule_fee'][1]['Amount'];
-                    $ArtsProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
-                    // For ReAdmission Fee
-                    $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-                    //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                }
-            }
-            else
-            {
-
-                if($user_info['rule_fee'][0]['isPrSub']==1)
-                {
-                    $SciAdmFee = 0;
-                    $SciProcFee = $user_info['rule_fee'][0]['Processing_Fee'];
-                    // For ReAdmission Fee
-                    $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-                    $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-
-                } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
-                {
-                    $SciAdmFee = 0;
-                    $SciProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
-                    // For ReAdmission Fee
-                    $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-                    $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-
-                }
-                if($user_info['rule_fee'][0]['isPrSub']==0)
-                {
-                    $ArtsAdmFee = 0;
-                    $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
-                    // For ReAdmission Fee
-                    $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-                    //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                }
-                else if($user_info['rule_fee'][1]['isPrSub']== 0 )
-                {
-                    $ArtsAdmFee = 0;
-                    $ArtsProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
-                    // For ReAdmission Fee
-                    $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-                    //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                }
-            }
-
-
-
-        }  
-
-        //DebugBreak();
-        // Govt. Institutes no Adm Fee for Single Date.
-        $date = new DateTime(SingleDateFee9th);
-        $singleDate =  $date->format('Y-m-d'); 
-        if(date('Y-m-d') <= $singleDate && $user_info['info'][0]['IsGovernment'] == 1)
-        {    
-            if($user_info['rule_fee'][0]['isPrSub']==1)
-            {
-                $SciAdmFee = 0;
-                $SciProcFee = $user_info['rule_fee'][0]['Processing_Fee'];
-                // For ReAdmission Fee
-                $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-                $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-
-            } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
-            {
-                $SciAdmFee = 0;
-                $SciProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
-                // For ReAdmission Fee
-                $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-                $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-
-            }
-            if($user_info['rule_fee'][0]['isPrSub']==0)
-            {
-                $ArtsAdmFee = 0;
-                $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
-                // For ReAdmission Fee
-                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-               // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-            }
-            else if($user_info['rule_fee'][1]['isPrSub']== 0 )
-            {
-                $ArtsAdmFee = 0;
-                $ArtsProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
-                // For ReAdmission Fee
-                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-               // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-            } 
-
-        }  
-
-        // --------------------------------------- Fee Calculation Section END------------------------------------------------
-
-
-        // DebugBreak();
-        $data = array('data'=>$this->Admission_9th_reg_model->revenue_pdf($fetch_data),'inst_Name'=>$user['inst_Name'],'inst_cd'=>$user['Inst_Id'],'barcode'=>$image,"SciAdmFee"=>$SciAdmFee,"ArtsAdmFee"=>$ArtsAdmFee,"SciProcFee"=>$SciProcFee,"ArtsProcFee"=>$ArtsProcFee);
-        //
-        // ------------------------------------- Assign Each Candidate Fee According to Special case, Re-Admission ,Government Candidate and Newly Affiliated Institutes.
-        if(empty($data['data']['stdinfo']))
-        {
-            $this->session->set_flashdata('error','No any student exists agiants this keyword!');
-            redirect('Admission_9th_reg/RevenueList');
-        }
-        $n=0;
-        $AllStdFee = array();
-        $ArtsProcFee = 195;
-        $SciProcFee = 195;
-        foreach($data['data']['stdinfo'] as $key=>$vals)
-        { $n++;
-            // Check sub6 , sub7 and sub8 practical subj or not.
-            if( $this->practicalsubjects($vals->sub6)|| $this->practicalsubjects($vals->sub7)|| $this->practicalsubjects($vals->sub8))
-            {
-                if($vals->IsReAdm==1)
-                {
-                    $AllStdFee[$n] = array('formNo'=> $vals->formNo,'AdmFee'=>$SciAdmFee_ReAdm,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciAdmFee_ReAdm+$SciProcFee+$Total_fine);
-                }
-                else if($vals->Spec>0 && (date('Y-m-d') <= $singleDate || $user_info['info'][0]['feedingDate'] != null && (date('Y-m-d')<=$lastdate)) )
-                {
-                    $AllStdFee[$n] = array('formNo'=> $vals->formNo,'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciProcFee+$Total_fine);
-                }
-                else
-                {
-                    $AllStdFee[$n] = array('formNo'=> $vals->formNo,'AdmFee'=>$SciAdmFee,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciAdmFee+$SciProcFee+$Total_fine);
-                }
-            }
-            else
-            {
-                if($vals->IsReAdm==1)
-                {
-                    $AllStdFee[$n] = array('formNo'=> $vals->formNo,'AdmFee'=>$ArtsAdmFee_ReAdm,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsAdmFee_ReAdm+$ArtsProcFee+$Total_fine);
-                }
-                else if($vals->Spec>0 && (date('Y-m-d') <= $singleDate || $user_info['info'][0]['feedingDate'] != null && (date('Y-m-d')<=$lastdate)) )
-                {
-                    $AllStdFee[$n] = array('formNo'=> $vals->formNo,'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsProcFee+$Total_fine);
-                }
-                else
-                {
-                    $AllStdFee[$n] = array('formNo'=> $vals->formNo,'AdmFee'=>$ArtsAdmFee,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsAdmFee+$ArtsProcFee+$Total_fine);
-                }
-            }
-        }
-
-        $mydata_final = array( 'data'=>$this->Admission_9th_reg_model->Update_AdmissionFee($AllStdFee,$user['Inst_Id'],$grp_cd,$option,$startformno,$endformno),'AllFeeData'=>$AllStdFee,'Inst_cd'=>$user['Inst_Id'],'Inst_Name'=>$user['inst_Name'],'barcode'=>$image);
-
-        $this->load->view('Admission/9th/RevenueForm.php',$mydata_final);
+        
+        //$User_info_data = array('Inst_Id'=>$user['Inst_Id'], 'date' => date('Y-m-d'));
+        //$user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data); 
+             $user_info =$this->Admission_9th_reg_model->user_info_Batch_Id($fetch_data);
+                $data_final = array('Inst_cd'=>$user['Inst_Id'],'Inst_Name'=>$user['inst_Name'],'calcFeedata'=>$mydata,'userinfo'=>$user_info,'barcode'=>$image);
+        $this->load->view('Admission/9th/RevenueForm.php',$data_final);
     }
     public  function GetSpeciality($spclty)
     {
@@ -2055,12 +1586,13 @@ class Admission_9th_reg extends CI_Controller {
     } 
     public function commonfooter($data)
     {
-        $this->load->view('common/footer.php',$data);
+        $this->load->view('common/commonfooter9th.php',$data);
+        //$this->load->view('common/commonfooter9th.php');
     }
     public function Print_Admission_Form_Groupwise()
     {
 
-        //  DebugBreak();
+       //   DebugBreak();
         $Condition = $this->uri->segment(4);
 
         $this->load->library('session');
@@ -2083,8 +1615,16 @@ class Admission_9th_reg extends CI_Controller {
             $result = array('data'=>$this->Admission_9th_reg_model->Print_Form_Formnowise($fetch_data),'inst_Name'=>$user['inst_Name']);
             //Print_Form_Formnowise
         }
+         else if($Condition == "3")
+        {
+            
+            $batch_id = $this->uri->segment(3);
+            $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'Batch_Id'=>$batch_id);
+            $result = array('data'=>$this->Admission_9th_reg_model->Print_Form_Batchwise($fetch_data),'inst_Name'=>$user['inst_Name']);
+            //Print form batch wise
+        }
 
-
+         //DebugBreak();
         if(empty($result['data'])){
             $this->session->set_flashdata('error', 'No Found');
             redirect('Admission_9th_reg/FormPrinting');
@@ -2151,7 +1691,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetFillColor(0,0,0);
             $pdf->SetDrawColor(0,0,0); 
 
-            $temp = $data['formNo'].'@9@'.Session.'@'.Year; 
+            $temp = $data['formNo'].'@9@'.Session.'@'.(Year+1); 
             $image =  $this->set_barcode($temp);
             $pdf->Image(BARCODE_PATH.$image,3.0, 0.7  ,2.2,0.30,"PNG");
             $pdf->Image(BARCODE_PATH.$image,5.7, 6.2  ,2.2,0.30,"PNG");
@@ -2175,10 +1715,10 @@ class Admission_9th_reg extends CI_Controller {
             else{
                 $ses = "SUPPLYMENTARY";
             }
-            $pdf->Cell(0, 0.25,@$data["regPvt"]==1?"ADMISSION FORM FOR SECONDARY SCHOOL (".class_for_9th_Adm.") ".$ses." EXAMINATION, ".Year :" ADMISSION FORM FOR SECONDARY SCHOOL (".class_for_9th_Adm.") ".$ses." EXAMINATION, ".Year, 0.25, "C");
+            $pdf->Cell(0, 0.25,@$data["regPvt"]==1?"ADMISSION FORM FOR SECONDARY SCHOOL (".class_for_9th_Adm.") ".$ses." EXAMINATION, ".(Year+1) :" ADMISSION FORM FOR SECONDARY SCHOOL (".class_for_9th_Adm.") ".$ses." EXAMINATION, ".(Year+1), 0.25, "C");
 
 
-            $pdf->SetFont('Arial','',8);
+            $pdf->SetFont('Arial','b',8);
             $pdf->SetXY(0.4,1.0);
             $pdf->Cell(0, 0.25,@$data["regPvt"]==1?"(FOR REGULAR CANDIDATE)":"(FOR PRIVATE CANDIDATE)",0,'L',"C");
 
@@ -2262,11 +1802,11 @@ class Admission_9th_reg extends CI_Controller {
             $locality = "";
             if(@$data['RuralORUrban']==1)
             {
-            $locality = "URBAN";
+                $locality = "URBAN";
             }
             else
             {
-            $locality = "RURAL";
+                $locality = "RURAL";
             }
             $pdf->SetXY(0.5,2.6+$Y);
             $pdf->SetFont('Arial','',8);
@@ -2298,14 +1838,14 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetXY(1.6,2.9+$Y);
             $pdf->Cell(0.5,0.5,@$data["rel"]==1?"MUSLIM":"NON-MUSLIM",0,'L');
 
-           /* if(@$data["RegPvt"]==1)
+            /* if(@$data["RegPvt"]==1)
             {
-                $pdf->SetXY(3.1+$x,2.9+$Y);
-                $pdf->SetFont('Arial','',8);
-                $pdf->Cell(0.5,0.5,"Locality:",0,'R');
-                $pdf->SetFont('Arial','B',8);
-                $pdf->SetXY(4.4+$x,2.9+$Y);
-                $pdf->Cell(0.5,0.5,@$data["RuralORUrban"]==1?"RURAL":"URBAN",0,'L');
+            $pdf->SetXY(3.1+$x,2.9+$Y);
+            $pdf->SetFont('Arial','',8);
+            $pdf->Cell(0.5,0.5,"Locality:",0,'R');
+            $pdf->SetFont('Arial','B',8);
+            $pdf->SetXY(4.4+$x,2.9+$Y);
+            $pdf->Cell(0.5,0.5,@$data["RuralORUrban"]==1?"RURAL":"URBAN",0,'L');
             }      */
 
 
@@ -2333,7 +1873,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->Cell( 0.5,0.5,"(Candidate/Guardian's)",0,'L');
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(1.6,3.5+$Y);
-            $pdf->Cell(0.5,0.5,strtoupper(@$data["CellNo"]),0,'L');
+            $pdf->Cell(0.5,0.5,strtoupper(@$data["MobNo"]),0,'L');
 
 
 
@@ -2356,14 +1896,14 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->Cell(0.5,0.5,@$data["markOfIden"],0,'R');
 
             //DebugBreak();
-            
+
             /*$pdf->SetXY(5.5+$x,3.6+$Y);
             $pdf->SetFont('Arial','',8);
             $pdf->Cell( 0.5,0.5,"Locality:",0,'L');*/
             $pdf->SetFont('Arial','b',8);
             $pdf->SetXY(6.4+$x,3.6+$Y);
             $pdf->Cell(0.5,0.5,@$data["sex"]==1?"MALE":"FEMALE",0,'R');
-            
+
             $pdf->SetXY(3.1+$x,3.5+$Y);
             $pdf->SetFont('Arial','',8);
             $pdf->Cell( 0.5,0.5,"Admission:",0,'L');
@@ -2371,11 +1911,11 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetXY(4.4+$x,3.5+$Y);
             $pdf->Cell(0.5,0.5,@$data["IsReAdm"]==1?"RE-ADMISSION":"FRESH",0,'R');
 
-                   
+
             $pdf->SetFont('Arial','B',22);
             $pdf->TextWithRotation($x-.13,3.2+$Y, $data['formNo'],90,0); 
-            
-            
+
+
             //--------------------------- Speciality and Internal Grade 
 
             //DebugBreak();
@@ -2387,29 +1927,29 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->Cell(7.6,0.2,'CONTACT INFORMATION',1,0,'L',1);
             //--------------------------- 8th line 
 
-          
-           
-           //  DebugBreak();
-            
-                //    //__TEHSIL
-                 $pdf->SetXY(0.5,4.3+$Y);
-                $pdf->SetFont('Arial','',8);
-                $pdf->Cell(0.5,0.5,"Tehsil:",0,'R');
-                $pdf->SetFont('Arial','B',8);
-                $pdf->SetXY(0.90,4.3+$Y);
-                
-                $pdf->Cell( 0.5,0.5,$this->GetTehName($user['teh']),0,'L');
-           
-             ////----- DISTRICT   
-           
-                
-                 $pdf->SetXY(2.1,4.3+$Y);
-                $pdf->SetFont('Arial','',8);
-                $pdf->Cell(0.5,0.5,"District:",0,'L');
-                $pdf->SetFont('Arial','B',8);
-                 $pdf->SetXY(2.5,4.3+$Y);
-                $pdf->Cell( 0.5,0.5, $this->GetDistName($user["dist"]),0,'L'); 
-                
+
+
+            //  DebugBreak();
+
+            //    //__TEHSIL
+            $pdf->SetXY(0.5,4.3+$Y);
+            $pdf->SetFont('Arial','',8);
+            $pdf->Cell(0.5,0.5,"Tehsil:",0,'R');
+            $pdf->SetFont('Arial','B',8);
+            $pdf->SetXY(0.90,4.3+$Y);
+
+            $pdf->Cell( 0.5,0.5,$this->GetTehName($user['teh']),0,'L');
+
+            ////----- DISTRICT   
+
+
+            $pdf->SetXY(2.1,4.3+$Y);
+            $pdf->SetFont('Arial','',8);
+            $pdf->Cell(0.5,0.5,"District:",0,'L');
+            $pdf->SetFont('Arial','B',8);
+            $pdf->SetXY(2.5,4.3+$Y);
+            $pdf->Cell( 0.5,0.5, $this->GetDistName($user["dist"]),0,'L'); 
+
 
             //    //__ Head of Institution Cell No.
 
@@ -2432,15 +1972,16 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetFont('Arial','',8);
             $pdf->Cell( 0.5,0.5,"Home Address in Urdu:  _____________________________________________________________________________________________________",0,'L');
 
-            if(@$data["RegPvt"]==2)
-            {
-                $pdf->SetXY(0.5,5.3+$Y);
-                $pdf->SetFont('Arial','',8);
-                $pdf->Cell(0.5,0.5,"Proposed Exam Centre In Urdu:",0,'L');
-                $pdf->SetXY(2.10,5.4+$Y);
-                $pdf->SetFont('Arial','B',8);
-                $pdf->Cell(0.7,0.5+$Y,"_________________________________________________________________________________________",0,'L');
-            }
+           // DebugBreak();
+           /* if(@$data["RegPvt"]==2)
+            {  */
+            
+             $pdf->SetXY(0.5,5.2+$Y);
+            $pdf->SetFont('Arial','B',11);
+            $pdf->Cell( 0.5,0.5,"Zone:                   ".@$data["zone_cd"]." - ".@$data["zone_name"],0,'L');
+               
+           
+            //}
 
 
             //--------------------------- 7th line 
@@ -2671,6 +2212,350 @@ class Admission_9th_reg extends CI_Controller {
 
 
         $pdf->Output($data["Sch_cd"].'.pdf', 'I');
+    }
+    public function ChallanForm_Reg9th_Regular()
+    {
+       // DebugBreak();
+        $Batch_Id = $this->uri->segment(3);
+        $this->load->library('session');
+        $this->load->library('NumbertoWord');
+        $Logged_In_Array = $this->session->all_userdata();
+        $user = $Logged_In_Array['logged_in'];
+        $this->load->model('Admission_9th_reg_model');
+        $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'Batch_Id'=>$Batch_Id);
+        //$grp_cd = $this->uri->segment(3);
+        // $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'formno'=>$formno);
+        //  ////DebugBreak();
+        $User_info_data = array('Inst_Id'=>$user['Inst_Id'],'Batch_Id'=>$Batch_Id);
+        $user_info  =  $this->Admission_9th_reg_model->user_info_Batch_Id($User_info_data); 
+
+        //$User_info_data = array('Inst_Id'=>$Inst_Id,'RegGrp'=>$RegGrp,'spl_case'=>$Spl_case);
+        //$user_info  =  $this->Registration_model->user_info($User_info_data);
+        //$user_info  =  $this->Admission_9th_reg_model->user_info($User_info_data); 
+        //$forms_id =   implode(",",$user_info['']); 
+        if($user_info == false)
+        {
+            $this->session->set_flashdata('error', '3');
+            redirect('Admission_9th_reg/CreateBatch');
+            return;
+        }
+        $data_Final = $this->calcFee($user_info);
+        $result = $this->Admission_9th_reg_model->Print_challan_Form($fetch_data);
+        $this->load->library('PDF_RotateWithOutPage');
+
+        $ctid=1;  //correction type of id starts from one and multiples by 2 for next type of correction id
+
+        $feestructure[]    =  $result[0]['Total_ProcesFee'];    
+        $displayfeetitle[] =  'Total Processing Fee';    
+
+        $feestructure[]    =  $result[0]['Total_AdmFee'];   
+        $displayfeetitle[] =  'Total Admission Fee';   
+
+        $feestructure[]    =  $result[0]['Total_LateAdmFee']; 
+        $displayfeetitle[] =  'Total Late Admission Fee'; 
+
+        $feestructure[]    =  $result[0]['COUNT']; 
+        $displayfeetitle[] =  'Total Candidate(s)'; 
+
+        /* $feestructure[]    =  $result[0]['TotalCertificateFee']; 
+        $displayfeetitle[] =  'Total Certificate Fee';  */  
+
+        $turn=1;     
+        $pdf=new PDF_RotateWithOutPage("P","in","A4");
+        $pdf->AliasNbPages();
+        $pdf->SetTitle("Challan Form | Admission 9th Annual ".(Year+1)." Batch Form Fee");
+        $pdf->SetMargins(0.5,0.5,0.5);
+        $pdf->AddPage();
+        $generatingpdf=false;
+        $challanCopy=array(1=>"Depositor Copy",  2=>"Admission Branch Copy",3=>"Bank Copy", 4=>"Board Copy",);
+        $challanMSG=array(1=>"(May be deposited in any HBL Branch)",2=>"(To be sent to the Admission Branch Via BISE One Window)", 3=>"(To be retained with HBL)", 4=>"(Along with scroll)"  );
+        $challanNo = $result[0]['Challan_No']; 
+        // ////DebugBreak();
+        // $User_info_data = array('Inst_Id'=>$user['Inst_Id'],'RegGrp'=>@$RegGrp,'spl_case'=>@$Spl_case);
+        // $user_info  =  $this->Registration_model->getuser_info($User_info_data); 
+        $isfine = 0;
+
+        
+       
+
+        /*if($user['isSpecial']==1 && date('Y-m-d',strtotime($user['isSpecial_Fee']['FeedingDate']))>=date('Y-m-d')  )
+        {
+        $rule_fee[0]['Fine']   =  $user['isSpecial_Fee']['SpecialFee']; 
+        $rule_fee[0]['Reg_Processing_Fee']   =  $user['isSpecial_Fee']['ProcessingFee']; 
+        $rule_fee[0]['Reg_Fee']   =  $user['isSpecial_Fee']['RegFee']; 
+        $rule_fee[0]['Rule_Fee_ID']   = 0; 
+        $rule_fee[0]['isfine'] = 1; 
+        $lastdate  = date('Y-m-d',strtotime($user['isSpecial_Fee']['FeedingDate'])) ;
+        }
+        else
+
+        {
+        if(date('Y-m-d',strtotime(SINGLE_LAST_DATE))>=date('Y-m-d'))
+        {
+        $rule_fee[0]['isfine'] = 0; 
+        $lastdate  = date('Y-m-d',strtotime($user_info['rule_fee'][0]['End_Date'])) ;
+        }
+        else if($user_info['info'][0]['feedingDate'] != null)
+        {
+        $lastdate  = date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])) ;
+        if(date('Y-m-d')<=$lastdate)
+        {
+
+        $rule_fee  =  $this->Registration_model->getreulefee(1);
+        $rule_fee[0]['isfine'] = 0; 
+        }
+        else 
+        {
+        $rule_fee   =  $this->Registration_model->getreulefee(2);
+        $rule_fee[0]['isfine'] = 1;
+        }
+        }
+        else   if(date('Y-m-d',strtotime(DOUBLE_LAST_DATE))>date('Y-m-d'))
+        {
+        $isfine = 1;
+        $rule_fee   =  $this->Registration_model->getreulefee(2);
+        $rule_fee[0]['isfine'] = 1; 
+        $lastdate  = date('Y-m-d',strtotime($rule_fee[0]['End_Date'] )) ;
+        }  */
+        //  ////DebugBreak();
+        /*if(ISREADMISSION == 1)
+        {
+        $rule_fee  =  $this->Registration_model->getreulefee(1);
+        $rule_fee[0]['isfine'] = 1; 
+        $isfine = 1;
+        }  */
+        //  $data = array('data'=>$this->Registration_model->revenue_pdf($fetch_data),'inst_Name'=>$user['inst_Name'],'inst_cd'=>$user['Inst_Id'],'barcode'=>$image,"rulefee"=>$rule_fee);
+        /* if($rule_fee[0]['isfine'] == 1)
+        {
+        // ////DebugBreak();
+        $count = $result[0]["COUNT"];
+        $data['data']["Total_RegistrationFee"] =  $count*$rule_fee[0]['Reg_Fee'] ;
+        $data['data']["Total_ProcessingFee"] =  $count*$rule_fee[0]['Reg_Processing_Fee'] ;
+        $data['data']["Total_LateRegistrationFee"] =  $count*$rule_fee[0]['Fine'] ;
+        $data['data']["Amount"] = $data['data']["Total_RegistrationFee"]+ $data['data']["Total_ProcessingFee"]+$data['data']["Total_LateRegistrationFee"] ;
+        $data['data']['batch_info'][0]['Batch_ID'] = $result[0]['Batch_ID'];
+
+        array('myd'=>$this->Registration_model->UpdateBatchFee($data));
+        } */
+
+        //  } 
+        /*if(date('Y-m-d',strtotime(SINGLE_LAST_DATE))>=date('Y-m-d'))
+        {
+        $rule_fee   =  $this->Registration_model->getreulefee(); 
+        $challanDueDate  = date('d-m-Y',strtotime($rule_fee[0]['End_Date'] )) ;
+        }
+        else
+        {
+        $rule_fee   =  $this->Registration_model->getreulefee(); 
+        $challanDueDate  = date('d-m-Y',strtotime($rule_fee[0]['End_Date'] )) ;
+        }  */
+      // DebugBreak();
+        $obj    = new NumbertoWord();
+        $obj->toWords($result[0]['Amount'],"Only.","");
+        // $pdf->Cell( 0.5,0.5,ucwords($obj->words),0,'L');
+        $feeInWords = ucwords($obj->words);//strtoupper(cNum2Words($totalfee)); 
+
+        //-------------------- PRINT BARCODE
+        //  $pdf->SetDrawColor(0,0,0);
+        // $temp = $user['Inst_Id'].'11-2017-19';
+        //$image =  $this->set_barcode($temp);
+        //  ////DebugBreak();
+        $temp = $challanNo.'@'.$user['Inst_Id'].'@'.$Batch_Id;
+        //  $image =  $this->set_barcode($temp);
+        //////DebugBreak();
+        $temp =  $this->set_barcode($temp);
+
+        $yy = 0.05;
+        $dyy = 0.1;
+        $corcnt = 0;
+        $lastdate = $data_Final['duedate'];
+        $lastdate = date("d-m-Y", strtotime($lastdate));
+        for ($j=1;$j<=4;$j++) 
+        {
+            $yy = 0.04;
+            if($turn==1){$dyy=0.2;} 
+            else {
+                if($turn==2){$dyy=2.65;} else  if($turn==3) {$dyy=5.2; } else {$dyy=7.75 ; $turn=0;}
+            }
+            $corcnt = 0;
+            $pdf->SetFont('Arial','B',11);
+            $pdf->SetXY(1.0,$yy+$dyy);
+            //   ////DebugBreak();
+            $pdf->Cell(2.45, 0.4, "BOARD OF INTERMEDIATE AND SECONDARY EDUCATION, GUJRANWALA", 0.25, "L");
+            $pdf->Image("assets/img/icon2.png",0.30,$yy+$dyy, 0.50,0.50, "PNG", "http://www.bisegrw.com");
+            //  $pdf->Image(BARCODE_PATH.$Barcode,3.2, 1.15+$yy ,1.8,0.20,"PNG");
+            $pdf->Image(BARCODE_PATH.$temp,5.8, $yy+$dyy+0.30 ,1.9,0.22,"PNG");
+
+            //$pdf->SetXY(2.6,$y+0.08+$dy);
+            $pdf->Image(assets.'9th.PNG',7.6, $yy+$dyy+0.05 ,0.20,0.22,"PNG");
+            //$pdf->Image(assets.'/9th.PNG',4.5,$y+0.23+$dy, 1, 2.0, "PNG"); 
+
+            $challanTitle = $challanCopy[$j];
+            $generatingpdf=true;
+
+
+            if($turn==1){$dy=0.5;} else {
+                if($turn==2){$dy=3.0;} else  if($turn==3) {$dy=5.5; }else {$dy=8.1 ; $turn=0;}
+            }
+            $turn++;
+            $y = 0.08;
+
+            //$pdf->SetFont('Arial','BI',14);
+            //$pdf->SetXY(5.5,$y+$dy);
+            //$pdf->Image(BARCODE_PATH.$image,3.2, 0.61  ,1.8,0.20,"PNG");
+            //$pdf->Cell(0.5, $y, $challanCopy[$j], 0.25, "L");
+
+            $pdf->SetFont('Arial','B',9);
+            $pdf->SetXY(1.0,$y+$dy);
+            $pdf->Cell(0.5, $y, $challanCopy[$j], 0.25, "L");
+            $w = $pdf->GetStringWidth($challanCopy[$j]);
+            $pdf->SetXY($w+1.2,$y+$dy);
+            $pdf->SetFont('Arial','I',7);
+            $pdf->Cell(0, $y, $challanMSG[$j], 0.25, "L");
+
+            $pdf->SetXY($w+1.4,$y+$dy+0.15);
+            $pdf->SetFont('Arial','B',7);
+            $pdf->Cell(0, $y, 'Admission Annual Session ('.corr_bank_chall_class.')', 0.25, "L");
+
+            $y += 0.25;
+            $pdf->SetFont('Arial','B',10);
+            $pdf->SetXY(0.5,$y+$dy-0.01);
+            $pdf->SetFillColor(0,0,0);
+            $pdf->Cell(1.5,0.2,'',1,0,'C',1);
+            $pdf->SetFillColor(255,255,255);
+            $pdf->SetTextColor(255,255,255);
+            $pdf->SetXY(0.5,$y+$dy-0.01);
+            $pdf->Cell(0, 0.25, "Due Date: ".$lastdate, 0.25, "C");
+            $pdf->SetTextColor(0,0,0);
+            $pdf->SetFont('Arial','B',8);
+            $pdf->SetXY(2.0,$y+$dy-0.04);                                                                                                
+            $pdf->Cell(0, 0.25, "Printing Date: ".date("d/m/y",time())."         Account Title: BISE, GUJRANWALA             CMD Account No. 00427900072103", 0.25, "C");
+            //CMD Account No. 00427900072103
+            //--------------------------- Fee Description
+            $pdf->SetXY(2.8,$y+$dy);
+            $pdf->SetFont('Arial','U',8);
+            $pdf->Cell(0.5,0.5,"Fee Description",0,'L');
+
+            //  ////DebugBreak();
+            //--------------------------- Challan Depositor Information
+            $pdf->SetXY(4,$y+0.1+$dy);
+            $pdf->SetFont('Arial','B',10);
+            $pdf->Cell( 0.5,0.3,"Bank Challan No:".$result[0]['Challan_No']."           Batch No.".$result[0]['Batch_ID'],0,2,'L');
+            $pdf->SetFont('Arial','U',9);
+            $pdf->Cell(0.5,0.25, "Particulars of Depositor",0,2,'L');
+            $pdf->SetX(4.0);
+            $pdf->SetFont('Arial','B',8);
+
+            //if(intval($result[0]['sex'])==1){$sodo="S/O ";}else{$sodo="D/O ";}
+            // $pdf->Cell(0.5,0.25,$user['Inst_Id'].'-'.$user['inst_Name'],0,2,'L');
+            // $pdf->Cell(0.5,0.25,,0,2,'L');
+            $pdf->SetX(4);
+            $pdf->SetFont('Arial','B',6.5);
+            // ////DebugBreak();
+            //$pdf->Cell(0.5,0.3,"Institute Code: ".$user['Inst_Id'].'-'.$user['inst_Name'],0,2,'L');
+            $pdf->MultiCell(4, .1, "Institute Code: ".$user['Inst_Id'].'-'.$user['inst_Name'],0);
+            $pdf->SetXY(4,$y+1.15+$dy);
+            $pdf->SetFont('Arial','B',9);
+            $pdf->MultiCell(4, .15, "Amount in Words: ".$feeInWords,0);
+            //$pdf->Cell(0.5,0.3,"Amount in Words: ".$feeInWords,0,2,'L');
+
+            $x = 0.55;
+            $y += 0.2;
+
+            //------------- Fee Statement
+            //  ////DebugBreak();
+            $ctid=1;
+            $multiply=1;
+
+            /*    foreach ($feestructure as $value) {
+            //  $value = $value * 2;
+
+            $pdf->SetFont('Arial','',9);
+            $pdf->SetXY(0.5,$y+$dy);
+            $pdf->Cell( 0.5,0.5,$displayfeetitle[$ctid],0,'L');
+            $pdf->SetFont('Arial','B',10);
+            $pdf->SetXY(3,$y+$dy);
+            $pdf->Cell(0.8,0.5,$feestructure[$ctid],0,'C');
+            $ctid *= 2;
+            $y += 0.18;
+            }*/
+            // ////DebugBreak();
+            $total =  count($feestructure);
+            for ($k = 0; $k<count($feestructure); $k++){
+
+
+                $pdf->SetFont('Arial','',9);
+                $pdf->SetXY(0.5,$y+$dy);
+
+                //$feestructure = array(1=>0, 2=>0, 4=>0, 8=>0, 16=>0, 32=>0, 64=>0, 128=>0);
+                $pdf->Cell( 0.5,0.5,$displayfeetitle[$k],0,'L');
+                $pdf->SetFont('Arial','B',10);
+                $pdf->SetXY(3,$y+$dy);
+                $pdf->Cell(0.8,0.5,$feestructure[$k],0,'C');
+                $y += 0.18;
+                $corcnt = $k;
+
+
+
+
+            }
+
+            //------------- Total Amount
+
+
+            if($corcnt ==0){
+                $y += 1.0;
+            }
+            else if($corcnt ==1){
+                $y += .7;
+            }
+            else if($corcnt ==2){
+                $y += .6;
+            }
+            else if($corcnt ==3){
+                $y += .4;
+            }
+            else if($corcnt ==4){
+                $y += .3;
+            }
+            else if($corcnt ==5){
+                $y += .2;
+            }
+
+            else if($corcnt ==6){
+                $y += .16;
+            }
+            $y += -0.2;
+            $pdf->SetFont('Arial','B',12);
+            $pdf->SetXY(0.5,($y)+$dy-.15);
+            $pdf->Cell( 0.5,0.5,"Total Amount(Rs.): ",0,'L');
+            $pdf->SetFont('Arial','B',12);
+            $pdf->SetXY(3,$y+$dy-.15);
+            $pdf->Cell(0.8,0.5,$result[0]['Amount'].'/-',0,'C');
+
+            //------------- Signature
+            $y += 0.2;
+            $pdf->SetFont('Arial','',10);
+            $pdf->SetXY(0.5,$y+$dy);
+            $pdf->Cell(0.5,0.5, 'Cashier: ___________________',0,'L');
+            $pdf->SetXY(5.6,$y+$dy);
+            $pdf->Cell(0.5,0.5, 'Manager: _________________',0,'L');    
+
+            if ($turn>1){
+                $y += 0.4;
+                $pdf->Image( base_url().'assets/img/cut_line.png' ,0.3,$y+$dy, 7.5,0.15, "PNG");   
+                // $pdf->Image("images/cut_line.png",0.3,$y+$dy, 7.5,0.15, "PNG");
+            }            
+        }  
+        if ($generatingpdf==true)
+        {
+            $pdf->Output('challanform.pdf','I');
+        } 
+        else
+        {
+            $containsError=true;
+            $errorMessage = "<br />Your Institute does not have any student registration card in accordance with selected group or form no. range.";
+        }  
     }
     function convertImage($originalImage, $outputImage, $quality,$ext)
     {
@@ -3159,26 +3044,330 @@ class Admission_9th_reg extends CI_Controller {
                             return;
 
                         }
-    }  
-  public function ChallanForm_Adm9hth_Regular()
+    }
+    
+
+    public function calcFee($fetch_data)
+    {
+        // DebugBreak();
+        $user_info  = $fetch_data;// $this->Admission_9th_reg_model->getuser_info($User_info_data); 
+        $isfine = 0;
+        $Total_fine = 0;
+        $duedate ;
+        // Declare Science & Arts Fee's According to Fee Table .  Note: this will assign to Triple date fee. After triple date it will not asign fees.
+        if(!empty($user_info['rule_fee'])) 
+        {
+        $duedate =date('Y-m-d',strtotime($user_info['rule_fee'][0]['End_Date'])); 
+            if($user_info['rule_fee'][0]['isPrSub']==1)
+            {
+                $SciAdmFee = $user_info['rule_fee'][0]['Amount'];
+                $SciProcFee = $user_info['rule_fee'][0]['Processing_Fee'];
+                // For ReAdmission Fee
+                $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
+                $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+            } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
+            {
+                $SciAdmFee = $user_info['rule_fee'][1]['Amount'];
+                $SciProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
+                // For ReAdmission Fee
+                $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
+                $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+            }
+            if($user_info['rule_fee'][0]['isPrSub']==0)
+            {
+                $ArtsAdmFee = $user_info['rule_fee'][0]['Amount'];
+                $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
+                // For ReAdmission Fee
+                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
+                // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+            }
+            else if($user_info['rule_fee'][1]['isPrSub']== 0 )
+            {
+                $ArtsAdmFee = $user_info['rule_fee'][1]['Amount'];
+                $ArtsProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
+                // For ReAdmission Fee
+                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
+                //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+
+            }
+        }
+        else
+        {
+            $date = new DateTime(SingleDateFee9th);
+            $singleDate =  $date->format('Y-m-d');                                                                     
+            $User_info_data = array('Inst_Id'=>$user['Inst_Id'], 'date' => $singleDate);
+            $user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data);
+            $duedate =date('Y-m-d',strtotime($user_info['rule_fee'][0]['End_Date'])); 
+            if($user_info['rule_fee'][0]['isPrSub']==1)
+            {
+                $SciAdmFee = $user_info['rule_fee'][0]['Amount'];
+                $SciProcFee = $user_info['rule_fee'][0]['Processing_Fee'];
+                // For ReAdmission Fee
+                $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
+                $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+            } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
+            {
+                $SciAdmFee = $user_info['rule_fee'][1]['Amount'];
+                $SciProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
+                // For ReAdmission Fee
+                $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
+                $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+            }
+            if($user_info['rule_fee'][0]['isPrSub']==0)
+            {
+                $ArtsAdmFee = $user_info['rule_fee'][0]['Amount'];
+                $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
+                // For ReAdmission Fee
+                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
+                // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+            }
+            else if($user_info['rule_fee'][1]['isPrSub']== 0 )
+            {
+                $ArtsAdmFee = $user_info['rule_fee'][1]['Amount'];
+                $ArtsProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
+                // For ReAdmission Fee
+                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
+                //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+            }
+
+            // Triple Fee Calculations
+
+            $TripleDate = date('Y-m-d',strtotime(TripleDateFee9th)); 
+            $now = date('Y-m-d'); // or your date as well
+            $days = (strtotime($TripleDate) - strtotime($now)) / (60 * 60 * 24);
+            $fine = 500;
+            $days = abs($days);
+
+            $SciAdmFee =  ($SciAdmFee*3); 
+            $ArtsAdmFee = ($ArtsAdmFee*3); 
+            $Total_fine = $days*$fine;
+            // For ReAdmission 
+            $SciAdmFee_ReAdm =  ($SciAdmFee_ReAdm*3); 
+            $ArtsAdmFee_ReAdm = ($ArtsAdmFee_ReAdm*3);
+        }
+
+        // Newly Affiliated Admission Fee   Deals Private and Govt. institutes 
+        $lastdate  = date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])) ;
+        $duedate =date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])); 
+        if($user_info['info'][0]['feedingDate'] != null && (date('Y-m-d')<=$lastdate) )
+        {
+            $Total_fine = 0;
+            if($user_info['info'][0]['IsGovernment'] == 2)
+            {
+                $date = new DateTime(SingleDateFee9th);
+                $singleDate =  $date->format('Y-m-d'); 
+                $User_info_data = array('Inst_Id'=>$user['Inst_Id'], 'date' => $singleDate);
+                $user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data); 
+                if($user_info['rule_fee'][0]['isPrSub']==1)
+                {
+                    $SciAdmFee = $user_info['rule_fee'][0]['Amount'];
+                    $SciProcFee = $user_info['rule_fee'][0]['Processing_Fee'];
+                    // For ReAdmission Fee
+                    $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
+                    $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+
+                } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
+                {
+                    $SciAdmFee = $user_info['rule_fee'][1]['Amount'];
+                    $SciProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
+                    // For ReAdmission Fee
+                    $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
+                    $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+                }
+                if($user_info['rule_fee'][0]['isPrSub']==0)
+                {
+                    $ArtsAdmFee = $user_info['rule_fee'][0]['Amount'];
+                    $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
+                    // For ReAdmission Fee
+                    $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
+                    //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+                }
+                else if($user_info['rule_fee'][1]['isPrSub']== 0 )
+                {
+                    $ArtsAdmFee = $user_info['rule_fee'][1]['Amount'];
+                    $ArtsProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
+                    // For ReAdmission Fee
+                    $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
+                    //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+                }
+            }
+            else
+            {
+
+                if($user_info['rule_fee'][0]['isPrSub']==1)
+                {
+                    $SciAdmFee = 0;
+                    $SciProcFee = $user_info['rule_fee'][0]['Processing_Fee'];
+                    // For ReAdmission Fee
+                    $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
+                    $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+
+                } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
+                {
+                    $SciAdmFee = 0;
+                    $SciProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
+                    // For ReAdmission Fee
+                    $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
+                    $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+
+                }
+                if($user_info['rule_fee'][0]['isPrSub']==0)
+                {
+                    $ArtsAdmFee = 0;
+                    $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
+                    // For ReAdmission Fee
+                    $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
+                    // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+                }
+                else if($user_info['rule_fee'][1]['isPrSub']== 0 )
+                {
+                    $ArtsAdmFee = 0;
+                    $ArtsProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
+                    // For ReAdmission Fee
+                    $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
+                    //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+                }
+            }
+        }  
+
+        // Govt. Institutes no Adm Fee for Single Date.
+        $date = new DateTime(SingleDateFee9th);
+        $singleDate =  $date->format('Y-m-d'); 
+        if(date('Y-m-d') <= $singleDate && $user_info['info'][0]['IsGovernment'] == 1)
+        {   
+        $duedate =date('Y-m-d',strtotime($user_info['rule_fee'][0]['End_Date']));   
+            if($user_info['rule_fee'][0]['isPrSub']==1)
+            {
+                $SciAdmFee = 0;
+                $SciProcFee = $user_info['rule_fee'][0]['Processing_Fee'];
+                // For ReAdmission Fee
+                $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
+                $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+
+            } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
+            {
+                $SciAdmFee = 0;
+                $SciProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
+                // For ReAdmission Fee
+                $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
+                $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+
+            }
+            if($user_info['rule_fee'][0]['isPrSub']==0)
+            {
+                $ArtsAdmFee = 0;
+                $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
+                // For ReAdmission Fee
+                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
+                // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+            }
+            else if($user_info['rule_fee'][1]['isPrSub']== 0 )
+            {
+                $ArtsAdmFee = 0;
+                $ArtsProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
+                // For ReAdmission Fee
+                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
+                // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+            } 
+
+        }  
+        // --------------------------------------- Fee Calculation Section END------------------------------------------------
+        // DebugBreak();
+        $data = array('data'=>$fetch_data['fee']);
+        // ------------------------------------- Assign Each Candidate Fee According to Special case, Re-Admission ,Government Candidate and Newly Affiliated Institutes.
+        $n=0;
+        ///  echo  '<pre>';print_r($data['data']['stdinfo']);exit();
+        $AllStdFee = array();
+        $formno_array = array();
+        $totalStd = 0;
+        $Amount = 0;
+        $GrandAdmFee = 0;
+        $GrandProceFee = 0;
+        $Total_LateAdmFee = 0;
+        $Batch_id_new = 0;
+        foreach($data['data'] as $key=>$vals)
+        { $n++;
+            // Check sub6 , sub7 and sub8 practical subj or not.
+            if( $this->practicalsubjects($vals['sub5'])|| $this->practicalsubjects($vals['sub6'])|| $this->practicalsubjects($vals['sub7']))
+            {
+                if($vals['IsReAdm']==1)
+                {
+                    $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>$SciAdmFee_ReAdm,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciAdmFee_ReAdm+$SciProcFee+$Total_fine);
+                    $Total_AdmFee = $Total_AdmFee+$SciAdmFee_ReAdm;
+                    $GrandProceFee = $GrandProceFee+$SciProcFee;
+                    $Total_LateAdmFee = $Total_LateAdmFee +  $Total_fine;
+                    $Batch_id_new = $vals['Batch_id_Adm'];
+                }
+                else if($vals['Spec']>0 && (date('Y-m-d') <= $singleDate || $user_info['info'][0]['feedingDate'] != null && (date('Y-m-d')<=$lastdate)) )
+                {
+                    $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciProcFee+$Total_fine);
+                    $GrandProceFee = $GrandProceFee+$SciProcFee;
+                    $Total_LateAdmFee = $Total_LateAdmFee +  $Total_fine;
+                    $Batch_id_new = $vals['Batch_id_Adm'];
+
+                }
+                else
+                {
+                    $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>$SciAdmFee,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciAdmFee+$SciProcFee+$Total_fine);
+                    $Total_AdmFee = $Total_AdmFee+$SciAdmFee;
+                    $GrandProceFee = $GrandProceFee+$SciProcFee;
+                    $Total_LateAdmFee = $Total_LateAdmFee +  $Total_fine;
+                    $Batch_id_new = $vals['Batch_id_Adm'];
+                }
+            }
+            else
+            {
+                if($vals['IsReAdm']==1)
+                {
+                    $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>$ArtsAdmFee_ReAdm,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsAdmFee_ReAdm+$ArtsProcFee+$Total_fine);
+                    $Total_AdmFee = $Total_AdmFee+$ArtsAdmFee_ReAdm;
+                    $GrandProceFee = $GrandProceFee+$ArtsProcFee;
+                    $Total_LateAdmFee = $Total_LateAdmFee +  $Total_fine;
+                    $Batch_id_new = $vals['Batch_id_Adm'];
+                }
+                else if($vals['Spec']>0 && (date('Y-m-d') <= $singleDate || $user_info['info'][0]['feedingDate'] != null && (date('Y-m-d')<=$lastdate)) )
+                {
+                    $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsProcFee+$Total_fine);
+                    $GrandProceFee = $GrandProceFee+$ArtsProcFee;
+                    $Total_LateAdmFee = $Total_LateAdmFee +  $Total_fine;
+                    $Batch_id_new = $vals['Batch_id_Adm'];
+                }
+                else
+                {
+                    $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>$ArtsAdmFee,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsAdmFee+$ArtsProcFee+$Total_fine);
+                    $Total_AdmFee = $Total_AdmFee+$ArtsAdmFee;
+                    $GrandProceFee = $GrandProceFee+$ArtsProcFee;
+                    $Total_LateAdmFee = $Total_LateAdmFee +  $Total_fine;
+                    $Batch_id_new = $vals['Batch_id_Adm'];
+                }
+            }
+            $formno_array[$n] = $vals['formNo'];
+            $totalStd=$n;
+        }
+        $Amount =  $Total_AdmFee+$GrandProceFee+$Total_LateAdmFee;
+        $mydata_final = array('data'=>$AllStdFee,'TotalStd'=>$totalStd,'Amount'=>$Amount,'Total_AdmFee'=>$Total_AdmFee,'Total_ProcesFee'=>$GrandProceFee,'Total_LateAdmFee'=>$Total_LateAdmFee,'formNo'=>$formno_array,'duedate'=>$duedate,'batchid'=>$Batch_id_new);
+        return $mydata_final;
+
+    }    
+    public function ChallanForm_Adm9hth_Regular()
     { 
-    //DebugBreak();
-     $Grp_cd = $this->uri->segment(3);
-     $this->load->library('session');
+        //DebugBreak();
+        $Grp_cd = $this->uri->segment(3);
+        $this->load->library('session');
         $this->load->library('NumbertoWord');
         $Logged_In_Array = $this->session->all_userdata();
         $user = $Logged_In_Array['logged_in'];
-         $this->load->model('Admission_9th_reg_model');
-          $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'Grp_cd'=>$Grp_cd,'option'=>6);
-           // --------------------------------------- Fee Calculation Section ------------------------------------------------
-      //  DebugBreak();
+        $this->load->model('Admission_9th_reg_model');
+        $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'Grp_cd'=>$Grp_cd,'option'=>6);
+        // --------------------------------------- Fee Calculation Section ------------------------------------------------
+        //  DebugBreak();
         $challanDueDate = date('Y-m-d'); 
         $User_info_data = array('Inst_Id'=>$user['Inst_Id'], 'date' => date('Y-m-d'));
         if($Grp_cd == 9)
         {
-        // Check and Generate Challan No. Overall 
-        $user_info  =  $this->Admission_9th_reg_model->challan_all($User_info_data); 
-           $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'Grp_cd'=>$Grp_cd,'option'=>9);
+            // Check and Generate Challan No. Overall 
+            $user_info  =  $this->Admission_9th_reg_model->challan_all($User_info_data); 
+            $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'Grp_cd'=>$Grp_cd,'option'=>9);
         }
         $user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data); 
         $isfine = 0;
@@ -3193,12 +3382,12 @@ class Admission_9th_reg extends CI_Controller {
                 // For ReAdmission Fee
                 $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
                 $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                
+
                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
-                
+
 
             } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
             {
@@ -3207,12 +3396,12 @@ class Admission_9th_reg extends CI_Controller {
                 // For ReAdmission Fee
                 $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
                 $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                
-                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+
+                // Set Challan DATE
+                $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
-                 
+
             }
             if($user_info['rule_fee'][0]['isPrSub']==0)
             {
@@ -3220,11 +3409,11 @@ class Admission_9th_reg extends CI_Controller {
                 $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
                 // For ReAdmission Fee
                 $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-               // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                
-                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+
+                // Set Challan DATE
+                $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
             }
             else if($user_info['rule_fee'][1]['isPrSub']== 0 )
@@ -3234,10 +3423,10 @@ class Admission_9th_reg extends CI_Controller {
                 // For ReAdmission Fee
                 $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
                 //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                
-                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+
+                // Set Challan DATE
+                $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
             }
         }
@@ -3254,10 +3443,10 @@ class Admission_9th_reg extends CI_Controller {
                 // For ReAdmission Fee
                 $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
                 $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                
-                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+
+                // Set Challan DATE
+                $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
 
             } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
@@ -3267,10 +3456,10 @@ class Admission_9th_reg extends CI_Controller {
                 // For ReAdmission Fee
                 $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
                 $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                
-                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+
+                // Set Challan DATE
+                $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
 
             }
@@ -3280,11 +3469,11 @@ class Admission_9th_reg extends CI_Controller {
                 $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
                 // For ReAdmission Fee
                 $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-               // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                
-                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+
+                // Set Challan DATE
+                $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
             }
             else if($user_info['rule_fee'][1]['isPrSub']== 0 )
@@ -3294,10 +3483,10 @@ class Admission_9th_reg extends CI_Controller {
                 // For ReAdmission Fee
                 $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
                 //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                
-                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+
+                // Set Challan DATE
+                $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
             }
 
@@ -3313,11 +3502,11 @@ class Admission_9th_reg extends CI_Controller {
             // For ReAdmission 
             $SciAdmFee_ReAdm =  ($SciAdmFee_ReAdm*3); 
             $ArtsAdmFee_ReAdm = ($ArtsAdmFee_ReAdm*3);
-            
-             // Set Challan DATE
-                // $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
-              //   $singleDate_temp =  $date_temp->format('d-m-Y'); 
-                $challanDueDate = date('d-m-Y');
+
+            // Set Challan DATE
+            // $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
+            //   $singleDate_temp =  $date_temp->format('d-m-Y'); 
+            $challanDueDate = date('d-m-Y');
 
 
 
@@ -3341,11 +3530,11 @@ class Admission_9th_reg extends CI_Controller {
                     // For ReAdmission Fee
                     $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
                     $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                    
-                     // Set Challan DATE
-                 $date_temp = new DateTime($user_info['info'][0]['feedingDate']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
-                $challanDueDate = SingleDateFee9th;
+
+                    // Set Challan DATE
+                    $date_temp = new DateTime($user_info['info'][0]['feedingDate']);
+                    $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                    $challanDueDate = SingleDateFee9th;
 
                 } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
                 {
@@ -3355,11 +3544,11 @@ class Admission_9th_reg extends CI_Controller {
                     $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
                     $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
 
-                       // Set Challan DATE
-                 $date_temp = new DateTime($user_info['info'][0]['feedingDate']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
-                $challanDueDate = SingleDateFee9th;
-                
+                    // Set Challan DATE
+                    $date_temp = new DateTime($user_info['info'][0]['feedingDate']);
+                    $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                    $challanDueDate = SingleDateFee9th;
+
                 }
                 if($user_info['rule_fee'][0]['isPrSub']==0)
                 {
@@ -3368,11 +3557,11 @@ class Admission_9th_reg extends CI_Controller {
                     // For ReAdmission Fee
                     $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
                     //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                    
-                       // Set Challan DATE
-                 $date_temp = new DateTime($user_info['info'][0]['feedingDate']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
-                $challanDueDate = SingleDateFee9th;
+
+                    // Set Challan DATE
+                    $date_temp = new DateTime($user_info['info'][0]['feedingDate']);
+                    $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                    $challanDueDate = SingleDateFee9th;
                 }
                 else if($user_info['rule_fee'][1]['isPrSub']== 0 )
                 {
@@ -3381,11 +3570,11 @@ class Admission_9th_reg extends CI_Controller {
                     // For ReAdmission Fee
                     $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
                     //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                    
-                       // Set Challan DATE
-                 $date_temp = new DateTime($user_info['info'][0]['feedingDate']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
-                $challanDueDate = SingleDateFee9th;
+
+                    // Set Challan DATE
+                    $date_temp = new DateTime($user_info['info'][0]['feedingDate']);
+                    $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                    $challanDueDate = SingleDateFee9th;
                 }
             }
             else
@@ -3398,11 +3587,11 @@ class Admission_9th_reg extends CI_Controller {
                     // For ReAdmission Fee
                     $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
                     $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                    
-                     // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
-                $challanDueDate = $singleDate_temp;
+
+                    // Set Challan DATE
+                    $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
+                    $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                    $challanDueDate = $singleDate_temp;
 
                 } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
                 {
@@ -3411,11 +3600,11 @@ class Admission_9th_reg extends CI_Controller {
                     // For ReAdmission Fee
                     $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
                     $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                    
-                     // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
-                $challanDueDate = $singleDate_temp;
+
+                    // Set Challan DATE
+                    $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
+                    $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                    $challanDueDate = $singleDate_temp;
 
                 }
                 if($user_info['rule_fee'][0]['isPrSub']==0)
@@ -3424,12 +3613,12 @@ class Admission_9th_reg extends CI_Controller {
                     $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
                     // For ReAdmission Fee
                     $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-                   // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                    
-                     // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
-                $challanDueDate = $singleDate_temp;
+                    // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+
+                    // Set Challan DATE
+                    $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
+                    $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                    $challanDueDate = $singleDate_temp;
                 }
                 else if($user_info['rule_fee'][1]['isPrSub']== 0 )
                 {
@@ -3438,11 +3627,11 @@ class Admission_9th_reg extends CI_Controller {
                     // For ReAdmission Fee
                     $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
                     //$ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                    
-                     // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
-                $challanDueDate = $singleDate_temp;
+
+                    // Set Challan DATE
+                    $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
+                    $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                    $challanDueDate = $singleDate_temp;
                 }
             }
 
@@ -3463,10 +3652,10 @@ class Admission_9th_reg extends CI_Controller {
                 // For ReAdmission Fee
                 $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
                 $SciProcFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                
+
                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
 
             } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
@@ -3476,10 +3665,10 @@ class Admission_9th_reg extends CI_Controller {
                 // For ReAdmission Fee
                 $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
                 $SciProcFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                
+
                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
 
             }
@@ -3489,11 +3678,11 @@ class Admission_9th_reg extends CI_Controller {
                 $ArtsProcFee =$user_info['rule_fee'][0]['Processing_Fee'];
                 // For ReAdmission Fee
                 $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Amount'];
-               // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
-                
+                // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['Processing_Fee'];
+
                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                $date_temp = new DateTime($user_info['rule_fee'][0]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
             }
             else if($user_info['rule_fee'][1]['isPrSub']== 0 )
@@ -3502,11 +3691,11 @@ class Admission_9th_reg extends CI_Controller {
                 $ArtsProcFee = $user_info['rule_fee'][1]['Processing_Fee'];
                 // For ReAdmission Fee
                 $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Amount'];
-               // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
-                
+                // $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['Processing_Fee'];
+
                 // Set Challan DATE
-                 $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
-                 $singleDate_temp =  $date_temp->format('d-m-Y'); 
+                $date_temp = new DateTime($user_info['rule_fee'][1]['End_Date']);
+                $singleDate_temp =  $date_temp->format('d-m-Y'); 
                 $challanDueDate = $singleDate_temp;
             } 
 
@@ -3514,7 +3703,7 @@ class Admission_9th_reg extends CI_Controller {
 
         // --------------------------------------- Fee Calculation Section END------------------------------------------------
 
-        
+
         // 
         $data = array('data'=>$this->Admission_9th_reg_model->revenue_pdf($fetch_data),'inst_Name'=>$user['inst_Name'],'inst_cd'=>$user['Inst_Id'],"SciAdmFee"=>$SciAdmFee,"ArtsAdmFee"=>$ArtsAdmFee,"SciProcFee"=>$SciProcFee,"ArtsProcFee"=>$ArtsProcFee);
         //
@@ -3556,40 +3745,40 @@ class Admission_9th_reg extends CI_Controller {
                 }
             }
         }
-      //  DebugBreak();
+        //  DebugBreak();
         $mydata_final = array( 'data'=>$this->Admission_9th_reg_model->Update_AdmissionFee($AllStdFee,$user['Inst_Id'],0,$fetch_data['option'],0,0),'AllFeeData'=>$AllStdFee,'Inst_cd'=>$user['Inst_Id'],'Inst_Name'=>$user['inst_Name']);
 
-         //$grp_cd = $this->uri->segment(3);
-       // $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'formno'=>$formno);
+        //$grp_cd = $this->uri->segment(3);
+        // $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'formno'=>$formno);
         //  DebugBreak();
         //$result = $this->Admission_matric_model->Print_challan_Form($fetch_data);
         $this->load->library('PDF_Rotate');
 
         $ctid=1;  //correction type of id starts from one and multiples by 2 for next type of correction id
-         //  DebugBreak();
-           $mydata_final = $mydata_final['data'][0];
-           if($Grp_cd == 9)
-           {
-           $data_challanNo = $data['data']['stdinfo'][0]->challan_overall;
-           }
-           else
-           {
-           $data_challanNo = $data['data']['stdinfo'][0]->challanno;
-           }
-           $challanDueDate;
-           
-            $feestructure[]    =  $mydata_final['sum_procFee'];    
-            $displayfeetitle[] =  'Total Processing Fee';    
-       
-            $feestructure[]     = $mydata_final['sum_AdmFee'];    
-            $displayfeetitle[] =  'Total Admission Fee';   
-              
-            /*$feestructure[]=$result[0]['TotalCertFee']; 
-            $displayfeetitle[] =  'Total Certificate Fee'; */  
-            
-            $feestructure[]=@$mydata_final['sum_lateFee'];
-            $displayfeetitle[] =  'Total Late Admission Fee'; 
-       
+        //  DebugBreak();
+        $mydata_final = $mydata_final['data'][0];
+        if($Grp_cd == 9)
+        {
+            $data_challanNo = $data['data']['stdinfo'][0]->challan_overall;
+        }
+        else
+        {
+            $data_challanNo = $data['data']['stdinfo'][0]->challanno;
+        }
+        $challanDueDate;
+
+        $feestructure[]    =  $mydata_final['sum_procFee'];    
+        $displayfeetitle[] =  'Total Processing Fee';    
+
+        $feestructure[]     = $mydata_final['sum_AdmFee'];    
+        $displayfeetitle[] =  'Total Admission Fee';   
+
+        /*$feestructure[]=$result[0]['TotalCertFee']; 
+        $displayfeetitle[] =  'Total Certificate Fee'; */  
+
+        $feestructure[]=@$mydata_final['sum_lateFee'];
+        $displayfeetitle[] =  'Total Late Admission Fee'; 
+
         $turn=1;     
         $pdf=new PDF_Rotate("P","in","A4");
         $pdf->AliasNbPages();
@@ -3599,7 +3788,7 @@ class Admission_9th_reg extends CI_Controller {
         }
         else
         {
-           $ses = "Supplemantry";
+            $ses = "Supplemantry";
         }
         $pdf->SetTitle("Challan Form | Admission 9th ".Year." ".$ses." Challan Form");
         $pdf->SetMargins(0.5,0.5,0.5);
@@ -3609,16 +3798,16 @@ class Admission_9th_reg extends CI_Controller {
         $challanMSG=array(1=>"(May be deposited in any HBL Branch)",2=>"(To be sent to the Admission Branch Via BISE One Window)", 3=>"(To be retained with HBL)", 4=>"(To be sent to the Board via HBL Branch aloongwith scroll)"  );
         $challanNo = $data_challanNo; 
 
-       // DebugBreak();
-       /* if(date('Y-m-d',strtotime(SINGLE_LAST_DATE11))>=date('Y-m-d'))
+        // DebugBreak();
+        /* if(date('Y-m-d',strtotime(SINGLE_LAST_DATE11))>=date('Y-m-d'))
         {
-            $rule_fee   =  $this->Admission_matric_model->getrulefee(); 
-            $challanDueDate  = date('d-m-Y',strtotime($rule_fee[0]['End_Date'] )) ;
+        $rule_fee   =  $this->Admission_matric_model->getrulefee(); 
+        $challanDueDate  = date('d-m-Y',strtotime($rule_fee[0]['End_Date'] )) ;
         }
         else
         {
-            $rule_fee   =  $this->Admission_matric_model->getrulefee(); 
-            $challanDueDate  = date('d-m-Y',strtotime($rule_fee[0]['End_Date'] )) ;
+        $rule_fee   =  $this->Admission_matric_model->getrulefee(); 
+        $challanDueDate  = date('d-m-Y',strtotime($rule_fee[0]['End_Date'] )) ;
         }              */
 
         $obj    = new NumbertoWord();
@@ -3630,21 +3819,21 @@ class Admission_9th_reg extends CI_Controller {
         //  $pdf->SetDrawColor(0,0,0);
         // $temp = $user['Inst_Id'].'11-2017-19';
         //$image =  $this->set_barcode($temp);
-        
+
         $temp = $challanNo.'@10@.'.Year.'@'.Session;
         //  $image =  $this->set_barcode($temp);
         //DebugBreak();
         $temp =  $this->set_barcode($temp);
-       //  $pdf->Image("assets/img/M6.jpg",7.5, .2, .3, .3, "jpg");
+        //  $pdf->Image("assets/img/M6.jpg",7.5, .2, .3, .3, "jpg");
         $yy = 0.05;
         $dyy = 0.1;
         $corcnt = 0;
         for ($j=1;$j<=4;$j++) 
         {
 
-            
-            
-            
+
+
+
             $yy = 0.04;
             if($turn==1){$dyy=0.2;} 
             else {
@@ -3715,7 +3904,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
 
             //if(intval($result[0]['sex'])==1){$sodo="S/O ";}else{$sodo="D/O ";}
-           // $pdf->Cell(0.5,0.25,$user['Inst_Id'].'-'.$user['inst_Name'],0,2,'L');
+            // $pdf->Cell(0.5,0.25,$user['Inst_Id'].'-'.$user['inst_Name'],0,2,'L');
             // $pdf->Cell(0.5,0.25,,0,2,'L');
             $pdf->SetX(4);
             $pdf->SetFont('Arial','I',6.5);
@@ -3788,7 +3977,7 @@ class Admission_9th_reg extends CI_Controller {
             else if($corcnt ==5){
                 $y += .2;
             }
-            
+
             else if($corcnt ==6){
                 $y += .16;
             }
@@ -3827,14 +4016,14 @@ class Admission_9th_reg extends CI_Controller {
 
         //  $pdf->Output($data["Sch_cd"].'.pdf', 'I');
     }
-
- public function EditPicForms()
+    
+    public function EditPicForms()
     {
         // DebugBreak();
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
-      //  $this->load->view('common/header.php',$userinfo);
+        //  $this->load->view('common/header.php',$userinfo);
         $data = array(
             'isselected' => '14',
 
@@ -3892,8 +4081,8 @@ class Admission_9th_reg extends CI_Controller {
         $config['min_size']      = '4';
         //  $config['max_width']     = '260';
         // $config['max_height']    = '290';
-      //  $config['min_width']     = '110';
-      //  $config['min_height']    = '100';
+        //  $config['min_width']     = '110';
+        //  $config['min_height']    = '100';
         $config['overwrite']     = TRUE;
         $config['file_name']     = $formno.'.jpg';
 

@@ -2,7 +2,7 @@
 
 class Admission_9th_reg_model extends CI_Model 
 {
-    public function __construct()    
+ public function __construct()    
     {
 
         $this->load->database(); 
@@ -44,10 +44,10 @@ class Admission_9th_reg_model extends CI_Model
         return $res;
     }
     public function iszoneset($inst_cd){
-       
-        $query = $this->db->get_where('Registration..Instexam_Info', array('iyear' => Year,'class'=>9,'sess'=>Session,'inst_cd'=>$inst_cd));
+
+        $query = $this->db->query('SELECT zone_cd FROM matric..tblInstitutes_all WHERE INST_CD = '.$inst_cd.' and EDU_LVL IN (1,3)');
         $rowcount = $query->num_rows();
-       
+
         if($rowcount > 0)
         {
             return $query->result_array();
@@ -92,23 +92,24 @@ class Admission_9th_reg_model extends CI_Model
     }
     public function getuser_infoPVT($User_info_data)
     {
-        //  DebugBreak();
+        //DebugBreak();
         $Inst_cd = $User_info_data['Inst_Id'];
         $date = $User_info_data['date'];
         $isPratical = $User_info_data['isPratical'];
 
         $query = $this->db->get_where('Admission_online..tblinstitutes_all',  array('Inst_cd' => $Inst_cd));
-       
+
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
-              
 
-            $query2 = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => 1, 'Start_Date <=' =>$date,'End_Date >='=>$date,'isPrSub'=>$isPratical));
+
+            //$query2 = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => 1, 'Start_Date <=' =>$date,'End_Date >='=>$date,'isPrSub'=>$isPratical));
+            $query2 = $this->db->query('select * from Admission_online..RuleFeeAdm where class = 9 and sess = 1 and GETDATE() between start_date and End_date and isPrSub ='.$isPratical);
             $resultarr = array("info"=>$query->result_array(),"rule_fee"=>$query2->result_array());
-           
-          $qry =  $this->db->last_query();
-           
+
+            $qry =  $this->db->last_query();
+
             return  $resultarr;
         }
         else
@@ -135,8 +136,8 @@ class Admission_9th_reg_model extends CI_Model
     {
         //DebugBreak();
         $Inst_cd = $fetch_data['Inst_cd'];
-       // $query = $this->db->query("Admission_online..sp_Forwading_letter_final_10TH $Inst_cd");
-        $query = $this->db->query("Admission_online..sp_ForwardingLetter_Finance_9thADM $Inst_cd");
+        // $query = $this->db->query("Admission_online..sp_Forwading_letter_final_10TH $Inst_cd");
+        $query = $this->db->query("Registration..sp_ForwardingLetter_Finance_9thADM $Inst_cd");
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -220,7 +221,7 @@ class Admission_9th_reg_model extends CI_Model
     }
     public function Insert_NewEnorlement($data)//$father_name,$bay_form,$father_cnic,$dob,$mob_number)  
     {
-       // DebugBreak();
+        // DebugBreak();
         $name = strtoupper($data['name']);
         $fname =strtoupper($data['Fname']);
         $BForm = $data['BForm'];
@@ -228,7 +229,7 @@ class Admission_9th_reg_model extends CI_Model
         $Dob = $data['Dob'];
         $CellNo = $data['CellNo'];
         $medium = $data['medium'];
-       
+
         $MarkOfIden =strtoupper($data['MarkOfIden']);
         $Speciality = $data['Speciality'];
         $nat = $data['nat'];
@@ -271,8 +272,18 @@ class Admission_9th_reg_model extends CI_Model
         $dist = $data['dist'];
         $teh = $data['teh'];
         $zone = $data['zone'];
-         //$Dob = date('Y-m-d', strtotime($Dob)); 
-        $query = $this->db->query("Registration..MA_P1_PVT_Adm2016_sp_insert '$formno',9,2016,1,'$name','$fname','$BForm','$FNIC','$Dob','$CellNo',$medium,'".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,0,0,0,0,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$dist,$teh,$zone");
+        $Year = Year;
+        /*$regFee = $data['fee']['regFee'];
+        $AdmProcessFee = $data['fee']['AdmProcessFee'];
+        $AdmFee = $data['fee']['AdmFee'];
+        $AdmFine = $data['fee']['AdmFine'];  */
+        $AdmTotalFee = $data['fee']['AdmTotalFee']+$data['fee']['regFee']+$data['fee']['AdmFine'];
+        //'formNo'=>$data['formNo'],'regFee'=>0,'AdmProcessFee'=>$processFee,'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']
+        //$Dob = date('Y-m-d', strtotime($Dob)); 
+        $query = $this->db->query("Registration..MA_P1_PVT_Adm_sp_insert '$formno',9,$Year,1,'$name','$fname','$BForm','$FNIC','$Dob'
+        ,'$CellNo',$medium,'".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1
+        ,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,0,0,0,0,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$dist,$teh,$zone
+        ,$AdmTotalFee");
         //$query = $this->db->insert('msadmissions2015', $data);//,'Fname' => $father_name,'BForm'=>$bay_form,'FNIC'=>$father_cnic,'Dob'=>$dob,'CellNo'=>$mob_number));
 
         return $query->result_array();
@@ -326,12 +337,12 @@ class Admission_9th_reg_model extends CI_Model
         }
     }
     public function getcenter($data){
-                   
-                   
-             
+
+
+
         $zone = $data['zoneCode'];
         $gend = $data['gen'];
-        
+
         $where = " mYear = 2017  AND class =10  AND  sess = 1 AND Zone_cd =  $zone  AND  (cent_Gen = $gend OR cent_Gen = 3) ";      
         $query = $this->db->query("SELECT * FROM matric_new..tblcentre WHERE $where");
 
@@ -351,27 +362,34 @@ class Admission_9th_reg_model extends CI_Model
     { 
         //DebugBreak();
         // $forms_id =array("'" . implode("','", $_POST["chk"]) . "'");
-       
+
         if(@$_POST['isformwise']==1)
         {
-            $forms_id =array(implode(',',$_POST["chk"]));
-            $myc = count($_POST["chk"]);
-            for ($i = 0; $i < count($_POST["chk"]); $i++) 
+            $forms_id =array(explode(',',$_POST["CheckedFormno"]));
+           // $myc = count($_POST["CheckedFormno"]);
+           
+            $myc = count($forms_id[0]);
+            for ($i = 0; $i < count($forms_id[0]); $i++) 
             {
                 $sm_data[] = array(
-                    'IsAdmission'=>1,'cDate'=> date('Y-m-d H:i:s'),'formNo'=>$_POST["chk"][$i],
+                    'IsAdmission'=>1,'cDate'=> date('Y-m-d H:i:s'),'formNo'=>$forms_id[0][$i],
                     'zone_cd'=>$_POST["zone_cd"]
                 );
             }
             $sm_data ;
-            $this->db->update_batch('Registration..MA_P1_Reg_Adm2016',$sm_data,'formNo');
+            $this->db->update_batch(tblreg9th,$sm_data,'formNo');
         }
         else if(@$_POST['isformwise']==2)
         {
-            $data=array('IsAdmission'=>1,'cDate'=> date('Y-m-d H:i:s'));
+            /*$data=array('IsAdmission'=>1,'cDate'=> date('Y-m-d H:i:s'));
             $this->db->where('Reggrp',$_POST['make_adm9th_groups']);
-             $this->db->where('Sch_cd',$_POST['Inst_Id']);
-            $this->db->update('Registration..MA_P1_Reg_Adm2016',$data);
+            $this->db->where('Sch_cd',$_POST['Inst_Id']);
+            $this->db->where('');
+
+            $this->db->update(tblreg9th,$data);
+            */
+            //DebugBreak();
+            $this->db->query("Update ".tblreg9th." Set IsAdmission=1 ,cDate=getdate() where Sch_cd = ".$_POST['Inst_Id']." and Reggrp = ".$_POST['make_adm9th_groups']." and (Isdeleted = 0 or isdeleted is null ) and (Batch_id is not null or Batch_id <> 0) and (Batch_id_Adm = 0 or Batch_id_Adm is null) and (spl_cd is null or spl_cd = 0)");
         }
         else if(@$_POST['isformwise']==3)
         {
@@ -384,20 +402,20 @@ class Admission_9th_reg_model extends CI_Model
                 );
             }
             $sm_data ;
-            $this->db->update_batch('Registration..MA_P1_Reg_Adm2016',$sm_data,'formNo');
+            $this->db->update_batch(tblreg9th,$sm_data,'formNo');
         }
 
         return true;
     }
     public function checknextrno($name,$dob,$fnic)
     {
-          //();
+        //();
         $query = $this->db->query("admission_online..NextAppearanceSSC 0,9,0,0,'$name','$dob','$fnic','',3");
-        
+
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
-            
+
             return $query->result_array();
         }
         else
@@ -407,13 +425,13 @@ class Admission_9th_reg_model extends CI_Model
     }
     public function checknextrno_newAdmission($name,$dob,$fnic,$bform)
     {
-    
+
         $query = $this->db->query("admission_online..NextAppearanceSSC 0,9,".regyear.",0,'$name','$dob','$fnic','$bform',4");
-        
+
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
-            
+
             return $query->result_array();
         }
         else
@@ -421,27 +439,37 @@ class Admission_9th_reg_model extends CI_Model
             return  -1;
         }
     }
+
+    public function UpdateFee_Final($Alldata)
+    {
+        $data=array('Amount'=>$Alldata['Amount'],'Total_AdmFee'=>$Alldata['Total_AdmFee'],'Total_ProcesFee'=>$Alldata['Total_ProcesFee'],'Total_LateAdmFee'=>$Alldata['Total_LateAdmFee'],'cdate'=>date('Y-m-d H:i:s'));
+        $this->db->where('Batch_Id',$Alldata['batchid']);
+        $this->db->update('Registration..tblAdmbatch9th',$data);
+        //DebugBreak();
+        $this->db->update_batch('Registration..tblreg9th',$Alldata['data'],'formNo');
+        return true;
+    }
     public function Update_AdmissionFee($data,$inst_cd,$grp_cd,$isformwise,$startFormno,$endingFormno)
     {
-         if(empty($data))
+        if(empty($data))
         {
-           return  false;
+            return  false;
         }
         $this->db->update_batch('Registration..MA_P1_Reg_Adm2016',$data,'formNo');
         // ();
-           if($isformwise == 9)
+        if($isformwise == 9)
         {
-        $this->db->select('Sum(AdmFee) as sum_AdmFee,sum(AdmProcessFee) as sum_procFee,sum(AdmFine) as sum_admfine,sum(AdmTotalFee) as sum_TotalFee',False);
-        $this->db->group_by("Sch_cd");
-        $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('sch_cd' => $inst_cd,'isdeleted'=>0,'IsAdmission'=>1)); 
+            $this->db->select('Sum(AdmFee) as sum_AdmFee,sum(AdmProcessFee) as sum_procFee,sum(AdmFine) as sum_admfine,sum(AdmTotalFee) as sum_TotalFee',False);
+            $this->db->group_by("Sch_cd");
+            $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('sch_cd' => $inst_cd,'isdeleted'=>0,'IsAdmission'=>1)); 
         }
-          else if($isformwise == 6)
+        else if($isformwise == 6)
         {
-        $this->db->select('Sum(AdmFee) as sum_AdmFee,sum(AdmProcessFee) as sum_procFee,sum(AdmFine) as sum_admfine,sum(AdmTotalFee) as sum_TotalFee',False);
-        $this->db->group_by("Sch_cd");
-        $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('sch_cd' => $inst_cd,'isdeleted'=>0,'IsAdmission'=>1)); 
+            $this->db->select('Sum(AdmFee) as sum_AdmFee,sum(AdmProcessFee) as sum_procFee,sum(AdmFine) as sum_admfine,sum(AdmTotalFee) as sum_TotalFee',False);
+            $this->db->group_by("Sch_cd");
+            $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('sch_cd' => $inst_cd,'isdeleted'=>0,'IsAdmission'=>1)); 
         }
-       else if($isformwise == 4)
+        else if($isformwise == 4)
         {
             $grp_cd = $grp_cd;
             $this->db->select('formNo,name, Fname,RegGrp, sub6,sub7,sub8,grp_cd, IsReAdm,AdmFee,AdmProcessFee,AdmFine,AdmTotalFee,Spec');
@@ -467,8 +495,8 @@ class Admission_9th_reg_model extends CI_Model
         }
         else
         {
-        $this->db->select('formNo,name, Fname,RegGrp,grp_cd sub6,sub7,sub8, IsReAdm,AdmFee,AdmProcessFee,AdmFine,AdmTotalFee,Spec');
-        $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('sch_cd' => $inst_cd,'formNo <= '=>$startFormno,'formNo >='=>$endingFormno,'IsAdmission'=>1)); 
+            $this->db->select('formNo,name, Fname,RegGrp,grp_cd sub6,sub7,sub8, IsReAdm,AdmFee,AdmProcessFee,AdmFine,AdmTotalFee,Spec');
+            $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('sch_cd' => $inst_cd,'formNo <= '=>$startFormno,'formNo >='=>$endingFormno,'IsAdmission'=>1)); 
         }
         //$query = $this->db->get("Registration..MA_P1_Reg_Adm2016");    
         $rowcount = $query->num_rows();
@@ -485,17 +513,17 @@ class Admission_9th_reg_model extends CI_Model
     }
     public function Update_AdmissionFeePvt($data)
     {
-             //();
-            $data['IsAdmission']=1;
-            $data['cdate']= date('Y-m-d H:i:s');
-            $this->db->where('formNo',$data['formNo']);
-            $this->db->update('Registration..MA_P1_Reg_Adm2016',$data);
-       // $this->db->update_batch('Registration..MA_P1_Reg_Adm2016',$data,'formNo');
+        //();
+        $data['IsAdmission']=1;
+        $data['cdate']= date('Y-m-d H:i:s');
+        $this->db->where('formNo',$data['formNo']);
+        $this->db->update(tblreg9th,$data);
+        // $this->db->update_batch('Registration..MA_P1_Reg_Adm2016',$data,'formNo');
         // DebugBreak();
-        
+
         $this->db->select('regFee,AdmFee,AdmProcessFee,AdmFine,AdmTotalFee');
-        $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('formNo'=>$data['formNo'])); 
-       
+        $query = $this->db->get_where(tblreg9th, array('formNo'=>$data['formNo'])); 
+
         //$query = $this->db->get("Registration..MA_P1_Reg_Adm2016");    
         $rowcount = $query->num_rows();
         //DebugBreak();
@@ -509,14 +537,66 @@ class Admission_9th_reg_model extends CI_Model
         }
 
     }
+    public function Spl_case_std_list_new($myinfo)
+    {
+
+        //DebugBreak();
+        //$query = $this->db->get_where('matric_new..tblbiodata', array('sch_cd' => $inst_cd,'class' => 10, 'iyear' => 2016, 'regpvt'=>1,));
+        //sp_get_regInfo_spl_case
+        $inst_cd = $myinfo['Inst_cd'];
+        $spl_cd = $myinfo['spl_cd'];
+        $grp_selected = $myinfo['grp_selected'];
+        $year = Year;
+        $session = Session;
+        if($grp_selected == FALSE)
+        {
+            if($spl_cd == FALSE || ($spl_cd == "3"))
+            {
+                $query = $this->db->query("Registration..tblreg9thInfo $inst_cd,9,$year,$session");    
+            }
+
+            else
+            {
+                $query = $this->db->query("Registration..tblreg9thSplcd $inst_cd,9,$year,$session,$spl_cd");    
+            }    
+        }
+        else
+        {
+            $query = $this->db->query("Registration..tblreg9thGroupwise $inst_cd,9,$year,$session,$grp_selected");    
+        }
+
+
+
+
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            return $query->result_array();
+            // $q1 = array('stdinfo'=>$query->result_array()) ;
+            //            for($i= 0; $i<$rowcount; $i++){
+            //            $q1['stdinfo'][$i]['sub1'];
+            //            }
+            //            $q1['stdinfo']['sub1'];
+            //            $q2 = $this->db->query("select SUB_ABR from tblsubject_newschm where SUB_CD in (1,2,3,4,5)");
+            //            $q2 = array('stdinfo_sub'=>$q2->result_array()) ;
+            //            $query = array('stdinfo_reg'=>$q1,'stdinfo_sub'=>$q2);
+
+
+        }
+        else
+        {
+            return  false;
+        }
+    }
     public function Make_adm($myinfo)
     {  
-        //DebugBreak();
+        // DebugBreak();
         $inst_cd = $myinfo['Inst_cd'];
         $spl_cd = $myinfo['spl_cd'];
         $grp_selected = $myinfo['grp_selected'];
         $sess = Session;
-        $Year = Year-1;
+        // $Year = Year-1;
+        $Year = Year;
         if($grp_selected == FALSE)
         {
             $query = $this->db->query("Registration..sp_get_regInfo_9th_Make_adm $inst_cd,9,$Year,$sess");    
@@ -540,8 +620,8 @@ class Admission_9th_reg_model extends CI_Model
     public function Cancel_adm($myinfo) //sp_get_regInfo_9th_Cancel_adm
     {
         $inst_cd = $myinfo['Inst_cd'];
-
-        $query = $this->db->query("Registration..sp_get_regInfo_9th_Cancel_adm $inst_cd,9,2016,1");    
+        $year = Year;
+        $query = $this->db->query("Registration..sp_get_regInfo_9th_Cancel_adm $inst_cd,9,$year,1");    
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -559,8 +639,8 @@ class Admission_9th_reg_model extends CI_Model
         // //DebugBreak();
         //$query = $this->db->get_where('matric_new..tblbiodata', array('sch_cd' => $inst_cd,'class' => 10, 'iyear' => 2016, 'regpvt'=>1,));
         //sp_get_regInfo_spl_case
-
-        $query = $this->db->query("Registration..sp_get_regInfo_9thAdm2016 $inst_cd,9,2016,1");    
+        $year = Year;
+        $query = $this->db->query("Registration..sp_get_regInfo_9thAdm2016 $inst_cd,9,$year,1");    
 
 
 
@@ -603,15 +683,15 @@ class Admission_9th_reg_model extends CI_Model
     public function EditEnrolement_data($formno,$year,$inst_cd)
     {
 
-        //  //DebugBreak();
-        /* if($year == 2015){
-        $query = $this->db->get_where('matric_new..tblbiodata', array('sch_cd' => $inst_cd,'class' =>9, 'iyear' => 2016, 'regpvt'=>1,'formNo'=>$formno));     
+        //DebugBreak();
+        if($year == 2016){
+            $query = $this->db->get_where('matric_new..tblbiodata', array('sch_cd' => $inst_cd,'class' =>9, 'iyear' => 2016, 'regpvt'=>1,'formNo'=>$formno));     
         }
         else{
-        $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016',  array('formNo' => $formno,'class'=>9,'iyear'=>$year,'sess'=>1));     
-        } */
+            $query = $this->db->get_where(tblreg9th,  array('formNo' => $formno,'class'=>9,'iyear'=>$year,'sess'=>1));     
+        } 
 
-        $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016',  array('formNo' => $formno,'class'=>9,'iyear'=>$year,'sess'=>1));     
+        //$query = $this->db->get_where(tblreg9th,  array('formNo' => $formno,'class'=>9,'iyear'=>$year,'sess'=>1));     
 
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -627,7 +707,7 @@ class Admission_9th_reg_model extends CI_Model
     {
         $data=array('IsAdmission'=>0,'cDate'=> date('Y-m-d H:i:s'));
         $this->db->where('formNo',$formno);
-        $this->db->update('Registration..MA_P1_Reg_Adm2016',$data);
+        $this->db->update(tblreg9th,$data);
         return true;
 
     }
@@ -657,9 +737,9 @@ class Admission_9th_reg_model extends CI_Model
         // //DebugBreak();
         $this->db->limit(1);
         $this->db->select('formno');
-      //  $this->db->order_by("formno", "DESC");
-              $this->db->order_by("cast(formno as int)", "DESC");
-        $formno = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('regpvt' => 2));
+        //  $this->db->order_by("formno", "DESC");
+        $this->db->order_by("cast(formno as int)", "DESC");
+        $formno = $this->db->get_where('Registration..tblreg9th', array('regpvt' => 2));
         $rowcount = $formno->num_rows();
 
         if($rowcount == 0 )
@@ -677,7 +757,7 @@ class Admission_9th_reg_model extends CI_Model
     }  
     public function user_info($User_info_data)
     {
-        // //DebugBreak();
+        //DebugBreak();
         $Inst_cd = $User_info_data['Inst_Id'];
         $RegGrp = $User_info_data['RegGrp'];
         $spl_cd = $User_info_data['spl_case'];
@@ -690,10 +770,10 @@ class Admission_9th_reg_model extends CI_Model
 
             if($spl_cd == "0")
             {
-                $q1         = $this->db->get_where('Registration..MA_P1_Reg_Adm2016',array('Sch_cd'=>$Inst_cd,'IsDeleted'=>0,'Batch_ID'=>0,'RegGrp'=>$RegGrp));    
+                $q1         = $this->db->query("select * from tblreg9th where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and grp_cd = ".$RegGrp);    
             }
             else{
-                $q1         = $this->db->get_where('Registration..MA_P1_Reg_Adm2016',array('Sch_cd'=>$Inst_cd,'IsDeleted'=>0,'Batch_ID'=>0,'Spec'=>$spl_cd));    
+                $q1         = $this->db->query("select * from tblreg9th where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and Spec = ".$spl_cd);
             }
 
             $result_1 ;
@@ -728,7 +808,7 @@ class Admission_9th_reg_model extends CI_Model
     public function getuser_info($User_info_data)
     {
         //  DebugBreak();
-           $Inst_cd = $User_info_data['Inst_Id'];
+        $Inst_cd = $User_info_data['Inst_Id'];
         $date = $User_info_data['date'];
 
         $query = $this->db->get_where('Admission_online..tblinstitutes_all',  array('Inst_cd' => $Inst_cd));
@@ -736,8 +816,9 @@ class Admission_9th_reg_model extends CI_Model
         if($rowcount > 0)
         {
 
-            $query2 = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => 1, 'Start_Date <='=>$date,'End_Date >='=>$date));
-            $resultarr = array("info"=>$query->result_array(),"rule_fee"=>$query2->result_array());
+            //$query2 = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => 1, 'Start_Date <='=>$date,'End_Date >='=>$date));
+            $query2 = $this->getrulefee_new();
+            $resultarr = array("info"=>$query->result_array(),"rule_fee"=>$query2);
             return  $resultarr;
         }
         else
@@ -777,7 +858,7 @@ class Admission_9th_reg_model extends CI_Model
         if($rowcount > 0)
         {
 
-            $q1         = $this->db->query("select * from Registration..MA_P1_Reg_Adm2016 where Sch_cd =$Inst_cd and isdeleted = 0 and  formNo in($forms_id)");
+            $q1         = $this->db->query("select * from Registration..tblreg9th where Sch_cd =$Inst_cd and (isdeleted = 0 or isdeleted is null) and (isAdmission = 1) and (Batch_id_Adm is null or Batch_id_Adm = 0)  and  formNo in($forms_id)");
             // $this->db->from('Registration..MA_P1_Reg_Adm2016');
             //$this->db->where(array('Sch_cd'=>$Inst_cd,'IsDeleted'=>0,'Batch_ID'=>0));
             // $this->db->where_in('formNo',$forms_id);
@@ -805,29 +886,47 @@ class Admission_9th_reg_model extends CI_Model
         $q2         = $this->db->get_where('Registration..RuleFee_Reg_Nineth',array('Rule_Fee_ID'=>$ruleID));
         return $resultarr = $q2->result_array();
     }
+    public function getrulefee_new()
+    {
+        //DebugBreak();
+        $q2         = $this->db->query('select * from Admission_online..RuleFeeAdm where class = 9 and sess = 1 and GETDATE() between start_date and End_date ');
+        return $resultarr = $q2->result_array();
+    }
     public function Batch_Insertion($data)
     {
-        // //DebugBreak();
+        //DebugBreak();
 
         $inst_cd = $data['inst_cd'];
-        $total_fee = $data['total_fee'];
-        $processing_fee = $data['proces_fee'];
-        $reg_fee = $data['reg_fee'];
-        $fine = $data['fine'];
-        $TotalRegFee = $data['TotalRegFee'];
-        $TotalLatefee = $data['TotalLatefee'];
-        $Totalprocessing_fee = $data['Totalprocessing_fee'];
+        $total_fee = $data['updatedFee']['Amount'];
+        $TotalAdmFee =$data['updatedFee']['Total_AdmFee'];
+        $TotalLatefee = $data['updatedFee']['Total_LateAdmFee'];
+        $Totalprocessing_fee = $data['updatedFee']['Total_ProcesFee'];
         $forms_id = $data['forms_id'];
         $todaydate = $data['todaydate'];
-        $total_std = $data['total_std'];
+        $total_std = $data['updatedFee']['TotalStd'];
         //        EXEC Batch_Create @Inst_Cd = ".$user->inst_cd.",@UserId = ".$user->get_currentUser_ID()."@Amount = ".$tot_fee.",@Total_ProcessingFee = ".$prs_fee.",@Total_RegistrationFee = ".$reg_fee.",@Total_LateRegistrationFee =".$late_fee.",@Total_LateAdmissionFee = 0,@Valid_Date = '$today',@form_ids = '$forms_id'"
-        $query = $this->db->query("Registration..Batch_Create_9th_2016 $inst_cd,$reg_fee,$fine,$processing_fee,$total_std,$total_fee,$TotalRegFee,$Totalprocessing_fee,$TotalLatefee,'$todaydate','$forms_id'");
+        
+         $query=$this->db->query("execute Registration..Batch_Create_9th_Adm $inst_cd,$total_std,$total_fee,$TotalAdmFee,$Totalprocessing_fee,$TotalLatefee,'$forms_id'");
+        
+        $res = $query->result();
+        $myBatch_Id = $res[0]->batchID;
+        $challanno = $res[0]->ChallanNo;
+        for ($i = 1; $i <= count($data['updatedFee']['data']); $i++) 
+        {
+            $sm_data[] = array(
+                'AdmProcessFee'=>$data['updatedFee']['data'][$i]['AdmProcessFee'],'AdmFee'=>$data['updatedFee']['data'][$i]['AdmFee'],'AdmFine'=>$data['updatedFee']['data'][$i]['AdmFine'],'AdmTotalFee'=>$data['updatedFee']['data'][$i]['AdmTotalFee'],'Batch_id_Adm'=>$myBatch_Id,'challanno'=>$challanno,'cDate'=> date('Y-m-d H:i:s'),'formNo'=>$data['updatedFee']['data'][$i]['formNo']
+            );
+        }
+        $this->db->update_batch('Registration..tblreg9th',$sm_data,'formNo');
+        return true;
     }
+    
+    
     public function Batch_List($data)
     {
         ////DebugBreak();
         $inst_cd = $data['Inst_Id'];
-        $q2         = $this->db->get_where('Registration..fl_reg_batch_test',array('Inst_Cd'=>$inst_cd,'Is_Delete'=>0));
+        $q2         = $this->db->query('Select * from Registration..tblAdmbatch9th where Inst_cd = '.$inst_cd.' and Is_delete = 0 ');
         $result = $q2->result_array();
         return $result;
     }
@@ -837,6 +936,79 @@ class Admission_9th_reg_model extends CI_Model
         $Inst_cd = $fetch_data['Inst_cd'];
         $Batch_Id = $fetch_data['Batch_Id'];
         $query = $this->db->query("Registration..sp_get_reg_return_formInfo $Inst_cd,$Batch_Id");
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            return $query->result_array();
+        }
+        else
+        {
+            return  false;
+        }
+    }
+       public function Print_challan_Form($fetch_data)
+    {
+        $Inst_cd = $fetch_data['Inst_cd'];
+        $Batch_Id = $fetch_data['Batch_Id'];
+
+        // //DebugBreak();
+        $query = $this->db->query("Registration..sp_Admission_9th_regular_Batch_challan $Inst_cd,$Batch_Id");
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            return $query->result_array();
+        }
+        else
+        {
+            return  false;
+        }
+    } 
+    public function user_info_Batch_Id($User_info_data)
+    {
+        // //DebugBreak();
+        $Inst_cd = $User_info_data['Inst_Id'];
+        $RegGrp = $User_info_data['Batch_Id'];
+       // $spl_cd = $User_info_data['spl_case'];
+
+        // $forms_id = $User_info_data['forms_id'];
+        $query = $this->db->get_where('Admission_online..tblinstitutes_all',  array('Inst_cd' => $Inst_cd));
+        $rowcount = $query->num_rows();
+        
+        if($rowcount > 0)
+        {
+              // $this->db->select("*");
+               // $this->db->from(tblreg9th);
+              $where = '(IsDeleted=0 or IsDeleted is null) and Sch_cd ='.$Inst_cd.' and Batch_Id_Adm = '.$RegGrp;
+               // $q1 = $this->db->where($where);
+                
+                $q1         = $this->db->get_where(tblreg9th,$where);    
+           
+           
+
+            $result_1 ;
+            $nrowcount = $q1->num_rows();
+            if($nrowcount > 0)
+            {
+                $result_1 = $q1->result_array();
+            }
+            else{
+                return false;
+            }
+           // DebugBreak();
+            $q2         = $this->getrulefee_new();
+            $resultarr = array("info"=>$query->result_array(),"fee"=>$result_1,"rule_fee"=>$q2);
+            return  $resultarr;
+        }
+        else
+        {
+            return  false;
+        }
+    }
+    public function Print_Form_Batchwise($fetch_data)
+    {
+        $Inst_cd = $fetch_data['Inst_cd'];
+        $Batch_Id = $fetch_data['Batch_Id'];
+        $query = $this->db->query("Registration..sp_get_adm_Print_Form_9th $Inst_cd,0,$Batch_Id");
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -884,24 +1056,20 @@ class Admission_9th_reg_model extends CI_Model
     public function revenue_pdf($fetch_data)
     {
         //DebugBreak();
-
         $Inst_cd = $fetch_data['Inst_cd'];
         $this->db->select('formNo,name, Fname, sub6,sub7,sub8,grp_cd, IsReAdm,regFee,RegProcessFee,RegFineFee,RegTotalFee,Spec,challan_overall,challanno');
-        $this->db->from('Registration..MA_P1_Reg_Adm2016');
+        $this->db->from(tblreg9th);
         if($fetch_data['option']==4)
         {
-            
-            
             $grp_cd = $fetch_data['grp_cd'];
-            
             if($grp_cd == 7)
             {
-             $sub_cd= 78;   
-              $this->db->where(array('Sch_cd' => $Inst_cd,'grp_cd'=>1,'sub8'=>$sub_cd,'IsAdmission'=>1 ,'isdeleted'=>0 ,'batch_id > '=>0));
+                $sub_cd= 78;   
+                $this->db->where(array('Sch_cd' => $Inst_cd,'grp_cd'=>1,'sub8'=>$sub_cd,'IsAdmission'=>1 ,'isdeleted'=>0 ,'batch_id > '=>0));
             }
             else if($grp_cd == 8)
             {
-               $sub_cd= 43;  
+                $sub_cd= 43;  
                 $this->db->where(array('Sch_cd' => $Inst_cd,'grp_cd'=>1,'sub8'=>$sub_cd,'IsAdmission'=>1 ,'isdeleted'=>0 ,'batch_id > '=>0));
             }
             else if ($grp_cd == 1  )
@@ -911,10 +1079,8 @@ class Admission_9th_reg_model extends CI_Model
             }
             else if ($grp_cd == 2 OR  $grp_cd== 5 )
             {
-               $this->db->where(array('Sch_cd' => $Inst_cd,'grp_cd'=>$grp_cd,'IsAdmission'=>1 ,'isdeleted'=>0 ,'batch_id > '=>0)); 
+                $this->db->where(array('Sch_cd' => $Inst_cd,'grp_cd'=>$grp_cd,'IsAdmission'=>1 ,'isdeleted'=>0 ,'batch_id > '=>0)); 
             }
-          
-
         }
         else if($fetch_data['option']==5)
         {
@@ -927,14 +1093,14 @@ class Admission_9th_reg_model extends CI_Model
             $this->db->where('isdeleted', 0);
             $this->db->where('batch_id >' , 0);
         }
-         else  if($fetch_data['option']==6)
+        else  if($fetch_data['option']==6)
         {
             $grp_cd = $fetch_data['Grp_cd'];
             $this->db->where(array('Sch_cd' => $Inst_cd));
             $this->db->where('IsAdmission', 1);
             $this->db->where('isdeleted', 0);
             $this->db->where('batch_id >' , 0);
-            
+
             if($grp_cd == 7)
             {
                 $sub_cd= 78;   
@@ -954,13 +1120,13 @@ class Admission_9th_reg_model extends CI_Model
             {
                 $this->db->where(array('grp_cd' => $grp_cd)); 
             }
-            
-            
-            
-           
+
+
+
+
 
         }
-         else  if($fetch_data['option']==9)
+        else  if($fetch_data['option']==9)
         {
             $grp_cd = $fetch_data['Grp_cd'];
             $this->db->where('Sch_cd' , $Inst_cd);
@@ -984,27 +1150,28 @@ class Admission_9th_reg_model extends CI_Model
     public function Spl_case_std_list($myinfo)
     {
 
-        ////DebugBreak();
+        //DebugBreak();
         //$query = $this->db->get_where('matric_new..tblbiodata', array('sch_cd' => $inst_cd,'class' => 10, 'iyear' => 2016, 'regpvt'=>1,));
         //sp_get_regInfo_spl_case
         $inst_cd = $myinfo['Inst_cd'];
         $spl_cd = $myinfo['spl_cd'];
         $grp_selected = $myinfo['grp_selected'];
+        $year = Year;
         if($grp_selected == FALSE)
         {
             if($spl_cd == FALSE || ($spl_cd == "3"))
             {
-                $query = $this->db->query("Registration..sp_get_regInfo $inst_cd,9,2016,1");    
+                $query = $this->db->query("Registration..sp_get_regInfo $inst_cd,9,$year,1");    
             }
 
             else
             {
-                $query = $this->db->query("Registration..sp_get_regInfo_spl_case $inst_cd,9,2016,1,$spl_cd");    
+                $query = $this->db->query("Registration..sp_get_regInfo_spl_case $inst_cd,9,$year,1,$spl_cd");    
             }    
         }
         else
         {
-            $query = $this->db->query("Registration..sp_get_regInfo_Groupwise $inst_cd,9,2016,1,$grp_selected");    
+            $query = $this->db->query("Registration..sp_get_regInfo_Groupwise $inst_cd,9,$year,1,$grp_selected");    
         }
 
 
@@ -1054,23 +1221,23 @@ class Admission_9th_reg_model extends CI_Model
     }
     public function challan_all($info)
     {
-    
+
         // DebugBreak();
-        
+
         $this->db->select('challan_overall');
-       //  $this->db->where('challan_overall',False);
-       $inst_cd =  $info['Inst_Id'];
-       // $this->db->order_by("challan_overall", "DESC");
+        //  $this->db->where('challan_overall',False);
+        $inst_cd =  $info['Inst_Id'];
+        // $this->db->order_by("challan_overall", "DESC");
         $formno = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('sch_cd' => $inst_cd,'challan_overall '=>0 ,'isdeleted '=> 0));
         $rowcount = $formno->num_rows();
 
         if($rowcount > 0 )
         {
-        $query = $this->db->query("Admission_online..sp_gen_challanNo_overall $inst_cd");
-        //$query = $this->db->insert('msadmissions2015', $data);//,'Fname' => $father_name,'BForm'=>$bay_form,'FNIC'=>$father_cnic,'Dob'=>$dob,'CellNo'=>$mob_number));
-       //  $challanno =  $query->result_array();  
+            $query = $this->db->query("Admission_online..sp_gen_challanNo_overall $inst_cd");
+            //$query = $this->db->insert('msadmissions2015', $data);//,'Fname' => $father_name,'BForm'=>$bay_form,'FNIC'=>$father_cnic,'Dob'=>$dob,'CellNo'=>$mob_number));
+            //  $challanno =  $query->result_array();  
         }
-        
+
     }
     public function bay_form_fnic($bayformno,$fnic)
     {

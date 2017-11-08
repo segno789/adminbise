@@ -75,10 +75,10 @@ $path = $CI->config->item('cache_path');
 
     public function NewEnrolment_insert()
     {  
-         DebugBreak();
-        //  $_POST;
+       //  DebugBreak();
+      //  $_POST;
      //   echo  'Please wait';
-      //  die();
+    //  die();
         $this->load->model('Admission_9th_reg_model');
                 $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
@@ -101,7 +101,6 @@ $path = $CI->config->item('cache_path');
         
         $formno =$this->Admission_9th_reg_model->GetFormNoPVT();
         $this->commonheader($userinfo);
-        
         $error = array();
         $allinputdata = array('cand_name'=>@$_POST['cand_name'],'father_name'=>@$_POST['father_name'],
             'bay_form'=>@$_POST['bay_form'],'father_cnic'=>@$_POST['father_cnic'],
@@ -118,7 +117,6 @@ $path = $CI->config->item('cache_path');
             'sub6'=>@$_POST['sub6'],'sub7'=>@$_POST['sub7'],
             'sub8'=>@$_POST['sub8']
         );
-
         // $name = 'Waseem Saleem';
         // $fname = 'Muhammad Saleem'; 
         $sub1ap1 = 0;
@@ -221,9 +219,6 @@ $path = $CI->config->item('cache_path');
 
             mkdir($target_path);
         }
-
-
-
         $config['upload_path']   = $target_path;
         $config['allowed_types'] = 'jpg|jpeg';
         $config['max_size']      = '20';
@@ -242,7 +237,7 @@ $path = $CI->config->item('cache_path');
         $this->load->library('upload', $config);
         // DebugBreak();
         $check = getimagesize($_FILES["image"]["tmp_name"]);
-        $this->upload->initialize($config);
+        $isup = $this->upload->initialize($config);
 
         
 
@@ -253,7 +248,9 @@ $path = $CI->config->item('cache_path');
         {
             $this->convertImage($filepath,$filepath,100,$a['mime']);
         }
-
+        //DebugBreak();
+        $mydata_final = $this->feecalculate($data,0);
+        $data['fee'] = $mydata_final;
         $logedIn = $this->Admission_9th_reg_model->Insert_NewEnorlement($data);//, $fname);//$_POST['username'],$_POST['password']);
         //DebugBreak();
         if($logedIn[0]['error'] != 'false')
@@ -531,7 +528,7 @@ $path = $CI->config->item('cache_path');
         
        // $mydata_final = array($this->Admission_9th_reg_model->Update_AdmissionFeePvt($AllStdFee));
         $data =  $data[0];
-        $mydata_final = $this->feecalculate($data);
+        $mydata_final = $this->feecalculate($data,1);
         $mydata_final = $mydata_final[0];
 
         $this->load->library('NumbertoWord');
@@ -600,19 +597,19 @@ $path = $CI->config->item('cache_path');
         $pdf->SetFont('Arial','U',12);
         $pdf->SetXY(1.2,0.2);
         $pdf->Cell(0, 0.2, "BOARD OF INTERMEDIATE AND SECONDARY EDUCATION, GUJRANWALA", 0.25, "C");
-        $pdf->Image("assets/img/logo2.png",.60,0.3, 0.65,0.65, "PNG");
+        $pdf->Image("assets/img/logo2.png",.60,0.3, 0.50,0.50, "PNG");
         $pdf->Image("assets/img/ExamCenter.jpg",4.5,2.90, 2.78,0.15, "jpeg");        
-        $pdf->Image("assets/img/9th.png",7.60,0.23, 0.24,0.24, "PNG");   
+        $pdf->Image("assets/img/9th.png",7.60,0.23, 0.40,0.40, "PNG");   
         $pdf->Image("assets/img/9th.png",7.60,8.50, 0.24,0.24, "PNG");   
         $pdf->Image("assets/img/9th.png",7.60,7.14, 0.24,0.24, "PNG");   
         $pdf->Image("assets/img/9th.png",7.60,9.80, 0.24,0.24, "PNG");   
         //$this->Image("logo.jpg",0.05,0.3, 0.75,0.75, "JPG", "http://www.biseGujranwala.edu.pk");
         $pdf->SetFont('Arial','B',10);
         $pdf->SetXY(1.8,0.4);
-        $pdf->Cell(0, 0.2, "ADMISSION /REVENUE FORM ", 0.25, "C");
+        $pdf->Cell(0, 0.2, "Admission /Revenue Form ", 0.25, "C");
         $pdf->SetFont('Arial','',10);
         $pdf->SetXY(3.85,0.4);
-        $pdf->Cell(0, 0.2, "(Private Candidate) for ".class_for_9th_Adm." ".$ses." Examination , ".Year, 0.25, "C");
+        $pdf->Cell(0, 0.2, "(Private Candidate) for ".class_for_9th_Adm." ".$ses." Examination, ".(Year+1), 0.25, "C");
         //--------------- Proof Read    
         /*if($data['batch_id'] == 0 and $data['RegPvt']==1)
         {
@@ -635,10 +632,10 @@ $path = $CI->config->item('cache_path');
 
 
         $pdf->SetFont('Arial','B',12);
-        $pdf->SetXY(5.8,0.65+$Y);
+        $pdf->SetXY(5.8,0.55+$Y);
         $pdf->Cell(0.5,0.5, "Roll No: _______________",0,'L');    
         $pdf->SetFont('Arial','B',7);
-        $pdf->SetXY(6.6,.80+$Y);
+        $pdf->SetXY(6.6,.70+$Y);
         $pdf->Cell(0.5,0.5, "(For office use only)",0,'L');
 
 
@@ -657,11 +654,14 @@ $path = $CI->config->item('cache_path');
         $pdf->SetFont('Arial','',8);*/
 
         $size = filesize(PRIVATE_IMAGE_PATH9TH. @$data["PicPath"]);
-        if($size==0){ $pdf->Image(PRIVATE_IMAGE_PATH9TH. @$data["PicPath"],6.5, 1.15+$Y, 0.95, 1.0, "JPG");}
+        /*if($size==0)
+        { */
+        $pdf->Image(PRIVATE_IMAGE_PATH9TH. @$data["PicPath"],6.5, 1.35+$Y, 1.0, .85, "JPG");
+       /* }
         else
-
-
-            { $pdf->Image(PRIVATE_IMAGE_PATH9TH. @$data["PicPath"],6.5, 1.15+$Y, 0.95, 1.0, "JPG");}
+        { 
+        $pdf->Image(PRIVATE_IMAGE_PATH9TH. @$data["PicPath"],6.5, 1.15+$Y, 0.95, 1.0, "JPG");
+        }*/
         $pdf->SetFont('Arial','',10);
 
 
@@ -702,12 +702,12 @@ $path = $CI->config->item('cache_path');
                 $grp_name = "No Group Selected.";
         }
 
-        $pdf->SetXY(1.8,1.28+$Y);
+        $pdf->SetXY(2.5,1.14+$Y);
         $pdf->SetFont('Arial','bU',10);
-        $pdf->Cell( 0.5,0.7,$grp_name." Group",0,'L');
+        $pdf->Cell( 0.5,0.7,$grp_name." GROUP",0,'L');
 
         $myx = 0.7;
-
+          $Y = $Y-0.3;
         //--------------------------- 1st line 
         $pdf->SetXY($myx,1.55+$Y);
         $pdf->SetFont('Arial','',$FontSize);
@@ -727,7 +727,7 @@ $path = $CI->config->item('cache_path');
 
 
 
-
+                // نام(اردو میں):
 
         //$chkcat09 = ($data['mi_type']!= 2?($data['cat09']) :'Aditional') ;
 
@@ -787,15 +787,20 @@ $path = $CI->config->item('cache_path');
 
         /*$yearOfLastAp = $data['yearOfLastAp'];
         $pdf->Cell(0.5,0.5,$data["oldRno"]." ( $LastSess,  $yearOfLastAp )",0,'L');    */
+         $pdf->SetXY($myx,1.85+$Y);
+        $pdf->SetFont('Arial','B',$FontSize);
+        $pdf->Cell( 0.5,0.5,"Name(in Urdu): ____________________________________    Father's Name(in Urdu):_________________________________",0,'L');
+        
 
-
-
+         $Y = $Y+0.3;
         $pdf->SetXY($myx,1.75+$Y);
         $pdf->SetFont('Arial','',$FontSize);
         $pdf->Cell( 0.5,0.5,"Name:",0,'L');
         $pdf->SetFont('Arial','B',$FontSize);
         $pdf->SetXY(1.5,1.75+$Y);
         $pdf->Cell(0.5,0.5,$data["name"],0,'L');
+        
+        
         //--------------------------- FATHER NAME 
 
         $pdf->SetXY($myx, 1.9+$Y);
@@ -841,7 +846,8 @@ $path = $CI->config->item('cache_path');
         $pdf->Cell( 0.5,0.5,"Mobile No:",0,'L');
         $pdf->SetFont('Arial','B',$FontSize);
         $pdf->SetXY(4.5+$x,2.05+$Y);
-        $pdf->Cell(0.5,0.5,strtoupper(@$data["CellNo"]),0,'L');
+        //DebugBreak();
+        $pdf->Cell(0.5,0.5,strtoupper(@$data["MobNo"]),0,'L');
 
         //debugbreak();
         //--------------------------- Dob line 
@@ -967,6 +973,9 @@ $path = $CI->config->item('cache_path');
         $pdf->SetFont('Arial','B',24);
         $pdf->SetXY(4.38,4.68+$Y);
         $pdf->MultiCell(1.1,0.2, 'O.W.O',0,'C'); 
+        $pdf->SetFont('Arial','B',8);
+        $pdf->SetXY(4.38,4.90+$Y);
+        $pdf->Cell(0.5,0.5, "(For office use only)",0,'L');
 
 
         $pdf->SetFillColor(255,255,255);
@@ -1209,7 +1218,9 @@ $path = $CI->config->item('cache_path');
         $pdf->SetFont('Arial','b',$FontSize);
         //$pdf->Cell( 0.5,0.5,$AfterDueDatefee.'/-',0,'L');
         $pdf->Cell( 0.5,0.5,$mydata_final['AdmFine'],0,'L');
-
+         $pdf->SetXY(5.79, 7.09+$Y); 
+         $pdf->SetFont('Arial','b',$FontSize);
+        $pdf->Cell( 0.5,0.5,"Bank Challan No. ".$data['challanno'],0,'L');
 
         $pdf->SetXY(1.2, 7.29+$Y);
         $pdf->SetFont('Arial','',$FontSize);
@@ -1294,7 +1305,7 @@ $path = $CI->config->item('cache_path');
         //
         $pdf->SetXY(2.4, 8.1+$Y);
         $pdf->SetFont('Arial','b',$FontSize);
-        $pdf->Cell( 0.5,0.5,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (".class_for_9th_Adm." ".$ses." Examination , ".Year.")",0,'L');
+        $pdf->Cell( 0.5,0.5,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (".class_for_9th_Adm." ".$ses." Examination , ".(Year+1).")",0,'L');
 
 
         $bx = 6.82;
@@ -1378,7 +1389,7 @@ $path = $CI->config->item('cache_path');
         $pdf->SetXY(4.5, 8.30+$Y);
         $pdf->SetTextColor(0,0,0);
         $pdf->SetFont('Arial','b',8);
-        $pdf->Cell( 0.5,0.5,"Bank Challan No. ".$data['formNo'],0,'L');
+        $pdf->Cell( 0.5,0.5,"Bank Challan No. ".$data['challanno'],0,'L');
 
 
         $pdf->SetXY(5.3, 8.95+$Y);
@@ -1406,7 +1417,7 @@ $path = $CI->config->item('cache_path');
         //
         $pdf->SetXY(2.4, 8.1+$Y);
         $pdf->SetFont('Arial','b',$FontSize);
-        $pdf->Cell( 0.5,0.5,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (".class_for_9th_Adm." ".$ses." Examination , ".Year.")",0,'L');
+        $pdf->Cell( 0.5,0.5,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (".class_for_9th_Adm." ".$ses." Examination , ".(Year+1).")",0,'L');
 
 
         $bx = 6.82;
@@ -1490,7 +1501,7 @@ $path = $CI->config->item('cache_path');
         $pdf->SetXY(4.5, 8.30+$Y);
         $pdf->SetTextColor(0,0,0);
         $pdf->SetFont('Arial','b',8);
-        $pdf->Cell( 0.5,0.5,"Bank Challan No. ".$data['formNo'],0,'L');
+        $pdf->Cell( 0.5,0.5,"Bank Challan No. ".$data['challanno'],0,'L');
 
 
         $pdf->SetXY(5.3, 8.95+$Y);
@@ -1531,7 +1542,7 @@ $path = $CI->config->item('cache_path');
         $pdf->Image("assets/img/cutter.jpg",0.24,9.6, 8.3,0.09, "jpeg");
         $pdf->SetXY(2.4, 9.66+$Y);
         $pdf->SetFont('Arial','b',$FontSize);
-        $pdf->Cell( 0.5,0.5,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (".class_for_9th_Adm." ".$ses." Examination , ".Year.")",0,'L');
+        $pdf->Cell( 0.5,0.5,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (".class_for_9th_Adm." ".$ses." Examination , ".(Year+1).")",0,'L');
 
 
 
@@ -1629,15 +1640,15 @@ $path = $CI->config->item('cache_path');
 
         //'Rs.'.$formfee.'+'.$Prosfee.'+'.$cert_fee.'+'. $RegFee. '/-' $fee   
         $Y=$Y+0.2;
-        $pdf->SetXY(2.5, 10.05+$Y);
-        $pdf->SetFont('Arial','b',8);
+        $pdf->SetXY(2.4, 10.05+$Y);
+        $pdf->SetFont('Arial','b',7);
         $pdf->Cell( 0.5,0.5,"CMD Account No. 00427900072103",0,'L');
 
 
-        $pdf->SetXY(4.4, 10.05+$Y);
+        $pdf->SetXY(4.1, 10.05+$Y);
         $pdf->SetTextColor(0,0,0);
-        $pdf->SetFont('Arial','b',8);
-        $pdf->Cell( 0.5,0.5,"Bank Challan No. ".$data['formNo'],0,'L');
+        $pdf->SetFont('Arial','b',7);
+        $pdf->Cell( 0.5,0.5,"Bank Challan No. ".$data['challanno'],0,'L');
 
 
         $pdf->SetXY(4.7, 10.56+$Y);
@@ -1748,7 +1759,7 @@ $path = $CI->config->item('cache_path');
 
     }
     
-      function feecalculate($data)
+      function feecalculate($data,$isupdate)
     {
         //DebugBreak();
         $isper = 0;
@@ -1820,7 +1831,8 @@ $path = $CI->config->item('cache_path');
             $admfeecmp =  ($admfeecmp*3); 
             $Total_fine = $days*$fine;
 
-        }  // DebugBreak();
+        }  
+         //DebugBreak();
         $finalFee = '';
         if($data['cat09'] !=  NULL && $data['cat10'] != NULL)
         {
@@ -1848,8 +1860,15 @@ $path = $CI->config->item('cache_path');
             $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>1000,'AdmProcessFee'=>$processFee,'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']);
         }
 
-       
-        $info =   $this->Admission_9th_reg_model->Update_AdmissionFeePvt($AllStdFee);
+         if($isupdate == 0)
+         {
+         $info =   $AllStdFee;
+         }
+         else
+         {
+        $info =   $this->Admission_9th_reg_model->Update_AdmissionFeePvt($AllStdFee); 
+         }
+        
         return $info;
     }
     

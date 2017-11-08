@@ -524,23 +524,14 @@ class Registration_model extends CI_Model
     }
     public function user_info_Formwise($User_info_data)
     {
-        // //DebugBreak();
+        // DebugBreak();
         $Inst_cd = $User_info_data['Inst_Id'];
         $forms_id = $User_info_data['forms_id'];
         $query = $this->db->get_where('Admission_online..tblinstitutes_all',  array('Inst_cd' => $Inst_cd));
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
-
             $q1         = $this->db->query("select * from ".tblreg9th." where Sch_cd =$Inst_cd and (isdeleted = 0 or isdeleted is null)  and  formNo in($forms_id)");
-            // $this->db->from('Registration..MA_P1_Reg_Adm2016');
-            //$this->db->where(array('Sch_cd'=>$Inst_cd,'IsDeleted'=>0,'Batch_ID'=>0));
-            // $this->db->where_in('formNo',$forms_id);
-
-
-            //$q1         = $this->db->where_in('Registration..MA_P1_Reg_Adm2016',array('Sch_cd'=>$Inst_cd,'IsDeleted'=>0,'Batch_ID'=>0,'formno'=>$forms_id));
-            //$q1 = $this->db->get();
-            //$result_1 = $q1->result_array();
             $nrowcount = $q1->num_rows();
             if($nrowcount > 0)
             {

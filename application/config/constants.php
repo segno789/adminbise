@@ -36,7 +36,7 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
-define('PRIVATE_IMAGE_PATH9TH', 'uploads/2016/9th/private/');
+define('PRIVATE_IMAGE_PATH9TH', 'C:\inetpub\vhosts\bisegrw.edu.pk\Share Images\uploads\SSC\admission\2018\9th\private\ ');
 
 define('PRIVATE_IMAGE_PATH', 'uploads/2017/10th/private/');
 define('RE_ADMISSION_TBL', 'matric_new..vw9th17');
@@ -87,11 +87,11 @@ define('TripleDateFee9th', '07-01-2018');
 define('getinfo','admission_online..tblAdmissionDataForSSC');
 //define('DIRPATH','C:\inetpub\vhosts\bisegrw.com\Share Images\OldPics'); 
 define('DIRPATH','C:\inetpub\vhosts\bisegrw.com\Share Images\\'); 
-define('DIRPATH9th','C:\inetpub\vhosts\bisegrw.com\registration.bisegrw.com\uploads\2016'); 
+define('DIRPATH9th','C:\inetpub\vhosts\bisegrw.com\ssc.bisegrw.com\uploads\2017\reg'); 
 define('DIRPATHOTHER','C:\inetpub\vhosts\bisegrw.com\registration.bisegrw.com\uploads\other'); 
 define('corr_bank_chall_class1','10th');
-define('CURRENT_SESS1','2017'); 
-define('CURRENT_SESS1_year','2017'); 
+define('CURRENT_SESS1','2018'); 
+define('CURRENT_SESS1_year','2018'); 
 define('class_for_9th_Adm','9th');
 define('formnovalid',100000);// Starting Form No. for Pvt 10th candidates.
 define('formno_9thpvt',600000); // Starting Form No. for Pvt 9th candidates. 

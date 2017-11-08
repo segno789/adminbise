@@ -27,6 +27,7 @@ if(isset($files)){
 ?> 
 <script type="">
     $(document).ready(function () {
+     $('.mPageloader').hide();
         $('#data-table').dataTable({
             "sPaginationType": "full_numbers",
             "cache": false

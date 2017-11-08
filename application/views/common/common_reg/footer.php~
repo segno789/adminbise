@@ -211,6 +211,7 @@ function validpwd()
     }
     }*/
     $(document).ready(function () {
+     $('.mPageloader').hide();
         $('#data-table').dataTable({
             "sPaginationType": "full_numbers",
             "bAutoWidth" : false,
@@ -2112,12 +2113,16 @@ if(isReadm == 0)
         var corr_valtext = 0;
         for(var i =0 ; i<langascd.length; i++)
         {
+            if(corr_sub7 == langascd[i]  )
+            {
+                corr_valtext = corr_valtext+1;
+            }
             if(corr_sub8 == langascd[i])
             {
-                corr_valtext =1;
+                  corr_valtext = corr_valtext+1;
             }
         }
-        if(valtext>0)
+        if(corr_valtext>1)
         {
             alertify.error("Please choose Different Subjects as Double Language is not allowed" );
             $("#corr_sub6").val('0');  
@@ -2131,6 +2136,7 @@ if(isReadm == 0)
     })
 
     $("#corr_sub7").change(function(){
+    //debugger;
         var corr_sub6 = $("#corr_sub5").val();
         var corr_sub7 = $("#corr_sub6").val();
         var corr_sub8 = $("#corr_sub7").val();
@@ -2147,12 +2153,16 @@ if(isReadm == 0)
         var corr_valtext = 0;
         for(var i =0 ; i<langascd.length; i++)
         {
-            if(corr_sub7 == langascd[i])
+            if(corr_sub7 == langascd[i]  )
             {
-                valtext =1;
+                corr_valtext = corr_valtext+1;
+            }
+            if(corr_sub8 == langascd[i])
+            {
+                  corr_valtext = corr_valtext+1;
             }
         }
-        if(valtext>0)
+        if(corr_valtext>1)
         {
             alertify.error("Please choose Different Subjects as Double Language is not allowed" );
             $("#corr_sub7").val('0');  
