@@ -207,8 +207,8 @@
                         <option value='0'selected='selected'>None</option>
                         <option value='1'>MALE</option> 
                         <option value='2'>FEMALE</option>";
-                    }
-                    ?>
+                    }  
+                    ?>  
                 </select>
             </div>
         </div>

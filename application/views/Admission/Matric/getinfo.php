@@ -103,7 +103,7 @@
                     <?php if(Session == 1) {?>
                         <option value="9" <?php if (@$_POST['oldClass'] == 9) echo 'selected' ?>>9th</option>
                         <?php }?>
-                    <option value="10" <?php if (@$_POST['oldClass'] == 10) echo 'selected' ?>>10th</option>
+                    <option value="10" selected="selected" <?php if (@$_POST['oldClass'] == 10) echo 'selected' ?>>10th</option>
                 </select>
             </div>
             <div class="col-md-3">

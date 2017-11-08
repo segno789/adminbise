@@ -225,6 +225,8 @@ class Admission extends CI_Controller
             $this->load->view('common/homepagefooter.php'); 
         }
 
+        //DebugBreak();
+
         $data = $this->Admission_model->get_formno_data($formno);
         if (!$data) 
         {
@@ -260,7 +262,6 @@ class Admission extends CI_Controller
         $retfee = $this->feecalculate($data);
         $data['AdmFee'] = $retfee[0]['AdmFee'];
         $data['AdmTotalFee'] = $retfee[0]['AdmTotalFee'];
-        $data['certFee'] =  $retfee[0]['certFee'];
         $lastdate = $this->GetDueDate();
         // }
 
@@ -305,16 +306,26 @@ class Admission extends CI_Controller
         $pdf->Image(BARCODE_PATH.$image,3.2, 0.61  ,1.8,0.20,"PNG");
 
 
-        if($data['IsNewPic'] == 1){
-            $pdf->Image(GET_PRIVATE_IMAGE_PATH.$data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");    
+        if($data['IsNewPic'] == 1)
+        {
+            if(base_url() == "http://localhost:8083/adminbise/")   {
+                $pdf->Image(base_url().'assets/img/profile.png',6.96, 1.15+$Y, 0.95, 1.0, "png");                    
+            }
+
+            else{
+                $pdf->Image(GET_PRIVATE_IMAGE_PATH.$data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");    
+            }
         }
 
-        else if($data['IsNewPic'] == 0){
-            if(base_url() == "http://slips.bisegrw.com/adminbise/" || base_url() == "http://ssc.bisegrw.com/adminbise/" || base_url() == "https://www.bisegrw.edu.pk/ssc"){
-                $pdf->Image($data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");            
+        else if($data['IsNewPic'] == 0)
+        {
+
+            if(base_url() == "http://localhost:8083/adminbise/")   {
+                $pdf->Image(base_url().'assets/img/profile.png',6.96, 1.15+$Y, 0.95, 1.0, "png");                    
             }
+
             else{
-                $pdf->Image(base_url().'assets/img/profile.png',6.96, 1.15+$Y, 0.95, 1.0, "png");        
+                $pdf->Image($data['PicPath'],6.96, 1.15+$Y, 0.95, 1.0, "JPG");                    
             }
         }
 
@@ -631,14 +642,14 @@ class Admission extends CI_Controller
         $pdf->SetXY(1.50,2.45+$Y);
         $pdf->Cell(0.5,0.5,$this->GetSpeciality($data["Spec"]),0,'L');
 
-        //DebugBreak();
+        DebugBreak();
         //--------------------------- Speciality and Internal Grade 
         $pdf->SetXY(3.5+$x,2.15+$Y);
         $pdf->SetFont('Arial','',$FontSize);
         $pdf->Cell( 0.5,0.5,"Board Name:",0,'L');
         if($data["Brd_cd"] !=  null && $data["Brd_cd"] >0)
         {
-            $OldBoard = ($data["Brd_Abbr"]);
+            $OldBoard = ($data["Brd_Abbr"]); 
         }
         else
         {
@@ -928,6 +939,7 @@ class Admission extends CI_Controller
         $pdf->SetXY(4.6, 7.09+$Y); 
         $pdf->SetFont('Arial','b',$FontSize);
         $pdf->Cell( 0.5,0.5,$data['AdmProcessFee'].' /-',0,'L');
+
 
         $pdf->SetXY(5.42, 7.09+$Y);
         $pdf->SetFont('Arial','',$FontSize);
@@ -1410,6 +1422,7 @@ class Admission extends CI_Controller
         }
         return $returnExam;
     }
+
     function feecalculate($data)
     {
         //DebugBreak();
@@ -1521,19 +1534,27 @@ class Admission extends CI_Controller
 
         if($data['Spec']>0 && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th) ))
         {
-            $regfee =  1000;
-            if($data['Spec'] >  2)
-            {
-                $regfee = 0; 
+            /*$regfee =  1000;
+            if($data['Spec'] >  0)
+            {*/
+            $regfee = 0; 
+            $data['regFee'] = $regfee;
+            //}
+
+            if(@$data['isFresh'] == 1 || @$data['isOtherbrd'] == 1){
+                $data['certFee'] = 550;
             }
 
             $data['AdmFee'] = $finalFee;
             $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee']+$data['certFee'];
-
             $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmTotalFee'=> $data['AdmTotalFee']);
         }
         else
         {
+            if(@$data['isFresh'] == 1 || @$data['isOtherbrd'] == 1){
+                $data['certFee'] = 550;
+            }
+
             $data['AdmFee'] = $finalFee;
             $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee']+$data['certFee']+$finalFee;
             $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']);
@@ -1542,7 +1563,6 @@ class Admission extends CI_Controller
         $info = $this->Admission_model->Update_AdmissionFeePvt($AllStdFee);
         if (!$info) 
         {
-
             $errNo   = $this->db->error();
 
             $data['msg'] = "Error(".$errNo['code'].") ";
@@ -1840,6 +1860,8 @@ class Admission extends CI_Controller
         return;
         }*/
 
+
+
         $error = $this->session->flashdata('NewEnrolment_error');
         if($error) 
         {
@@ -1851,7 +1873,7 @@ class Admission extends CI_Controller
             $year    = $data[0]["Iyear"];
             $session = $data[0]["sess"];
             $board   = $data[0]["Brd_cd"];
-            @$cattype= $data[0]["category"];
+            @$cattype= $data[0]["CatType"];   
 
             $error_msg = $data[0]["excep"];
 
@@ -1988,12 +2010,28 @@ class Admission extends CI_Controller
             $session = $_POST["oldSess"];
             $board   = $_POST["oldBrd_cd"];
             @$cattype   = $_POST["CatType"]; 
-            $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board);
+
+
+            $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board,'SearchType'=>1);
+
+            $CheckDuplicateForm_Model = $this->Admission_model->CheckDuplicateForm_Model($data);
+
+            if($CheckDuplicateForm_Model){
+                $error_msg.= 'Admission already submitted as '.$CheckDuplicateForm_Model[0]['regpvt'].' <br>Form No: '.$CheckDuplicateForm_Model[0]['formNo'].'<br>Name: '.$CheckDuplicateForm_Model[0]['name'].'<br>Father Name: '.$CheckDuplicateForm_Model[0]['Fname'].'<br><br> Note: In case of any query related this admission form, Please contact to MATRIC BRANCH BISEGRW (055-3892634)';            
+                $data['error'] = $error_msg;
+                $this->load->view('common/commonheader.php');        
+                $this->load->view('Admission/Matric/getinfo.php', $data);
+                $this->load->view('common/footer.php');    
+                return false;
+            }
 
             if($board != 1 && ($oldClass == 9 || $oldClass == 10)){
-                redirect('index.php/admission/matric_otherboard', $data);
+                redirect('admission/matric_otherboard', $data);
                 return;
             }
+
+
+            //DebugBreak();
 
             $data = $this->Admission_model->Pre_Matric_data($data);
 
@@ -2018,6 +2056,7 @@ class Admission extends CI_Controller
             return;
             }
             */
+
             $error_msg = '';
 
             if(!$data){
@@ -2208,9 +2247,9 @@ class Admission extends CI_Controller
                                                                                                         else $ret_val = 0;
         return $ret_val;
     }
+
     public function NewEnrolment_insert()
     {
-        //DebugBreak();
         $this->load->model('Admission_model');
         $this->load->library('session');
         $isActive = $this->isActiveAdm();
@@ -2247,7 +2286,9 @@ class Admission extends CI_Controller
         $formno = '';//$this->Admission_model->GetFormNo();
         $dob = @$_POST['dob'];
 
-        if(@$_POST['isFresh']==1)
+        //DebugBreak();
+
+        if(@$_POST['isFresh']==1)                            
         {
             $nxtrnosessyear = $this->Admission_model->checkalready(@$_POST['cand_name'],$_POST['father_cnic'],$_POST['dob']);
 
@@ -2595,7 +2636,7 @@ class Admission extends CI_Controller
 
         if(strtotime( date("d-m-Y")) <= strtotime(SingleDateFee9th)) 
         {
-            if($Speciality > 0 ) //|| $grp_cd ==  5
+            if($Speciality > 0 )
             {
                 $AdmFeeCatWise = 0; 
             }
@@ -2604,6 +2645,8 @@ class Admission extends CI_Controller
                 $AdmFeeCatWise = $AdmFee[0]['PVT_Amount'];
             } 
         }
+
+        //DebugBreak();
 
         if(@$_POST['isotherbrd']>0 || @$_POST['isFresh']>0)
         {
@@ -2616,6 +2659,7 @@ class Admission extends CI_Controller
             }  
 
         }
+
         if(@$_POST['isFresh']>0)
         {
             if((@$_POST['isNotFresh'] ==0) )
@@ -2635,16 +2679,17 @@ class Admission extends CI_Controller
                 $regfee =   1000;
                 $cerfee =   550;   
             }
+        }
 
-            // if(empty($_POST['isNotFresh']) && (@$_POST['isNotFresh'] ==0))
-            //   {
 
-            // $regfee =   0 ;
-            // $cerfee =   0 ;
-            //  }
-        }           
-        // echo  '<pre>'; print_r($AdmFee);die;
-        if(($examtype == 1 || $examType == 2  || $examtype == 3 || @$_POST['oldexam_type'] == 3 || @$_POST['oldexam_type'] == 1) && Session ==  1)
+        if(@$_POST['isFresh']>0 && $Speciality > 0)
+        {
+            $regfee =   0;
+            $cerfee =   550;   
+        }
+
+
+        if(($examtype == 1 || $examtype == 2  || $examtype == 3 || @$_POST['oldexam_type'] == 3 || @$_POST['oldexam_type'] == 1) && Session ==  1)
         {
             $cerfee =   550;  
         } 
@@ -2652,8 +2697,6 @@ class Admission extends CI_Controller
         {
             $cerfee =   0; 
         }
-
-
 
         $fine = $this->GetFeeWithdue( $AdmFeeCatWise);
 
@@ -2780,139 +2823,22 @@ class Admission extends CI_Controller
             }
         }
 
-        /*$target_path = PRIVATE_IMAGE_PATH;
-        if (!file_exists($target_path)){
+        if(@$_POST['isFresh']==1 || @$_POST['isotherbrd']==1){
+            $CheckDuplicateForm_Model = array('name'=>@$_POST['cand_name'],'Fname'=>$_POST['father_name'],'BForm'=>$_POST['bay_form'],'FNIC'=>$_POST['father_cnic'],'dob'=>$_POST['dob'],'board'=>$_POST['oldboardid'],'SearchType'=>2);
+            $CheckDuplicateForm_Model = $this->Admission_model->CheckDuplicateForm_Model($CheckDuplicateForm_Model);
 
-        mkdir($target_path);
+            if($CheckDuplicateForm_Model){
+                $error_msg.= 'Admission already submitted as '.$CheckDuplicateForm_Model[0]['regpvt'].' <br>Form No: '.$CheckDuplicateForm_Model[0]['formNo'].'<br>Name: '.$CheckDuplicateForm_Model[0]['name'].'<br>Father Name: '.$CheckDuplicateForm_Model[0]['Fname'].'<br><br> Note: In case of any query related this admission form, Please contact to MATRIC BRANCH BISEGRW (055-3892634)';            
+                $info =  '';
+                $info['error'] = $error_msg;
+                $info['formno'] = "";
+                echo  json_encode($info);
+                exit();                      
+            }
         }
 
-        // DebugBreak();
 
-        $base_path = GET_PRIVATE_IMAGE_PATH_COPY.@$_POST['pic'];
-
-        $config['upload_path']   = $target_path;
-        $config['allowed_types'] = 'jpg';
-        $config['max_size']      = '20';
-        $config['min_size']      = '4';
-
-        $config['min_width']     = '110';
-        $config['min_height']    = '100';
-        $config['overwrite']     = TRUE;
-        $config['file_name']     = $formno.'.jpg';
-
-        $filepath = $target_path. $config['file_name']  ;
-
-
-        $this->load->library('upload', $config);
-
-        $this->upload->initialize($config);
-        if(@$_POST['isotherbrd']>0 || @$_POST['isFresh']>0)
-        {
-        $check = getimagesize(@$_FILES["pic"]["tmp_name"]);
-        if($check !== false) {
-
-        $file_size = round($_FILES['pic']['size']/1024, 2);
-        if($file_size<=20 && $file_size>=4)
-        {
-        if ( !$this->upload->do_upload('pic',true))
-        {
-        if($this->upload->error_msg[0] != "")
-        {
-        $error['excep']= $this->upload->error_msg[0];
-        $data['excep'] = $this->upload->error_msg[0];
-        $this->session->set_flashdata('NewEnrolment_error',$data);
-
-        if(@$_POST['isotherbrd']==1){
-        redirect('Admission/matric_otherboard');
-        return;
-        }
-        else if(@$_POST['isFresh']==1){
-        redirect('Admission/matric_fresh');
-        return;
-        }
-        else
-        {
-        redirect('Admission/matric_fresh');
-        return;
-        }
-        }
-        }
-        }
-        else
-        {
-        $data['excep'] = 'The file you are attempting to upload size is between 4 to 20 Kb.';
-        $this->session->set_flashdata('NewEnrolment_error',$data);
-        if(@$_POST['isotherbrd']==1){
-        redirect('Admission/matric_otherboard/');
-        return;
-        }
-        else
-        {
-        redirect('Admission/matric_fresh');
-        return;
-        }
-        }
-        }
-        else
-        {
-        if($check === false)
-        {
-        $data['excep'] = 'Please Upload Your Picture';
-        $this->session->set_flashdata('NewEnrolment_error',$data);
-        if(@$_POST['isotherbrd']==1){
-        redirect('Admission/matric_otherboard/');
-        return;
-        }
-        else if(@$_POST['isFresh']==1)
-        {
-        redirect('Admission/matric_fresh/');
-        return;
-        }
-        else 
-        {
-        redirect('Admission/Pre_Matric_data');
-        return;
-        }
-        return;
-        }
-        }  
-        }
-        else
-        {
-
-        /*$base_path = GET_PRIVATE_IMAGE_PATH_COPY.@$_POST['pic'];
-        $copyimg = $target_path.$formno.'.jpg';
-
-        $this->base64_to_jpeg($_POST['pic'],$copyimg)   ;    */
-
-
-        /*if (!(copy($base_path, $copyimg))) 
-        {
-        $data['excep'] = 'The picture is not upload.';
-        $this->session->set_flashdata('NewEnrolment_error',$data);
-        //  echo '<pre>'; print_r($allinputdata['excep']);exit();
-        redirect('Admission/Pre_Matric_data/');
-        }          
-        }*/
-
-        //$this->frmvalidation('Pre_Matric_data',$data,0);       
-
-
-        $logedIn = $this->Admission_model->Insert_NewEnorlement($data);
-
-        /* if (!$logedIn) 
-        {
-        $errNo   = $this->db->error();
-        $data['msg'] = "Error(".$errNo['code'].") ";
-        $data['errno'] = "509";
-        $this->load->view('common/commonheader.php');
-        $this->load->view('errors/cli/error_custom.php',$data);
-        $this->load->view('common/homepagefooter.php');
-        return;
-        }
-        */
-
-        //DebugBreak();
+        $logedIn = $this->Admission_model->Insert_NewEnorlement($data);    
 
         $info =  '';
 
@@ -2938,21 +2864,11 @@ class Admission extends CI_Controller
 
         echo  json_encode($info);
         exit();
-
     }
+
+
     public function formdownloaded()
     {
-        //DebugBreak();
-
-        /* $msg = $this->uri->segment(3);
-        $dob = $this->uri->segment(4);
-        $this->load->model('Admission_model');
-        $this->load->library('session');
-        $myarray = array('msg'=>$msg,'dob'=>$dob);
-        $this->load->view('common/commonheader.php');
-        $this->load->view('Admission/Matric/FormDownloaded.php',$myarray);
-        $this->load->view('common/commonfooter.php');
-        */
         $msg = $this->uri->segment(3);
         $this->load->model('Admission_model');
         $this->load->library('session');

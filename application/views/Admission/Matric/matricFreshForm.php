@@ -1,5 +1,6 @@
 
 <form method="post" enctype="multipart/form-data" name="myform" id="myform">
+
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-5 col-md-5">
@@ -53,13 +54,13 @@
                 <label class="control-label" for="bay_form" >
                     Bay Form No:
                 </label>        
-                <input class="text-uppercase form-control" type="text" id="bay_form" name="bay_form" maxlength="15" placeholder="Bay Form No." value="<?php echo @$data['BForm'];?>" <?php if(@$data['isNotFresh']!=0 && @$data['BForm']!="") echo "readonly='readonly'";  ?>  required="required" >
+                <input class="text-uppercase form-control" type="text" id="bay_form" name="bay_form" maxlength="15" placeholder="Bay Form No." value="<?php echo @$data['BForm'];?>" <?php if(@$data['isNotFresh']!=0 && strlen(@$data['BForm'] == 15)) echo "readonly='readonly'";  ?>  required="required" >
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="father_cnic">
                     Father's CNIC:
                 </label>        
-                <input class="text-uppercase form-control" id="father_cnic" name="father_cnic" type="text" placeholder="FNIC No"  value="<?php  echo @$data['FNIC'];?>" <?php if(@$data['isNotFresh']!=0 && @$data['FNIC']!="") echo "readonly='readonly'";  ?>  required="required" >
+                <input class="text-uppercase form-control" id="father_cnic" name="father_cnic" type="text" placeholder="FNIC No"  value="<?php  echo @$data['FNIC'];?>" <?php if(@$data['isNotFresh']!=0 && strlen(@$data['FNIC'] == 15)) echo "readonly='readonly'";  ?>  required="required" >
             </div>
         </div>
     </div>
@@ -210,7 +211,7 @@
                 <label class="control-label" for="gend">
                     Gender :
                 </label>     
-                <select name="gend" class="form-control text-uppercase" id="gend">
+                <select name="gender" class="form-control text-uppercase" id="gend" <?php if($data['sex'] == 1 || $data['sex'] == 2) echo 'disabled="disabled"' ?>>
                     <?php
                     @$gender = @$data['sex'];
                     if($gender == 1)
@@ -560,6 +561,8 @@
 
 
     <div class="hidden">
+        <input type="hidden" class="hidden" name="gend" value="<?php echo @$gender; ?>">
+        <input class="hidden" type="text" id="oldrno" name="oldrno" value="<?php echo  $data['RNo']; ?>" >
         <input type="hidden" value="<?=  @$data['grp_cd']?>" name="pergrp">
         <input type="hidden" value="1" name="oldboardid">
         <input type="hidden" class="span3" id="oldClass" name="oldClass"  value="<?php  echo @$data['class']; ?>"/>     
@@ -601,7 +604,6 @@
             }
         });
     }
-
 
     function checks_fresh_10th(){
         var status  =  check_NewEnrol_validation_fresh();
@@ -829,12 +831,12 @@
             return status;    
         }
 
-        else if(oldrno=="")
+        /* else if(oldrno=="")
         {
-            alertify.error("Please Enter Your Old Rno First!")
-            $('#oldrno').focus(); 
-            return status;
-        }
+        alertify.error("Please Enter Your Old Rno First!")
+        $('#oldrno').focus(); 
+        return status;
+        }          */
 
         else if(oldboardid==0)
         {
