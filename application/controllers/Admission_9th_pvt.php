@@ -32,24 +32,24 @@ class Admission_9th_pvt extends CI_Controller {
         redirect('login');
         }  */
     }
-     public function clear_all_cache()
-{
-    $CI =& get_instance();
-$path = $CI->config->item('cache_path');
-
-    $cache_path = ($path == '') ? APPPATH.'cache/' : $path;
-
-    $handle = opendir($cache_path);
-    while (($file = readdir($handle))!== FALSE) 
+    public function clear_all_cache()
     {
-        //Leave the directory protection alone
-        if ($file != '.htaccess' && $file != 'index.html')
+        $CI =& get_instance();
+        $path = $CI->config->item('cache_path');
+
+        $cache_path = ($path == '') ? APPPATH.'cache/' : $path;
+
+        $handle = opendir($cache_path);
+        while (($file = readdir($handle))!== FALSE) 
         {
-           @unlink($cache_path.'/'.$file);
+            //Leave the directory protection alone
+            if ($file != '.htaccess' && $file != 'index.html')
+            {
+                @unlink($cache_path.'/'.$file);
+            }
         }
+        closedir($handle);
     }
-    closedir($handle);
-}
     function clear_cache()
     {
         $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
@@ -58,7 +58,23 @@ $path = $CI->config->item('cache_path');
 
     public function index()
     {
-
+        $data = array(
+            'isselected' => '3',
+        );
+        $this->load->model('Admission_model');
+        $this->load->library('session');
+        $error ="";
+        if($this->session->flashdata('downerror'))
+        {
+            $error = $this->session->flashdata('downerror');
+        }
+        else{
+            $error = "";
+        }
+        $this->load->view('common/commonheader9th.php');
+        $mydata = array('error'=>$error);
+        $this->load->view('Admission/9th/matric_default.php',$mydata);
+        $this->load->view('common/homepagefooter.php');
     }
     public  function GetDistName($id) 
     {
@@ -75,16 +91,16 @@ $path = $CI->config->item('cache_path');
 
     public function NewEnrolment_insert()
     {  
-       //  DebugBreak();
-      //  $_POST;
-     //   echo  'Please wait';
-    //  die();
+        //  DebugBreak();
+        //  $_POST;
+        //   echo  'Please wait';
+        //  die();
         $this->load->model('Admission_9th_reg_model');
-                $this->load->library('session');
+        $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
         $userinfo['isselected'] = 2;
-        
+
         $nxtrnosessyear = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['dob'],$_POST['father_cnic']);
 
         //if($nxtrnosessyear !=  -1)
@@ -97,8 +113,8 @@ $path = $CI->config->item('cache_path');
             return false; 
         }   
 
-        
-        
+
+
         $formno =$this->Admission_9th_reg_model->GetFormNoPVT();
         $this->commonheader($userinfo);
         $error = array();
@@ -159,11 +175,11 @@ $path = $CI->config->item('cache_path');
         {
             $sub8ap1 = 1;    
         }
-        $addre =  str_replace("'", "", $this->input->post('address'));
-        $MarkOfIden =  str_replace("'", "", $this->input->post('MarkOfIden'));
+        $addre =  strtoupper(trim(str_replace("'", "", $this->input->post('address'))));
+        $MarkOfIden =  strtoupper(trim(str_replace("'", "", $this->input->post('MarkOfIden'))));
         $data = array(
-            'name' =>$this->input->post('cand_name'),
-            'Fname' =>$this->input->post('father_name'),
+            'name' =>strtoupper(trim($this->input->post('cand_name'))),
+            'Fname' =>strtoupper(trim($this->input->post('father_name'))),
             'BForm' =>$this->input->post('bay_form'),
             'FNIC' =>$this->input->post('father_cnic'),
             'Dob' =>$this->input->post('dob'),
@@ -199,62 +215,59 @@ $path = $CI->config->item('cache_path');
             'FormNo' =>($formno) ,
             'dist'=>$this->input->post('pvtinfo_dist'),
             'teh'=>$this->input->post('pvtinfo_teh'),
-            'zone'=>$this->input->post('pvtZone')
-
+            'zone'=>$this->input->post('pvtZone') ,
+            'picname'=>$this->input->post('picname')
 
 
 
 
 
         );
-
-        /* $target_path = './assets/uploads/'.$Inst_Id.'/';
-        if (!file_exists($target_path)){
-        mkdir($target_path, 0777, true);
-        }*/
-
-        $target_path = PRIVATE_IMAGE_PATH9TH;
-        // $target_path = '../uploads2/'.$Inst_Id.'/';
-        if (!file_exists($target_path)){
-
-            mkdir($target_path);
-        }
-        $config['upload_path']   = $target_path;
-        $config['allowed_types'] = 'jpg|jpeg';
-        $config['max_size']      = '20';
-        $config['min_size']      = '4';
-        //  $config['max_width']     = '260';
-        // $config['max_height']    = '290';
-       // $config['min_width']     = '110';
-     //   $config['min_height']    = '100';
-        $config['overwrite']     = FALSE;
-        $config['file_name']     = $formno.'.jpg';
-
-        $filepath = $target_path. $config['file_name']  ;
-
-        //$config['new_image']    = $formno.'.JPEG';
-
-        $this->load->library('upload', $config);
-        // DebugBreak();
-        $check = getimagesize($_FILES["image"]["tmp_name"]);
-        $isup = $this->upload->initialize($config);
-
-        
-
+        //DebugBreak();
         $this->frmvalidation('NewEnrolment',$data,0);
-
-        $a = getimagesize($filepath);
-        if($a[2]!=2)
+        $target_path = PRIVATE_IMAGE_PATH9TH.$_POST['picname'];
+        if (!file_exists($target_path))
         {
-            $this->convertImage($filepath,$filepath,100,$a['mime']);
+            $data['excep'] = 'Please upload picture first!';
+            $this->session->set_flashdata('NewEnrolment_error',$data);
+            redirect('Admission_9th_pvt/NewEnrolment');
+            return;
         }
+
+
+
+
         //DebugBreak();
         $mydata_final = $this->feecalculate($data,0);
         $data['fee'] = $mydata_final;
         $logedIn = $this->Admission_9th_reg_model->Insert_NewEnorlement($data);//, $fname);//$_POST['username'],$_POST['password']);
         //DebugBreak();
-        if($logedIn[0]['error'] != 'false')
+        if($logedIn[0]['formno'] != 'false')
         {  
+            $info =  '';
+
+            foreach($logedIn[0] as $key=>$val)
+            {
+                if($key == 'formno')
+                {
+                    if($logedIn[0]['formno'] != '')
+                    {
+                        $oldpath =  PRIVATE_IMAGE_PATH9TH.$data['picname'];
+                        $newpath =  PRIVATE_IMAGE_PATH9TH.$val.'.jpg';
+                        $err = rename($oldpath,$newpath); 
+                        if($err == False)
+                        {
+                            $data['excep'] = 'An error has occoured. Please try again later. ';
+                            $this->session->set_flashdata('NewEnrolment_error',$data);
+                            redirect('Admission_9th_pvt/NewEnrolment');
+                            return;
+                            echo 'Data NOT Saved Successfully !';
+                        }
+                    }
+
+                }
+
+            }
             $data = "";
             $data['excep'] = 'success';
             $this->session->set_flashdata('NewEnrolment_error',$data);
@@ -322,7 +335,7 @@ $path = $CI->config->item('cache_path');
 
 
     }
-     function GetDueDate()
+    function GetDueDate()
     {
         $dueDate='';
         $single_date= SingleDateFee9th;  $double_date= DoubleDateFee9th;  $tripple_date= TripleDateFee9th;
@@ -359,7 +372,7 @@ $path = $CI->config->item('cache_path');
         else{
             return true;
         }
-       // DebugBreak();
+       //  DebugBreak();
         $this->load->model('Admission_9th_reg_model');
         $this->load->library('session');
         // DebugBreak();
@@ -373,105 +386,105 @@ $path = $CI->config->item('cache_path');
         }
 
         // --------------------------------------- Fee Calculation Section ------------------------------------------------
-         // DebugBreak();
+        // DebugBreak();
         /*$User_info_data = array('Inst_Id'=>999999, 'date' => date('Y-m-d'));
         $user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data); 
-       
+
         $isfine = 0;
         $Total_fine = 0;
         $processFee = 295;*/
         // Declare Science & Arts Fee's According to Fee Table .  Note: this will assign to Triple date fee. After triple date it will not asign fees.
-       /* if(!empty($user_info['rule_fee'])) 
+        /* if(!empty($user_info['rule_fee'])) 
         {    
-            $endDate =date('Y-m-d', strtotime($user_info['rule_fee'][0]['End_Date'])); 
-           $singleDate = $endDate;
-            if($user_info['rule_fee'][0]['isPrSub']==1)
-            {
-                $SciAdmFee = $user_info['rule_fee'][0]['PVT_Amount'];
-                $SciProcFee = $processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
-                // For ReAdmission Fee
-                $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['PVT_Amount'];
-                $SciProcFee_ReAdm = $processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
+        $endDate =date('Y-m-d', strtotime($user_info['rule_fee'][0]['End_Date'])); 
+        $singleDate = $endDate;
+        if($user_info['rule_fee'][0]['isPrSub']==1)
+        {
+        $SciAdmFee = $user_info['rule_fee'][0]['PVT_Amount'];
+        $SciProcFee = $processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
+        // For ReAdmission Fee
+        $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['PVT_Amount'];
+        $SciProcFee_ReAdm = $processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
 
-            } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
-            {
-                $SciAdmFee = $user_info['rule_fee'][1]['PVT_Amount'];
-                $SciProcFee = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
-                // For ReAdmission Fee
-                $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['PVT_Amount'];
-                $SciProcFee_ReAdm = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
+        } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
+        {
+        $SciAdmFee = $user_info['rule_fee'][1]['PVT_Amount'];
+        $SciProcFee = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
+        // For ReAdmission Fee
+        $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['PVT_Amount'];
+        $SciProcFee_ReAdm = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
 
-            }
-            if($user_info['rule_fee'][0]['isPrSub']==0)
-            {
-                $ArtsAdmFee = $user_info['rule_fee'][0]['PVT_Amount'];
-                $ArtsProcFee =$processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
-                // For ReAdmission Fee
-                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['PVT_Amount'];
-                $ArtsProcFee_ReAdm = $processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
-            }
-            else if($user_info['rule_fee'][1]['isPrSub']== 0 )
-            {
-                $ArtsAdmFee = $user_info['rule_fee'][1]['PVT_Amount'];
-                $ArtsProcFee = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
-                // For ReAdmission Fee
-                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['PVT_Amount'];
-                $ArtsProcFee_ReAdm = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
-            }
+        }
+        if($user_info['rule_fee'][0]['isPrSub']==0)
+        {
+        $ArtsAdmFee = $user_info['rule_fee'][0]['PVT_Amount'];
+        $ArtsProcFee =$processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
+        // For ReAdmission Fee
+        $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['PVT_Amount'];
+        $ArtsProcFee_ReAdm = $processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
+        }
+        else if($user_info['rule_fee'][1]['isPrSub']== 0 )
+        {
+        $ArtsAdmFee = $user_info['rule_fee'][1]['PVT_Amount'];
+        $ArtsProcFee = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
+        // For ReAdmission Fee
+        $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['PVT_Amount'];
+        $ArtsProcFee_ReAdm = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
+        }
         }
         else
         {
-            $date = new DateTime(SingleDateFee9th);
-            $singleDate =  $date->format('Y-m-d');                                                                     
-            $User_info_data = array('Inst_Id'=>999999, 'date' => $singleDate);
-            $user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data);
-            if($user_info['rule_fee'][0]['isPrSub']==1)
-            {
-                $SciAdmFee = $user_info['rule_fee'][0]['PVT_Amount'];
-                $SciProcFee =$processFee;// $user_info['rule_fee'][0]['Processing_Fee'];
-                // For ReAdmission Fee
-                $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['PVT_Amount'];
-                $SciProcFee_ReAdm =$processFee;// $user_info['rule_fee'][0]['Processing_Fee'];
+        $date = new DateTime(SingleDateFee9th);
+        $singleDate =  $date->format('Y-m-d');                                                                     
+        $User_info_data = array('Inst_Id'=>999999, 'date' => $singleDate);
+        $user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data);
+        if($user_info['rule_fee'][0]['isPrSub']==1)
+        {
+        $SciAdmFee = $user_info['rule_fee'][0]['PVT_Amount'];
+        $SciProcFee =$processFee;// $user_info['rule_fee'][0]['Processing_Fee'];
+        // For ReAdmission Fee
+        $SciAdmFee_ReAdm = $user_info['rule_fee'][0]['PVT_Amount'];
+        $SciProcFee_ReAdm =$processFee;// $user_info['rule_fee'][0]['Processing_Fee'];
 
-            } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
-            {
-                $SciAdmFee = $user_info['rule_fee'][1]['PVT_Amount'];
-                $SciProcFee = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
-                // For ReAdmission Fee
-                $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['PVT_Amount'];
-                $SciProcFee_ReAdm =$processFee;// $user_info['rule_fee'][1]['Processing_Fee'];
+        } else if( $user_info['rule_fee'][1]['isPrSub']== 1 )
+        {
+        $SciAdmFee = $user_info['rule_fee'][1]['PVT_Amount'];
+        $SciProcFee = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
+        // For ReAdmission Fee
+        $SciAdmFee_ReAdm = $user_info['rule_fee'][1]['PVT_Amount'];
+        $SciProcFee_ReAdm =$processFee;// $user_info['rule_fee'][1]['Processing_Fee'];
 
-            }
-            if($user_info['rule_fee'][0]['isPrSub']==0)
-            {
-                $ArtsAdmFee = $user_info['rule_fee'][0]['PVT_Amount'];
-                $ArtsProcFee =$processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
-                // For ReAdmission Fee
-                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['PVT_Amount'];
-                $ArtsProcFee_ReAdm = $processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
-            }
-            else if($user_info['rule_fee'][1]['isPrSub']== 0 )
-            {
-                $ArtsAdmFee = $user_info['rule_fee'][1]['PVT_Amount'];
-                $ArtsProcFee = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
-                // For ReAdmission Fee
-                $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['PVT_Amount'];
-                $ArtsProcFee_ReAdm =$processFee;// $user_info['rule_fee'][1]['Processing_Fee'];
-            }
+        }
+        if($user_info['rule_fee'][0]['isPrSub']==0)
+        {
+        $ArtsAdmFee = $user_info['rule_fee'][0]['PVT_Amount'];
+        $ArtsProcFee =$processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
+        // For ReAdmission Fee
+        $ArtsAdmFee_ReAdm = $user_info['rule_fee'][0]['PVT_Amount'];
+        $ArtsProcFee_ReAdm = $processFee;//$user_info['rule_fee'][0]['Processing_Fee'];
+        }
+        else if($user_info['rule_fee'][1]['isPrSub']== 0 )
+        {
+        $ArtsAdmFee = $user_info['rule_fee'][1]['PVT_Amount'];
+        $ArtsProcFee = $processFee;//$user_info['rule_fee'][1]['Processing_Fee'];
+        // For ReAdmission Fee
+        $ArtsAdmFee_ReAdm = $user_info['rule_fee'][1]['PVT_Amount'];
+        $ArtsProcFee_ReAdm =$processFee;// $user_info['rule_fee'][1]['Processing_Fee'];
+        }
 
-            $TripleDate = date('Y-m-d',strtotime(TripleDateFee9th)); 
-            $now = date('Y-m-d'); // or your date as well
-            $days = (strtotime($TripleDate) - strtotime($now)) / (60 * 60 * 24);
-            $fine = 500;
-            $days = abs($days);
+        $TripleDate = date('Y-m-d',strtotime(TripleDateFee9th)); 
+        $now = date('Y-m-d'); // or your date as well
+        $days = (strtotime($TripleDate) - strtotime($now)) / (60 * 60 * 24);
+        $fine = 500;
+        $days = abs($days);
 
-            $endDate = date('d-m-Y');
-            $SciAdmFee =  ($SciAdmFee*3); 
-            $ArtsAdmFee = ($ArtsAdmFee*3); 
-            $Total_fine = $days*$fine;
-            // For ReAdmission 
-            $SciAdmFee_ReAdm =  ($SciAdmFee_ReAdm*3); 
-            $ArtsAdmFee_ReAdm = ($ArtsAdmFee_ReAdm*3);
+        $endDate = date('d-m-Y');
+        $SciAdmFee =  ($SciAdmFee*3); 
+        $ArtsAdmFee = ($ArtsAdmFee*3); 
+        $Total_fine = $days*$fine;
+        // For ReAdmission 
+        $SciAdmFee_ReAdm =  ($SciAdmFee_ReAdm*3); 
+        $ArtsAdmFee_ReAdm = ($ArtsAdmFee_ReAdm*3);
 
 
 
@@ -480,54 +493,54 @@ $path = $CI->config->item('cache_path');
         $regfee =  1000;
         if( $this->practicalsubjects($data['sub6'])|| $this->practicalsubjects($data['sub7'])|| $this->practicalsubjects($data['sub8']))
         {
-            
-          
-            if($data['IsReAdm']==1)
-            {
-                $AllStdFee = array('formNo'=> $data['formNo'],'regFee'=>1000,'AdmFee'=>$SciAdmFee_ReAdm,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciAdmFee_ReAdm+$SciProcFee+$Total_fine+$regfee);
-            }
-            else if($data['Spec']>0 && (strtotime(date('Y-m-d')) >= strtotime(SingleDateFee9th)) )
-            {     $regfee =  1000;
-                if($data['Spec'] ==  2)
-                {
-                   $regfee = 0; 
-                }
-                $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>$regfee,'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciProcFee+$Total_fine+$regfee);
-            }
-            else
-            {
-                $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>1000,'AdmFee'=>$SciAdmFee,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciAdmFee+$SciProcFee+$Total_fine+$regfee);
-            }
+
+
+        if($data['IsReAdm']==1)
+        {
+        $AllStdFee = array('formNo'=> $data['formNo'],'regFee'=>1000,'AdmFee'=>$SciAdmFee_ReAdm,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciAdmFee_ReAdm+$SciProcFee+$Total_fine+$regfee);
+        }
+        else if($data['Spec']>0 && (strtotime(date('Y-m-d')) >= strtotime(SingleDateFee9th)) )
+        {     $regfee =  1000;
+        if($data['Spec'] ==  2)
+        {
+        $regfee = 0; 
+        }
+        $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>$regfee,'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciProcFee+$Total_fine+$regfee);
         }
         else
         {
-            if($data['IsReAdm']==1)
-            {
-                $AllStdFee = array('formNo'=> $data['formNo'],'regFee'=>1000,'AdmFee'=>$ArtsAdmFee_ReAdm,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsAdmFee_ReAdm+$ArtsProcFee+$Total_fine+$regfee);
-            }
-            else if($data['Spec']>0 && (strtotime(date('Y-m-d')) >= strtotime(SingleDateFee9th)) )
-            {
-                $regfee =  1000;
-                if($data['Spec'] ==  2)
-                {
-                   $regfee = 0; 
-                }
-                $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>$regfee,'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsProcFee+$Total_fine+$regfee);
-            }
-            else
-            {
-                $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>1000,'AdmFee'=>$ArtsAdmFee,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsAdmFee+$ArtsProcFee+$Total_fine+$regfee);
-            }
+        $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>1000,'AdmFee'=>$SciAdmFee,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciAdmFee+$SciProcFee+$Total_fine+$regfee);
+        }
+        }
+        else
+        {
+        if($data['IsReAdm']==1)
+        {
+        $AllStdFee = array('formNo'=> $data['formNo'],'regFee'=>1000,'AdmFee'=>$ArtsAdmFee_ReAdm,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsAdmFee_ReAdm+$ArtsProcFee+$Total_fine+$regfee);
+        }
+        else if($data['Spec']>0 && (strtotime(date('Y-m-d')) >= strtotime(SingleDateFee9th)) )
+        {
+        $regfee =  1000;
+        if($data['Spec'] ==  2)
+        {
+        $regfee = 0; 
+        }
+        $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>$regfee,'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsProcFee+$Total_fine+$regfee);
+        }
+        else
+        {
+        $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>1000,'AdmFee'=>$ArtsAdmFee,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsAdmFee+$ArtsProcFee+$Total_fine+$regfee);
+        }
         }*/
 
-      //    echo 'Please Wait';
-       
-        
+        //    echo 'Please Wait';
+
+
         // --------------------------------------- Fee Calculation Section END------------------------------------------------
         // DebugBreak();
 
-        
-       // $mydata_final = array($this->Admission_9th_reg_model->Update_AdmissionFeePvt($AllStdFee));
+
+        // $mydata_final = array($this->Admission_9th_reg_model->Update_AdmissionFeePvt($AllStdFee));
         $data =  $data[0];
         $mydata_final = $this->feecalculate($data,1);
         $mydata_final = $mydata_final[0];
@@ -658,7 +671,7 @@ $path = $CI->config->item('cache_path');
         /*if($size==0)
         { */
         $pdf->Image(PRIVATE_IMAGE_PATH9TH. @$data["PicPath"],6.5, 1.35+$Y, 1.0, .85, "JPG");
-       /* }
+        /* }
         else
         { 
         $pdf->Image(PRIVATE_IMAGE_PATH9TH. @$data["PicPath"],6.5, 1.15+$Y, 0.95, 1.0, "JPG");
@@ -708,7 +721,7 @@ $path = $CI->config->item('cache_path');
         $pdf->Cell( 0.5,0.7,$grp_name." GROUP",0,'L');
 
         $myx = 0.7;
-          $Y = $Y-0.3;
+        $Y = $Y-0.3;
         //--------------------------- 1st line 
         $pdf->SetXY($myx,1.55+$Y);
         $pdf->SetFont('Arial','',$FontSize);
@@ -728,7 +741,7 @@ $path = $CI->config->item('cache_path');
 
 
 
-                // نام(اردو میں):
+        // نام(اردو میں):
 
         //$chkcat09 = ($data['mi_type']!= 2?($data['cat09']) :'Aditional') ;
 
@@ -788,20 +801,20 @@ $path = $CI->config->item('cache_path');
 
         /*$yearOfLastAp = $data['yearOfLastAp'];
         $pdf->Cell(0.5,0.5,$data["oldRno"]." ( $LastSess,  $yearOfLastAp )",0,'L');    */
-         $pdf->SetXY($myx,1.85+$Y);
+        $pdf->SetXY($myx,1.85+$Y);
         $pdf->SetFont('Arial','B',$FontSize);
         $pdf->Cell( 0.5,0.5,"Name(in Urdu): ____________________________________    Father's Name(in Urdu):_________________________________",0,'L');
-        
 
-         $Y = $Y+0.3;
+
+        $Y = $Y+0.3;
         $pdf->SetXY($myx,1.75+$Y);
         $pdf->SetFont('Arial','',$FontSize);
         $pdf->Cell( 0.5,0.5,"Name:",0,'L');
         $pdf->SetFont('Arial','B',$FontSize);
         $pdf->SetXY(1.5,1.75+$Y);
         $pdf->Cell(0.5,0.5,$data["name"],0,'L');
-        
-        
+
+
         //--------------------------- FATHER NAME 
 
         $pdf->SetXY($myx, 1.9+$Y);
@@ -859,12 +872,12 @@ $path = $CI->config->item('cache_path');
         $pdf->SetXY(1.5,2.05+$Y);
         $pdf->Cell(0.5,0.5,date('d-m-Y',strtotime(@$data["Dob"])),0,'L');
 
-         $pdf->SetXY($myx,2.2+$Y);
+        $pdf->SetXY($myx,2.2+$Y);
         $pdf->SetFont('Arial','',$FontSize);
         $pdf->Cell( 0.5,0.5,"Religion:",0,'L');
 
         $pdf->SetFont('Arial','B',$FontSize);
-       $pdf->SetXY(1.5,2.2+$Y);
+        $pdf->SetXY(1.5,2.2+$Y);
         $pdf->Cell(0.5,0.5,$data["rel"]==1?"MUSLIM":"NON-MUSLIM",0,'L');  
 
 
@@ -876,7 +889,7 @@ $path = $CI->config->item('cache_path');
         $pdf->SetXY(1.5,3.2+$Y);
         $pdf->Cell(0.5,0.5,$data["nat"]==1?"PAKISTANI":"NON-PAKISTANI",0,'R');
 
-                      // DebugBreak();
+        // DebugBreak();
         $pdf->SetXY($myx,3.4+$Y);
         $pdf->SetFont('Arial','',$FontSize);
         $pdf->Cell(0.5,0.5,"Locality:",0,'R');
@@ -990,23 +1003,23 @@ $path = $CI->config->item('cache_path');
 
         $pdf->SetFont('Arial','',7);
         $pdf->SetXY($xx,4.6+$Y);
-        $pdf->Cell($boxWidth,0.2,$data['sub4Ap1'] != 1 ? '':   '    '.'4. '. $data['sub4_name'],1,0,'L',1);
+        $pdf->Cell($boxWidth,0.2,$data['sub8ap1'] != 1 ? '':   '    '.'4. '. $data['sub8_name'],1,0,'L',1);
 
         $pdf->SetFont('Arial','',7);
         $pdf->SetXY($xx,4.8+$Y);
-        $pdf->Cell($boxWidth,0.2,$data['sub5Ap1'] != 1 ? '':   '    '.'5. '. $data['sub5_name'],1,0,'L',1);
+        $pdf->Cell($boxWidth,0.2,$data['sub4Ap1'] != 1 ? '':   '    '.'5. '. $data['sub4_name'],1,0,'L',1);
 
         $pdf->SetFont('Arial','',7);
         $pdf->SetXY($xx,5.0+$Y);
-        $pdf->Cell($boxWidth,0.2,$data['sub6Ap1'] != 1 ? '':   '    '.'6. '. $data['sub6_name'],1,0,'L',1);
+        $pdf->Cell($boxWidth,0.2,$data['sub5Ap1'] != 1 ? '':   '    '.'6. '. $data['sub5_name'],1,0,'L',1);
 
         $pdf->SetFont('Arial','',7);                                                                     
         $pdf->SetXY($xx,5.2+$Y);
-        $pdf->Cell($boxWidth,0.2,$data['sub7Ap1'] != 1 ? '':   '    '.'7. '. $data['sub7_name'],1,0,'L',1);
+        $pdf->Cell($boxWidth,0.2,$data['sub6Ap1'] != 1 ? '':   '    '.'7. '. $data['sub6_name'],1,0,'L',1);
 
         $pdf->SetFont('Arial','',7);
         $pdf->SetXY($xx,5.4+$Y);
-        $pdf->Cell($boxWidth,0.2,$data['sub8ap1'] != 1 ? '':   '    '.'8. '. $data['sub8_name'],1,0,'L',1);
+        $pdf->Cell($boxWidth,0.2,$data['sub7Ap1'] != 1 ? '':   '    '.'8. '. $data['sub7_name'],1,0,'L',1);
 
         /*      $xangle = 3.0;
 
@@ -1219,8 +1232,8 @@ $path = $CI->config->item('cache_path');
         $pdf->SetFont('Arial','b',$FontSize);
         //$pdf->Cell( 0.5,0.5,$AfterDueDatefee.'/-',0,'L');
         $pdf->Cell( 0.5,0.5,$mydata_final['AdmFine'],0,'L');
-         $pdf->SetXY(5.79, 7.09+$Y); 
-         $pdf->SetFont('Arial','b',$FontSize);
+        $pdf->SetXY(5.79, 7.09+$Y); 
+        $pdf->SetFont('Arial','b',$FontSize);
         $pdf->Cell( 0.5,0.5,"Bank Challan No. ".$data['challanno'],0,'L');
 
         $pdf->SetXY(1.2, 7.29+$Y);
@@ -1441,7 +1454,7 @@ $path = $CI->config->item('cache_path');
         $pdf->SetFont('Arial','BI',8);
         $pdf->Cell(0.2,0.5,"Board Copy: (Along with Scroll): ",0,'L');
 
-       /* $pdf->SetXY(0.2,8.17+$Y);
+        /* $pdf->SetXY(0.2,8.17+$Y);
         $pdf->SetFillColor(0,0,0);                                     
         $pdf->SetFont('Arial','',6);
         $pdf->Cell(0.2,0.5," (To be sent to the Board via HBL Branch aloongwith scroll) ",0,'L');*/
@@ -1690,7 +1703,7 @@ $path = $CI->config->item('cache_path');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         // $userinfo = $Logged_In_Array['logged_in'];
-        $this->load->view('common/commonheader9th.php');
+        $this->load->view('common/commonheader.php');
         /* $data = array(
         'isselected' => '14',
         ); */
@@ -1760,14 +1773,14 @@ $path = $CI->config->item('cache_path');
         $this->commonfooter(array("files"=>array("jquery.maskedinput.js","validate.NewEnrolment.js"))); 
 
     }
-    
-      function feecalculate($data,$isupdate)
+
+    function feecalculate($data,$isupdate)
     {
         //DebugBreak();
         $isper = 0;
         if( $this->practicalsubjects($data['sub6'])|| $this->practicalsubjects($data['sub7'])|| $this->practicalsubjects($data['sub8']))
         {
-           $isper = 1; 
+            $isper = 1; 
         }
         $User_info_data = array('Inst_Id'=>999999, 'date' => date('Y-m-d'),'isPratical'=>$isper);
         $user_info  =  $this->Admission_9th_reg_model->getuser_infoPVT($User_info_data); 
@@ -1776,14 +1789,14 @@ $path = $CI->config->item('cache_path');
         $processFee = 295;
         $admfee = 1300;
         $admfeecmp = 1300;
-        
+
         // Declare Science & Arts Fee's According to Fee Table .  Note: this will assign to Triple date fee. After triple date it will not asign fees.
-       
+
         if(!empty($user_info['rule_fee'])) 
         {   
-              
-         $endDate =date('Y-m-d', strtotime($user_info['rule_fee'][0]['End_Date'])); 
-        
+
+            $endDate =date('Y-m-d', strtotime($user_info['rule_fee'][0]['End_Date'])); 
+
             $singleDate = $endDate;
             if($user_info['rule_fee'][0]['isPrSub']==1)
             {
@@ -1800,14 +1813,14 @@ $path = $CI->config->item('cache_path');
         }
         else
         {
-          
+
             $date = new DateTime(SingleDateFee9th);
-      
+
             $singleDate =  $date->format('Y-m-d');                                                                     
             $User_info_data = array('Inst_Id'=>999999, 'date' => $singleDate,'isPratical'=>$isper);
-           
+
             $user_info  =  $this->Admission_9th_reg_model->getuser_infoPVT($User_info_data);
-          //     echo '<pre>'; print_r($user_info);die();
+            //     echo '<pre>'; print_r($user_info);die();
             if($user_info['rule_fee'][0]['isPrSub'] == 1)
             {
                 $admfee = $user_info['rule_fee'][0]['PVT_Amount'];
@@ -1822,7 +1835,7 @@ $path = $CI->config->item('cache_path');
                 $admfeecmp = $user_info['rule_fee'][0]['Comp_Pvt_Amount'];
 
             }
-           
+
             $TripleDate = date('Y-m-d',strtotime(TripleDateFee9th)); 
             $now = date('Y-m-d'); // or your date as well
             $days = (strtotime($TripleDate) - strtotime($now)) / (60 * 60 * 24);
@@ -1834,7 +1847,7 @@ $path = $CI->config->item('cache_path');
             $Total_fine = $days*$fine;
 
         }  
-         //DebugBreak();
+        //DebugBreak();
         $finalFee = '';
         if($data['cat09'] !=  NULL && $data['cat10'] != NULL)
         {
@@ -1862,21 +1875,21 @@ $path = $CI->config->item('cache_path');
             $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>1000,'AdmProcessFee'=>$processFee,'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']);
         }
 
-         if($isupdate == 0)
-         {
-         $info =   $AllStdFee;
-         }
-         else
-         {
-        $info =   $this->Admission_9th_reg_model->Update_AdmissionFeePvt($AllStdFee); 
-         }
-        
+        if($isupdate == 0)
+        {
+            $info =   $AllStdFee;
+        }
+        else
+        {
+            $info =   $this->Admission_9th_reg_model->Update_AdmissionFeePvt($AllStdFee); 
+        }
+
         return $info;
     }
-    
 
-   
-    
+
+
+
     private function set_barcode($code)
     {
         //DebugBreak()  ;
@@ -1892,7 +1905,7 @@ $path = $CI->config->item('cache_path');
         return $code.'.png';
 
     }
- 
+
     public function commonheader($data)
     {
         $this->load->view('common/header.php',$data);
@@ -1928,7 +1941,7 @@ $path = $CI->config->item('cache_path');
     {
         $this->load->view('common/footer9th.php',$data);
     }
- 
+
     function convertImage($originalImage, $outputImage, $quality,$ext)
     {
 
@@ -2234,7 +2247,7 @@ $path = $CI->config->item('cache_path');
                 return;
 
             }
-            else if((@$_POST['std_group'] == 1) && ((@$_POST['sub5']!=5) || (@$_POST['sub6']!=6)||(@$_POST['sub7']!=7)|| (@$_POST['sub8']!=8)))
+            else if((@$_POST['std_group'] == 1) && ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=8)))
             {
 
                 $allinputdata['excep'] = 'Subjects not according to Group';
@@ -2243,7 +2256,7 @@ $path = $CI->config->item('cache_path');
                 return;
 
             }
-            else if((@$_POST['std_group'] == 7)&& ((@$_POST['sub5']!=5) || (@$_POST['sub6']!=6)||(@$_POST['sub7']!=7)|| (@$_POST['sub8']!=78)))
+            else if((@$_POST['std_group'] == 7)&& ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=78)))
             {
 
                 $allinputdata['excep'] = 'Subjects not according to Group';
@@ -2252,7 +2265,7 @@ $path = $CI->config->item('cache_path');
                 return;
 
             }
-            else if((@$_POST['std_group'] == 8)&& ((@$_POST['sub5']!=5) || (@$_POST['sub6']!=6)||(@$_POST['sub7']!=7)|| (@$_POST['sub8']!=43)))
+            else if((@$_POST['std_group'] == 8)&& ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=43)))
             {
 
                 $allinputdata['excep'] = 'Subjects not according to Group';
@@ -2261,7 +2274,7 @@ $path = $CI->config->item('cache_path');
                 return;
 
             }
-            else if((@$_POST['std_group'] == 2) && ((@$_POST['sub5']==5) || (@$_POST['sub6']==6)||(@$_POST['sub7']==7)|| (@$_POST['sub8']==43) || (@$_POST['sub8']==8)))
+            else if((@$_POST['std_group'] == 2) && ((@$_POST['sub4']==5) || (@$_POST['sub5']==6)||(@$_POST['sub6']==7)|| (@$_POST['sub7']==43) || (@$_POST['sub7']==8)))
             {
                 $allinputdata['excep'] = 'Subjects not according to Group';
                 $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
@@ -2270,7 +2283,7 @@ $path = $CI->config->item('cache_path');
 
             }
 
-            else if((@$_POST['std_group'] == 5)&& ((@$_POST['sub5']==5) || (@$_POST['sub6']==6)||(@$_POST['sub7']==7)|| (@$_POST['sub8']==43) || (@$_POST['sub8']==8)))
+            else if((@$_POST['std_group'] == 5)&& ((@$_POST['sub4']==5) || (@$_POST['sub5']==6)||(@$_POST['sub6']==7)|| (@$_POST['sub7']==43) || (@$_POST['sub7']==8)))
             {
                 $allinputdata['excep'] = 'Subjects not according to Group';
                 $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
@@ -2288,7 +2301,7 @@ $path = $CI->config->item('cache_path');
                     return;
 
                 }
-                else if((@$_POST['sub2'] == @$_POST['sub1']) ||(@$_POST['sub2'] == @$_POST['sub3'])||(@$_POST['sub2'] == @$_POST['sub4'])||(@$_POST['sub2'] == @$_POST['sub5'])||(@$_POST['sub2'] == @$_POST['sub6'])||(@$_POST['sub2'] == @$_POST['sub7'])                         ||(@$_POST['sub2'] == @$_POST['sub8'])
+                else if((@$_POST['sub2'] == @$_POST['sub1']) ||(@$_POST['sub2'] == @$_POST['sub3'])||(@$_POST['sub2'] == @$_POST['sub4'])||(@$_POST['sub2'] == @$_POST['sub5'])||(@$_POST['sub2'] == @$_POST['sub6'])||(@$_POST['sub2'] == @$_POST['sub7'])||(@$_POST['sub2'] == @$_POST['sub7'])
                     )
                     {
                         $allinputdata['excep'] = 'Please Select Different Subjects';
@@ -2297,7 +2310,7 @@ $path = $CI->config->item('cache_path');
                         return;
 
                     }
-                    else if((@$_POST['sub3'] == @$_POST['sub1']) ||(@$_POST['sub3'] == @$_POST['sub2'])||(@$_POST['sub3'] == @$_POST['sub4'])||(@$_POST['sub3'] == @$_POST['sub5'])||(@$_POST['sub3'] == @$_POST['sub6'])||(@$_POST['sub3'] == @$_POST['sub7'])||(@$_POST['sub3'] == @$_POST['sub8'])
+                    else if((@$_POST['sub3'] == @$_POST['sub1']) ||(@$_POST['sub3'] == @$_POST['sub2'])||(@$_POST['sub3'] == @$_POST['sub4'])||(@$_POST['sub3'] == @$_POST['sub5'])||(@$_POST['sub3'] == @$_POST['sub6'])||(@$_POST['sub3'] == @$_POST['sub7'])||(@$_POST['sub3'] == @$_POST['sub7'])
                         )
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
@@ -2306,7 +2319,7 @@ $path = $CI->config->item('cache_path');
                             return;
 
                         }
-                        else if((@$_POST['sub4'] == @$_POST['sub1']) ||(@$_POST['sub4'] == @$_POST['sub3'])||(@$_POST['sub4'] == @$_POST['sub2'])||(@$_POST['sub4'] == @$_POST['sub5'])||(@$_POST['sub4'] == @$_POST['sub6'])||(@$_POST['sub4'] == @$_POST[                                 'sub7'])||(@$_POST['sub4'] == @$_POST['sub8']))
+                        else if((@$_POST['sub4'] == @$_POST['sub1']) ||(@$_POST['sub4'] == @$_POST['sub3'])||(@$_POST['sub4'] == @$_POST['sub2'])||(@$_POST['sub4'] == @$_POST['sub5'])||(@$_POST['sub4'] == @$_POST['sub6'])||(@$_POST['sub4'] == @$_POST['sub7'])||(@$_POST['sub4'] == @$_POST['sub7']))
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
                             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
@@ -2314,7 +2327,7 @@ $path = $CI->config->item('cache_path');
                             return;
 
                         }
-                        else if((@$_POST['sub5'] == @$_POST['sub1']) ||(@$_POST['sub5'] == @$_POST['sub3'])||(@$_POST['sub5'] == @$_POST['sub4'])||(@$_POST['sub5'] == @$_POST['sub2'])||(@$_POST['sub5'] == @$_POST['sub6'])||(@$_POST['sub5'] == @$_POST['sub7'])||(@$_POST['sub5'] == @$_POST['sub8']))
+                        else if((@$_POST['sub5'] == @$_POST['sub1']) ||(@$_POST['sub5'] == @$_POST['sub3'])||(@$_POST['sub5'] == @$_POST['sub4'])||(@$_POST['sub5'] == @$_POST['sub2'])||(@$_POST['sub5'] == @$_POST['sub6'])||(@$_POST['sub5'] == @$_POST['sub7'])||(@$_POST['sub5'] == @$_POST['sub7']))
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
                             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
@@ -2322,7 +2335,7 @@ $path = $CI->config->item('cache_path');
                             return;
 
                         }
-                        else if((@$_POST['sub6'] == @$_POST['sub1']) ||(@$_POST['sub6'] == @$_POST['sub3'])||(@$_POST['sub6'] == @$_POST['sub4'])||(@$_POST['sub6'] == @$_POST['sub5'])||(@$_POST['sub6'] == @$_POST['sub2'])||(@$_POST['sub6'] ==                                          @$_POST['sub7'])||(@$_POST['sub6'] == @$_POST['sub8']))
+                        else if((@$_POST['sub8'] == @$_POST['sub1']) ||(@$_POST['sub8'] == @$_POST['sub3'])||(@$_POST['sub8'] == @$_POST['sub4'])||(@$_POST['sub8'] == @$_POST['sub5'])||(@$_POST['sub8'] == @$_POST['sub2'])||(@$_POST['sub8'] == @$_POST['sub6'])||(@$_POST['sub8'] == @$_POST['sub7']))
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
                             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
@@ -2330,7 +2343,7 @@ $path = $CI->config->item('cache_path');
                             return;
 
                         }
-                        else if((@$_POST['sub7'] == @$_POST['sub1']) ||(@$_POST['sub7'] == @$_POST['sub3'])||(@$_POST['sub7'] == @$_POST['sub4'])||(@$_POST['sub7'] == @$_POST['sub5'])||(@$_POST['sub7'] == @$_POST['sub6'])||(@$_POST['sub7'] == @$_POST['sub2'])||(@$_POST['sub7'] == @$_POST['sub8']))
+                        else if((@$_POST['sub6'] == @$_POST['sub1']) ||(@$_POST['sub6'] == @$_POST['sub3'])||(@$_POST['sub6'] == @$_POST['sub4'])||(@$_POST['sub6'] == @$_POST['sub5'])||(@$_POST['sub6'] == @$_POST['sub8'])||(@$_POST['sub6'] == @$_POST['sub2'])||(@$_POST['sub6'] == @$_POST['sub7']))
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
                             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
@@ -2338,7 +2351,7 @@ $path = $CI->config->item('cache_path');
                             return;
 
                         }
-                        else if((@$_POST['sub8'] == @$_POST['sub1']) ||(@$_POST['sub8'] == @$_POST['sub3'])||(@$_POST['sub8'] == @$_POST['sub4'])||(@$_POST['sub8'] == @$_POST['sub5'])||(@$_POST['sub8'] == @$_POST['sub6'])||(@$_POST['                                                   sub8'] == @$_POST['sub7'])||(@$_POST['sub8'] == @$_POST['sub2']))
+                        else if((@$_POST['sub7'] == @$_POST['sub1']) ||(@$_POST['sub7'] == @$_POST['sub3'])||(@$_POST['sub7'] == @$_POST['sub4'])||(@$_POST['sub7'] == @$_POST['sub5'])||(@$_POST['sub7'] == @$_POST['sub6'])||(@$_POST['sub7'] == @$_POST['sub6'])||(@$_POST['sub7'] == @$_POST['sub2']))
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
                             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
@@ -2346,21 +2359,21 @@ $path = $CI->config->item('cache_path');
                             return;
 
                         }
-                        else if (in_array($_POST['sub8'], $subjectslang) && in_array($_POST['sub7'], $subjectslang))
+                        else if (in_array($_POST['sub6'], $subjectslang) && in_array($_POST['sub7'], $subjectslang))
                         {
                             $allinputdata['excep'] = 'Double Language is not Allowed Please choose a different Subject';
                             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
                             redirect('Admission_9th_pvt/'.$viewName);
                             return;
                         }
-                        else if (in_array($_POST['sub8'], $subjectshis) && in_array($_POST['sub7'], $subjectshis))
+                        else if (in_array($_POST['sub6'], $subjectshis) && in_array($_POST['sub7'], $subjectshis))
                         {
                             $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
                             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
                             redirect('Admission_9th_pvt/'.$viewName);
                             return;
                         }
-                        else if(@$_POST['sub6'] == @$_POST['sub8'])
+                        else if(@$_POST['sub6'] == @$_POST['sub7'])
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
                             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
@@ -2368,7 +2381,7 @@ $path = $CI->config->item('cache_path');
                             return;
 
                         }
-                        else if(@$_POST['sub7'] == @$_POST['sub8'])
+                        else if(@$_POST['sub7'] == @$_POST['sub6'])
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
                             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
@@ -2597,4 +2610,55 @@ $path = $CI->config->item('cache_path');
             //rmdir(@$dirPath);
         }
     }
+
+
+    public function uploadpic() 
+    {
+        //DebugBreak();
+
+        ############ Configuration ##############
+        $config["generate_image_file"]            = true;
+        $config["generate_thumbnails"]            = false;
+        $config["image_max_size"]                 = 150; //Maximum image size (height and width)
+        $config["thumbnail_size"]                  = 200; //Thumbnails will be cropped to 200x200 pixels
+        $config["image_prefix"]                 = "temp_"; //Normal thumb Prefix
+        $config["thumbnail_prefix"]                = "thumb_"; //Normal thumb Prefix
+        $config["destination_folder"]            = PRIVATE_IMAGE_PATH9TH; //upload directory ends with / (slash)
+        $config["thumbnail_destination_folder"]    = ''; //upload directory ends with / (slash)
+        $config["upload_url"]                     = PRIVATE_IMAGE_PATH9TH;//base_url()."/uploads/2017/private/10th/";
+        $config["quality"]                         = 90; //jpeg quality
+        $config["random_file_name"]                = true; //randomize each file name
+
+        if(!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) 
+        {
+            exit;  //try detect AJAX request, simply exist if no Ajax
+        }
+        //specify uploaded file variable
+        $config["file_data"] = $_FILES["__files"]; 
+
+        $this->load->library('ImageResize');
+
+        //create class instance 
+        $im = new ImageResize(); 
+
+        try
+        {
+            $responses = $im->resize($config); //initiate image resize
+            //output images
+            foreach($responses["images"] as $response){
+
+                $config["upload_url"] = $config["upload_url"].$response;
+                $type = pathinfo($config["upload_url"], PATHINFO_EXTENSION);
+                $config["upload_url"] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($config["upload_url"]));
+                echo '<input type="hidden" class="hidden" id="picname" name="picname" value="'.$response.'">
+                <img id="previewImg" style="width:130px; height: 130px;" class="img-responsive" src="'.$config["upload_url"].'" alt="CandidateImage">';
+            }
+        }
+        catch(Exception $e){
+            echo '<div class="error">';
+            echo $e->getMessage();
+            echo '</div>';
+        }
+    }
+
 }
