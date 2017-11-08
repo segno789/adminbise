@@ -1,328 +1,403 @@
 
-<div class="dashboard-wrapper class wysihtml5-supported">
-    <div class="left-sidebar">
-        <div class="row-fluid">
-            <div class="span12">
-                <div class="widget">
-                    <div class="widget-header">
-                        <div class="title">
-                            Event Admission for<a id="redgForm" data-original-title="">m</a>
-                        </div>
-                        <span class="tools">
-                            <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
-                        </span>
-                    </div>
-                    <div class="widget-body">
-
-                        <form class="form-horizontal no-margin" action="<?php echo base_url(); ?>Admission_9th_pvt/NewEnrolment_insert" method="post" enctype="multipart/form-data" id="from9thpvt" >
-
-                            <div class="control-group">
-                                <h4 class="span4">Personal Information :</h4>
-                                <div class="controls controls-row">
-                                    <input type="hidden" class="span2 hidden" id="isReAdm" name="isReAdm" value="0">
-                                    <label class="control-label span2" for="father_name">
-
-                                    </label> 
-                                    <img id="previewImg" style="width:80px; height: 80px;" class="span2" src="<?php echo base_url(); ?>assets/img/profile.png" alt="Candidate Image">
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label hidden span1" for="">
-                                    Father's Name :
-                                </label>
-                                <div class="controls controls-row">
-                                    <input class="span3 hidden"  type="text" placeholder="Father's Name">  
-                                    <label class="control-label span2" for="father_name">
-                                        Image :  
-                                    </label> 
-                                    <input type="file" class="span4" id="image" name="image" required="required" >
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label span1" for="cand_name">
-                                    Candidate Name
-                                </label>
-                                <div class="controls controls-row">
-                                    <div><input class="span3" type="text" id="cand_name" name='cand_name' required="required" placeholder="Candidate Name"  style="text-transform: uppercase;" ></div>
-                                    <label class="control-label span2" for="">
-                                        Father's Name :
-                                    </label> 
-                                    <div><input style="margin-left:42px;text-transform: uppercase;" class="span3" id="father_name" name="father_name" required="required" type="text"   placeholder="Father's Name"></div>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label span1" for="bay_form">
-                                    Bay Form No :
-                                </label>
-                                <div class="controls controls-row">
-                                    <input class="span3" type="text" id="bay_form" name="bay_form" required="required" value="34101-412564-2" placeholder="Bay Form No.">
-                                    <label class="control-label span2" for="father_cnic">
-                                        Father's CNIC :
-                                    </label> 
-                                    <input class="span3" id="father_cnic" name="father_cnic" type="text" value="34101-56321-4" required="required" placeholder="34101-1111111-1">
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label span1" for="dob">
-                                    Date of Birth:(dd-mm-yyyy)
-                                </label>
-
-                                <div class="controls controls-row">
-                                    <input class="span3" type="text" required="required" id="dob"  name="dob" placeholder="dd-mm-yyyy" readonly>
-                                    <label class="control-label span2" for="mob_number">
-                                        Mobile Number :
-                                    </label> 
-                                    <input class="span3" id="mob_number" name="mob_number" required="required" type="text" placeholder="0300-1234567">
-                                </div>
-                            </div>
-                          
-                            <div class="control-group">
-                                <label class="control-label span1" for="MarkOfIden">
-                                    Mark Of Identification :
-                                </label>
-                                <div class="controls controls-row">
-                                    <input class="span3" style="text-transform: uppercase;" type="text" id="MarkOfIden" name="MarkOfIden"  required="required">
-                                    <label class="control-label span2" for="fname">
-                                        Speciality:
-                                    </label> 
-                                    <select id="speciality"  class="span3" name="speciality">
-                                        <option value="0">None</option>
-                                        <option value="1">Deaf &amp; Dumb</option>
-                                        <option value="2">Board Employee</option>
-                                        <option value="3">Blind</option>
-                                    </select>
-                                </div>
-                            </div>
-                              <div class="control-group">
-                                <label class="control-label span1" for="medium">
-                                    MEDIUM:
-                                </label>
-                                <div class="controls controls-row">
-                                    <select id="medium" class="dropdown span3" name="medium">
-                                        <option value="1" selected="selected">Urdu</option>
-                                        <option value="2">English</option>
-                                    </select>
-                                   <label class="control-label span2" for="UrbanRural">
-                                        Residency :
-                                    </label> 
-                                   <label class='radio inline span1'><input type='radio' value='1' id='UrbanRural' checked='checked' name='UrbanRural'> Urban
-                                    </label><label class='radio inline span1'><input type='radio'  id='UrbanRural' value='2' name='UrbanRural'>  Rural </label>  
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label span1" for="nationality1">
-                                    Nationality :
-                                </label>
-                                <div class="controls controls-row">  
-                                    <label class="radio inline span1">
-                                        <input type="radio" value="1" id="nationality1" checked="checked" name="nationality"> Pakistani
-                                    </label>
-                                    <label class="radio inline span2">
-                                        <input type="radio"  id="nationality2" value="2" name="nationality">  Non Pakistani 
-                                    </label>
-                                    <label class="control-label span2" for="gender1">
-                                        Gender :
-                                    </label> 
-                                    <label class="radio inline span1" style='    color: red;'>
-                                        <input type="radio" id="gender1" value="1"  name="gender" > Male
-                                    </label> 
-                                    <label class="radio inline span1" style='    color: red;'>
-                                        <input type="radio" id="gender2" value="2" name="gender" > Female 
-                                    </label> 
-                                </div>
-                                
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label span1" for="name">
-                                    Hafiz-e-Quran :
-                                </label>
-                                <div class="controls controls-row">
-                                    <label class="radio inline span1">
-                                        <input type="radio" id="hafiz1" value="1" checked="checked" name="hafiz"> No
-                                    </label>
-                                    <label class="radio inline span1">
-                                        <input type="radio" id="hafiz2" value="2" name="hafiz"> Yes
-                                    </label>
-                                    <label class="control-label span3" for="fname">
-                                        Religion :
-                                    </label> 
-                                    <label class="radio inline span1">
-                                        <input type="radio" id="religion1" class="rel_class" value="1" checked="checked" name="religion"> Muslim
-                                    </label>
-                                    <label class="radio inline span1">
-                                        <input type="radio" id="religion2" class="rel_class" value="2" name="religion"> Non Muslim
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label span1" for="name">
-                                    Address :
-                                </label>
-                                <div class="controls controls-row">
-                                    <textarea style="height:150px;text-transform: uppercase;" id="address" class="span8" name="address" required="required"> </textarea>
-                                </div>
-                            </div>
-                            <hr>
-                                      <div class="control-group">
-                                <h4 class="span4" style="margin-left: 30px;">Exam Proposed Center Information :</h4>
-                                <div class="controls controls-row">
-                                    <label class="control-label span2">
-
-                                    </label> 
-
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label span1" >
-                                    District :
-                                </label>
-                                <div class="controls controls-row">
-                                    <select class='span3' id='pvtinfo_dist' name='pvtinfo_dist' required='required'>
-                                        <option value='0'>SELECT DISTRICT</option>
-                                        <option value='1'>GUJRANWALA</option>
-                                        <option value='2'>GUJRAT</option>
-                                        <option value='3'>HAFIZABAD</option>
-                                        <option value='4'>MANDI BAHA-UD-DIN</option>
-                                        <option value='5'>NAROWAL</option>
-                                        <option value='6'>SIALKOT</option>
-                                    </select>
-                                    <label class="control-label span2" >
-                                        Tehsil:
-                                    </label> 
-                                    <select class='span3' id='pvtinfo_teh' name='pvtinfo_teh' required='required'>
-                                        <option value='0'>SELECT TEHSIL</option>
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                            <label class="control-label span1" >
-                                Zone :
-                            </label>
-
-                            <div class="controls controls-row">
-                                <select id="pvtZone"  class="span3" name="pvtZone">
-                                    <option value='0'>SELECT ZONE</option>
-
-                                </select>
-                                <!-- <label class="control-label span2" >
-                                Board:
-                                </label> 
-                                <select id="speciality"  class="span3" name="speciality">
-                                <?php echo "<option value='1' selected='selected'>Gujranwala</option>";  ?>
-                                </select>
-                                </div>-->
-                            </div>
-                            <div id="instruction" style="display:none; width:700px" >
-                                <img src="<?php echo base_url(); ?>assets/img/admission_form.jpg" border="0" width="10000" height="840" alt="admission_form.jpg">
-                                <img src="<?php echo base_url(); ?>assets/img/instructions.jpg" border="0" width="10000" height="840" alt="admission_form.jpg">
-                            </div>
-                            <hr>
-                      
-                            </div>
-                             
-                                        <div class="control-group">
-                                <h4 class="span4">Exam Information :</h4>
-                                <div class="controls controls-row">
-                                    <input type="hidden" class="span2 hidden"  value="0">
-                                    <label class="control-label span2" for="father_name">
-
-                                    </label> 
-                                    
-                                </div>
-                            </div>
-                               <div class="control-group">
-                                <label class="control-label span1" for="nationality1">
-                                    Study Group :
-                                </label>
-                                <div class="controls controls-row">
-                                    <select id="std_group" class="dropdown span6"  name="std_group">
-                                        <option value="0">Please Select Group</option>
-                                        <option value="1">SCIENCE WITH BIOLOGY</option>
-                                        <option value="7">SCIENCE  WITH COMPUTER SCIENCE</option>
-                                        <option value="8">SCIENCE  WITH ELECTRICAL WIRING</option>
-                                        <option value="2">GENERAL</option>
-                                        <option value="5">DEAF AND DUMB</option>
-                                    </select>                                            
-                                    
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label span3" for="name">
-                                 <b>Choose Subjects(Elective Subjects are Enabled Only)</b>   
-                                </label>
-                                <div class="controls controls-row">
-                                    <label class="control-label span8" >
-                                    </label> 
-                                </div>
-                            </div>
-                                  <div class="control-group">
-                                <label class="control-label span1" for="name">
-                                    
-                                </label>
-                                <div class="controls controls-row">
-                                    <select id="sub1" class="span3 dropdown" name="sub1"><option value="1">Urdu</option></select> 
-                                    <select id="sub2"  name="sub2" class="span3 dropdown">
-                                            <option value="2">English</option></select>
-                                </div>
-                            </div>
-                                    <div class="control-group">
-                                <label class="control-label span1" for="name">
-                                    
-                                </label>
-                                <div class="controls controls-row">
-                                    <select id="sub3" class="span3 dropdown" name="sub3"><option value="3">Islamyat Compulsory</option></select> 
-                                    <select id="sub4"  name="sub4" class="span3 dropdown">
-                                            <option value="4">Pakistan Studies</option></select>
-                                </div>
-                            </div>    
-                            <div class="control-group">
-                                <label class="control-label span1" for="name">
-                                    
-                                </label>
-                                <div class="controls controls-row">
-                                    <select id="sub5" class="span3 dropdown" name="sub5"></select> 
-                                    <select id="sub6"  name="sub6" class="span3 dropdown">
-                                            </select>
-                                </div>
-                            </div>    <div class="control-group">
-                                <label class="control-label span1" for="name">
-                                    
-                                </label>
-                                <div class="controls controls-row">
-                                    <select id="sub7" class="span3 dropdown" name="sub7"></select> 
-                                    <select id="sub8"  name="sub8" class="span3 dropdown">
-                                            </select>
-                                </div>
-                            </div>
-                        
-                           
-                            <div class="row">
-                            <div class="col-lg-2">
-                            </div>
-                            <div class="col-lg-4">
-                                <button type="submit" name="save" class="btn btn-large btn-info" onclick="return checks();"> 
-                                    Save Form
-                                </button>
-                                <input type="button" class="btn btn-large btn-danger" value="Cancel" onclick="window.location='index.php';" >
-                            </div>
-                            </div>
-                            
-                                <div class="clearfix">
-                                </div>
-                            
-
-                        </form>
-
-
-                    </div>  
-
-                </div>
+<form method="post" enctype="multipart/form-data" name="myform" id="myform" action="<?php base_url(); ?>NewEnrolment_insert">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-5">
+                <h4 class="bold">Personal Information</h4>
             </div>
         </div>
     </div>
-</div>
-<script type="">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-5">
+                <img src="<?php echo base_url(); ?>assets/img/upalodimage.jpg" class="img-responsive" alt="" >
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-5" id="output">
+                <img id="previewImg" style="width:130px; height: 130px;" class="img-responsive" src="<?php echo base_url(); ?>assets/img/profile.png" alt="CandidateImage">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-3" id="progress-wrp">
+                <div class="progress-bar"></div><div class="status">0%</div>
+            </div>
+            <div class="col-md-2">
+                <input type="file" id="image" name="__files[]">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="cand_name" >
+                    Candidate Name:
+                </label>        
+                <input class="text-uppercase form-control"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>"  <?php if(@$data['name']!= "") echo "readonly='readonly'";  ?>  >
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="father_name">
+                    Father's Name :
+                </label>        
+                <input class="text-uppercase form-control" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo @$data['Fname']; ?>" <?php if(@$data['Fname']!= "") echo "readonly='readonly'";  ?> > 
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="bay_form" >
+                    Bay Form No:
+                </label>        
+                <input class="text-uppercase form-control" type="text" id="bay_form" name="bay_form" maxlength="15" placeholder="Bay Form No." value="<?php echo @$data['BForm'];?>" <?php if(@$data['isNotFresh']!=0 && @$data['BForm']!="") echo "readonly='readonly'";  ?>  required="required" >
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="father_cnic">
+                    Father's CNIC:
+                </label>        
+                <input class="text-uppercase form-control" id="father_cnic" name="father_cnic" type="text" placeholder="FNIC No"  value="<?php  echo @$data['FNIC'];?>" <?php if(@$data['isNotFresh']!=0 && @$data['FNIC']!="") echo "readonly='readonly'";  ?>  required="required" >
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="dob">Date of Birth:</label>
+                <input class="text-uppercase form-control" type="text" name="dob" id="dob" readonly="readonly" placeholder="Date of Birth" value="<?php  echo @$data['Dob'];?>" required = "required">
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="mob_number">Mobile Number:</label>
+                <input class="text-uppercase form-control" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value="<?php echo  @$data['MobNo']; ?> " required="required">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="medium"> MEDIUM:</label>
+                <select id="medium" class="form-control text-uppercase" name="medium">
+                    <?php
+                    $med = @$data['medium'];
+                    // $med = 2; 
+                    if($med == 1)
+                    {
+                        echo  "<option value='0'>None</option>
+                        <option value='1' selected='selected'>Urdu</option>
+                        <option value='1'>English</option>";
+                    }
+                    else if($med == 2)
+                    {
+                        echo  "<option value='0'>None</option>
+                        <option value='2'>Urdu</option>
+                        <option value='2' selected='selected'>English</option>";
+                    }
+                    else{
+                        echo  "<option value='0' selected='selected'>None</option>
+                        <option value='1'>Urdu</option>
+                        <option value='2'>English</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="MarkOfIden"> Mark of Identification :</label>
+                <input class="text-uppercase form-control" type="text" id="MarkOfIden" style="text-transform: uppercase;" name="MarkOfIden" value="<?php echo  @$data['markOfIden']; ?>" required="required" maxlength="60" >
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="nationality" >
+                    Nationality :
+                </label>        
+                <select name="nationality" class="form-control text-uppercase" id="nationality"> 
+                    <?php
+                    $nat = @$data['nat'];
+                    if($nat == 1)
+                    {
+                        echo  
+                        "<option value='0'>None</option>
+                        <option value='1' selected='selected'>Pakistani</option>
+                        <option value='2'>Non Pakistani</option>";
+                    }
+                    else if ($nat == 2)
+                    {
+                        echo  
+                        "<option value='0'>None</option><option value='1'>Pakistani</option> 
+                        <option value='2' selected='selected'>Non Pakistani</option>";
+                    }
+                    else{
+                        echo  
+                        "<option value='0' selected='selected'>None</option>
+                        <option value='1'>Pakistani</option> 
+                        <option value='2'>Non Pakistani</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="speciality">
+                    Speciality:
+                </label>     
+                <select id="speciality"  class="text-uppercase form-control" name="speciality">
+                    <?php 
+                    $spec =  @$data['Speciality'];
+                    if($spec==1)
+                    {
+                        echo  "<option value='0' >None</option>  
+                        <option value='1' selected='selected'>Deaf &amp; Dumb</option>
+                        <option value='2'>Board Employee</option>
+                        <option value='3'>Blind</option>";
+                    }
+                    else if($spec ==2)
+                    {
+                        echo  "<option value='0'>None</option>  
+                        <option value='1'>Deaf &amp; Dumb</option>
+                        <option value='2' selected='selected'>Board Employee</option>
+                        <option value='3'>Blind</option>";
+                    }
+                    else
+                    {
+                        echo  "<option value='0' selected='selected'>None</option>  
+                        <option value='1'>Deaf &amp; Dumb</option>
+                        <option value='2'>Board Employee</option>
+                        <option value='3'>Blind</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="UrbanRural" >
+                    Locality : 
+                </label>        
+                <select name="UrbanRural" class="form-control text-uppercase" id="UrbanRural"> 
+                   
+                  
+                        <option value='0' selected='selected'>None</option>
+                        <option value='1' >URBAN</option> 
+                        <option value='2'>RURAL</option>";
+                   
+                   
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="gender">
+                    Gender :
+                </label>     
+                <select  class="form-control text-uppercase" id="gender" name="gender">
+                    <?php
+                    @$gender = @$data['sex'];
+                    if($gender == 1)
+                    {
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1' selected='selected'>MALE</option> 
+                        <option value='2'>FEMALE</option>";
+                    }
+                    else if ($gender == 2)
+                    {
+                        echo"
+                        <option value='0'>None</option><option value='1'>MALE</option> 
+                        <option value='2' selected='selected'>FEMALE</option>";
+                    }
+                    else{
+                        echo"<option value='0' selected='selected'>None</option>
+                        <option value='1'>MALE</option> 
+                        <option value='2'>FEMALE</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="religion">
+                    Religion : 
+                </label>        
+                <select name="religion" class="form-control text-uppercase" id="religion"> 
+                   
+                   
+                        <option value='0' selected='selected'>None</option>
+                        <option value='1' >MUSLIM</option> 
+                        <option value='2'>NON MUSLIM</option>";
+                    
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="hafiz" >
+                    Hafiz-e-Quran :
+                </label>        
+                <select name="hafiz" class="form-control text-uppercase" id="hafiz"> 
+                    <option value='1' selected='selected'>NO</option> 
+                    <option value='2'>YES</option> 
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="control-label" for="address" >
+                    Address :
+                </label>        
+                <textarea  id="address" class="text-uppercase form-control" rows="4" name="address" required="required">
+                    <?php echo trim($data['addr']);  ?>
+                </textarea>       
+            </div>
+        </div>
+    </div>
+    <hr class="colorgraph">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-6">
+                <h4 class="bold">Examination Proposed Center Information</h4>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <label class="control-label" for="pvtinfo_dist" >
+                    District :
+                </label>        
+                <select class='form-control text-uppercase' id='pvtinfo_dist' name='pvtinfo_dist' required='required'>
+                    <option value='0'>SELECT DISTRICT</option>
+                    <option value='1'>GUJRANWALA</option>
+                    <option value='2'>GUJRAT</option>
+                    <option value='3'>HAFIZABAD</option>
+                    <option value='4'>MANDI BAHA-UD-DIN</option>
+                    <option value='5'>NAROWAL</option>
+                    <option value='6'>SIALKOT</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="pvtinfo_teh">
+                    Tehsil :
+                </label>        
+                <select class='form-control  text-uppercase' id='pvtinfo_teh' name='pvtinfo_teh' required='required'>
+                    <option value='0'>SELECT TEHSIL</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="control-label" for="pvtZone" >
+                    Zone :
+                </label>        
+                <select id="pvtZone" class="form-control text-uppercase" name="pvtZone">
+                    <option value='0'>SELECT ZONE</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div style="width: 750px; display:none;" class="pull-right" id="instruction" >
+        <img src="<?php echo base_url(); ?>assets/img/Instructions.jpg" class="img-responsive" alt="instructions.jpg" style="width: 650px;">
+    </div>
+    <hr class="colorgraph">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-6">
+                <h4 class="bold">Exam Information :</h4>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="control-label" for="std_group">
+                    Study Group :
+                </label>
+                <select id="std_group" class="form-control text-uppercase" name="std_group">
+                    <option value="0">SELECT GROUP</option>
+                    <option value="1">SCIENCE WITH BIOLOGY</option>
+                    <option value="7">SCIENCE  WITH COMPUTER SCIENCE</option>
+                    <option value="8">SCIENCE  WITH ELECTRICAL WIRING</option>
+                    <option value="2">GENERAL</option>
+                    <option value="5">DEAF AND DUMB</option>
+                </select>                                            
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="control-label" for="std_group">
+                    <b>Choose Subjects(Elective Subjects are Enabled Only)</b> 
+                </label>
+                <select id="sub1" class="form-control" name="sub1"><option value="1">Urdu</option></select> 
+                <select id="sub2"  name="sub2" class="form-control">
+                    <option value="2">English</option></select>
+                <select id="sub3" class="form-control" name="sub3"><option value="3">Islamyat Compulsory</option></select> 
+                <select id="sub8"  name="sub8" class="form-control">
+                    <option value="4">Pakistan Studies</option></select>
+                <select id="sub4" class="form-control" name="sub4"></select> 
+                <select id="sub5"  name="sub5" class="form-control">
+                </select>
+                <select id="sub6" class="form-control" name="sub6"></select> 
+                <select id="sub7"  name="sub7" class="form-control">
+                </select>                                                                   
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="checkbox-inline">
+                    <input type="checkbox" class="checkboxtext" id="terms" name="terms" value="yes">I agree with the <a href="https://www.bisegrw.edu.pk/ssc/assets/pdfs/Instructions.jpg">Terms and Conditions </a> of Board of Intermediate &amp; Secondary Education, Gujranwala  
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+               
+                 <button type="submit" name="save" class="btn btn-primary btn-block" onclick="return checks();"> 
+                Save Form
+            </button>
+            </div>
+            <div class="col-md-2">
+                 <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg" download="instructions.jpg" class="btn btn-info btn-block">Download Instruction</a>
+            </div>
+            <div class="col-md-3">
+                <input type="button" class="btn btn-danger btn-block" value="Cancel" id="btnCancel" name="btnCancel" onclick="return CancelAlertpvt9th();">
+            </div>
+        </div>
+    </div>
+   
+
+    <div class="clearfix">
+    </div>
+</form>
+<script src="<?php echo base_url(); ?>assets/js_matric/jquery-1.8.3.js"></script>
+<script type="text/javascript">
+ function CancelAlertpvt9th()
+    {
+        var msg = "Are You Sure You want to Cancel this Form ?"
+        alertify.confirm(msg, function (e) {
+            if (e) {
+                // user clicked "ok"
+                window.location.href ="<?php echo base_url(); ?>Admission_pvt_9th";
+            } else {
+                // user clicked "cancel"
+
+            }
+        });
+    }
     function checks(){
         var status  =  check_NewEnrol_validation();
         if(status == 0)
@@ -331,18 +406,19 @@
         }
         else
         {
-             $("button[type='submit']").html('Please wait ...').attr('disabled','disabled'); 
-             $("#from9thpvt").submit(); 
+            $("button[type='submit']").html('Please wait ...').attr('disabled','disabled'); 
+            $("#myform").submit(); 
             return true;
         } 
     }
-function  check_NewEnrol_validation(){
+    function  check_NewEnrol_validation(){
 
         var name =  $('#cand_name').val();
         var dist_cd= $('#pvtinfo_dist').val();
         var teh_cd= $('#pvtinfo_teh').val();
         var zone_cd= $('#pvtZone').val();
-      //  var pp_cent= $('#pp_cent').val();           
+
+        //  var pp_cent= $('#pp_cent').val();           
         var sub6p1 = $('#sub5').val();
         var sub6p2 = $('#sub6').val();           
         var sub7p1 = $('#sub7').val();
@@ -358,32 +434,47 @@ function  check_NewEnrol_validation(){
         var address = $('#address').val();
         var image = $('#image').val();
         var MarkOfIdent = $('#MarkOfIden').val();
-         var gend = $("input[name=gender]:checked").val();
+        var gend = $("#gender").val();
+        var religion = $('#religion').val();
+        var nationality = $('#nationality').val();
+        var medium = $('#medium').val();
+        var UrbanRural = $('#UrbanRural').val();
+        var terms = $("input[name='terms']:checked").val();
         var status = 0;
+        var fuData = document.getElementById('image');
+        var FileUploadPath = fuData.value;
+        if (FileUploadPath == '') {
+            alertify.error("Please upload an image");
+            jQuery('#previewImg').removeAttr('src');
+            $("#previewImg").attr("src","<?php echo base_url(); ?>assets/img/profile.png");
+            $("#image").focus();
+            return status;
+        }
+
         // alert('sub6 '+sub6p1+ ' and '+ sub6p2);
         if(name == "" ||  name == undefined){
-              alertify.error("Please Enter your  Name.");
-          
+            alertify.error("Please Enter your  Name.");
+
             $('#cand_name').focus(); 
             return status;
         }
         else if(fName == "" || fName == undefined){
             alertify.error("Please Enter your  Father's Name.");
-           
+
             $('#father_name').focus(); 
             return status;
         }   
 
         else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
         {
-             alertify.error("Please Enter your  bay-Form.");
+            alertify.error("Please Enter your  bay-Form.");
             $('#bay_form').focus();  
             return status; 
         }
         else if(FNic == "" || FNic.length == undefined )
         {
-             alertify.error("Please Enter your  Father's CNIC.");
-            
+            alertify.error("Please Enter your  Father's CNIC.");
+
             $('#father_cnic').focus();  
             return status; 
         }
@@ -404,8 +495,8 @@ function  check_NewEnrol_validation(){
         }
         else if(dob == "" || dob.length == undefined)
         {
-             alertify.error("Please Enter your  Date of Birth.");
-            
+            alertify.error("Please Enter your  Date of Birth.");
+
             $('#dob').focus(); 
             return status;  
         }
@@ -413,23 +504,47 @@ function  check_NewEnrol_validation(){
         else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
         {
             alertify.error("Please Enter your Mobile No.");
-            
+
             $('#mob_number').focus();   
             return status;  
         }
-        else if(gend == "" || gend== undefined)
+        else if(medium == "" || medium == 0 || medium == undefined)
         {
-             alertify.error("Please Select Your Gender.");
-            //$('#ErrMsg').html("<b>Please Select Your Gender.</b>"); 
-            $("input[name=gender]:checked").focus();   
+            alertify.error("Please Select Medium.") 
+            $('#medium').focus();   
             return status;  
         }
         else if(MarkOfIdent == "" || MarkOfIdent == 0 || MarkOfIdent == undefined)
         {
-             alertify.error("Please Enter your Mark of Indentification.");
+            alertify.error("Please Enter your Mark of Indentification.");
             //$('#ErrMsg').html("<b>Please Enter your Mark of Indentification</b>"); 
             $('#MarkOfIden').focus();   
             return status;  
+        }
+        else if(nationality == "" || nationality == 0 || nationality == undefined)
+        {
+            alertify.error("Please Select Nationality") 
+            $('#nationality').focus();   
+            return status;  
+        }
+        else if(UrbanRural == undefined || UrbanRural == 0)
+        {
+            alertify.error("Please Select Your Locilaty First!")
+            $('#UrbanRural').focus();
+            return status;
+        }
+        else if(gend == "" || gend== undefined)
+        {
+            alertify.error("Please Select Your Gender.");
+            //$('#ErrMsg').html("<b>Please Select Your Gender.</b>"); 
+            $("input[name=gender]:checked").focus();   
+            return status;  
+        }
+        else if(religion == undefined || religion == 0)
+        {
+            alertify.error("Please Select Your Religion First!")
+            $('#religion').focus();
+            return status;
         }
         else if(address == "" || address == 0 || address.length ==undefined )
         {
@@ -442,47 +557,55 @@ function  check_NewEnrol_validation(){
         else  if (dist_cd < 1) 
         {
 
-             alertify.error("Please select District.");
-      
-        $("#pvtinfo_dist").focus();
+            alertify.error("Please select District.");
 
-        return status;  
+            $("#pvtinfo_dist").focus();
+
+            return status;  
         }
 
         else   if (teh_cd < 1) {
-        alertify.error("Please select Tehsil.");
-        //alert('Please select Tehsil');                          
-        $("#pvtinfo_teh").focus();
-        return status;  
+            alertify.error("Please select Tehsil.");
+            //alert('Please select Tehsil');                          
+            $("#pvtinfo_teh").focus();
+            return status;  
         }
         else  if (zone_cd < 1) {
-alertify.error("Please select Zone.");
-       // alert('Please select Zone. ');                          
-        $("#pvtZone").focus();
-        return status;  
+            alertify.error("Please select Zone.");
+            // alert('Please select Zone. ');                          
+            $("#pvtZone").focus();
+            return status;  
         }
-        
+
 
         else   if ($("#std_group").find('option:selected').val() < 1) 
         {
-             alertify.error("Please Enter your Study Group.");
-           
+            alertify.error("Please Enter your Study Group.");
+
             // alert('Study Group not selected ');                          
             $("#std_group").focus();
             return status;  
         }
         else   if ($("#sub3").find('option:selected').val() < 1) 
         {
-             alertify.error("Plesae select  Subject.");
-                             
+            alertify.error("Plesae select  Subject.");
+
             $("#sub3").focus();
+
+            return status;  
+        }
+        else   if ($("#sub8").find('option:selected').val() < 1) 
+        {
+            alertify.error("Plesae select  Subject.");
+
+            $("#sub8").focus();
 
             return status;  
         }
         else   if ($("#sub5").find('option:selected').val() < 1) 
         {
             alertify.error("Plesae select  Subject.");
-                                   
+
             $("#sub5").focus();
 
             return status;  
@@ -490,9 +613,9 @@ alertify.error("Please select Zone.");
 
         else   if ($("#sub6").find('option:selected').val() < 1) 
         {
-             alertify.error("Plesae select 6th Subject.");
-                                   
-            
+            alertify.error("Plesae select 6th Subject.");
+
+
             // alert('Plesae select 6th Subject  ');                          
             $("#sub6").focus();
             return status;  
@@ -500,11 +623,11 @@ alertify.error("Please select Zone.");
 
         else   if ($("#sub7").find('option:selected').val() < 1) 
         {
-             alertify.error("Plesae select 7th Subject.");
-                                   
-            
+            alertify.error("Plesae select 7th Subject.");
+
+
             // alert('Plesae select 6th Subject  ');                          
-             
+
             $("#sub7").focus();
             return status;  
         }
@@ -512,9 +635,15 @@ alertify.error("Please select Zone.");
         else   if ($("#sub8").find('option:selected').val() < 1) 
         {
             alertify.error("Plesae select 8th Subject.");
-              
+
             $("#sub8").focus();
             return status;  
+        }
+        else if($("#terms").is(":not(:checked)"))
+        {
+            alertify.error("Please Accept Terms and Conditions First!")
+            $('input[name="terms"]').focus(); 
+            return status;
         }
 
         status = 1;
@@ -524,5 +653,5 @@ alertify.error("Please select Zone.");
 
 
     }
-     
+
 </script>

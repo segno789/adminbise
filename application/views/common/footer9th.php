@@ -1,33 +1,24 @@
-<footer>
-    <p>
-        &copy; <?php echo Year; ?> BISE Gujranwala All Rights Reserved.
-    </p>
-</footer>
 
-<!--Add the following script at the bottom of the web page (before </body></html>)-->
-<!--<script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=93646887"></script>-->
+<div id="footer" class="footer">
+    &nbsp; &copy; 2017 BISE Gujranwala, All Rights Reserved. 
+</div>
+
+</div>
 
 <script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/jquery.scrollUp.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/wysiwyg/bootstrap-wysihtml5.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.dataTables.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.mask.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.validate.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/alertify.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.fancybox.pack.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery.maskedinput.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/alertify.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.pack.js"></script>    
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.js"></script>    
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.dataTables.js"></script>
 
-<?php 
-if(isset($files)){
-    foreach($files as $file){
-        echo '<script type="text/javascript" src="'.base_url().'assets/js/'.$file.'"></script>';
-    }
-}
-?> 
-<script type="">
+
+<script type="text/javascript">
+
     $(document).ready(function () {
-     $('.mPageloader').hide();
+        $('.mPageloader').hide();
         $('#data-table').dataTable({
             "sPaginationType": "full_numbers",
             "cache": false
@@ -37,12 +28,116 @@ if(isset($files)){
             "cache": false
         });
 
+
+
+        var max_file_size             = 20000; //allowed file size. (1 MB = 1048576)
+        var allowed_file_types         = ['image/jpeg', 'image/pjpeg']; //allowed file types
+        var result_output             = '#output'; //ID of an element for response output
+        var my_form_id                 = '#upload_form'; //ID of an element for response output
+        var progress_bar_id         = '#progress-wrp'; //ID of an element for response output
+        var total_files_allowed     = 1; //Number files allowed to upload
+
+        $(function(){
+
+            $("input:file").change(function (event){
+
+                event.preventDefault();
+                var proceed = true; //set proceed flag
+                var error = [];    //errors
+                var total_files_size = 0;
+
+                //reset progressbar
+                $(progress_bar_id +" .progress-bar").css("width", "0%");
+                $(progress_bar_id + " .status").text("0%");
+
+                if(!window.File && window.FileReader && window.FileList && window.Blob){ //if browser doesn't supports File API
+                    alertify.error("Your browser does not support new File API! Please upgrade."); //push error text
+                }else{
+                    var total_selected_files = this.files.length; //number of files
+
+                    //limit number of files allowed
+                    if(total_selected_files > total_files_allowed){
+                        alertify.error( "You have selected "+total_selected_files+" file(s), " + total_files_allowed +" is maximum!"); //push error text
+                        proceed = false; //set proceed flag to false
+                    }
+                    //iterate files in file input field
+                    $(this.files).each(function(i, ifile){
+                        if(ifile.value !== ""){ //continue only if file(s) are selected
+                            if(allowed_file_types.indexOf(ifile.type) === -1){ //check unsupported file
+                                alertify.error( "<b>"+ ifile.name + "</b> is unsupported file type!"); //push error text
+                                proceed = false; //set proceed flag to false
+                            }
+
+                            total_files_size = total_files_size + ifile.size; //add file size to total size
+                        }
+                    });
+
+
+                    //if total file size is greater than max file size
+                    if(total_files_size > max_file_size && proceed == true){ 
+                        alertify.error( "Allowed size is 20 KB, Try smaller file!"); //push error text
+                        proceed = false; //set proceed flag to false
+                    }
+
+                    //  var submit_btn  = $(this).find("input[type=submit]"); //form submit button    
+
+                    //if everything looks good, proceed with jQuery Ajax
+                    if(proceed){
+
+                        var form_data = new FormData( $('form')[0]); //Creates new FormData object
+
+                        var post_url = '<?= base_url()?>Admission_9th_pvt/uploadpic'; //get action URL of form
+
+                        //jQuery Ajax to Post form data
+                        $.ajax({
+                            url : post_url,
+                            type: "POST",
+                            data : form_data,
+                            contentType: false,
+                            cache: false,
+                            processData:false,
+                            xhr: function(){
+                                //upload Progress
+                                var xhr = $.ajaxSettings.xhr();
+                                if (xhr.upload) {
+                                    xhr.upload.addEventListener('progress', function(event) {
+                                        var percent = 0;
+                                        var position = event.loaded || event.position;
+                                        var total = event.total;
+                                        if (event.lengthComputable) {
+                                            percent = Math.ceil(position / total * 100);
+                                        }
+                                        //update progressbar
+                                        $(progress_bar_id +" .progress-bar").css("width", + percent +"%");
+                                        $(progress_bar_id + " .status").text(percent +"%");
+                                        }, true);
+                                }
+                                return xhr;
+                            },
+                            mimeType:"multipart/form-data"
+                        }).done(function(res){ //
+                            // $(my_form_id)[0].reset(); //reset form
+                            $(result_output).html(res); //output response from server
+                            // submit_btn.val("Upload").prop( "disabled", false); //enable submit button once ajax is done
+                        });
+
+                    }
+                }
+
+                $(result_output).html(""); //reset output 
+                $(error).each(function(i){ //output any error to output element
+                    $(result_output).append('<div class="error">'+error[i]+"</div>");
+                });
+            });
+        });
+
+
     });
 
 
 
 </script>
-<script type="">
+<script type="text/javascript">
 
 
     function isValidEmailAddress(emailAddress) {
@@ -260,7 +355,7 @@ if(isset($files)){
     //$( "#dob" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true }).val();
 
     $( "#dob" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, maxDate: new Date(2004, 7,1),yearRange: '1970:2004'}).val();
-    
+
 
     $( "#batch_real_PaidDate" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, startDate:new Date() }).val();
     var myOptions = {
@@ -686,18 +781,18 @@ if(isset($files)){
         }
 
         // Subject 5 ,6 ,7 and 8
+        $("#sub4").empty();
         $("#sub5").empty();
         $("#sub6").empty();
         $("#sub7").empty();
-        $("#sub8").empty();
 
-        $("#sub5").append(new Option('MATHEMATICS',5));
-        $("#sub5 option[value='" + sub5 + "']").attr("selected","selected");
-        $("#sub6").append(new Option('PHYSICS',6));
-        $("#sub6 option[value='" + sub6 + "']").attr("selected","selected");
-        $("#sub7").append(new Option('CHEMISTRY',7));
+        $("#sub4").append(new Option('MATHEMATICS',5));
+        $("#sub4 option[value='" + sub5 + "']").attr("selected","selected");
+        $("#sub5").append(new Option('PHYSICS',6));
+        $("#sub5 option[value='" + sub6 + "']").attr("selected","selected");
+        $("#sub6").append(new Option('CHEMISTRY',7));
+        $("#sub6 option[value='" + sub7 + "']").attr("selected","selected");
         $("#sub7 option[value='" + sub7 + "']").attr("selected","selected");
-        $("#sub8 option[value='" + sub8 + "']").attr("selected","selected");
 
     }
 
@@ -815,9 +910,9 @@ if(isset($files)){
             alertify.error(error_BatchRelease);
         }  
 
-       /* var error = "<?php // echo @$error; ?>";
+        /* var error = "<?php // echo @$error; ?>";
         if(error != ""){
-            alertify.error(error);
+        alertify.error(error);
         }*/
         //  console.log("Jquery working....");
         var msg = "<?php echo @$msg;?>";
@@ -905,34 +1000,34 @@ if(isset($files)){
         if($("#std_group").val() == "1")
         {
             load_Bio_CS_Sub_NewEnrolement();
-            $("#sub8").append(new Option('Biology',8));
+            $("#sub7").append(new Option('Biology',8));
         }
         else if($("#std_group").val() == "7"){
 
             load_Bio_CS_Sub_NewEnrolement();
-            $("#sub8").append(new Option('COMPUTER SCIENCE',78));
+            $("#sub7").append(new Option('COMPUTER SCIENCE',78));
         }
         else if($("#std_group").val() == "8"){
 
             load_Bio_CS_Sub_NewEnrolement();
-            $("#sub8").append(new Option('ELECTRICAL WIRING (OPT)',43));
+            $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
         }
         else if($("#std_group").val() == "2"){
 
 
             $.each(sub7_Hum,function(val,text){
 
-                $("#sub7").append(new Option(text,val));
+                $("#sub6").append(new Option(text,val));
             });
             $.each(sub8_Hum,function(val,text){
 
-                $("#sub8").append(new Option(text,val));
+                $("#sub7").append(new Option(text,val));
             });
 
             var Elecgrp ="<?php echo @$grp_cd; ?>";
             var isgovt ="<?php echo @$isgovt; ?>";
-            var sub7_selected ="<?php  echo @$data[0]['sub7']; ?>";
-            var sub8_selected ="<?php echo @$data[0]['sub8']; ?>";
+            var sub7_selected ="<?php  echo @$data[0]['sub6']; ?>";
+            var sub8_selected ="<?php echo @$data[0]['sub7']; ?>";
             var b = ['8'];
             var isElec = '0';
             $.each(Elecgrp,function(i,val){
@@ -951,15 +1046,15 @@ if(isset($files)){
                     // $("#sub7")
                     //$("#sub7 option[value='43']").remove();
                     //$("#sub8 option[value='43']").remove();
+                    $("#sub6 option[value='43']").remove();
                     $("#sub7 option[value='43']").remove();
-                    $("#sub8 option[value='43']").remove();
 
                     // $("#sub7").find('option[value=43]').remove();
                     // alert("removed");
                 }  
             }
-            $("#sub7").val(sub7_selected);
-            $("#sub8").val(sub8_selected);
+            $("#sub6").val(sub7_selected);
+            $("#sub7").val(sub8_selected);
 
         }
         var error_New_Enrolement ='<?php   if(@$excep != ""){echo @$excep;}  ?>';
@@ -1081,7 +1176,7 @@ if(isset($files)){
 
     function load_Bio_CS_Sub()
     {
-        var NationalityVal = $("input[name=nationality]:checked").val();
+        var NationalityVal = $("#nationality").val();
         $('#sub1').empty();
         if(NationalityVal == "1")
         {
@@ -1097,15 +1192,21 @@ if(isset($files)){
                 $('#sub1').append( new Option(text,val) );
             }); 
         }
+        else
+        {
+            $.each(sub1_Pak_options, function(val, text) {
+                $('#sub1').append( new Option(text,val) );
+            }); 
+        }
 
         // Check Religion and select sub........
         $("#sub3").empty();
-        var Religion = $("input[name=religion]:checked").val();
+        var Religion = $("#religion").val();
         //console.log(Religion);
         console.log(Religion);
         if(Religion == "1")
         {
-            console.log("Hi Muslim :)");
+            //console.log("Hi Muslim :)");
             $.each(sub3_Muslim,function(val,text){
                 $("#sub3").append(new Option(text,val));
             });
@@ -1118,16 +1219,22 @@ if(isset($files)){
                 $("#sub3").append(new Option(text,val));
             });
         }
+        else
+        {
+            $.each(sub3_Muslim,function(val,text){
+                $("#sub3").append(new Option(text,val));
+            });
+        }
 
         // Subject 5 ,6 ,7 and 8
+        $("#sub4").empty();
         $("#sub5").empty();
         $("#sub6").empty();
         $("#sub7").empty();
-        $("#sub8").empty();
 
-        $("#sub5").append(new Option('MATHEMATICS',5));
-        $("#sub6").append(new Option('PHYSICS',6));
-        $("#sub7").append(new Option('CHEMISTRY',7));
+        $("#sub4").append(new Option('MATHEMATICS',5));
+        $("#sub5").append(new Option('PHYSICS',6));
+        $("#sub6").append(new Option('CHEMISTRY',7));
 
     }
 
@@ -1135,12 +1242,12 @@ if(isset($files)){
     {
 
         //alert(isElec);
-        var NationalityVal = $("input[name=nationality]:checked").val();
+        var NationalityVal = $("#nationality").val();
         console.log(NationalityVal);
         $('#sub1').empty();
         if(NationalityVal == "1")
         {
-            console.log("Hi Pakistani ");
+
             $.each(sub1_Pak_options, function(val, text) {
                 $('#sub1').append( new Option(text,val) );
             }); 
@@ -1153,15 +1260,20 @@ if(isset($files)){
                 $('#sub1').append( new Option(text,val) );
             }); 
         }
+        else
+        {
+            $.each(sub1_Pak_options, function(val, text) {
+                $('#sub1').append( new Option(text,val) );
+            }); 
+        }
 
         // Check Religion and select sub........
         $("#sub3").empty();
-        var Religion = $("input[name=religion]:checked").val();
+        var Religion = $("#religion").val();
         //console.log(Religion);
         console.log(Religion);
         if(Religion == "1")
         {
-            console.log("Hi Muslim :)");
             $.each(sub3_Muslim,function(val,text){
                 $("#sub3").empty();
                 $("#sub3").append(new Option(text,val));
@@ -1176,20 +1288,27 @@ if(isset($files)){
                 //$("#sub3").prop('selectedIndex', 2);
             });
         }
+        else
+        {
+            $.each(sub3_Muslim,function(val,text){
+                $("#sub3").empty();
+                $("#sub3").append(new Option(text,val));
+            });
+        }
 
+        $("#sub4").empty();
         $("#sub5").empty();
         $("#sub6").empty();
         $("#sub7").empty();
-        $("#sub8").empty();
 
 
 
 
     }
-    $("#sub6").change(function(){
-        var sub6 = $("#sub6").val();
-        var sub7 = $("#sub7").val();
-        var sub8 = $("#sub8").val();
+    $("#sub5").change(function(){
+        var sub6 = $("#sub5").val();
+        var sub7 = $("#sub6").val();
+        var sub8 = $("#sub7").val();
         if((sub6 == sub7)|| (sub6 == sub8))
         {
             alertify.error("Please choose Different Subjects" );
@@ -1198,33 +1317,33 @@ if(isset($files)){
         }
         console.log('Hi i am sub6 dropdown :) ');
     })
-var langascd = ['22','23','36','34','35'];
-var hstascd = ['19','20','21'];
-    $("#sub7").change(function(){
+    var langascd = ['22','23','36','34','35'];
+    var hstascd = ['19','20','21'];
+    $("#sub6").change(function(){
         console.log('Hi i am sub7 dropdown :) ');
-        var sub6 = $("#sub6").val();
-        var sub7 = $("#sub7").val();
-        var sub8 = $("#sub8").val();
+        var sub6 = $("#sub5").val();
+        var sub7 = $("#sub6").val();
+        var sub8 = $("#sub7").val();
 
-          var a = langascd.indexOf(sub7);
+        var a = langascd.indexOf(sub7);
         var b = langascd.indexOf(sub8);
 
-         var c = hstascd.indexOf(sub7);
+        var c = hstascd.indexOf(sub7);
         var  d = hstascd.indexOf(sub8);
-        
+
         if(a >=0  && b>=0)
         {
             alertify.error("Please choose Different Subjects as Double Language is not allowed" );
-            $("#sub7").val('0');
-            $("#sub8").val('0');
+            $("#sub5").val('0');
+            $("#sub6").val('0');
             $("#sub7").focus();
             return;  
         }
         else  if(c >=0  && d>=0)
         {
             alertify.error("Please choose Different Subjects as Double History is not allowed" );
-            $("#sub7").val('0');
-            $("#sub8").val('0');
+            $("#sub5").val('0');
+            $("#sub6").val('0');
             $("#sub7").focus();
             return;  
         }
@@ -1241,67 +1360,67 @@ var hstascd = ['19','20','21'];
         }
     })
 
-    $("#sub8").change(function(){
-        var sub6 = $("#sub6").val();
-        var sub7 = $("#sub7").val();
-        var sub8 = $("#sub8").val();
-       
-        
-        
+    $("#sub7").change(function(){
+        var sub6 = $("#sub5").val();
+        var sub7 = $("#sub6").val();
+        var sub8 = $("#sub7").val();
+
+
+
         var a = langascd.indexOf(sub7);
         var b = langascd.indexOf(sub8);
 
-         var c = hstascd.indexOf(sub7);
+        var c = hstascd.indexOf(sub7);
         var  d = hstascd.indexOf(sub8);
-        
+
         if(a >=0  && b>=0)
         {
             alertify.error("Please choose Different Subjects as Double Language is not allowed" );
-            $("#sub8").val('0');
+            $("#sub6").val('0');
             $("#sub7").focus();
             return;  
         }
         else  if(c >=0  && d>=0)
         {
             alertify.error("Please choose Different Subjects as Double History is not allowed" );
-            $("#sub8").val('0');
+            $("#sub6").val('0');
             $("#sub7").focus();
             return;  
         }
 
-        
-        
-        
+
+
+
         if((sub7 == sub8)|| (sub8 == sub6))
         {
             alertify.error("Please choose Different Subjects" );
-            $("#sub8").val('0');
+            $("#sub7").val('0');
             //$('sub8').trigger('change');
             // $("sub8")[0].selectedIndex = 0;
             return;
         }
         if((sub7 == 20 && sub8 == 21) || (sub7 == 21 && sub8 == 20)){
             alertify.error("Please choose Different Subjects as Double History is not allowed" );
-            $("#sub8").val('0');
+            $("#sub7").val('0');
             // $('sub8 option:first-child').attr("selected", "selected");
 
             //$('sub8').trigger('change');
             // $("sub8")[0].selectedIndex = 0;
             return;
         }
-       
-       // console.log('Hi i am sub8 dropdown :) ');
+
+        // console.log('Hi i am sub8 dropdown :) ');
     })
     function remove_subjects()
     {
+        $("#sub4").empty();
+        $("#sub4p2").empty();
         $("#sub5").empty();
         $("#sub5p2").empty();
         $("#sub6").empty();
         $("#sub6p2").empty();
         $("#sub7").empty();
         $("#sub7p2").empty();
-        $("#sub8").empty();
-        $("#sub8p2").empty();
     }
     $("#pvtinfo_dist").change(function()
         {
@@ -1343,136 +1462,144 @@ var hstascd = ['19','20','21'];
             }
 
 
-        });
-        $("#pvtinfo_teh").change(function(){
+    });
+    $("#pvtinfo_teh").change(function(){
 
-            // alert("hello");
-            var tehId =  $("#pvtinfo_teh").val();
-            var gend = $("input[name=gender]:checked").val();
-            //alert("hello "+tehId);
-             if( gend==undefined)
-            {
-                alertify.error("Select Gender First.");
-                $("#pvtinfo_teh").val(0);
-                return false; 
-            }
-            else if(tehId == 0){
-                alertify.error("Select Tehsil First.");
-                $("#pvtinfo_teh").val(0);
-                return false; 
-                
-            }
-            else{
+        // alert("hello");
+        var tehId =  $("#pvtinfo_teh").val();
+        var gend = $("#gender").val();
 
-                jQuery.ajax({
-                    ////debugger;
-                    type: "POST",
-                    url: "<?php echo base_url(); ?>" + "Admission_9th_pvt/getzone/",
-                    dataType: 'json',
-                    data: {tehCode: tehId,gend:gend},
-                    beforeSend: function() {  $('.mPageloader').show(); },
-                    complete: function() { $('.mPageloader').hide();},
-                    success: function(json) {
-                        var listitems;
-                        //alert('Hi i am success');
-                        // console.log("I am console");
-                        // console.log(url);
-                        $('#pvtZone').empty();
-                        $('#pvtZone').append('<option value="0">SELECT ZONE</option>');
-                        $.each(json, function (key, data) {
+        // alert("hello "+gend);
+        if( gend==undefined || gend == 0)
+        {
+            alertify.error("Select Gender First.");
+            $("#pvtinfo_teh").val(0);
+            return false; 
+        }
+        else if(tehId == 0){
+            alertify.error("Select Tehsil First.");
+            $("#pvtinfo_teh").val(0);
+            return false; 
 
-                            //console.log(key)
+        }
+        else{
 
-                            $.each(data, function (index, data) {
+            jQuery.ajax({
+                ////debugger;
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + "Admission_9th_pvt/getzone/",
+                dataType: 'json',
+                data: {tehCode: tehId,gend:gend},
+                beforeSend: function() {  $('.mPageloader').show(); },
+                complete: function() { $('.mPageloader').hide();},
+                success: function(json) {
+                    var listitems;
+                    //alert('Hi i am success');
+                    // console.log("I am console");
+                    // console.log(url);
+                    $('#pvtZone').empty();
+                    $('#pvtZone').append('<option value="0">SELECT ZONE</option>');
+                    $.each(json, function (key, data) {
 
-                                // console.log('Zone Name :', data.zone_name , ' Zone Code : ' ,data.zone_cd)
-                                listitems +='<option value=' + data.zone_cd + '>' + data.zone_name + '</option>';
-                                //$('#pvtZone').append('<option value=' + data.zone_cd + '>' + data.zone_name + '</option>');
-                                //console.log('Zone Name :', data.zone_cd)
-                                //console.log('Zone Name :', data)
-                            })
+                        //console.log(key)
+
+                        $.each(data, function (index, data) {
+
+                            // console.log('Zone Name :', data.zone_name , ' Zone Code : ' ,data.zone_cd)
+                            listitems +='<option value=' + data.zone_cd + '>' + data.zone_name + '</option>';
+                            //$('#pvtZone').append('<option value=' + data.zone_cd + '>' + data.zone_name + '</option>');
+                            //console.log('Zone Name :', data.zone_cd)
+                            //console.log('Zone Name :', data)
                         })
-                        $('#pvtZone').append(listitems)
-                        /*console.log(data.length);
-                        for (var i = 0; i < data.length; i++) {
+                    })
+                    $('#pvtZone').append(listitems)
+                    /*console.log(data.length);
+                    for (var i = 0; i < data.length; i++) {
 
-                        console.log(" Thesil : "+ data[i].zone_name);
-                        // var checkBox = "<input type='checkbox' data-price='" + data[i].Price + "' name='" + data[i].Name + "' value='" + data[i].ID + "'/>" + data[i].Name + "<br/>";
-                        // $(checkBox).appendTo('#modifiersDiv');
-                        }*/
-                        //if (json)
-                        //{
-                        //var obj = jQuery.parseJSON(json);
-                        //  console.log(json.teh[0].zone_name);
-                        //alert( obj['teh']['Class']);
-                        //   alert(res.Sess);
-                        //   alert(res.Class);
-                        //   //debugger;
-                        //   Show Entered Value
-                        //   jQuery("div#result").show();
-                        //   jQuery("div#value").html(res.username);
-                        //   jQuery("div#value_pwd").html(res.pwd);
-                        //}
+                    console.log(" Thesil : "+ data[i].zone_name);
+                    // var checkBox = "<input type='checkbox' data-price='" + data[i].Price + "' name='" + data[i].Name + "' value='" + data[i].ID + "'/>" + data[i].Name + "<br/>";
+                    // $(checkBox).appendTo('#modifiersDiv');
+                    }*/
+                    //if (json)
+                    //{
+                    //var obj = jQuery.parseJSON(json);
+                    //  console.log(json.teh[0].zone_name);
+                    //alert( obj['teh']['Class']);
+                    //   alert(res.Sess);
+                    //   alert(res.Class);
+                    //   //debugger;
+                    //   Show Entered Value
+                    //   jQuery("div#result").show();
+                    //   jQuery("div#value").html(res.username);
+                    //   jQuery("div#value_pwd").html(res.pwd);
+                    //}
 
-                    },
-                    error: function(request, status, error){
-                        alert(request.responseText);
-                    }
-                });
-            }
+                },
+                error: function(request, status, error){
+                    alert(request.responseText);
+                }
+            });
+        }
 
-        })
-        $("#pvtZone").change(function(){
-                
-            var tehId =  $("#pvtZone").val();
-            
-            var gend = $("input[name=gender]:checked").val();
-            //alert("hello "+tehId);
-             if( gend==undefined)
-            {
-                alertify.error("Select Gender First.");
-                $("#pvtinfo_teh").val(0);
-                $("#pvtZone").val(0);
-                return false; 
-            }
-            
-            else if(tehId == 0){
-                 alertify.error("Select Zone First.");
-                $("#pvtinfo_teh").val(0);
-                $("#pvtZone").val(0);
-                return false; 
-                
-            }
-            else{
-                jQuery.ajax({
+    })
+    $("#pvtZone").change(function(){
 
-                    type: "POST",
-                    url: "<?php echo base_url(); ?>Admission_9th_pvt/getcenter/",
-                    dataType: 'json',
-                    data: {pvtZone:tehId,gend:gend},
-                    beforeSend: function() {  $('.mPageloader').show(); },
-                    complete: function() { $('.mPageloader').hide();},
-                    success: function(json) {
-                        var listitems='';
-                        //$('#instruction').empty();
-                        $.each(json.center, function (key, data) {
+        var tehId =  $("#pvtZone").val();
 
-                            console.log(data);
-                            listitems +='<label style="text-align: left; margin-top: -23px;">'+data.CENT_CD + '-' + data.CENT_NAME+'</label><br>';
-                        })
-                        $('#instruction').html('<h1 style="    margin-bottom: 28px;">Selected Zone Centre List </h1>'+listitems); 
-                        $.fancybox("#instruction");
-                    },
-                    error: function(request, status, error){
-                        alert(request.responseText);
-                    }
-                });
+        var gend = $("#gender").val();
+        //alert("hello "+tehId);
+        if( gend==undefined)
+        {
+            alertify.error("Select Gender First.");
+            $("#pvtinfo_teh").val(0);
+            $("#pvtZone").val(0);
+            return false; 
+        }
+        if( gend==0)
+        {
+            alertify.error("Select Gender First.");
+            $("#pvtinfo_teh").val(0);
+            $("#pvtZone").val(0);
+            return false; 
+        }
 
-            }
+        else if(tehId == 0){
+            alertify.error("Select Zone First.");
+            $("#pvtinfo_teh").val(0);
+            $("#pvtZone").val(0);
+            return false; 
 
-        })
-        
-        $("#pvtinfo_distr").change(function()
+        }
+        else{
+            jQuery.ajax({
+
+                type: "POST",
+                url: "<?php echo base_url(); ?>Admission_9th_pvt/getcenter/",
+                dataType: 'json',
+                data: {pvtZone:tehId,gend:gend},
+                beforeSend: function() {  $('.mPageloader').show(); },
+                complete: function() { $('.mPageloader').hide();},
+                success: function(json) {
+                    var listitems='';
+                    //$('#instruction').empty();
+                    $.each(json.center, function (key, data) {
+
+                        console.log(data);
+                        listitems +='<label style="text-align: left; margin-top: -23px;">'+data.CENT_CD + '-' + data.CENT_NAME+'</label><br>';
+                    })
+                    $('#instruction').html('<h1 style="    margin-bottom: 28px;">Selected Zone Centre List </h1>'+listitems); 
+                    $.fancybox("#instruction");
+                },
+                error: function(request, status, error){
+                    alert(request.responseText);
+                }
+            });
+
+        }
+
+    })
+
+    $("#pvtinfo_distr").change(function()
         {
             var distId =  $("#pvtinfo_distr").val();
             $('#pvtinfo_tehr').empty();
@@ -1512,297 +1639,297 @@ var hstascd = ['19','20','21'];
             }
 
 
-        });
-         $("#pvtinfo_tehr").change(function(){
+    });
+    $("#pvtinfo_tehr").change(function(){
 
-            // alert("hello");
-            var tehId =  $("#pvtinfo_tehr").val();
-            var gend =  $("#gend").val();
-          //  alert("hello "+tehId);
-             
-            
-            if(gend ==0  || gend == '' || gend == null || gend==undefined)
-            {
-                alertify.error("Select Gender First.");
-                $("#pvtinfo_tehr").val(0);
-                return false; 
-            }
-           else if(tehId == 0){
-               alertify.error("Select Zone First.");
-                return false;
-            }
-            else{
+        // alert("hello");
+        var tehId =  $("#pvtinfo_tehr").val();
+        var gend =  $("#gend").val();
+        //  alert("hello "+tehId);
 
-                jQuery.ajax({
-                    ////debugger;
-                    type: "POST",
-                    url: "<?php echo base_url(); ?>" + "Admission_9th_pvt/getzone/",
-                    dataType: 'json',
-                    data: {tehCode: tehId,gend:gend},
-                    beforeSend: function() {  $('.mPageloader').show(); },
-                    complete: function() { $('.mPageloader').hide();},
-                    success: function(json) {
-                        var listitems;
-                        //alert('Hi i am success');
-                        // console.log("I am console");
-                        // console.log(url);
-                        $('#pvtZoner').empty();
-                        $('#pvtZoner').append('<option value="0">SELECT ZONE</option>');
-                        $.each(json, function (key, data) {
 
-                            //console.log(key)
-
-                            $.each(data, function (index, data) {
-
-                                // console.log('Zone Name :', data.zone_name , ' Zone Code : ' ,data.zone_cd)
-                                listitems +='<option value=' + data.zone_cd + '>' + data.zone_name + '</option>';
-                                //$('#pvtZone').append('<option value=' + data.zone_cd + '>' + data.zone_name + '</option>');
-                                //console.log('Zone Name :', data.zone_cd)
-                                //console.log('Zone Name :', data)
-                            })
-                        })
-                        $('#pvtZoner').append(listitems)
-                        /*console.log(data.length);
-                        for (var i = 0; i < data.length; i++) {
-
-                        console.log(" Thesil : "+ data[i].zone_name);
-                        // var checkBox = "<input type='checkbox' data-price='" + data[i].Price + "' name='" + data[i].Name + "' value='" + data[i].ID + "'/>" + data[i].Name + "<br/>";
-                        // $(checkBox).appendTo('#modifiersDiv');
-                        }*/
-                        //if (json)
-                        //{
-                        //var obj = jQuery.parseJSON(json);
-                        //  console.log(json.teh[0].zone_name);
-                        //alert( obj['teh']['Class']);
-                        //   alert(res.Sess);
-                        //   alert(res.Class);
-                        //   //debugger;
-                        //   Show Entered Value
-                        //   jQuery("div#result").show();
-                        //   jQuery("div#value").html(res.username);
-                        //   jQuery("div#value_pwd").html(res.pwd);
-                        //}
-
-                    },
-                    error: function(request, status, error){
-                        alert(request.responseText);
-                    }
-                });
-            }
-
-        })
-        $("#pvtZoner").change(function(){
-                
-            var tehId =  $("#pvtZoner").val();
-            
-            var gend =  $("#gend").val();
-            //alert("hello "+tehId);
-             
-            
-            if(gend ==0  || gend == '' || gend == null || gend==undefined)
-            {
-                alertify.error("Select Gender First.");
-                $("#pvtZoner").val(0);
-                return false; 
-            }
-           else if(tehId == 0){
-               alertify.error("Select Zone First.");
-                return false;
-            }
-            
-            else{
-                jQuery.ajax({
-
-                    type: "POST",
-                    url: "<?php echo base_url(); ?>Admission_9th_pvt/getcenter/",
-                    dataType: 'json',
-                    data: {pvtZone:tehId,gend:gend},
-                    beforeSend: function() {  $('.mPageloader').show(); },
-                    complete: function() { $('.mPageloader').hide();},
-                    success: function(json) {
-                        var listitems='';
-                        //$('#instruction').empty();
-                        $.each(json.center, function (key, data) {
-
-                            console.log(data);
-                            listitems +='<label style="text-align: left; margin-top: -23px;">'+data.CENT_CD + '-' + data.CENT_NAME+'</label><br>';
-                        })
-                        $('#instruction').html('<h1 style="    margin-bottom: 28px;">Selected Zone Centre List </h1>'+listitems); 
-                        $.fancybox("#instruction");
-                    },
-                    error: function(request, status, error){
-                        alert(request.responseText);
-                    }
-                });
-
-            }
-
-        })
-        
-        function examchecks()
+        if(gend ==0  || gend == '' || gend == null || gend==undefined)
         {
-             var pvtinfo_distr = $("#pvtinfo_distr").val();
-             var pvtinfo_tehr = $("#pvtinfo_tehr").val();
-             var pvtZoner = $("#pvtZoner").val();
-             
-             if(pvtinfo_distr == 0)
-             {
-                alertify.error("Please Select District.");
-                //$("#pvtZoner").val(0);
-                $('#pvtinfo_distr').focus();
-                return false;   
-             }
-             else if(pvtinfo_tehr == 0)
-             {
-                alertify.error("Please Select Tehsil.");
-                  $('#pvtinfo_tehr').focus();
-                return false;   
-             }
-              else if(pvtZoner == 0)
-             {
-                alertify.error("Please Select Zone.");
-                $('#pvtZoner').focus();
-                return false;   
-             }
-            
-             
-             
+            alertify.error("Select Gender First.");
+            $("#pvtinfo_tehr").val(0);
+            return false; 
         }
-        
-        
-        
-     function validateForm() 
-        {
+        else if(tehId == 0){
+            alertify.error("Select Zone First.");
+            return false;
+        }
+        else{
 
-            var x = document.forms["registration"]["matrno"].value;
-            var y = document.forms["registration"]["formid"].value;
-            if (x == null || x == "") {
-                $("#matrno").css('border', '1px solid red');
-                return false;
-            }
-            if (y == null || y == "") {
-                $("#formid").css('border', '1px solid red');
-                return false;
-            }
+            jQuery.ajax({
+                ////debugger;
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + "Admission_9th_pvt/getzone/",
+                dataType: 'json',
+                data: {tehCode: tehId,gend:gend},
+                beforeSend: function() {  $('.mPageloader').show(); },
+                complete: function() { $('.mPageloader').hide();},
+                success: function(json) {
+                    var listitems;
+                    //alert('Hi i am success');
+                    // console.log("I am console");
+                    // console.log(url);
+                    $('#pvtZoner').empty();
+                    $('#pvtZoner').append('<option value="0">SELECT ZONE</option>');
+                    $.each(json, function (key, data) {
+
+                        //console.log(key)
+
+                        $.each(data, function (index, data) {
+
+                            // console.log('Zone Name :', data.zone_name , ' Zone Code : ' ,data.zone_cd)
+                            listitems +='<option value=' + data.zone_cd + '>' + data.zone_name + '</option>';
+                            //$('#pvtZone').append('<option value=' + data.zone_cd + '>' + data.zone_name + '</option>');
+                            //console.log('Zone Name :', data.zone_cd)
+                            //console.log('Zone Name :', data)
+                        })
+                    })
+                    $('#pvtZoner').append(listitems)
+                    /*console.log(data.length);
+                    for (var i = 0; i < data.length; i++) {
+
+                    console.log(" Thesil : "+ data[i].zone_name);
+                    // var checkBox = "<input type='checkbox' data-price='" + data[i].Price + "' name='" + data[i].Name + "' value='" + data[i].ID + "'/>" + data[i].Name + "<br/>";
+                    // $(checkBox).appendTo('#modifiersDiv');
+                    }*/
+                    //if (json)
+                    //{
+                    //var obj = jQuery.parseJSON(json);
+                    //  console.log(json.teh[0].zone_name);
+                    //alert( obj['teh']['Class']);
+                    //   alert(res.Sess);
+                    //   alert(res.Class);
+                    //   //debugger;
+                    //   Show Entered Value
+                    //   jQuery("div#result").show();
+                    //   jQuery("div#value").html(res.username);
+                    //   jQuery("div#value_pwd").html(res.pwd);
+                    //}
+
+                },
+                error: function(request, status, error){
+                    alert(request.responseText);
+                }
+            });
         }
-    $("#std_group").change(function()
+
+    })
+    $("#pvtZoner").change(function(){
+
+        var tehId =  $("#pvtZoner").val();
+
+        var gend =  $("#gend").val();
+        //alert("hello "+tehId);
+
+
+        if(gend ==0  || gend == '' || gend == null || gend==undefined)
+        {
+            alertify.error("Select Gender First.");
+            $("#pvtZoner").val(0);
+            return false; 
+        }
+        else if(tehId == 0){
+            alertify.error("Select Zone First.");
+            return false;
+        }
+
+        else{
+            jQuery.ajax({
+
+                type: "POST",
+                url: "<?php echo base_url(); ?>Admission_9th_pvt/getcenter/",
+                dataType: 'json',
+                data: {pvtZone:tehId,gend:gend},
+                beforeSend: function() {  $('.mPageloader').show(); },
+                complete: function() { $('.mPageloader').hide();},
+                success: function(json) {
+                    var listitems='';
+                    //$('#instruction').empty();
+                    $.each(json.center, function (key, data) {
+
+                        console.log(data);
+                        listitems +='<label style="text-align: left; margin-top: -23px;">'+data.CENT_CD + '-' + data.CENT_NAME+'</label><br>';
+                    })
+                    $('#instruction').html('<h1 style="    margin-bottom: 28px;">Selected Zone Centre List </h1>'+listitems); 
+                    $.fancybox("#instruction");
+                },
+                error: function(request, status, error){
+                    alert(request.responseText);
+                }
+            });
+
+        }
+
+    })
+
+    function examchecks()
+    {
+        var pvtinfo_distr = $("#pvtinfo_distr").val();
+        var pvtinfo_tehr = $("#pvtinfo_tehr").val();
+        var pvtZoner = $("#pvtZoner").val();
+
+        if(pvtinfo_distr == 0)
+        {
+            alertify.error("Please Select District.");
+            //$("#pvtZoner").val(0);
+            $('#pvtinfo_distr').focus();
+            return false;   
+        }
+        else if(pvtinfo_tehr == 0)
+        {
+            alertify.error("Please Select Tehsil.");
+            $('#pvtinfo_tehr').focus();
+            return false;   
+        }
+        else if(pvtZoner == 0)
+        {
+            alertify.error("Please Select Zone.");
+            $('#pvtZoner').focus();
+            return false;   
+        }
+
+
+
+    }
+
+
+
+    function validateForm() 
     {
 
-
-        var grp_cd = $("#std_group").val();
-        //alert(grp_cd);
-
-        // If Science with Biology group selected then 
-        if(grp_cd == "1")
-        {
-
-            // Check Nationality and select appropriate Subject1 against candidate Nationality :)
-            load_Bio_CS_Sub();
-            $("#sub8").append(new Option('Biology',8));
-
+        var x = document.forms["registration"]["matrno"].value;
+        var y = document.forms["registration"]["formid"].value;
+        if (x == null || x == "") {
+            $("#matrno").css('border', '1px solid red');
+            return false;
         }
-        else if(grp_cd == "7")
-        {
-            load_Bio_CS_Sub();
-            $("#sub8").append(new Option('COMPUTER SCIENCE',78));
-            //    alert('hello  Sweet Heart ! I love You UMMMMAH :) ') 
+        if (y == null || y == "") {
+            $("#formid").css('border', '1px solid red');
+            return false;
         }
-        else if (grp_cd == "8")
-        {
-            load_Bio_CS_Sub();
-            $("#sub8").append(new Option('ELECTRICAL WIRING (OPT)',43));
-            //ELECTRICAL WIRING (OPT)
-        }
-
-        else if(grp_cd == "2")
+    }
+    $("#std_group").change(function()
         {
 
-            Hum_Deaf_Subjects();
-            $.each(sub5_Hum,function(val,text){
-                $("#sub5").append(new Option(text,val));
-            });
-            $.each(sub6_Hum,function(val,text){
-                $("#sub6").append(new Option(text,val));
-            });
 
-            $.each(sub7_Hum,function(val,text){
+            var grp_cd = $("#std_group").val();
+            //alert(grp_cd);
 
-                $("#sub7").append(new Option(text,val));
-            });
-            $.each(sub8_Hum,function(val,text){
+            // If Science with Biology group selected then 
+            if(grp_cd == "1")
+            {
 
-                $("#sub8").append(new Option(text,val));
-            });
-            var Elecgrp ="<?php echo @$grp_cd; ?>";
-            var isgovt ="<?php echo @$isgovt; ?>";
-            var b = ['8'];
-            var isElec = '0';
-            $.each(Elecgrp,function(i,val){
-                var result=$.inArray(val,b);
+                // Check Nationality and select appropriate Subject1 against candidate Nationality :)
+                load_Bio_CS_Sub();
+                $("#sub7").append(new Option('Biology',8));
 
-                if(result!=-1)
+            }
+            else if(grp_cd == "7")
+            {
+                load_Bio_CS_Sub();
+                $("#sub7").append(new Option('COMPUTER SCIENCE',78));
+                //    alert('hello  Sweet Heart ! I love You UMMMMAH :) ') 
+            }
+            else if (grp_cd == "8")
+            {
+                load_Bio_CS_Sub();
+                $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                //ELECTRICAL WIRING (OPT)
+            }
+
+            else if(grp_cd == "2")
+            {
+
+                Hum_Deaf_Subjects();
+                $.each(sub5_Hum,function(val,text){
+                    $("#sub4").append(new Option(text,val));
+                });
+                $.each(sub6_Hum,function(val,text){
+                    $("#sub5").append(new Option(text,val));
+                });
+
+                $.each(sub7_Hum,function(val,text){
+
+                    $("#sub6").append(new Option(text,val));
+                });
+                $.each(sub8_Hum,function(val,text){
+
+                    $("#sub7").append(new Option(text,val));
+                });
+                var Elecgrp ="<?php echo @$grp_cd; ?>";
+                var isgovt ="<?php echo @$isgovt; ?>";
+                var b = ['8'];
+                var isElec = '0';
+                $.each(Elecgrp,function(i,val){
+                    var result=$.inArray(val,b);
+
+                    if(result!=-1)
+                    {
+                        isElec = 1;
+                    }
+                })
+
+                if(isgovt == 2)
                 {
-                    isElec = 1;
+                    if(isElec != 1)
+                    {
+                        // $("#sub7")
+                        //$("#sub7 option[value='43']").remove();
+                        //$("#sub8 option[value='43']").remove();
+                        $("#sub6 option[value='43']").remove();
+                        $("#sub7 option[value='43']").remove();
+
+                        // $("#sub7").find('option[value=43]').remove();
+                        // alert("removed");
+                    }  
                 }
-            })
 
-            if(isgovt == 2)
-            {
-                if(isElec != 1)
+
+                var Gender = $("input[name=gender]:checked").val();
+                // debugger;
+                //console.log(Religion);
+                if(Gender == "2")
                 {
-                    // $("#sub7")
-                    //$("#sub7 option[value='43']").remove();
-                    //$("#sub8 option[value='43']").remove();
-                    $("#sub7 option[value='43']").remove();
-                    $("#sub8 option[value='43']").remove();
 
-                    // $("#sub7").find('option[value=43]').remove();
-                    // alert("removed");
-                }  
+                    $("#sub6").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                    $("#sub7").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                }
+                else
+
+                {
+                    // alert('i am removed');
+                    if($('#sub7 option[value=13]').length > 0)
+                        dropdownElement.find('sub7[value=13]').remove();
+
+
+                }
+
+
             }
-
-
-            var Gender = $("input[name=gender]:checked").val();
-           // debugger;
-            //console.log(Religion);
-            if(Gender == "2")
+            else if(grp_cd == "5")
             {
-
-                $("#sub8").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
-                $("#sub7").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                Hum_Deaf_Subjects();
+                $.each(sub5_Deaf,function(val,text){
+                    $("#sub4").append(new Option(text,val));
+                });
+                $.each(sub6_Deaf,function(val,text){
+                    $("#sub5").append(new Option(text,val));
+                });
+                $.each(sub7_Deaf,function(val,text){
+                    $("#sub6").append(new Option(text,val));
+                });
+                $.each(sub8_Deaf,function(val,text){
+                    $("#sub7").append(new Option(text,val));
+                });
             }
-            else
-            
+            else if (grp_cd == "0")
             {
-                // alert('i am removed');
-                 if($('#sub8 option[value=13]').length > 0)
-                dropdownElement.find('sub8[value=13]').remove();
-
-
+                remove_subjects();
             }
-
-
-        }
-        else if(grp_cd == "5")
-        {
-            Hum_Deaf_Subjects();
-            $.each(sub5_Deaf,function(val,text){
-                $("#sub5").append(new Option(text,val));
-            });
-            $.each(sub6_Deaf,function(val,text){
-                $("#sub6").append(new Option(text,val));
-            });
-            $.each(sub7_Deaf,function(val,text){
-                $("#sub7").append(new Option(text,val));
-            });
-            $.each(sub8_Deaf,function(val,text){
-                $("#sub8").append(new Option(text,val));
-            });
-        }
-        else if (grp_cd == "0")
-        {
-            remove_subjects();
-        }
 
 
     });
@@ -1927,19 +2054,11 @@ var hstascd = ['19','20','21'];
         }
 
     })
-    /*     }
-    $( "select option:selected" ).each(function() {
-    str += $( this ).text() + " ";
-    });
-    $( "div" ).text( str );*/
-
-
-
-
+    
 
 </script>
 
-<script type="">
+<script type="text/javascript">
     var msg_cd = "<?php  echo @$msg_status;  ?>";
     if(msg_cd == "0")
     {
@@ -2022,7 +2141,7 @@ var hstascd = ['19','20','21'];
         });
     }
 </script>
-<script type="">
+<script type="text/javascript">
     var error = '<?php echo @$error_msg; ?>';
     if(error.length > 1){
         alertify.error("Currently there is not student against this subject group.!") ;

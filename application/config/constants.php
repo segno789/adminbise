@@ -36,7 +36,9 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
-define('PRIVATE_IMAGE_PATH9TH', 'C:\inetpub\vhosts\bisegrw.edu.pk\Share Images\uploads\SSC\admission\2018\9th\private\ ');
+//define('PRIVATE_IMAGE_PATH9TH', 'C:\inetpub\vhosts\bisegrw.edu.pk\Share Images\uploads\SSC\admission\2018\9th\private\ ');
+
+define('PRIVATE_IMAGE_PATH9TH', 'D:/Xampp/htdocs/adminbise/uploads/');
 
 define('PRIVATE_IMAGE_PATH', 'uploads/2017/10th/private/');
 define('RE_ADMISSION_TBL', 'matric_new..vw9th17');

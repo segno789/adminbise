@@ -64,6 +64,7 @@ return false;
             }; 
         }
     }  
+    
     setTimeout(function(){count = 1;},200);
     $(document).ready(function(){
 
