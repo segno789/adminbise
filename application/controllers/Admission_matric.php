@@ -5000,7 +5000,7 @@ class Admission_matric extends CI_Controller {
         $type     = 'code128';
         $black    = '000000'; // color in hex
 
-        $data['iyear'] = Year;
+        $data['iyear'] = CURRENT_SESS1;
         $data['sess'] = Session;
 
         $Barcode = $temp;
@@ -5016,7 +5016,7 @@ class Admission_matric extends CI_Controller {
 
         $pdf->SetFont('Arial','B',11.5);
         $pdf->SetXY(72.5, 47);
-        $pdf->Cell(0,0,$data['iyear'],0,0,'L',0);
+        $pdf->Cell(0,0,CURRENT_SESS1,0,0,'L',0);
        //  DebugBreak();
         if($data['sess'] ==  1)
         {
@@ -5432,7 +5432,7 @@ class Admission_matric extends CI_Controller {
 
         $pdf->SetFont('Arial','B',11.5);
         $pdf->SetXY(72.5, 50);
-        $pdf->Cell(0,0,$data['iyear'],0,0,'L',0);
+        $pdf->Cell(0,0,CURRENT_SESS1,0,0,'L',0);
 
         if($data['sess'] ==  1)
         {

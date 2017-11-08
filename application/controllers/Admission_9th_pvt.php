@@ -65,11 +65,11 @@ $path = $CI->config->item('cache_path');
         $retVal = "";
         if($id == 1) $retVal = "GUJRANWALA";
         else if($id == 2)  $retVal = "GUJRAT";
-            else if($id == 3)  $retVal = "HAFIZ ABAD";
-                else if($id == 4)  $retVal = "MANDI BAHA UD DIN";
-                    else if($id == 5)  $retVal = "NAROWAL";
-                        else if($id == 6)  $retVal = "SIALKOT";
-                            return $retVal;             
+        else if($id == 3)  $retVal = "HAFIZ ABAD";
+        else if($id == 4)  $retVal = "MANDI BAHA UD DIN";
+        else if($id == 5)  $retVal = "NAROWAL";
+        else if($id == 6)  $retVal = "SIALKOT";
+        return $retVal;             
     }
 
 
@@ -279,7 +279,8 @@ $path = $CI->config->item('cache_path');
 
         $this->load->view('common/footer.php');
     }
-    public function practicalsubjects($_sub_cd){        
+    public function practicalsubjects($_sub_cd)
+    {        
         if($_sub_cd == 6)  $ret_val = "1";
         else if($_sub_cd == 7)  $ret_val = "1";
             else if($_sub_cd == 8)  $ret_val = "1";
@@ -1669,7 +1670,8 @@ $path = $CI->config->item('cache_path');
 
 
     }
-    public function formdownloaded(){
+    public function formdownloaded()
+    {
 
         //DebugBreak();
 

@@ -911,5 +911,100 @@ class Admission_model extends CI_Model
         //================== End AAMA khasa
         return $result;	
     }
+    
+    public function getdelformno($formno,$dob)
+    {
+        DebugBreak();
+        $table1 = 'admission_online..tblVerificationCode';
+        $table2 = 'admission_online..tblMAdm';
+        $this->db->select("MobNo,formno,name");
+        $this->db->from($table2);
+        //join LEFT by default
+        $this->db->where("regpvt = 2 AND formno = '$formno' AND dob ='$dob'  AND IsDeleted IS NULL");
+
+        $query = $this->db->get();
+        
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            $data = $query->result_array();
+            $six_digit_random_number = mt_rand(100000, 999999);
+            $data2 = array(
+                'formno'=> "$formno",
+                'verificationCode'=> "$six_digit_random_number",
+                'iyear'=> 2018,
+                'class'=> 10,
+                'sess'=> 1,
+                'edate'=> date('Y-m-d H:i:s'),
+                'isactive'=> 1,
+                'trycount'=> 0,
+            );  
+            
+            $res =  $this->db->insert($table1, $data2);
+
+            if($res>0)
+            {
+                $data2['MobNo'] = $data[0]['MobNo'];
+                $data2['name'] = $data[0]['name'];
+                return $data2;
+            }
+            else
+            {
+                return 0;
+            }
+
+
+        }
+        else
+        {
+            return  0;
+        }
+        
+    }
+    
+    public function verifycode($formno,$vrCode)
+    {
+        
+        $table1 = 'admission_online..tblVerificationCode';
+        $table2 = 'admission_online..tblMAdm';
+        $this->db->select("verificationCode,formno,trycount");
+        $this->db->from($table1);
+        //join LEFT by default
+        $this->db->where("isactive = 1 AND formno = '$formno' AND verificationCode ='$vrCode'");
+
+        $query = $this->db->get();
+        
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            $data = $query->result_array();
+            $data2 = array(
+                'isactive'=> 0,
+                'cdate'=> date('Y-m-d H:i:s'),
+            );  
+            $this->db->where('verificationCode',"$vrCode");
+            $res =  $this->db->update($table1, $data2);
+
+            if($res == true)
+            {
+                $data2 = array(
+                    'IsDeleted'=> 1,
+                    'cdate'=> date('Y-m-d H:i:s'),
+                );  
+                $this->db->where('formno',"$formno");
+                $res =  $this->db->update($table2, $data2);
+            }
+
+            return $res;
+            
+        }
+        else
+        {
+            return  0;
+        }
+        
+    }
+    
+    
 }
 ?>

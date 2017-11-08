@@ -84,6 +84,74 @@ class Admission extends CI_Controller
         }
         $this->load->view('common/homepagefooter.php');
     }
+    
+    function sendVerCode()
+    {
+        $formno = $this->input->post('formno');
+        $dob    = $this->input->post('dob');
+        $this->load->model('Admission_model');
+        $data = $this->Admission_model->getdelformno($formno,$dob);
+        
+        if($data == 0)
+        {
+            echo 0;
+        }
+        else
+        {
+            $response = $this->sendcode($data);
+            if($response == true)
+            {
+                echo  1;
+            }
+            else
+            {
+                echo 0;
+            }
+        }
+       
+        exit();
+    }
+    
+     function verconfrimCode()
+    {
+       // DebugBreak();
+        $formno = $this->input->post('formno');
+        $mobcode    = $this->input->post('mobcode');
+        $this->load->model('Admission_model');
+        $data = $this->Admission_model->verifycode($formno,$mobcode);
+        if($data == true)
+        {
+            echo  1;
+        }
+        else
+        {
+            echo 0;
+        }
+        exit();
+    }
+    
+    private function sendcode($data)
+    {
+        $pno = '92'.str_replace("-","",substr($data['MobNo'], 1)); 
+        $pno = '923007465790'; 
+
+
+        $sms1 ="Dear ".$data['name'].",".urldecode("%0A").'Your Verification Code is this:'.$data['verificationCode'];
+        // $sms1 = $_POST['address'];
+
+        $str     = 'http://bsms.ufone.com/bsms_app5/sendapi-0.3.jsp?id=03359664990&message='.urlencode(trim($sms1)) .'&shortcode=BISEGRW&lang=English&mobilenum='.$pno.'&password=ptml@123456';
+        $xml   = simplexml_load_string(file_get_contents($str));
+        $json  = json_encode($xml);
+        $array = json_decode($json,TRUE);
+        if($array['response_id'] == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return -1;
+        }
+    }
     function GetSpeciality($spclty)
     {
         if ($spclty == 0 )
