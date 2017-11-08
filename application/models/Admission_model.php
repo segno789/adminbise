@@ -35,10 +35,9 @@ class Admission_model extends CI_Model
         $iyear = $data['year'];
         $sess = $data['session'];
         $brd = $data['board'];
-
-        if($iyear>=2016)
+        $YEAR= Year-1;      
+        if($iyear >= $YEAR || Session == 2)
         {
-
             $query = $this->db->get_where(getinfo, array('Dob'=>$data['dob'],'rno' => $data['mrno'], 'class' => $data['class'], 'Iyear' => $data['year'], 'sess'=>$data['session'],'Brd_cd'=>$data['board']));
 
             if (!$query) 
@@ -151,6 +150,42 @@ class Admission_model extends CI_Model
             return $formno;
         }
     }
+
+
+    public function CheckDuplicateForm_Model($data){
+
+        //DebugBreak();
+
+        @$rno = $data['mrno'];
+        @$iyear = $data['year'];
+        @$sess = $data['session'];
+        @$brd = $data['board'];
+        @$dob = $data['dob'];
+
+        @$name = $data['name'];
+        @$Fname = $data['Fname'];
+        @$BFORM = $data['BFORM'];
+        @$FNIC = $data['FNIC'];
+
+        if($data['SearchType'] == 1){
+            $query =  $this->db->query("exec admission_online..Admission_CheckDuplicateForm_SSC 1, $rno, $iyear, $sess, $brd, '','','','','$dob'");    
+        }
+
+        else if($data['SearchType'] == 2){
+            $query =  $this->db->query("exec admission_online..Admission_CheckDuplicateForm_SSC 2, 0, 0, 0, $brd, '$name','$Fname','$BFORM','$FNIC','$dob'");        
+        }
+
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            return $query->result_array();
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 
     public function Insert_NewEnorlement($data){    
 
@@ -279,7 +314,7 @@ class Admission_model extends CI_Model
             $regFee=0 ;
 
         //DebugBreak();
-            
+
         $query = $this->db->query(Insert_sp." '$formno',10,$iyear,$ses_s,'$name','$fname','$BForm','$FNIC','$Dob','$CellNo',$medium,'".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,$oldrno,$oldyear,$oldsess,$old_class,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$cat09,$cat10,$sub1ap2,$sub2ap2,$sub3ap2,$sub4ap2,$sub5ap2,$sub6ap2,$sub7ap2,$sub8ap2,$dist_cd,$teh_cd,$zone_cd,$Brd_cd,$isotherbrd,'$preResult',$exam_type,$isFresh,$AdmFee,$AdmProcessFee,$AdmTotalFee,$regFee,$certFee,$AdmFine,'$strRegNo','$picpath', $IsNewPic, '$temppath' ");    
         if (!$query) 
         {
@@ -479,9 +514,9 @@ class Admission_model extends CI_Model
             return;
         }
         $rowcount = $query->num_rows();
+
         if($rowcount > 0)
         {
-
             $query2 = $this->db->get_where('admission_Online..RuleFeeAdm', array('class' => 10,'sess' => Session, 'Start_Date <=' =>$date,'End_Date >='=>$date,'isPrSub'=>$isPratical));
             if (!$query2) 
             {
@@ -500,6 +535,7 @@ class Admission_model extends CI_Model
             return  false;
         }
     }
+
     public function Update_AdmissionFeePvt($data)
     {
         $data['cdate']= date('Y-m-d H:i:s');

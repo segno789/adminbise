@@ -2,6 +2,7 @@
 <form method="post" enctype="multipart/form-data" name="myform" id="myform">
 
     <?php 
+
     $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION); 
     @$image_path_selected = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents(@$data[0]['picpath']));
     ?>
@@ -254,7 +255,7 @@
                 <label class="control-label" for="oldrno" >
                     Roll No :
                 </label>        
-                <input class="text-uppercase form-control" type="text" readonly="readonly" id="oldrno" name="oldrno" value="<?php  echo  $data['0']['rno']; ?>" >
+                <input class="text-uppercase form-control" type="text" readonly="readonly" id="oldrno" name="oldrno" value="<?php echo  $data['0']['rno']; ?>" >
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="oldyear">
@@ -351,6 +352,9 @@
                     $sub8 = $data[0]['sub8'];
                     $chance = $data[0]['chance'];
                     $exam_type = $data[0]['exam_type'];
+
+                    //DebugBreak();
+
                     if(isset($_POST))
                     {
                         @$cattype   = @$cattype;    
@@ -880,6 +884,7 @@
         </div>
     </div>
     <div class="hidden">
+        <input type="hidden" class="hidden" name="category" id="category" value="<?php  echo @$cattype ?>">
         <input type="hidden" class="hidden" value="<?=  $data[0]['grp_cd']?>" name="pergrp" id="pergrp">
         <input type="hidden" class="hidden" id="oldClass" name="oldClass"  value="<?php echo $data[0]['class'];?>"/>     
         <input type="hidden" class="hidden" id="oldboardid" name="oldboardid"  value="<?php  echo $data[0]['Brd_cd'];?>"/>    
@@ -1095,18 +1100,21 @@
         var sub3_nonmuslim = {
             3:'ISLAMIC EDUCATION'
         }
+
         var additional_sub = {
             0 : 'NOT SELECTED',
             6 : 'PHYSICS',
             7 : 'CHEMISTRY',
             8 : 'BIOLOGY',
-            9:'GENERAL SCIENCE',
+            9 :'GENERAL SCIENCE',
             10:'FOUNDATION OF EDUCATION',
             11:'GEOGRAPHY OF PAKISTAN',
             12:'HOUSE HOLD ACCOUNTS & ITS RELATED PROBLEMS',
             13:'ELEMENTS OF HOME ECONOMICS',
-            14:'PHYSIOLOGY & HYGIENE15GEOMETRICAL & TECHNICAL DRAWING',
-            16:'GEOLOGY17ASTRONOMY & SPACE SCIENCE',
+            14:'PHYSIOLOGY & HYGIENE',
+            15: 'GEOMETRICAL & TECHNICAL DRAWING',
+            16:'GEOLOGY',
+            17:'ASTRONOMY & SPACE SCIENCE',
             18:'ART/ART & MODEL DRAWING',
             19:'ISLAMIC STUDIES',
             20: 'ISLAMIC HISTORY / MUSLIM HISTORY ',
@@ -2132,7 +2140,6 @@
             {
                 $("#sub1p2").append(new Option('<?php  echo  array_search($data[0]['sub1'],$subarray); ?>',sub1));
                 $("#sub1p2 option[value='" + sub1 + "']").attr("selected","selected");
-                //$("#sub1p2").append('<option value='+sub1p2+'>'+sub1p2+'</option>');
             }
             else
             {   $("#sub1p2").empty();
@@ -2485,14 +2492,18 @@
 
         }
 
+
+
+
         function additional_sub_grp_load(){
             //Category P-1: ADDITIONAL
 
             $('#lblpart1cat').text('Category P-1: ADDITIONAL')
             $('#lblpart2cat').text('Category P-2: ADDITIONAL');  
 
-            //   debugger;
+
             $.each(additional_sub, function(val, text) {
+
                 $('#sub1').hide();
                 $('#sub1p2').hide();
                 $('#sub2').hide();
@@ -2501,6 +2512,7 @@
                 $('#sub3p2').hide();
                 $('#sub4').hide();
                 $('#sub4p2').hide();
+
 
 
                 $('#sub5').append( new Option(text,val) );
@@ -2512,20 +2524,24 @@
                 $('#sub7').append( new Option(text,val) );
                 $('#sub7p2').append( new Option(text,val) );
 
+
+
                 $('#sub8').hide();
                 $('#sub8p2').hide();
             });  
 
-            /* if(grp_cd == 1 || grp_cd == 7 )
+            var Gender = $("#gend").val();
+            if(Gender == "1")
             {
-            $('#sub6').append( new Option('BIOLOGY',8) );
-            $('#sub6p2').append( new Option('BIOLOGY',8) );
-            $('#sub7').append( new Option('BIOLOGY',8) );
-            $('#sub7p2').append( new Option('BIOLOGY',8) );
-            $('#sub5').append( new Option('BIOLOGY',8) );
-            $('#sub5p2').append( new Option('BIOLOGY',8) );
-            //8:''
-            }    */
+                $("select#sub5 option[value='13']").remove(); 
+                $("select#sub5p2 option[value='13']").remove(); 
+                $("select#sub6 option[value='13']").remove(); 
+                $("select#sub6p2 option[value='13']").remove(); 
+                $("select#sub7 option[value='13']").remove(); 
+                $("select#sub7p2 option[value='13']").remove(); 
+
+            }
+
 
             $("#sub5 option[value='"+sub5+"']").remove(); 
             $("#sub5p2 option[value='"+sub5+"']").remove();
@@ -2554,13 +2570,11 @@
 
         function AAMA_KHASA_sub_grp_load()
         {
-            //
             //Category P-1: ADDITIONAL
-            //sdfsdfsdfsdfsdf
+
             $("#lblpart1cat").text("Category P-1: FULL");
             $("#lblpart2cat").text("Category P-2: FULL");
-            // $.each(additional_sub, function(val, text) {
-            // $('#sub1').hide();
+
             $("#sub1").append(new Option('URDU',1));
             $("#sub1p2").append(new Option('URDU',1));
             $("#sub2").append(new Option('ENGLISH',2));
@@ -3177,9 +3191,10 @@
 
             // PART II Subjects ....... 
         }
+
         $("#ddlMarksImproveoptions").change(function(){
             //
-            debugger;
+            //debugger;
 
             var cat =  $("#ddlMarksImproveoptions").val();
             if(cat== 0){
@@ -3408,7 +3423,7 @@
 
     })
     function checks(){
-        
+
         var status  =  check_NewEnrol_validation_matric();
         if(status == 0)
         {
@@ -3416,7 +3431,9 @@
         }
         else
         {
-            //debugger;
+
+            $('#btnsubmitUpdateEnrol').attr("disabled", "disabled");
+
             $.ajax({
 
                 type: "POST",
@@ -3424,6 +3441,7 @@
                 data: $("#myform").serialize() ,
                 datatype : 'html',
                 cache:false,
+                async: false,
 
                 success: function(data)
                 {                    
@@ -3437,6 +3455,7 @@
                             data: $("#myform").serialize() ,
                             datatype : 'html',
                             cache:false,
+                            async: false,
 
                             beforeSend: function() {  $('.mPageloader').show(); },
                             complete: function() { $('.mPageloader').hide();},
@@ -3449,30 +3468,40 @@
                                     window.location.href ='<?php echo base_url(); ?>Admission/formdownloaded/'+obj.formno
                                     alertify.error('Your Application is Submit Successfully');
                                     return true;
-                                }   
+                                } 
+
                                 else
                                 {
                                     alertify.error(obj.error);
+                                    $('#btnsubmitUpdateEnrol').removeAttr("disabled");
                                     return false; 
+
                                 }
                             },
 
                             error: function(request, status, error){
-
                                 alertify.error(request.responseText);
+                                $('#btnsubmitUpdateEnrol').removeAttr("disabled");
                             }
                         });
 
-                        return false
+                        $('#btnsubmitUpdateEnrol').removeAttr("disabled");
+                        return false;
+
                     }
                     else
                     {
                         alertify.error(obj.excep);
+                        $('#btnsubmitUpdateEnrol').removeAttr("disabled");
                         return false;     
+
                     }
                 }
             });
+
+            $('#btnsubmitUpdateEnrol').removeAttr("disabled");
             return false;   
+
         }
     }
 
