@@ -950,7 +950,6 @@ class Admission_model extends CI_Model
     
     public function getdelformno($formno,$dob)
     {
-        DebugBreak();
         $table1 = 'admission_online..tblVerificationCode';
         $table2 = 'admission_online..tblMAdm';
         $this->db->select("MobNo,formno,name");

@@ -291,11 +291,7 @@
                 alertify.error("Please write Valid Form No.");
                 return false;    
             }
-            else if(dob == "")
-            {
-                alertify.error("Please write Date of Birth.");
-                return false;        
-            }
+           
             else
             {
                 alertify.log("Please wait while your form is downloading....")    
