@@ -410,7 +410,7 @@
         40: 'HEALTH & PHYSICAL EDUCATION',
         78: 'COMPUTER SCIENCE',
         15 : 'GEOMETRICAL & TECHNICAL DRAWING',
-        43 : 'ELECTRICAL WIRING',
+       /* 43 : 'ELECTRICAL WIRING',*/
         48 : 'WOOD WORK (FURNITURE MAKING)',
         90 : 'COMPUTER HARDWARE',
         83 : 'POULTRY FARMING',
@@ -441,7 +441,7 @@
         40: 'HEALTH & PHYSICAL EDUCATION',
         78: 'COMPUTER SCIENCE',
         15 : 'GEOMETRICAL & TECHNICAL DRAWING',
-        43 : 'ELECTRICAL WIRING',
+        /*43 : 'ELECTRICAL WIRING',*/
         48 : 'WOOD WORK (FURNITURE MAKING)',
         90 : 'COMPUTER HARDWARE',
         83 : 'POULTRY FARMING',
@@ -1834,12 +1834,12 @@
                 $("#sub7").append(new Option('COMPUTER SCIENCE',78));
                 //    alert('hello  Sweet Heart ! I love You UMMMMAH :) ') 
             }
-            else if (grp_cd == "8")
+           /* else if (grp_cd == "8")
             {
                 load_Bio_CS_Sub();
                 $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
                 //ELECTRICAL WIRING (OPT)
-            }
+            }   */
 
             else if(grp_cd == "2")
             {
@@ -1889,7 +1889,7 @@
                 }
 
 
-                var Gender = $("input[name=gender]:checked").val();
+                var Gender = $("#gender").val();
                 // debugger;
                 //console.log(Religion);
                 if(Gender == "2")

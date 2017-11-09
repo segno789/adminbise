@@ -91,7 +91,7 @@ class Admission_9th_pvt extends CI_Controller {
 
     public function NewEnrolment_insert()
     {  
-        //  DebugBreak();
+        // DebugBreak();
         //  $_POST;
         //   echo  'Please wait';
         //  die();
@@ -101,8 +101,13 @@ class Admission_9th_pvt extends CI_Controller {
         $userinfo = $Logged_In_Array['logged_in'];
         $userinfo['isselected'] = 2;
 
-        $nxtrnosessyear = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['dob'],$_POST['father_cnic']);
-
+         /*$_POST['cand_name']='FILPUS';
+         $_POST['father_name'] = 'WILLUM PITRAS';
+         $_POST['dob'] ='07-06-2002';
+         $_POST['father_cnic']='34104-2230555-2';
+         $_POST['bay_form'] = '34104-4840360-9';  
+         */
+        $nxtrnosessyear = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic']);
         //if($nxtrnosessyear !=  -1)
         if($nxtrnosessyear[0][NextRno_Sess_Year] !="")
         {
@@ -111,7 +116,26 @@ class Admission_9th_pvt extends CI_Controller {
             //  echo '<pre>'; print_r($allinputdata['excep']);exit();
             redirect('Admission_9th_pvt/NewEnrolment/');
             return false; 
+        }
+        $nxtrnosessyear = $this->Admission_9th_reg_model->checknextrno_newAdmission($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic'],$_POST['bay_form']);
+        if($nxtrnosessyear[0][NextRno_Sess_Year] !="")
+        {
+            $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
+            $this->session->set_flashdata('NewEnrolment_error',"You have already appeared:".$nxtrnosessyear);
+            //  echo '<pre>'; print_r($allinputdata['excep']);exit();
+            redirect('Admission_9th_pvt/NewEnrolment/');
+            return false; 
+        } 
+        $nxtrnosessyear = $this->Admission_9th_reg_model->bay_form_fnic($_POST['bay_form'],$_POST['father_cnic']);
+        if($nxtrnosessyear[0][NextRno_Sess_Year] !="")
+        {
+            $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
+            $this->session->set_flashdata('NewEnrolment_error',"You have already appeared:".$nxtrnosessyear);
+            //  echo '<pre>'; print_r($allinputdata['excep']);exit();
+            redirect('Admission_9th_pvt/NewEnrolment/');
+            return false; 
         }   
+        
 
 
 

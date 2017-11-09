@@ -1051,6 +1051,7 @@ class Admission_9th_reg extends CI_Controller {
     }
     public function Make_Batch_Formwise()
     {
+   // DebugBreak();
         if(!empty($_POST["CheckedFormno_createBatch"]))
         {
 
@@ -1556,8 +1557,8 @@ class Admission_9th_reg extends CI_Controller {
             $this->Admission_9th_reg_model->UpdateFee_Final($mydata);
         }
 
-
-        $temp = $user['Inst_Id'].'@9@'.Session;
+       // DebugBreak();
+        $temp = $user['Inst_Id'].'@9@'.Session.'@'.$mydata['batchid'];
         $image =  $this->set_barcode($temp);
         
         //$User_info_data = array('Inst_Id'=>$user['Inst_Id'], 'date' => date('Y-m-d'));
@@ -2415,7 +2416,7 @@ class Admission_9th_reg extends CI_Controller {
 
             $pdf->SetXY($w+1.4,$y+$dy+0.15);
             $pdf->SetFont('Arial','B',7);
-            $pdf->Cell(0, $y, 'Admission Annual Session ('.corr_bank_chall_class.')', 0.25, "L");
+            $pdf->Cell(0, $y, 'Admission Annual '.corr_bank_chall_class.' Session '.(YEAR+1), 0.25, "L");
 
             $y += 0.25;
             $pdf->SetFont('Arial','B',10);
@@ -3054,6 +3055,7 @@ class Admission_9th_reg extends CI_Controller {
         $isfine = 0;
         $Total_fine = 0;
         $duedate ;
+        $processFee = 195;
         // Declare Science & Arts Fee's According to Fee Table .  Note: this will assign to Triple date fee. After triple date it will not asign fees.
         if(!empty($user_info['rule_fee'])) 
         {
