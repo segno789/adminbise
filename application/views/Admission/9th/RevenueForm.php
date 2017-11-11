@@ -68,47 +68,41 @@
     </tr>
     <tr>
         <td colspan="8" align="center">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table2">
+            <table width="100%" border="1" cellspacing="0" cellpadding="0" class="table2">                
                 <tr>
-                    <td style="width:150px;"></td>
-                    <td></td>
-                    <td><strong>Batch ID:</strong> <?php echo $calcFeedata["batchid"];?></td>
-                </tr>
-                <tr>
-                    <td style="width:150px;"><strong>Total No. Of Candidates:</strong></td>
-                    <td><?php   echo $calcFeedata['TotalStd']?></td>
-                    <td><strong>Challan No:</strong> <?php echo $userinfo['fee'][0]["challanno"];?></td>
+                    <td style="width:30%;"><strong>Total No. Of Candidates:</strong></td>
+                    <td style="width:20%;"><?php   echo $calcFeedata['TotalStd']?></td>
+                    <td style="width:20%;"><strong>Batch ID:</strong> </td>                    
+                    <td style="width:30%;"><?php echo $calcFeedata["batchid"];?></td>
                 </tr>
                 <tr>
                     <td><strong>Amount Of Admission Fee:</strong></td>
                     <td><?php $TotalAdmFee=0; $TotalProcFee=0; $TotalLateFee=0; $TotalAmount=0; $GrandTotal=0;  $totalco =  count($AllFeeData);
-
-                        
-                           $TotalAdmFee = $calcFeedata['Total_AdmFee'];
-                            $TotalProcFee = $calcFeedata['Total_ProcesFee'];
-                            $TotalLateFee = $calcFeedata['Total_LateAdmFee'];
-                            $GrandTotal = $calcFeedata['Amount'];
-
-                        
-                        // DebugBreak();
+                        $TotalAdmFee = $calcFeedata['Total_AdmFee'];
+                        $TotalProcFee = $calcFeedata['Total_ProcesFee'];
+                        $TotalLateFee = $calcFeedata['Total_LateAdmFee'];
+                        $GrandTotal = $calcFeedata['Amount'];
                     echo  $TotalAdmFee;?></td>
-                    <td><strong>Deposit Date:</strong> ____/____/______</td>
+                    <td><strong>Challan No:</strong></td>
+                    <td><?php echo $userinfo['fee'][0]["challanno"];?></td>
                 </tr>
                 <tr>
                     <td><strong>Amount Of Processing Fee:</strong></td>
                     <td><strong><?php echo  $TotalProcFee;?></strong></td>
-                    <td><strong>HBL Branch Name:</strong> ________________________</td>
+                    <td><strong>Deposit Date:</strong></td>
+                    <td> ____/____/_________</td>
                 </tr>
 
                 <tr>
                     <td><strong>Amount Of Late + Token Enrolment Fee:</strong></td>
                     <td><strong><?php echo  $TotalLateFee;?></strong></td>
-                    <td>&nbsp;</td>
+                    <td><strong>HBL Branch Name:</strong> </td>
+                    <td>_____________________________________________</td>
                 </tr>
                 <tr>
                     <td><strong>Total Amount:</strong></td>
-                    <td><strong><?php echo $TotalAdmFee+$TotalProcFee+$TotalLateFee ;?></strong></td>
-                    <td>&nbsp;</td>
+                    <td colspan="4"><strong><?php echo $TotalAdmFee+$TotalProcFee+$TotalLateFee ;?></strong></td>
+                    
                 </tr>
             </table>
 
@@ -132,7 +126,7 @@
     <?php
     //DebugBreak();
     $n = 0; 
-      $data = $userinfo['fee'];
+    $data = $userinfo['fee'];
     foreach ($data as $key=>$vals) {
         $n++;
 
@@ -142,7 +136,7 @@
             <td class="td"><strong><?php echo $vals['name'];?></strong></td>
             <td class="td"><strong><?php echo $vals['Fname'];?></strong></td>
             <?php
-              
+
             $grp_name = $vals["grp_cd"];
             switch ($grp_name) {
                 case '1':
@@ -162,24 +156,24 @@
                     break;
                 default:
                     $grp_name = "No Group Selected.";
-                   
 
-                    
+
+
             }
-             if(($vals["sub7"] == 78 || $vals["sub7"] == 43) && $vals["grp_cd"] == 1)
-                    {
-                        $grp_name = $vals["sub7"];
-                        switch ($grp_name) {
-                            case '78':
-                                $grp_name = 'SCIENCE  WITH COMPUTER SCIENCE';
-                                break;
-                            case '43':
-                                $grp_name = 'SCIENCE  WITH ELECTRICAL WIRING';
-                                break;
+            if(($vals["sub7"] == 78 || $vals["sub7"] == 43) && $vals["grp_cd"] == 1)
+            {
+                $grp_name = $vals["sub7"];
+                switch ($grp_name) {
+                    case '78':
+                        $grp_name = 'SCIENCE  WITH COMPUTER SCIENCE';
+                        break;
+                    case '43':
+                        $grp_name = 'SCIENCE  WITH ELECTRICAL WIRING';
+                        break;
 
 
-                        }     
-                    }     
+                }     
+            }     
             ?>
             <td class="td"><strong><?php echo $grp_name;?></strong></td>
 
