@@ -282,7 +282,7 @@ class Admission_9th_reg_model extends CI_Model
         $AdmTotalFee = $data['fee']['AdmTotalFee']+$data['fee']['regFee']+$data['fee']['AdmFine'];
         
         
-    //DebugBreak();
+   // DebugBreak();
    
         //'formNo'=>$data['formNo'],'regFee'=>0,'AdmProcessFee'=>$processFee,'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']
         //$Dob = date('Y-m-d', strtotime($Dob)); 
