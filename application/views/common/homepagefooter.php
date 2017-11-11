@@ -25,7 +25,7 @@
         });
 
         $( "#batch_real_PaidDate" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, startDate:new Date() }).val();
-        $( "#dob" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, maxDate: new Date(2002, 7,1),yearRange: '1970:2002'}).val();
+        $( "#dob" ).datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, maxDate: new Date(2005, 7,1),yearRange: '1970:2005'}).val();
         var spl_cd = "<?php   echo @$spl_cd; ?>";
         var err ='<?php echo @$error; ?>';
         if(err != ""){
@@ -264,7 +264,7 @@
                 $("#formid").focus();
                 return false;    
             }
-            
+
             else
             {
                 alertify.log("Please wait while your form is downloading....")    
@@ -320,8 +320,8 @@
                 alertify.error("Please write Valid Form No.");
                 return false;
             }
-           /* if(dob == ""){
-                return false;
+            /* if(dob == ""){
+            return false;
             }*/
             window.location.href='<?php  echo base_url(); ?>Admission/checkFormNo_then_download/'+formno;  
         }
@@ -377,7 +377,7 @@
                 $("#pvtinfo_teh").append('<option value="18">SAMBRIAL</option>');
             }
         });
-        
+
         $("#pvtinfo_teh").change(function(){
 
             // alert("hello");
@@ -1007,109 +1007,219 @@
         });
 
     }
-      $("#btndelForm").click(function(){
-            var formno = $("#delformid").val();
-            var btval = $("#btndelForm").val();
-            
-            if(formno == "")
+    $("#btndelForm").click(function(){
+        var formno = $("#delformid").val();
+        var btval = $("#btndelForm").val();
+
+        if(formno == "")
+        {
+            alertify.error("Please write Form No.");
+            $("#delformid").focus();
+            return false;    
+        }
+        else if(formno.length < 5)
+        {
+            alertify.error("Please write Valid Form No.");
+            return false;    
+        }
+
+        if($.trim(btval) == 'Delete Form')
+        {
+            var dob = $("#dob").val();
+
+            if(dob == "")
             {
-                alertify.error("Please write Form No.");
-                return false;    
-            }
-            else if(formno.length < 5)
-            {
-                alertify.error("Please write Valid Form No.");
-                return false;    
+                alertify.error("Please write Date of Birth.");
+                $("#dob").focus();
+                return false;        
             }
 
-            if($.trim(btval) == 'Delete Form')
+            else
             {
-                var dob = $("#dob").val();
-
-                if(dob == "")
-                {
-                    alertify.error("Please write Date of Birth.");
-                    return false;        
-                }
-
-                else
-                {
-                    jQuery.ajax({
-                        type: "POST",
-                        url: "<?php echo base_url(); ?>" + "Admission/sendVerCode/",
-                        data: {'formno':formno,'dob':dob},
-                        beforeSend: function() {  $('.mPageloader').show(); },
-                        complete: function() { $('.mPageloader').hide();},
-                        success: function(data) {
-                            if($.trim(data) ==  1)
-                            {
-                                $("#delformid").attr("disabled", "disabled"); 
-                                $("#dob").attr("disabled", "disabled"); 
-                                $('#btndelForm').val('Verification Confirmation');
-                                $('#mobCode').show();
-                            } 
-                            else
-                            {
-                                alertify.error("Record is not found.");
-                            }  
-                        },
-                        error: function(request, status, error){
-                            alert(request.responseText);
-                        }
-                    });
-                }
-            }
-            else if($.trim(btval) == 'Verification Confirmation')
-            {
-                var mobcode = $("#mobCode").val();
-                if(mobcode == "")
-                {
-                    alertify.error("Please write Verification Code.");
-                    return false;        
-                }
-                else if(mobcode.length < 6)
-                {
-                    alertify.error("Please write Valid Verification Code.");
-                    return false;        
-                }
-                else
-                {
-                    jQuery.ajax({
-                        type: "POST",
-                        url: "<?php echo base_url(); ?>" + "Admission/verconfrimCode/",
-                        data: {'formno':formno,'mobcode':mobcode},
-                        beforeSend: function() {  $('.mPageloader').show(); },
-                        complete: function() { $('.mPageloader').hide();},
-                        success: function(data)
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url(); ?>" + "Admission/sendVerCode/",
+                    data: {'formno':formno,'dob':dob},
+                    beforeSend: function() {  $('.mPageloader').show(); },
+                    complete: function() { $('.mPageloader').hide();},
+                    success: function(data) {
+                        if($.trim(data) ==  1)
                         {
-                            if($.trim(data) ==  1)
-                            {
-                                 alertify.success("Form Deleted Successfully.");
-                                $("#delformid").removeAttr('disabled'); 
-                                $("#dob").removeAttr('disabled'); 
-                                $('#btndelForm').val('Delete Form');
-                                $("#delformid").val('');
-                                $("#dob").val('');
-                                $('#mobCode').hide();
-
-                            }
-                            else
-                            {
-                                alertify.error("Your Verification Code is invalid.");
-                            }
-                        },
-                        error: function(request, status, error){
-                            alert(request.responseText);
-                        }
-                    });
-                }
+                            $("#delformid").attr("disabled", "disabled"); 
+                            $("#dob").attr("disabled", "disabled"); 
+                            $('#btndelForm').val('Verification Confirmation');
+                            $('#mobCode').show();
+                        } 
+                        else
+                        {
+                            alertify.error("Record is not found.");
+                        }  
+                    },
+                    error: function(request, status, error){
+                        alert(request.responseText);
+                    }
+                });
             }
-            
+        }
+        else if($.trim(btval) == 'Verification Confirmation')
+        {
+            var mobcode = $("#mobCode").val();
+            if(mobcode == "")
+            {
+                alertify.error("Please write Verification Code.");
+                return false;        
+            }
+            else if(mobcode.length < 6)
+            {
+                alertify.error("Please write Valid Verification Code.");
+                return false;        
+            }
+            else
+            {
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url(); ?>" + "Admission/verconfrimCode/",
+                    data: {'formno':formno,'mobcode':mobcode},
+                    beforeSend: function() {  $('.mPageloader').show(); },
+                    complete: function() { $('.mPageloader').hide();},
+                    success: function(data)
+                    {
+                        if($.trim(data) ==  1)
+                        {
+                            alertify.success("Form Deleted Successfully.");
+                            $("#delformid").removeAttr('disabled'); 
+                            $("#dob").removeAttr('disabled'); 
+                            $('#btndelForm').val('Delete Form');
+                            $("#delformid").val('');
+                            $("#dob").val('');
+                            $('#mobCode').hide();
+
+                        }
+                        else
+                        {
+                            alertify.error("Your Verification Code is invalid.");
+                        }
+                    },
+                    error: function(request, status, error){
+                        alert(request.responseText);
+                    }
+                });
+            }
+        }
 
 
 
-         return false;
-     })
+
+        return false;
+    })
+    
+    
+      $("#btndel9Form").click(function(){
+        var formno = $("#delformid").val();
+        var btval = $("#btndel9Form").val();
+
+        if(formno == "")
+        {
+            alertify.error("Please write Form No.");
+            $("#delformid").focus();
+            return false;    
+        }
+        else if(formno.length < 5)
+        {
+            alertify.error("Please write Valid Form No.");
+            return false;    
+        }
+
+        if($.trim(btval) == 'Delete Form')
+        {
+            var dob = $("#dob").val();
+
+            if(dob == "")
+            {
+                alertify.error("Please write Date of Birth.");
+                $("#dob").focus();
+                return false;        
+            }
+
+            else
+            {
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url(); ?>" + "Admission_9th_pvt/sendVerCode/",
+                    data: {'formno':formno,'dob':dob},
+                    beforeSend: function() {  $('.mPageloader').show(); },
+                    complete: function() { $('.mPageloader').hide();},
+                    success: function(data) {
+                        if($.trim(data) ==  1)
+                        {
+                            $("#delformid").attr("disabled", "disabled"); 
+                            $("#dob").attr("disabled", "disabled"); 
+                            $('#btndel9Form').val('Verification Confirmation');
+                            $('#mobCode').show();
+                        } 
+                        else
+                        {
+                            alertify.error("Record is not found.");
+                        }  
+                    },
+                    error: function(request, status, error){
+                        alert(request.responseText);
+                    }
+                });
+            }
+        }
+        else if($.trim(btval) == 'Verification Confirmation')
+        {
+            var mobcode = $("#mobCode").val();
+            if(mobcode == "")
+            {
+                alertify.error("Please write Verification Code.");
+                return false;        
+            }
+            else if(mobcode.length < 6)
+            {
+                alertify.error("Please write Valid Verification Code.");
+                return false;        
+            }
+            else
+            {
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url(); ?>" + "Admission_9th_pvt/verconfrimCode/",
+                    data: {'formno':formno,'mobcode':mobcode},
+                    beforeSend: function() {  $('.mPageloader').show(); },
+                    complete: function() { $('.mPageloader').hide();},
+                    success: function(data)
+                    {
+                        if($.trim(data) ==  1)
+                        {
+                            alertify.success("Form Deleted Successfully.");
+                            $("#delformid").removeAttr('disabled'); 
+                            $("#dob").removeAttr('disabled'); 
+                            $('#btndel9Form').val('Delete Form');
+                            $("#delformid").val('');
+                            $("#dob").val('');
+                            $('#mobCode').hide();
+
+                        }
+                        else
+                        {
+                            alertify.error("Your Verification Code is invalid.");
+                        }
+                    },
+                    error: function(request, status, error){
+                        alert(request.responseText);
+                    }
+                });
+            }
+        }
+
+
+
+
+        return false;
+    })
+    
 </script>
 </body>
 </html>
