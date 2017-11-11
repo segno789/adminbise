@@ -1795,7 +1795,7 @@ class Admission_9th_pvt extends CI_Controller {
 
     function feecalculate($data,$isupdate)
     {
-        //DebugBreak();
+       // DebugBreak();
         $isper = 0;
         if( $this->practicalsubjects($data['sub6'])|| $this->practicalsubjects($data['sub7'])|| $this->practicalsubjects($data['sub8']))
         {
@@ -1820,13 +1820,13 @@ class Admission_9th_pvt extends CI_Controller {
             if($user_info['rule_fee'][0]['isPrSub']==1)
             {
                 $admfee = $user_info['rule_fee'][0]['PVT_Amount'];
-                $processFee = $user_info['rule_fee'][0]['Processing_Fee'];;
+                $processFee = $user_info['rule_fee'][0]['Processing_Fee_pvt'];;
                 $admfeecmp = $user_info['rule_fee'][0]['Comp_Pvt_Amount'];
             } 
             else if($user_info['rule_fee'][0]['isPrSub']== 0 )
             {
                 $admfee = $user_info['rule_fee'][0]['PVT_Amount'];
-                $processFee = $user_info['rule_fee'][0]['Processing_Fee'];;
+                $processFee = $user_info['rule_fee'][0]['Processing_Fee_pvt'];;
                 $admfeecmp = $user_info['rule_fee'][0]['Comp_Pvt_Amount'];
             }
         }
@@ -1843,14 +1843,14 @@ class Admission_9th_pvt extends CI_Controller {
             if($user_info['rule_fee'][0]['isPrSub'] == 1)
             {
                 $admfee = $user_info['rule_fee'][0]['PVT_Amount'];
-                $processFee = $user_info['rule_fee'][0]['Processing_Fee'];;
+                $processFee = $user_info['rule_fee'][0]['Processing_Fee_pvt'];;
                 $admfeecmp = $user_info['rule_fee'][0]['Comp_Pvt_Amount'];
 
             } 
             else if( $user_info['rule_fee'][0]['isPrSub'] == 0 )
             {
                 $admfee = $user_info['rule_fee'][0]['PVT_Amount'];
-                $processFee = $user_info['rule_fee'][0]['Processing_Fee'];;
+                $processFee = $user_info['rule_fee'][0]['Processing_Fee_pvt'];;
                 $admfeecmp = $user_info['rule_fee'][0]['Comp_Pvt_Amount'];
 
             }
