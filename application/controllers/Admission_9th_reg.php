@@ -1695,7 +1695,7 @@ class Admission_9th_reg extends CI_Controller {
             $temp = $data['formNo'].'@9@'.Session.'@'.(Year+1); 
             $image =  $this->set_barcode($temp);
             $pdf->Image(BARCODE_PATH.$image,3.0, 0.7  ,2.2,0.30,"PNG");
-            $pdf->Image(BARCODE_PATH.$image,5.7, 6.2  ,2.2,0.30,"PNG");
+            $pdf->Image(BARCODE_PATH.$image,5.7, 6.4  ,2.2,0.30,"PNG");
 
             //DebugBreak(); 
             $x=0;
@@ -1707,7 +1707,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetXY( 1,0.5);
             $pdf->Image("assets/img/9th.png",7.5,0.5, 0.50,0.50, "PNG");        
 
-            $pdf->SetFont('Arial','',8);
+            $pdf->SetFont('Arial','b',8);
             $pdf->SetXY(2.3,0.4);
             if(Session == 1)
             {
@@ -1719,7 +1719,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->Cell(0, 0.25,@$data["regPvt"]==1?"ADMISSION FORM FOR SECONDARY SCHOOL (".class_for_9th_Adm.") ".$ses." EXAMINATION, ".(Year+1) :" ADMISSION FORM FOR SECONDARY SCHOOL (".class_for_9th_Adm.") ".$ses." EXAMINATION, ".(Year+1), 0.25, "C");
 
 
-            $pdf->SetFont('Arial','b',8);
+            $pdf->SetFont('Arial','b',10);
             $pdf->SetXY(0.4,1.0);
             $pdf->Cell(0, 0.25,@$data["regPvt"]==1?"(FOR REGULAR CANDIDATE)":"(FOR PRIVATE CANDIDATE)",0,'L',"C");
 
@@ -1763,7 +1763,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->Cell(7.6,0.2,'PERSONAL INFORMATION',1,0,'L',1);
 
             $Y = 0.2;
-            $pdf->Image(DIRPATH9th.'/'.$data["Sch_cd"].'/'.$data["PicPath"],6.0+$x,2.4+$Y , 1.30, 1.30, "JPG");
+            $pdf->Image(DIRPATH9th.'/'.$data["Sch_cd"].'/'.$data["PicPath"],6.0+$x,2.7+$Y , 1.30, 1.30, "JPG");
             //--------------------------- 1st line 
             $pdf->SetXY(0.5, 2+$Y);
             $pdf->SetFont('Arial','',8);
@@ -1779,8 +1779,22 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetXY(4.4+$x,2+$Y);
             $pdf->Cell(0.5,0.5,strtoupper(@$data["Fname"]),0,'L');
 
-
-
+              $Y = $Y+0.2;
+            //--------------------------- 1st line 
+            $pdf->SetXY(0.5, 2.1+$Y);
+            $pdf->SetFont('Arial','',8);
+            $pdf->Cell( 0.5,0.5,"Name (in urdu):",0,'L');
+            $pdf->SetFont('Arial','B',8);
+            $pdf->SetXY(1.6,2.1+$Y); 
+            $pdf->Cell(0.5,0.5,"____________________________",0,'L');
+            //--------------------------- FATHER Name 
+            $pdf->SetXY(3.1+$x,2.1+$Y);
+            $pdf->SetFont('Arial','',8);
+            $pdf->Cell( 0.5,0.5,"Father's Name(in urdu):",0,'L');
+            $pdf->SetFont('Arial','B',8);
+            $pdf->SetXY(4.4+$x,2.1+$Y);
+            $pdf->Cell(0.5,0.5,"________________________",0,'L');
+           
 
             //--------------------------- BAY FORM NO line 
             $pdf->SetXY(0.5, 2.3+$Y);
@@ -1902,7 +1916,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetFont('Arial','',8);
             $pdf->Cell( 0.5,0.5,"Locality:",0,'L');*/
             $pdf->SetFont('Arial','b',8);
-            $pdf->SetXY(6.4+$x,3.6+$Y);
+            $pdf->SetXY(6.4+$x,3.7+$Y);
             $pdf->Cell(0.5,0.5,@$data["sex"]==1?"MALE":"FEMALE",0,'R');
 
             $pdf->SetXY(3.1+$x,3.5+$Y);
@@ -1977,7 +1991,7 @@ class Admission_9th_reg extends CI_Controller {
            /* if(@$data["RegPvt"]==2)
             {  */
             
-             $pdf->SetXY(0.5,5.2+$Y);
+            $pdf->SetXY(0.5,5.2+$Y);
             $pdf->SetFont('Arial','B',11);
             $pdf->Cell( 0.5,0.5,"Zone:                   ".@$data["zone_cd"]." - ".@$data["zone_name"],0,'L');
                
@@ -2094,28 +2108,28 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetXY(3.5,6.45+$Y);
             $pdf->Cell(0.3,0.4,"4._______________________________",0,'L');
             $pdf->SetXY(3.5,6.35+$Y);
-            $pdf->Cell(0.5,0.5,  @$data['sub4Ap1'] != 1 ? '':   '    '. (@$data['sub4_NAME']),0,'R');
+            $pdf->Cell(0.5,0.5,  @$data['sub8ap1'] != 1 ? '':   '    '. (@$data['sub8_NAME']),0,'R');
             //------------------sub3
             $pdf->SetXY(1.1,6.7+$Y);
             $pdf->Cell(0.3,0.4,"5._______________________________",0,'L');    
             $pdf->SetXY(1.15,6.6+$Y);
-            $pdf->Cell(0.5,0.5,  @$data['sub5Ap1'] != 1 ? '':   '    '. (@$data['sub5_NAME']),0,'R');
+            $pdf->Cell(0.5,0.5,  @$data['sub4Ap1'] != 1 ? '':   '    '. (@$data['sub4_NAME']),0,'R');
 
             $pdf->SetXY(3.5,6.7+$Y);
             $pdf->Cell(0.3,0.4,"6._______________________________",0,'L');
             $pdf->SetXY(3.5,6.6+$Y);             
-            $pdf->Cell(0.5,0.5,  @$data['sub6Ap1'] != 1 ? '':  '    '. (@$data['sub6_NAME']),0,'R');
+            $pdf->Cell(0.5,0.5,  @$data['sub5Ap1'] != 1 ? '':  '    '. (@$data['sub5_NAME']),0,'R');
             //----------- sub4
             $pdf->SetXY(1.1,6.95+$Y);
             $pdf->Cell(0.3,0.4,"7._______________________________",0,'L');    
             $pdf->SetXY(1.15,6.85+$Y);
-            $pdf->Cell(0.5,0.5,  @$data['sub7Ap1'] != 1 ? '':   '    '. (@$data['sub7_NAME']),0,'L');
+            $pdf->Cell(0.5,0.5,  @$data['sub6Ap1'] != 1 ? '':   '    '. (@$data['sub6_NAME']),0,'L');
 
             //  DebugBreak();
             $pdf->SetXY(3.5,6.95+$Y);
             $pdf->Cell(0.3,0.4,"8._______________________________",0,'L');
             $pdf->SetXY(3.5,6.85+$Y);
-            $pdf->Cell(0.5,0.5,  @$data['sub8ap1'] != 1 ? '':   '    '. (@$data['sub8_NAME']),0,'R');
+            $pdf->Cell(0.5,0.5,  @$data['sub7Ap1'] != 1 ? '':   '    '. (@$data['sub7_NAME']),0,'R');
 
             //------ Picture Box on right side with subjects list    
             if(@$data["regPvt"]==2)
@@ -2132,13 +2146,11 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetXY(0.5,7.7+$Y);
             $pdf->SetFont('Arial','UIB',9);
             $pdf->Cell( 0.5,0.5,'Affidavit:',0,'L');
-
             $pdf->SetXY(0.5,8+$Y);
             $pdf->SetFont('Arial','',9);
             $pdf->MultiCell( 7,0.2,"    I have read this form. The data/information on this form and in online system is same as last entered/modified/provided by me and its correctness is only my responsbility. I understand that only the information/data provided in the online system alongwith photograph and some other handwritten details on this form will be used for further processing. I accept all the terms and conditions in this  regard.",0);
             //------ Thumb Box on Centre      
-
-            $pdf->SetFont('Arial','',6);
+            $pdf->SetFont('Arial','b',6);
             $pdf->SetXY(0.5,8.9+$Y);
             $pdf->Cell(2,0.8,'',1,0,'C',0); 
             $pdf->SetXY(0.5,9.2+$Y);
@@ -2155,7 +2167,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetXY(2.6,9.2+$Y);
             $pdf->Cell(1.5,0.75,'Thumb Impression','',0,'L',0); 
             //---------------------------------------------------------------------------
-            $pdf->SetFont('Arial','',6);
+            $pdf->SetFont('Arial','b',6);
             $pdf->SetXY(2.6,9.8+$Y);
             $pdf->Cell(3.7,0.8,'',1,0,'C',0); 
             $pdf->SetXY(2.6,10.3+$Y);
@@ -2170,18 +2182,18 @@ class Admission_9th_reg extends CI_Controller {
 
             $pdf->SetXY(0.5,9.8+$Y);
             $pdf->Cell(2,0.8,'',1,0,'C',0); 
-            $pdf->SetXY(0.5,10.1+$Y);
-            $pdf->Cell(4,0.75,"Candidate's Signature in English",'',0,'L',0); 
-
+            $pdf->SetXY(0.5,10.3+$Y);
+          //  $pdf->Cell(4,0.75,"Candidate's Signature in English",'',0,'L',0); 
+            $pdf->MultiCell(4.5,0.3,"Candidate's Signature in English",0,'L'); 
             //------ Picture Box on right side on Top    
-            $pdf->SetFont('Arial','B',6);  
+            $pdf->SetFont('Arial','B',7);  
             $pdf->SetXY(6.4,9.1+$Y);
             $pdf->Cell(1.4,1.5,'',1,0,'C',0); 
             $pdf->SetXY(6.3,9.1+$Y);
-            $pdf->MultiCell(1.6,0.2,@$data["regPvt"]==1?"Paste Recent Photograph. Must Be cross Attested by the Head/Deputy Head of Institution":"Paste Recent Photograph. Must Be cross Attested by the Principal/V.Prinicipal/ Headmaster/Headmistress/ Dy.Headmaster/ Dy. Headmistress",0,'C'); 
+            $pdf->MultiCell(1.45,0.2,@$data["regPvt"]==1?"Paste Recent Photograph. Must Be cross Attested by the Head/Deputy Head of Institution":"Paste Recent Photograph. Must Be cross Attested by the Principal/V.Prinicipal/ Headmaster/Headmistress/ Dy.Headmaster/ Dy. Headmistress",0,'C'); 
 
-            $pdf->SetXY(6.2,10.4+$Y);
-            $pdf->Image(base_url()."assets/img/crossed.JPG",6.5,10.7, 1.28,0.25, "JPG");  
+            $pdf->SetXY(6.2,10.0+$Y);
+            $pdf->Image(base_url()."assets/img/crossed.JPG",6.5,10.9, 1.28,0.25, "JPG");  
 
 
 
