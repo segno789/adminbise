@@ -70,9 +70,14 @@
         <td colspan="8" align="center">
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table2">
                 <tr>
+                    <td style="width:150px;"></td>
+                    <td></td>
+                    <td><strong>Batch ID:</strong> <?php echo $calcFeedata["batchid"];?></td>
+                </tr>
+                <tr>
                     <td style="width:150px;"><strong>Total No. Of Candidates:</strong></td>
                     <td><?php   echo $calcFeedata['TotalStd']?></td>
-                    <td><strong>Challan No:</strong> <?php //echo $data["Challan_No"];?></td>
+                    <td><strong>Challan No:</strong> <?php echo $userinfo['fee'][0]["challanno"];?></td>
                 </tr>
                 <tr>
                     <td><strong>Amount Of Admission Fee:</strong></td>

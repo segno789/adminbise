@@ -183,14 +183,14 @@
 
 
 
-        $('.check').toggle(function(){
+       /* $('.check').toggle(function(){
             var allPages = otable.fnGetNodes();
             $('input[type="checkbox"]', allPages).prop('checked', true);
             $(this).text('Uncheck All')
             },function(){
                 $('input[type="checkbox"]', allPages).prop('checked', false);
                 $(this).text('Check All');        
-        });
+        });  */
 
 
         $("#bay_form,#father_cnic").mask("99999-9999999-9",{placeholder:"_"});
@@ -670,8 +670,8 @@
     var $batchformSelectedid = $("#CheckedFormno_createBatch");
     //var $countContainer = $('.selectCount');
     
-    $("input:checkbox").live('change', function () {
-
+    $(document).on('change',"input:checkbox", function () {
+        debugger;
         var value = $(this).val();
 
         if(this.checked) {

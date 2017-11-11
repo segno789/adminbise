@@ -413,10 +413,10 @@ class Admission_9th_reg_model extends CI_Model
 
         return true;
     }
-    public function checknextrno($name,$dob,$fnic)
+    public function checknextrno($name,$fname,$dob,$fnic)
     {
-        //();
-        $query = $this->db->query("admission_online..NextAppearanceSSC 0,9,0,0,'$name','$dob','$fnic','',3");
+       
+        $query = $this->db->query("admission_online..NextAppearanceSSC_9THADM 0,9,0,0,'$name','$fname','$dob','$fnic','',3");
 
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -429,10 +429,11 @@ class Admission_9th_reg_model extends CI_Model
             return  -1;
         }
     }
-    public function checknextrno_newAdmission($name,$dob,$fnic,$bform)
+    public function checknextrno_newAdmission($name,$fname,$dob,$fnic,$bform)
     {
-
-        $query = $this->db->query("admission_online..NextAppearanceSSC 0,9,".regyear.",0,'$name','$dob','$fnic','$bform',4");
+                // Check duplicate form in current Admission session SSC in 9th and 10th tables.
+                // Check to appear in 10th 
+        $query = $this->db->query("admission_online..NextAppearanceSSC_9THADM 0,9,".regyear.",0,'$name','$fname','$dob','$fnic','$bform',5");
 
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -441,7 +442,7 @@ class Admission_9th_reg_model extends CI_Model
             return $query->result_array();
         }
         else
-        {
+        {   
             return  -1;
         }
     }
@@ -866,8 +867,6 @@ class Admission_9th_reg_model extends CI_Model
         $this->db->update_batch(tblreg9th,$sm_data,'formNo');
         return true;
     }
-    
-    
     public function Batch_List($data)
     {
         ////DebugBreak();
@@ -1187,7 +1186,7 @@ class Admission_9th_reg_model extends CI_Model
     }
     public function bay_form_fnic($bayformno,$fnic)
     {
-        $query = $this->db->get_where('Registration..MA_P1_Reg_Adm2016',  array('BForm' => $bayformno,'FNIC' => $fnic,'IsDeleted'=>0));
+        $query = $this->db->get_where(tblreg9th,  array('BForm' => $bayformno,'FNIC' => $fnic,'IsDeleted'=>0));
         $rowcount = $query->num_rows();
         if ($rowcount > 0){
             return true;
