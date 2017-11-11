@@ -81,17 +81,16 @@ class Admission_9th_pvt extends CI_Controller {
         $retVal = "";
         if($id == 1) $retVal = "GUJRANWALA";
         else if($id == 2)  $retVal = "GUJRAT";
-        else if($id == 3)  $retVal = "HAFIZ ABAD";
-        else if($id == 4)  $retVal = "MANDI BAHA UD DIN";
-        else if($id == 5)  $retVal = "NAROWAL";
-        else if($id == 6)  $retVal = "SIALKOT";
-        return $retVal;             
+            else if($id == 3)  $retVal = "HAFIZ ABAD";
+                else if($id == 4)  $retVal = "MANDI BAHA UD DIN";
+                    else if($id == 5)  $retVal = "NAROWAL";
+                        else if($id == 6)  $retVal = "SIALKOT";
+                            return $retVal;             
     }
 
 
     public function NewEnrolment_insert()
     {  
-        //  DebugBreak();
         //  $_POST;
         //   echo  'Please wait';
         //  die();
@@ -115,7 +114,7 @@ class Admission_9th_pvt extends CI_Controller {
 
 
 
-        $formno =$this->Admission_9th_reg_model->GetFormNoPVT();
+        $formno =  '';//$this->Admission_9th_reg_model->GetFormNoPVT();
         $this->commonheader($userinfo);
         $error = array();
         $allinputdata = array('cand_name'=>@$_POST['cand_name'],'father_name'=>@$_POST['father_name'],
@@ -233,13 +232,13 @@ class Admission_9th_pvt extends CI_Controller {
             redirect('Admission_9th_pvt/NewEnrolment');
             return;
         }
-
-
-
-
-        //DebugBreak();
+        
+       // DebugBreak();
+        
+      
         $mydata_final = $this->feecalculate($data,0);
         $data['fee'] = $mydata_final;
+         // echo '<pre>';print_r($data);echo  '</pre>';exit();
         $logedIn = $this->Admission_9th_reg_model->Insert_NewEnorlement($data);//, $fname);//$_POST['username'],$_POST['password']);
         //DebugBreak();
         if($logedIn[0]['formno'] != 'false')
@@ -260,14 +259,16 @@ class Admission_9th_pvt extends CI_Controller {
                             $data['excep'] = 'An error has occoured. Please try again later. ';
                             $this->session->set_flashdata('NewEnrolment_error',$data);
                             redirect('Admission_9th_pvt/NewEnrolment');
-                            return;
                             echo 'Data NOT Saved Successfully !';
+                            return;
+
                         }
                     }
 
                 }
 
             }
+
             $data = "";
             $data['excep'] = 'success';
             $this->session->set_flashdata('NewEnrolment_error',$data);
@@ -372,7 +373,7 @@ class Admission_9th_pvt extends CI_Controller {
         else{
             return true;
         }
-       //  DebugBreak();
+        //  DebugBreak();
         $this->load->model('Admission_9th_reg_model');
         $this->load->library('session');
         // DebugBreak();
@@ -1921,7 +1922,7 @@ class Admission_9th_pvt extends CI_Controller {
         $this->load->model('Admission_9th_reg_model');
         $value = array('teh'=> $this->Admission_9th_reg_model->getzone($tehCode)) ;
         echo json_encode($value);
-
+        exit();
     }
 
     public function getcenter(){
