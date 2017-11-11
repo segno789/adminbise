@@ -106,7 +106,7 @@ class Admission_9th_reg_model extends CI_Model
 
 
             //$query2 = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => 1, 'Start_Date <=' =>$date,'End_Date >='=>$date,'isPrSub'=>$isPratical));
-            $query2 = $this->db->query('select * from Admission_online..RuleFeeAdm where class = 9 and sess = 1 and GETDATE() between start_date and End_date and isPrSub ='.$isPratical);
+            $query2 = $this->db->query('select * from Admission_online..RuleFeeAdm where class = 10 and sess = 1 and GETDATE() between start_date and End_date and isPrSub ='.$isPratical);
             $resultarr = array("info"=>$query->result_array(),"rule_fee"=>$query2->result_array());
 
             $qry =  $this->db->last_query();
@@ -413,10 +413,10 @@ class Admission_9th_reg_model extends CI_Model
 
         return true;
     }
-    public function checknextrno($name,$fname,$dob,$fnic)
+    public function checknextrno($name,$dob,$fnic)
     {
-       
-        $query = $this->db->query("admission_online..NextAppearanceSSC_9THADM 0,9,0,0,'$name','$fname','$dob','$fnic','',3");
+        //();
+        $query = $this->db->query("admission_online..NextAppearanceSSC 0,9,0,0,'$name','$dob','$fnic','',3");
 
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -429,11 +429,10 @@ class Admission_9th_reg_model extends CI_Model
             return  -1;
         }
     }
-    public function checknextrno_newAdmission($name,$fname,$dob,$fnic,$bform)
+    public function checknextrno_newAdmission($name,$dob,$fnic,$bform)
     {
-                // Check duplicate form in current Admission session SSC in 9th and 10th tables.
-                // Check to appear in 10th 
-        $query = $this->db->query("admission_online..NextAppearanceSSC_9THADM 0,9,".regyear.",0,'$name','$fname','$dob','$fnic','$bform',5");
+
+        $query = $this->db->query("admission_online..NextAppearanceSSC 0,9,".regyear.",0,'$name','$dob','$fnic','$bform',4");
 
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -442,7 +441,7 @@ class Admission_9th_reg_model extends CI_Model
             return $query->result_array();
         }
         else
-        {   
+        {
             return  -1;
         }
     }
@@ -867,6 +866,8 @@ class Admission_9th_reg_model extends CI_Model
         $this->db->update_batch(tblreg9th,$sm_data,'formNo');
         return true;
     }
+    
+    
     public function Batch_List($data)
     {
         ////DebugBreak();
@@ -1173,7 +1174,7 @@ class Admission_9th_reg_model extends CI_Model
         //  $this->db->where('challan_overall',False);
         $inst_cd =  $info['Inst_Id'];
         // $this->db->order_by("challan_overall", "DESC");
-        $formno = $this->db->get_where('Registration..MA_P1_Reg_Adm2016', array('sch_cd' => $inst_cd,'challan_overall '=>0 ,'isdeleted '=> 0));
+        $formno = $this->db->get_where(tblreg9th, array('sch_cd' => $inst_cd,'challan_overall '=>0 ,'isdeleted '=> 0));
         $rowcount = $formno->num_rows();
 
         if($rowcount > 0 )
@@ -1194,6 +1195,98 @@ class Admission_9th_reg_model extends CI_Model
         else{
             return false;
         }
+    }
+     public function getdelformno($formno,$dob)
+    {
+        $dob = date('Y-m-d',strtotime($dob));
+        $table1 = 'admission_online..tblVerificationCode';
+        $table2 = tblreg9th;
+        $this->db->select("MobNo,formno,name");
+        $this->db->from($table2);
+        //join LEFT by default
+        $this->db->where("regpvt = 2 AND formno = '$formno' AND dob ='$dob'  AND IsDeleted IS NULL");
+
+        $query = $this->db->get();
+
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            $data = $query->result_array();
+            $six_digit_random_number = mt_rand(100000, 999999);
+            $data2 = array(
+                'formno'=> "$formno",
+                'verificationCode'=> "$six_digit_random_number",
+                'iyear'=> 2018,
+                'class'=> 9,
+                'sess'=> 1,
+                'edate'=> date('Y-m-d H:i:s'),
+                'isactive'=> 1,
+                'trycount'=> 0,
+            );  
+
+            $res =  $this->db->insert($table1, $data2);
+
+            if($res>0)
+            {
+                $data2['MobNo'] = $data[0]['MobNo'];
+                $data2['name'] = $data[0]['name'];
+                return $data2;
+            }
+            else
+            {
+                return 0;
+            }
+
+
+        }
+        else
+        {
+            return  0;
+        }
+
+    }
+
+    public function verifycode($formno,$vrCode)
+    {
+
+        $table1 = 'admission_online..tblVerificationCode';
+        $table2 = tblreg9th;
+        $this->db->select("verificationCode,formno,trycount");
+        $this->db->from($table1);
+        //join LEFT by default
+        $this->db->where("isactive = 1 AND formno = '$formno' AND verificationCode ='$vrCode'");
+
+        $query = $this->db->get();
+
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            $data = $query->result_array();
+            $data2 = array(
+                'isactive'=> 0,
+                'cdate'=> date('Y-m-d H:i:s'),
+            );  
+            $this->db->where('verificationCode',"$vrCode");
+            $res =  $this->db->update($table1, $data2);
+
+            if($res == true)
+            {
+                $data2 = array(
+                    'IsDeleted'=> 1,
+                    'cdate'=> date('Y-m-d H:i:s'),
+                );  
+                $this->db->where('formno',"$formno");
+                $res =  $this->db->update($table2, $data2);
+            }
+
+            return $res;
+
+        }
+        else
+        {
+            return  0;
+        }
+
     }
 }
 ?>
