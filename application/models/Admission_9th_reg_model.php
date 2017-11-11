@@ -413,10 +413,10 @@ class Admission_9th_reg_model extends CI_Model
 
         return true;
     }
-    public function checknextrno($name,$dob,$fnic)
+    public function checknextrno($name,$fname,$dob,$fnic)
     {
         //();
-        $query = $this->db->query("admission_online..NextAppearanceSSC 0,9,0,0,'$name','$dob','$fnic','',3");
+        $query = $this->db->query("admission_online..NextAppearanceSSC_9THADM 0,9,0,0,'$name','$fname','$dob','$fnic','',3");
 
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -429,10 +429,10 @@ class Admission_9th_reg_model extends CI_Model
             return  -1;
         }
     }
-    public function checknextrno_newAdmission($name,$dob,$fnic,$bform)
+    public function checknextrno_newAdmission($name,$fname,$dob,$fnic,$bform)
     {
 
-        $query = $this->db->query("admission_online..NextAppearanceSSC 0,9,".regyear.",0,'$name','$dob','$fnic','$bform',4");
+        $query = $this->db->query("admission_online..NextAppearanceSSC_9THADM 0,9,".regyear.",0,'$name','$fname','$dob','$fnic','$bform',5");
 
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -715,10 +715,10 @@ class Admission_9th_reg_model extends CI_Model
 
             if($spl_cd == "0")
             {
-                $q1         = $this->db->query("select * from tblreg9th where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and grp_cd = ".$RegGrp);    
+                $q1         = $this->db->query("select * from ".tblreg9th."  where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and (spl_cd is null or spl_cd = 0) and grp_cd = ".$RegGrp);    
             }
             else{
-                $q1         = $this->db->query("select * from tblreg9th where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and Spec = ".$spl_cd);
+                $q1         = $this->db->query("select * from ".tblreg9th." where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and (spl_cd is null or spl_cd = 0) and Spec = ".$spl_cd);
             }
 
             $result_1 ;

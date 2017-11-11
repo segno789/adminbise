@@ -162,14 +162,14 @@ class Admission_9th_pvt extends CI_Controller {
         //  $_POST;
         //   echo  'Please wait';
         //  die();
-        DebugBreak();
+       // DebugBreak();
         $this->load->model('Admission_9th_reg_model');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
         $userinfo['isselected'] = 2;
 
-        $nxtrnosessyear = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['dob'],$_POST['father_cnic']);
+        $nxtrnosessyear = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic']);
 
         //if($nxtrnosessyear !=  -1)
         if($nxtrnosessyear[0][NextRno_Sess_Year] !="")
