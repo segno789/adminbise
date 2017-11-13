@@ -13,7 +13,7 @@
                     </div>
                     <div class="widget-body">
                         <div id="dt_example" class="example_alt_pagination">
-                          <!--  <table width="100%">
+                            <table width="100%">
                                 <tr>
                                     <?php  if($isdeaf ==0) {?>
                                         <td width="50%">  
@@ -31,6 +31,7 @@
                                                             <option value="5">COMMERCE</option>
                                                             <option value="6">ISLAMIC STUDIES</option>
                                                             <option value="7">HOME ECONOMICS</option>
+                                                            <!--<option value="5">DEAF AND DUMB</option>-->
                                                         </select>
                                                     </td>
                                                 </tr>
@@ -50,7 +51,7 @@
                                    
                                 </tr>
                             </table>
--->
+
 
 
                             <table class="table table-condensed table-striped table-hover table-bordered pull-left" id="data-table">
@@ -90,31 +91,18 @@
                                 <tbody>
                                     <?php
                                     //DebugBreak();
-                                    if($data != -1)
+                                    if($data != false)
                                     {
                                         $n=0;  
                                         $grp_name='';                             
                                         foreach($data as $key=>$vals):
                                         $n++;
-                                         $disables = '' ;
+                                        
                                         if($vals["result1"] != '' && $vals["status"] == 2)
                                         $vals["result2"] = $vals["result1"]. ' [P-I] ' .$vals["result2"];
                                         
                                         $roll_no = !empty($vals["rno"])?$vals["rno"]:"N/A";
                                         $grp_name = $vals["grp_cd"];
-                                         if($vals["status"] == 4 )
-                                        {
-                                             $disables = '';
-                                        }
-                                        else
-                                        {
-                                              $disables = '<button type="button" class="btn btn-info" value="'.$roll_no.'" onclick="downloadslip_Inter('.$roll_no.',1,'.$sess.')">Download Result Card</button>
-                                        <button type="button" class="btn btn-info" value="'.$roll_no.'" onclick="downloadslip_Inter('.$roll_no.',2,'.$sess.')">View Result Card</button>'; 
-                                        }
-                                        
-                                        $image_path_selected = DIRPATH12TH.$vals["picpath"]; 
-                                        $type = pathinfo($image_path_selected, PATHINFO_EXTENSION); 
-                                         @$image_path_selected = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($image_path_selected)); 
                                         switch ($grp_name) {
                                             case '1':
                                                 $grp_name = 'PRE-MEDICAL';
@@ -149,11 +137,14 @@
                                         <td>'.$vals["Fname"].'</td>
                                         <td>'.$grp_name.'</td>
                                          <td>'.$vals["result2"].'</td>
-                                        <td style="text-align:center"> <img src="'.$image_path_selected.'" style="height: 60px;">'.'</td>
+                                        <td style="text-align:center"> <img src="'.REGULAR_IMAGE_PATH.$vals["picpath"].'" style="height: 60px;">'.'</td>
                                         '; 
                                         
 
-                                        echo'<td>'.$disables.'</td>
+                                        echo'<td>
+                                        <button type="button" class="btn btn-info" value="'.$roll_no.'" onclick="downloadslip_Inter('.$roll_no.',1)">Download Result Card</button>
+                                        <button type="button" class="btn btn-info" value="'.$roll_no.'" onclick="downloadslip_Inter('.$roll_no.',2)">View Result Card</button>
+                                        </td>
                                         </tr>';
                                         endforeach;
 

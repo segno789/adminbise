@@ -1,6 +1,5 @@
 
 <form method="post" enctype="multipart/form-data" name="myform" id="myform">
-
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-5 col-md-5">
@@ -60,7 +59,7 @@
                 <label class="control-label" for="father_cnic">
                     Father's CNIC:
                 </label>        
-                <input class="text-uppercase form-control" id="father_cnic" name="father_cnic" type="text" placeholder="FNIC No"  value="<?php  echo @$data['FNIC'];?>" <?php if(@$data['isNotFresh']!=0 && strlen(@$data['FNIC'] == 15)) echo "readonly='readonly'";  ?>  required="required" >
+                <input class="text-uppercase form-control" id="father_cnic" name="father_cnic" type="text" placeholder="FNIC No"  value="<?php  echo @$data['FNIC'];?>" <?php if(@$data['isNotFresh']!=0 && strlen(@$data['FNIC'] == 15) ) echo "readonly='readonly'";  ?>  required="required" >
             </div>
         </div>
     </div>
@@ -153,21 +152,21 @@
                         echo  "<option value='0' >None</option>  
                         <option value='1' selected='selected'>Deaf &amp; Dumb</option>
                         <option value='2'>Board Employee</option>
-                        <option value='3'>Blind</option>";
+                        <option value='3'>Disable</option>";
                     }
                     else if($spec ==2)
                     {
                         echo  "<option value='0'>None</option>  
                         <option value='1'>Deaf &amp; Dumb</option>
                         <option value='2' selected='selected'>Board Employee</option>
-                        <option value='3'>Blind</option>";
+                        <option value='3'>Disable</option>";
                     }
                     else
                     {
                         echo  "<option value='0' selected='selected'>None</option>  
                         <option value='1'>Deaf &amp; Dumb</option>
                         <option value='2'>Board Employee</option>
-                        <option value='3'>Blind</option>";
+                        <option value='3'>Disable</option>";
                     }
                     ?>
                 </select>
@@ -211,29 +210,42 @@
                 <label class="control-label" for="gend">
                     Gender :
                 </label>     
-                <select name="gender" class="form-control text-uppercase" id="gend" <?php if($data['sex'] == 1 || $data['sex'] == 2) echo 'disabled="disabled"' ?>>
-                    <?php
-                    @$gender = @$data['sex'];
-                    if($gender == 1)
-                    {
-                        echo"
-                        <option value='0'>None</option>
-                        <option value='1' selected='selected'>MALE</option> 
-                        <option value='2'>FEMALE</option>";
-                    }
-                    else if ($gender == 2)
-                    {
-                        echo"
-                        <option value='0'>None</option><option value='1'>MALE</option> 
-                        <option value='2' selected='selected'>FEMALE</option>";
-                    }
-                    else{
-                        echo"<option value='0' selected='selected'>None</option>
-                        <option value='1'>MALE</option> 
-                        <option value='2'>FEMALE</option>";
-                    }
+
+                <?php
+                @$gender = @$data['sex'];
+                if($gender == 1 || $gender == 2){
                     ?>
-                </select>
+                    <select name="gender" class="form-control text-uppercase" id="gend" disabled="disabled">
+                        <?php
+
+                        if($gender == 1)
+                        {
+                            echo"
+                            <option value='0'>None</option>
+                            <option value='1' selected='selected'>MALE</option> 
+                            <option value='2'>FEMALE</option>";
+                        }
+                        else if ($gender == 2)
+                        {
+                            echo"
+                            <option value='0'>None</option><option value='1'>MALE</option> 
+                            <option value='2' selected='selected'>FEMALE</option>";
+                        }
+                        ?>  
+                    </select>
+                    <input type="hidden" class="hidden" name="gend" value="<?php echo $gender; ?>"> 
+                    <?php
+                }
+                else if($gender != 1 || $gender != 2){
+                    ?>
+                    <select name="gend" class="form-control text-uppercase" id="gend">
+                        <option value='0' selected='selected'>NONE</option>
+                        <option value='1'>MALE</option> 
+                        <option value='2'>FEMALE</option>
+                    </select>
+                    <?php
+                }
+                ?>
             </div>
         </div>
     </div>
@@ -368,7 +380,7 @@
                             echo "<option value='1' selected='selected'>SCIENCE WITH BIOLOGY</option>
 
                             <option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>
-                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
+                            
                             <option value='2'>HUMANTIES</option>
                             <option value='5'>DEAF AND DUMB</option>
                             <option value='4'>AAMA GROUP</option>
@@ -381,7 +393,7 @@
                             echo " 
                             <option value='1' >SCIENCE WITH BIOLOGY</option>
                             <option value='7'  selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>
-                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
+                            
                             <option value='2'>HUMANTIES</option>
                             <option value='5'>DEAF AND DUMB</option>
                             <option value='4'>AAMA GROUP</option>
@@ -394,8 +406,6 @@
                             echo "<option value='2' selected='selected'>HUMANTIES</option>
                             <option value='1' >SCIENCE WITH BIOLOGY</option>
                             <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
-
                             <option value='5'>DEAF AND DUMB</option>
                             <option value='4'>AAMA GROUP</option>
                             <option value='9'>ADIB/ALIM GROUP </option>
@@ -408,7 +418,6 @@
                             <option value='2' >HUMANTIES</option>
                             <option value='1' >SCIENCE WITH BIOLOGY</option>
                             <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
                             <option value='4'>AAMA GROUP</option>
                             <option value='9'>ADIB/ALIM GROUP </option>
                             ";  
@@ -421,7 +430,6 @@
                             <option value='2' >HUMANTIES</option>
                             <option value='1' >SCIENCE WITH BIOLOGY</option>
                             <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
                             <option value='9'>ADIB/ALIM GROUP </option>
                             ";
                         }
@@ -431,7 +439,6 @@
                         echo "<option value='0'>SELECT GROUP</option>
                         <option value='1' >SCIENCE WITH BIOLOGY</option>
                         <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                        <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
                         <option value='2' >GENERAL</option>
                         <option value='5'>DEAF AND DUMB</option>
                         <option value='4'>AAMA GROUP</option>
@@ -558,11 +565,8 @@
         </div>
     </div>
 
-
-
     <div class="hidden">
-        <input type="hidden" class="hidden" name="gend" value="<?php echo @$gender; ?>">
-        <input class="hidden" type="text" id="oldrno" name="oldrno" value="<?php echo  $data['RNo']; ?>" >
+        <input class="hidden" type="text" id="oldrno" name="oldrno" value="<?php echo  $data['RNo']; ?>">
         <input type="hidden" value="<?=  @$data['grp_cd']?>" name="pergrp">
         <input type="hidden" value="1" name="oldboardid">
         <input type="hidden" class="span3" id="oldClass" name="oldClass"  value="<?php  echo @$data['class']; ?>"/>     

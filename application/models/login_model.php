@@ -5,17 +5,17 @@ class Login_model extends CI_Model {
     }
     public function auth($username,$password) 
     {
-  //      DebugBreak();
-       /* $query = $this->db->query("Admission_online..spInstitutionsLogin $username,'','','$password'");
-        $rowcount = $query->num_rows();
-        $myresultD = $query->result_array();
-*/		$query = $this->db->get_where('Admission_online..fl_users', array('inst_cd' => $username,'pass' => $password));
+       // DebugBreak();
+        
+		$query = $this->db->get_where('Admission_online..tblInstitutes_all', array('inst_cd' => $username,'Inst_pwd' => $password));
 		$rowcount = $query->num_rows();
 		if($rowcount >0)
 		{
             $query_1 = $this->db->get_where('Admission_online..tblInstitutes_all', array('Inst_cd' => $username));
+            
+            
             $tblInstitutes_all_Info  = $this->db->get_where('Registration..tblInstitutes_all_Info', array('inst_cd' => $username));
-            $specialPermission = $this->db->get_where('Registration..inst_Special_Permission_9th',array('inst_cd'=>$username,'Isactive'=>1));    // 
+            $specialPermission = $this->db->get_where('Registration..inst_Special_Permission_9th',array('inst_cd'=>$username,'Isactive'=>1));
             if($specialPermission->num_rows()>0)
             {
                 
@@ -41,7 +41,8 @@ class Login_model extends CI_Model {
     }
     public function chekdefultar($username)
     {
-         $query = $this->db->get_where('Admission_online..tblInstitutes_Deactivated', array('inst_cd' => $username,'isactive' => 0 ,'class'=>10,'sess'=>1,'myear'=>2017));
+         //$query = $this->db->get_where('Admission_online..tblInstitutes_Deactivated', array('inst_cd' => $username,'isactive' => 0 ,'sess'=>1,'myear'=>2017));
+         $query = $this->db->get_where('Admission_online..tblInstitutes_Deactivated', array('inst_cd' => $username,'isactive' => 0 ,'myear > '=>2016));
         $rowcount = $query->num_rows();
         
         if($rowcount>=1)
@@ -55,7 +56,7 @@ class Login_model extends CI_Model {
     {
       //  DebugBreak();
         //$query = $this->db->get_where('Admission_online..tblInstitutes_all', array('Inst_cd' => $username,'Inst_pwd' => $password));
-        $query = $this->db->get_where('MiscDb..tblEmployee', array('Emp_cd' => $username,'pass' => $password));
+        $query = $this->db->get_where('matric_new..tblEmployee', array('Emp_cd' => $username,'pass' => $password));
         $rowcount = $query->num_rows();
         if($rowcount >0)
         {

@@ -33,13 +33,13 @@
                                     <?php } 
                                 if($appconfig['isslipP1'] == 1){
                                     ?>
-                                    <div class="metro-nav-block nav-block-red">
+                                   <div class="metro-nav-block nav-block-red">
 
-                                        <a  href"<?=base_url();?>RollNoSlip/NinthStd" >
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe05c;"></div>
-                                        <div class="brand">
-                                            9th Roll Number Slips
-                                        </div>
+                                        <a  href="<?=base_url();?>RollNoSlip/NinthStd" >
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe05c;"></div>
+                                            <div class="brand">
+                                                9th Roll Number Slips
+                                            </div>
                                         </a>
                                     </div>
                                     <?php }

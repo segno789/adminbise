@@ -48,11 +48,11 @@ header("Pragma: no-cache");
                                     Candidate Name :
                                 </label>
                                 <div class="controls controls-row">
-                                    <input class="span3" type="text" id="cand_name" style="text-transform: uppercase;" min = "2" name="cand_name" placeholder="Candidate Name" value = "<?php  if(($excep != "")&& ($excep['excep'] != "success")){echo strtoupper($excep['cand_name']) ;} else {echo '';}?>" maxlength="60">
-                                    <label class="control-label span2" for="father_name">
+                                    <input class="span3" type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" value = "<?php  if(($excep != "")&& ($excep['excep'] != "success")){echo strtoupper($excep['cand_name']) ;} else {echo '';}?>" maxlength="60">
+                                    <label class="control-label span2" for="lblfather_name">
                                         Father's Name :
                                     </label> 
-                                    <input class="span3" id="father_name" name="father_name" min = "2" style="text-transform: uppercase;" type="text" placeholder="Father's Name" value="<?php if (($excep != "") && ($excep['excep'] != "success")){echo strtoupper($excep['father_name']) ;} else {echo '';} ?>" required="required" maxlength="60">
+                                    <input class="span3" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" value="<?php if (($excep != "") && ($excep['excep'] != "success")){echo strtoupper($excep['father_name']) ;} else {echo '';} ?>" required="required" maxlength="60">
                                 </div>
                             </div>
                             <div class="control-group">
@@ -596,7 +596,7 @@ var status = 0;
             success: function(data)
             {
                 var obj = JSON.parse(data);
-                // console.log(obj);d
+                 console.log(data);//d
                 if(obj == 'SUCCESS')
                 {
                     $("#myform").submit();

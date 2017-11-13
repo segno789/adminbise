@@ -1,3 +1,8 @@
+
+<?php 
+$type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION); 
+@$image_path_selected = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents(@$data[0]['picpath']));
+?>
 <div class="dashboard-wrapper class wysihtml5-supported">
     <div class="left-sidebar">
         <div class="row-fluid">
@@ -19,24 +24,8 @@
                                     <input type="hidden" class="span2 hidden" id="isReAdm" name="isReAdm" value="0">
                                     <label class="control-label span2" >
                                     </label> 
-                                    <?php
-                                    $path = $data[0]['picpath'];  
-                                    if($data[0]["Brd_cd"] ==  1)
-                                    {
-                                       // $pic =  explode('Pictures$',@$data[0]['picpath']);
-                                        $picpath = DIRPATH.'\\'.$path;
-                                    }
-                                    else
-                                    {
-                                        $picpath =  DIRPATHOTHER.'/'.$data[0]["Sch_cd"].'/'.$data[0]['picpath']; 
-                                    }
-                                    // echo $picpath;
-                                    $type = pathinfo($picpath, PATHINFO_EXTENSION);
-                                    $data[0]['picPath'] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($picpath));
-
-                                    // @$image_path_selected = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($path));
-                                    ?>
-                                    <img id="previewImg" src="<?php echo $data[0]['picPath']; ?> "  style="width:130px; height: 130px;" class="span2" alt="Candidate Image">
+                                    
+                                    <img id="previewImg" src="<?php  echo $image_path_selected;?>" style="width:130px; height: 130px;" class="span2" alt="Candidate Image">
                                     <input type="hidden" value="<?php echo $path;?>" name="pic">
                                 </div>
                             </div>

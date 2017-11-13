@@ -84,14 +84,14 @@ class Admission extends CI_Controller
         }
         $this->load->view('common/homepagefooter.php');
     }
-    
+
     function sendVerCode()
     {
         $formno = $this->input->post('formno');
         $dob    = $this->input->post('dob');
         $this->load->model('Admission_model');
         $data = $this->Admission_model->getdelformno($formno,$dob);
-        
+
         if($data == 0)
         {
             echo 0;
@@ -108,13 +108,13 @@ class Admission extends CI_Controller
                 echo 0;
             }
         }
-       
+
         exit();
     }
-    
-     function verconfrimCode()
+
+    function verconfrimCode()
     {
-       // DebugBreak();
+        // DebugBreak();
         $formno = $this->input->post('formno');
         $mobcode    = $this->input->post('mobcode');
         $this->load->model('Admission_model');
@@ -129,7 +129,7 @@ class Admission extends CI_Controller
         }
         exit();
     }
-    
+
     private function sendcode($data)
     {
         $pno = '92'.str_replace("-","",substr($data['MobNo'], 1)); 
@@ -152,6 +152,7 @@ class Admission extends CI_Controller
             return -1;
         }
     }
+
     function GetSpeciality($spclty)
     {
         if ($spclty == 0 )
@@ -290,7 +291,7 @@ class Admission extends CI_Controller
         $pdf->SetFont('Arial','',8);
         $pdf->SetXY(3.85,0.4);
         $mybestyear = Year+1;
-        $pdf->Cell(0, 0.2,  "(Private Candidate) for SSC " .$session."  Examination , ".$mybestyear, 0.25, "C");
+        $pdf->Cell(0, 0.2,  "(Private Candidate) for SSC " .strtoupper($session."  Examination , ".$mybestyear), 0.25, "C");
 
         //--------------------------- Form No & Rno
         $pdf->SetFont('Arial','B',12);
@@ -466,12 +467,17 @@ class Admission extends CI_Controller
             $pdf->SetFont('Arial','B',10);
             $pdf->Cell(0.5,0.5,$chkcat10.')',0,'L');  
         }
-        $LastSess = 0 ;
-        //  //DebugBreak();
-        if($data["SessOfLastAp"] == 1 or $data["SessOfLastAp"] == 2  )
+        $LastSess = 0 ;                      
+
+        if($data["SessOfLastAp"] == 1 && ($data["oldRno"] > 100000 && $data["oldRno"] < 400000) && $data['YearOfLastAp'] > 2013)
+        {
+            $LastSess = "9th";
+        }
+        else
         {
             $LastSess =  $data["SessOfLastAp"]==1?"A":"S";
-        }     
+        }
+
         $pdf->SetXY(0.5, 1.7+$Y);
         $pdf->SetFont('Arial','',$FontSize);
         $pdf->Cell( 0.5,0.5,"Prev Roll No:",0,'L');
@@ -642,14 +648,14 @@ class Admission extends CI_Controller
         $pdf->SetXY(1.50,2.45+$Y);
         $pdf->Cell(0.5,0.5,$this->GetSpeciality($data["Spec"]),0,'L');
 
-        DebugBreak();
+        //DebugBreak();
         //--------------------------- Speciality and Internal Grade 
         $pdf->SetXY(3.5+$x,2.15+$Y);
         $pdf->SetFont('Arial','',$FontSize);
         $pdf->Cell( 0.5,0.5,"Board Name:",0,'L');
         if($data["Brd_cd"] !=  null && $data["Brd_cd"] >0)
         {
-            $OldBoard = ($data["Brd_Abbr"]); 
+            $OldBoard = ($data["Brd_Abbr"]);
         }
         else
         {
@@ -996,7 +1002,7 @@ class Admission extends CI_Controller
 
         $pdf->SetXY(1.2,6.32+$Y);
         $pdf->SetFont('Arial','b',$FontSize);
-        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".$session." Examination ,".$mybestyear." )",0,'C');
+        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".strtoupper($session." Examination ,".$mybestyear)." )",0,'C');
 
 
         $pdf->SetXY(0.2,6.42+$Y);
@@ -1093,7 +1099,7 @@ class Admission extends CI_Controller
         //Board Copy Alogn With Scroll
         $pdf->SetXY(1.2,7.8+$Y);
         $pdf->SetFont('Arial','b',$FontSize);
-        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".$session." Examination ,".$mybestyear." )",0,'C');
+        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".strtoupper($session." Examination ,".$mybestyear)." )",0,'C');
 
         $pdf->SetXY(0.2,7.9+$Y);
         $pdf->SetFillColor(0,0,0);                                     
@@ -1231,7 +1237,7 @@ class Admission extends CI_Controller
         $Y = $Y - 0.1;
         $pdf->SetXY(1.2,10.1+$Y);
         $pdf->SetFont('Arial','b',$FontSize);
-        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".$session." Examination ,".$mybestyear." )",0,'C');
+        $pdf->Cell( 0,0,"BOARD OF INTERMEDIATE AND SECONDARY EDUCATION GUJRANWALA (SSC ".strtoupper($session." Examination ,".$mybestyear)." )",0,'C');
 
         $pdf->SetXY(0.2,10.2+$Y);
         $pdf->SetFillColor(0,0,0);                                     
@@ -1532,7 +1538,7 @@ class Admission extends CI_Controller
             return; 
         }
 
-        if($data['Spec']>0 && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th) ))
+        if($data['isSpecFee']>0 && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th) ))
         {
             /*$regfee =  1000;
             if($data['Spec'] >  0)
@@ -1860,8 +1866,6 @@ class Admission extends CI_Controller
         return;
         }*/
 
-
-
         $error = $this->session->flashdata('NewEnrolment_error');
         if($error) 
         {
@@ -2003,6 +2007,7 @@ class Admission extends CI_Controller
                 $this->load->view('common/footer.php');    
                 return;
             }     
+
             $dob     = $_POST["dob"];
             $mrollno = $_POST["oldRno"];
             $oldClass= $_POST["oldClass"];
@@ -2013,7 +2018,6 @@ class Admission extends CI_Controller
 
 
             $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board,'SearchType'=>1);
-
             $CheckDuplicateForm_Model = $this->Admission_model->CheckDuplicateForm_Model($data);
 
             if($CheckDuplicateForm_Model){
@@ -2030,32 +2034,26 @@ class Admission extends CI_Controller
                 return;
             }
 
-
-            //DebugBreak();
-
             $data = $this->Admission_model->Pre_Matric_data($data);
 
-            /*if (!$data) 
-            {
-            $errNo   = $this->db->error();
-            $error_msg = '';
-            if($errNo['code']=="00000"){
-            $error_msg.= 'No Any Student Found Against Your Criteria';            
-            $data['error'] = $error_msg;
-            $this->load->library('session');
-            $mydata = array('data'=>$_POST,'error_msg'=>$error_msg);
-            $this->session->set_flashdata('matric_error',$mydata);
-            redirect('Admission/matric_default');
+            if(@$_POST['confirmProceed'] == "Confirm to Proceed"){
+
+                $this->load->view('common/commonheader.php');        
+                $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data));
+                $this->load->view('common/common_ma/commonfooter.php');
+                return;
             }
 
-            $data['msg'] = "Error(".$errNo['code'].") ";
-            $data['errno'] = "503-4(I)";
-            $this->load->view('common/commonheader.php');
-            $this->load->view('errors/cli/error_custom.php',$data);
-            $this->load->view('common/homepagefooter.php');
-            return;
+
+            if($data[0]['class'] == "9" && $data[0]['regPvt'] == "1" && $data[0]['Iyear'] == Year){
+                $error_msg.= 'WARNING!!!! You are REGULAR candidate </br> If you will submit admission as PRIVATE candidate then you will not be able to submit admission as REGULAR candidate';            
+                $data['error'] = $error_msg;
+                $this->load->view('common/commonheader.php');        
+                $this->load->view('Admission/Matric/getinfo.php', $data);
+                $this->load->view('common/footer.php');    
+                return;
             }
-            */
+
 
             $error_msg = '';
 
@@ -2067,8 +2065,6 @@ class Admission extends CI_Controller
                 $this->load->view('common/footer.php');    
                 return;
             }
-
-            /*if(@$data[0]['status'] == 1 && @$data[0]['regPvt'] == 1)*/
 
             $brd_name=$this->Admission_model->Brd_Name($board); 
             if (!$brd_name) 
@@ -2252,8 +2248,8 @@ class Admission extends CI_Controller
     {
         $this->load->model('Admission_model');
         $this->load->library('session');
-        $isActive = $this->isActiveAdm();
-        /*if($isActive == false)
+        /*$isActive = $this->isActiveAdm();
+        if($isActive == false)
         {
         $error = "There is an error occured Please try again later";
         $mydata = array('error'=>$error);
@@ -2277,13 +2273,13 @@ class Admission extends CI_Controller
 
         $this->load->view('common/homepagefooter.php'); 
         }*/
-        $userinfo = '';//$Logged_In_Array['logged_in'];
+        $userinfo = '';
         $userinfo['isselected'] = 2;
         $Inst_Id = 999999;
         $this->commonheader($userinfo);
         $error = array();
-        ///  DebugBreak();
-        $formno = '';//$this->Admission_model->GetFormNo();
+
+        $formno = '';
         $dob = @$_POST['dob'];
 
         //DebugBreak();
@@ -2291,27 +2287,35 @@ class Admission extends CI_Controller
         if(@$_POST['isFresh']==1)                            
         {
             $nxtrnosessyear = $this->Admission_model->checkalready(@$_POST['cand_name'],$_POST['father_cnic'],$_POST['dob']);
+            $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
 
-            if (!$nxtrnosessyear) 
-            {
-
-                $errNo   = $this->db->error();
-
-                $data['msg'] = "Error(".$errNo['code'].") ";
-                $data['errno'] = "506";
-                $this->load->view('common/commonheader.php');
-                $this->load->view('errors/cli/error_custom.php',$data);
-                $this->load->view('common/homepagefooter.php');
-                return;
+            if($nxtrnosessyear != ""){
+                $parts = explode(",", $nxtrnosessyear);
+                $nxtrno = $parts[0];
+                $nxtsess = $parts[1];
+                $nxtyear = $parts[2];
+                $nameNxt = $parts[3];
+                $error_msg.= '';            
+                $error_msg.= 'Dear '.$nameNxt.' you have already appeared in ' . $nxtsess.', '.$nxtyear.' against Roll No: '.$nxtrno.''; 
+                $info =  '';
+                $info['error'] = $error_msg;
+                $info['formno'] = "";
+                echo  json_encode($info);
+                exit();                      
             }
+        }
 
-            if($nxtrnosessyear != -1  && $nxtrnosessyear[0]['NextRno_Sess_Year'] != NULL)
-            {
-                $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
-                $allinputdata['excep'] = 'You have already Appeared in Matric'.$nxtrnosessyear;
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission/matric_fresh/');
-                return;
+        if(@$_POST['isFresh']==1 || @$_POST['isotherbrd']==1){
+            $CheckDuplicateForm_Model = array('name'=>@$_POST['cand_name'],'Fname'=>$_POST['father_name'],'BForm'=>$_POST['bay_form'],'FNIC'=>$_POST['father_cnic'],'dob'=>$_POST['dob'],'board'=>$_POST['oldboardid'],'SearchType'=>2);
+            $CheckDuplicateForm_Model = $this->Admission_model->CheckDuplicateForm_Model($CheckDuplicateForm_Model);
+
+            if($CheckDuplicateForm_Model){
+                $error_msg.= 'Admission already submitted as '.$CheckDuplicateForm_Model[0]['regpvt'].' <br>Form No: '.$CheckDuplicateForm_Model[0]['formNo'].'<br>Name: '.$CheckDuplicateForm_Model[0]['name'].'<br>Father Name: '.$CheckDuplicateForm_Model[0]['Fname'].'<br><br> Note: In case of any query related this admission form, Please contact to MATRIC BRANCH BISEGRW (055-3892634)';            
+                $info =  '';
+                $info['error'] = $error_msg;
+                $info['formno'] = "";
+                echo  json_encode($info);
+                exit();                      
             }
         }
 
@@ -2583,6 +2587,10 @@ class Admission extends CI_Controller
             'CSC/D'=>'93',
             'HPD/D'=>'94'
         );
+
+
+        //DebugBreak();
+
         $ispractical = 0;
         if($per_grp == 1)
         {
@@ -2598,8 +2606,6 @@ class Admission extends CI_Controller
         $AdmFee = $this->Admission_model->getrulefee($ispractical);
         if (!$AdmFee) 
         {
-            // DebugBreak();
-            // $User_info_data = array('Inst_Id'=>999999, 'date' => $singleDate,'isPratical'=>$isper);
             $AdmFee  =  $this->Admission_model->getrulefee_singFee($ispractical);
 
 
@@ -2636,17 +2642,19 @@ class Admission extends CI_Controller
 
         if(strtotime( date("d-m-Y")) <= strtotime(SingleDateFee9th)) 
         {
-            if($Speciality > 0 )
+
+            @$preSpec = $_POST['preSpec'];   
+            @$oldClassForSpec = $_POST['oldClass'];
+
+            if($Speciality > 0 && ($preSpec != 0 && $oldClassForSpec != 10))
             {
                 $AdmFeeCatWise = 0; 
             }
-            else if ($Speciality > 0 && $cat09 =2)
+            else if ($Speciality > 0 && $cat09 ==2 )
             {
                 $AdmFeeCatWise = $AdmFee[0]['PVT_Amount'];
             } 
         }
-
-        //DebugBreak();
 
         if(@$_POST['isotherbrd']>0 || @$_POST['isFresh']>0)
         {
@@ -2793,7 +2801,8 @@ class Admission extends CI_Controller
             'preResult'=>@$_POST['preResult'],
             'brd_name'=>@$_POST['oldboard'] ,
             'isNotFresh'=>@$_POST['isNotFresh']
-
+            /*'preSpec'=>@$_POST['preSpec'],
+            'oldClass'=>@$_POST['oldClass']  */
         );
 
         if(@$_POST['isotherbrd']>0)
@@ -2823,21 +2832,6 @@ class Admission extends CI_Controller
             }
         }
 
-        if(@$_POST['isFresh']==1 || @$_POST['isotherbrd']==1){
-            $CheckDuplicateForm_Model = array('name'=>@$_POST['cand_name'],'Fname'=>$_POST['father_name'],'BForm'=>$_POST['bay_form'],'FNIC'=>$_POST['father_cnic'],'dob'=>$_POST['dob'],'board'=>$_POST['oldboardid'],'SearchType'=>2);
-            $CheckDuplicateForm_Model = $this->Admission_model->CheckDuplicateForm_Model($CheckDuplicateForm_Model);
-
-            if($CheckDuplicateForm_Model){
-                $error_msg.= 'Admission already submitted as '.$CheckDuplicateForm_Model[0]['regpvt'].' <br>Form No: '.$CheckDuplicateForm_Model[0]['formNo'].'<br>Name: '.$CheckDuplicateForm_Model[0]['name'].'<br>Father Name: '.$CheckDuplicateForm_Model[0]['Fname'].'<br><br> Note: In case of any query related this admission form, Please contact to MATRIC BRANCH BISEGRW (055-3892634)';            
-                $info =  '';
-                $info['error'] = $error_msg;
-                $info['formno'] = "";
-                echo  json_encode($info);
-                exit();                      
-            }
-        }
-
-
         $logedIn = $this->Admission_model->Insert_NewEnorlement($data);    
 
         $info =  '';
@@ -2865,7 +2859,6 @@ class Admission extends CI_Controller
         echo  json_encode($info);
         exit();
     }
-
 
     public function formdownloaded()
     {
@@ -3282,6 +3275,8 @@ class Admission extends CI_Controller
         {
             $allinputdata['excep'] = 'Please Select Your Residency';
         }
+
+
 
         else if((@$_POST['gend'] != '1' && @$_POST['isotherbrd'] != '1' ) and (@$_POST['gend'] != '2' &&  @$_POST['isotherbrd'] != '1'))
         {

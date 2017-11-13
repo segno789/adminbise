@@ -76,16 +76,15 @@ class Result_model extends CI_Model
             return  -1;
         }
     }
-    public function getResultCardByRNO($keyword,$class,$iyear,$inst_cd)
+    public function getResultCardByRNO($keyword,$class,$iyear)
     {
         if($class ==  9)
         {
-        //matric_new..spResCard9th 0,2017,9,1,2,122026,7,78
-            $query = $this->db->query("matric_new..spResCard9th $keyword,$iyear,$class,1,1,$inst_cd,0,0");
+            $query = $this->db->query("matric_new..spResCard9th $keyword,$iyear,$class,1,1,0,0,0");
         }
         else if($class ==  10)
         {
-            $query = $this->db->query("matric_new..spResCard10th $keyword,$iyear,$class,1,1,$inst_cd,0,0");
+            $query = $this->db->query("matric_new..spResCard10th $keyword,$iyear,$class,1,1,0,0,0");
         }
         else if($class ==  12 || $class == 11 || $class == 1)
         {
@@ -115,14 +114,14 @@ class Result_model extends CI_Model
             return  -1;
         }
     }
-    public function getResultCard10thByGroupWise($keyword,$Inst_Id,$class)
+    public function getResultCard10thByGroupWise($keyword,$Inst_Id)
     {
         //  DebugBreak();
 
         $where = "grp_cd = $keyword AND sch_cd = $Inst_Id";
         if($keyword == 7)
         {
-            $grp_cd = $keyword;
+            $grp_cd = 1;
             $subcd = 78;
         }
         else if($keyword ==  1)
@@ -132,7 +131,7 @@ class Result_model extends CI_Model
         }
         else if($keyword ==  8)
         {
-            $grp_cd = $keyword;
+            $grp_cd = 1;
             $subcd = 43;
         }
         else
@@ -144,11 +143,11 @@ class Result_model extends CI_Model
         //$query = $this->db->query("SELECT * FROM matric_new..tbl9thresultcards where $where");
         if($subcd != 0)
         {
-          $query = $this->db->query("matric_new..spResCard10th 0,2017,$class,1,2,$Inst_Id,$grp_cd,$subcd");  
+          $query = $this->db->query("matric_new..spResCard10th 0,2017,10,1,2,$Inst_Id,$grp_cd,$subcd");  
         }
         else if($subcd == 0)
         {
-            $query = $this->db->query("matric_new..spResCard10th 0,2017,$class,1,3,$Inst_Id,$grp_cd,$subcd");
+            $query = $this->db->query("matric_new..spResCard10th 0,2017,10,1,3,$Inst_Id,$grp_cd,$subcd");
         }
         
         
@@ -164,9 +163,9 @@ class Result_model extends CI_Model
             return  -1;
         }
     }
-     public function getResultCard9thByGroupWise($keyword,$Inst_Id,$class)
+      public function getResultCard9thByGroupWise($keyword,$Inst_Id,$class)
     {
-          DebugBreak();
+        //  DebugBreak();
 
         $where = "grp_cd = $keyword AND sch_cd = $Inst_Id";
         if($keyword == 7)
@@ -176,7 +175,7 @@ class Result_model extends CI_Model
         }
         else if($keyword ==  1)
         {
-            $grp_cd = 1;
+            $grp_cd = $keyword;
             $subcd = 8;
         }
         else if($keyword ==  8)

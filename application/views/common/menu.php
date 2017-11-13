@@ -26,7 +26,6 @@
                     </a>
                     </li>
                     <?php } 
-                    $appconfig['isadmP1'] =1;
                 if($appconfig['isadmP1'] == 1){?>
                     <li>
                         <a href="<?php echo base_url(); ?>Admission_9th_reg" class="<?php if($isselected == '14') {echo 'selected';}?>" >
@@ -249,8 +248,7 @@
             }
             ?>
             <?php   // 9th admission
-            if($isselected == '14')
-            {
+            if($isselected == '14'){
                 ?>
                 <ul >
                     <li><a href="<?php echo base_url(); ?>Admission_9th_reg"   data-original-title="" >Admission</a></li>

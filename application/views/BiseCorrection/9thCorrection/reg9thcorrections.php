@@ -17,17 +17,11 @@
                                   <h1    style="text-align: center;"><font color="#000000" size="+1" >Note:-Last Date of Online Registartion for 9th  without late fee is <b class="blink_text"> 16th, May 2016</b></font></h1>
                         <h4>Welcome to Board of Intermediate &amp; Secondary Education, GUJRANWALA</br></br> &nbsp; Dashboard</h4>
                        <!-- <div class="shortcutHome">
-                            <a href="<?php echo base_url(); ?>index.php/BiseCorrection/search_Form"><img src="<?php echo base_url();?>assets/img/enrolment.png"><br>New-Registration</a>
+                            <a href="<?php echo base_url(); ?>index.php/BiseCorrection/NewEnrolment"><img src="<?php echo base_url();?>assets/img/enrolment.png"><br>New-Registration</a>
                         </div>-->
                         <!--  <div class="shortcutHome">
                         <a href="GetInfo.php"><img src="<?php echo base_url();?>assets/img/enrolment.png"><br>Re-Admission</a>
-                        </div>  -->   
-                        <div class="shortcutHome">
-                            <a href="<?php echo base_url(); ?>index.php/BiseCorrection/search_Form"><img src="<?php echo base_url();?>assets/img/enrolment.png"><br>9th Mannual Correction</a>
-                        </div>   
-                        <div class="shortcutHome">
-                        <a href="<?php echo base_url(); ?>index.php/BiseCorrection/otherboard10th"><img src="<?php echo base_url();?>assets/img/reports.png"><br>10th Other Board Forms</a>
-                        </div>  
+                        </div>  -->    
                         <div class="shortcutHome">
                             <a href="<?php echo base_url(); ?>index.php/BiseCorrection/reg9thcorrectionapp"><img src="<?php echo base_url();?>assets/img/edit_form.png"><br>9th Corrections Applications</a>
                         </div>

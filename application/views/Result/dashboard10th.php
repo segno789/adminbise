@@ -103,10 +103,10 @@
                                                 $vals['spl_name'] = "RL DUE TO REGISTRATION BRANCH (CONTACT TO REGISTRATION BRANCH)";
                                             }*/
                                             $grp_name = $vals["grp_cd"];
-                                            if($vals["status"] == 4 || $vals['spl_cd']!="" )
+                                            if(($vals["status"] == 4 || $vals['spl_cd']!="")  )
                                             {
                                                 $disables = '';
-                                                if($vals['spl_cd']!="")
+                                                if($vals['spl_cd']!="" )
                                                 {
                                                     $disables = '<h6 style="color: red;">'.$vals['spl_name'].'</h6>';
                                                 }
@@ -116,8 +116,11 @@
 
                                                 $disables = '<button type="button" class="btn btn-info" value="'.$roll_no.'" onclick="downloadslip_matric('.$roll_no.',1,'.$sess.')">Download Result Card</button>
                                                 <button type="button" class="btn btn-info" value="'.$roll_no.'" onclick="downloadslip_matric('.$roll_no.',2,'.$sess.')">View Result Card</button>'; 
-
-
+                                            }
+                                            if($roll_no != 481476 || $roll_no != 481665 || $roll_no != 488061)
+                                            {
+                                                $disables = '<button type="button" class="btn btn-info" value="'.$roll_no.'" onclick="downloadslip_matric('.$roll_no.',1,'.$sess.')">Download Result Card</button>
+                                                <button type="button" class="btn btn-info" value="'.$roll_no.'" onclick="downloadslip_matric('.$roll_no.',2,'.$sess.')">View Result Card</button>'; 
                                             }
                                             switch ($grp_name) {
                                                 case '1':

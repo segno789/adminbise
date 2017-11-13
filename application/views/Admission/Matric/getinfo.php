@@ -54,44 +54,17 @@
         if(@$nxtsess == '1'){ @$nxtsess = 'Matric Annual'; } else{@$nxtsess = 'Matric Supplementary'; }
         $error = 'You have already appeared in '.' '. $nxtsess.' '.$nxtyear.' Against Roll No  =  '.$nxtrno;
     }
-    if($error != ''){
-        //DebugBreak();
-        ?>
-        <div class="form-group">
-            <div class="col-md-12">
-                <div class="alert alert-danger" align="center">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close"></a>
-                    <strong><?php echo $error; ?></strong>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-
-    else if(@$data['error'] != ''){
-        ?>
-        <div class="form-group">
-            <div class="col-md-12">
-                <div class="alert alert-danger" align="center">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close"></a>
-                    <strong><?php echo @$spl_cd['error_msg']; ?></strong>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
     ?>
+
     <div class="form-group">    
         <div class="row">
             <div class="col-md-offset-3 col-md-3">
                 <label class="control-label" for="dob" >Date of Birth</label>
                 <input type="text" class="form-control"  id="dob" name="dob"  value="<?php echo @$_POST['dob'] ?>">
-                <!--<input type="text" class="form-control"  id="dob" name="dob"  value="11-09-2003">-->
             </div>
             <div class="col-md-3">
                 <label class="control-label" for="oldRno" >Old Roll No</label>
                 <input class="form-control" required="required" type="text" id="oldRno" name="oldRno" value="<?php echo @$_POST['oldRno'] ?>" maxlength="6" />
-                <!--<input class="form-control" required="required" type="text" id="oldRno" name="oldRno" value="231392" maxlength="6" />-->
             </div>
         </div>
     </div>
@@ -100,10 +73,11 @@
             <div class="col-md-offset-3 col-md-3">
                 <label class="control-label" for="oldClass" >Last Appearing Class</label>
                 <select id="oldClass" class="form-control" name="oldClass">
+                    <option value="10" <?php if (@$_POST['oldClass'] == 10) echo 'selected' ?>>10th</option>
                     <?php if(Session == 1) {?>
                         <option value="9" <?php if (@$_POST['oldClass'] == 9) echo 'selected' ?>>9th</option>
                         <?php }?>
-                    <option value="10" selected="selected" <?php if (@$_POST['oldClass'] == 10) echo 'selected' ?>>10th</option>
+
                 </select>
             </div>
             <div class="col-md-3">
@@ -199,7 +173,9 @@
                 </div>
             </div>
             <?php } 
-    }?>
+    }
+    ?>
+
     <div class="form-group">    
         <div class="row">
             <div class="col-md-offset-3 col-md-3">
@@ -210,6 +186,49 @@
             </div>
         </div>
     </div>
+
+    <?php
+
+    if($error != ''){
+        ?>
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="alert alert-danger" align="center">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close"></a>
+                    <strong class="blink_me"><?php echo $error; ?></strong>
+                </div>
+            </div>
+        </div>
+        <?php
+
+        if($error == "WARNING!!!! You are REGULAR candidate </br> If you will submit admission as PRIVATE candidate then you will not be able to submit admission as REGULAR candidate"){
+            ?>
+            <div class="form-group">    
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-3">
+                        <input type="submit" value="Confirm to Proceed" id="confirmProceed"  name="confirmProceed" onclick="return checkrno()" class="btn btn-success btn-block">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="button" value="Cancel" onclick="return CancelAlert();"  class="btn btn-danger btn-block">
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+    }
+    else if(@$data['error'] != ''){
+        ?>
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="alert alert-danger" align="center">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close"></a>
+                    <strong><?php echo @$spl_cd['error_msg']; ?></strong>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+    ?>
 </form>
 <?php
 if(Session == '1'){
@@ -221,17 +240,17 @@ if(Session == '1'){
     <h3 align='center' class='bold'>2- Click Below Button for Other Application </h3>
     </div>
     </div>
-    </div>
+    </div>  
     <div class='form-group'>    
     <div class='row'>
     <div class='col-md-offset-3 col-md-6'>
-    <div class='alert alert-info'>
-    <ul>
+    <div class='alert alert-info'>  
+    <ul>                                                      
     <li>For Fresh Composite(9th & 10th)</li>
     <li>Candidates Migrated From Other Boards</li>
     <li>Aama Passed Candidates</li>
     <li>Deaf And Dumb Candidates</li>
-    </ul>
+    </ul>           
     </div>
     </div>
     </div>

@@ -20,12 +20,12 @@
                     </div>
                     <div class="widget-body">
 
-                        <form class="form-horizontal no-margin" id="corr_form" action="<?php  echo base_url(); ?>/index.php/NinthCorrection/NewEnrolment_update" method="post" enctype="multipart/form-data">
+                        <form class="form-horizontal no-margin" id="corr_form" action="<?php  echo base_url(); ?>/NinthCorrection/NewEnrolment_update" method="post" enctype="multipart/form-data">
 
                             <div class="control-group">
                                 <h4 class="span4">Personal Information :</h4>
                                 </br>
-                            <img src="../../assets/img/OnlineCorrectoin.jpg" alt="" style="width: 530px;">
+                            <img src="<?=base_url()?>assets/img/OnlineCorrectoin.jpg" alt="" style="width: 530px;">
                                 <div class="controls controls-row">
                                     <input type="hidden" class="span2 hidden" id="isReAdm" name="isReAdm" value="0">
                                    

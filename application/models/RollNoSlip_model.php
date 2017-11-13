@@ -5,7 +5,7 @@ class RollNoSlip_model extends CI_Model
     {
         $this->load->database();
     }
-    public function get9thStdData($inst_cd)
+      public function get9thStdData($inst_cd)
     {
         //DebugBreak();
         //  $query = $this->db->get_where('matric_new..tblbiodata', array('sch_cd' => $inst_cd,'class' => 9, 'iyear' => 2016, 'regpvt'=>1,));
@@ -41,7 +41,8 @@ class RollNoSlip_model extends CI_Model
             return  false;
         }
     }
-    public function get12thStdData($inst_cd)
+
+     public function get12thStdData($inst_cd)
     {
 
         $mClass =  mClass1;
@@ -183,7 +184,7 @@ class RollNoSlip_model extends CI_Model
             return  false;
         }
     }
-    public function get9thrslip($rno,$class,$iyear,$sess)
+       public function get9thrslip($rno,$class,$iyear,$sess)
     {
 
         $query = $this->db->query("Registration..MatricSlipInfoP1 $rno,$class,$iyear,$sess");
@@ -203,6 +204,7 @@ class RollNoSlip_model extends CI_Model
             return  -1;
         }
     }
+
     public function get10thrslipWith_Grp_CD($class,$iyear,$sess,$group_cd,$inst_cd,$sub_cd)
     {
         if($sub_cd == '')
@@ -233,7 +235,7 @@ class RollNoSlip_model extends CI_Model
             return  false;
         }
     }
-    public function get12thrslipWith_Grp_CD($class,$iyear,$sess,$group_cd,$inst_cd)
+   public function get12thrslipWith_Grp_CD($class,$iyear,$sess,$group_cd,$inst_cd)
     {
          //DebugBreak();
         $query = $this->db->query("Registration..InterSlipInfo_With_Grp_cd $class,$iyear,$sess,$group_cd,$inst_cd");

@@ -24,12 +24,18 @@ class Dashboard extends CI_Controller {
         
         parent::__construct();
         $this->load->helper('url');
+          $this->clear_cache(); 
         //this condition checks the existence of session if user is not accessing  
         //login method as it can be accessed without user session
         $this->load->library('session');
         if( !$this->session->userdata('logged_in') && $this->router->method != 'login' ) {
             redirect('login');
         }
+    }
+      function clear_cache()
+    {
+        $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
+        $this->output->set_header("Pragma: no-cache");
     }
     public function index()
     {
@@ -38,17 +44,8 @@ class Dashboard extends CI_Controller {
        
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
-        
-     //   DebugBreak();
-        
-        $this->load->model('Dashboard_model');
-      //  $this->load->model('session_model');
-       // $Logged_In_Array  = $this->session_model->getSessInfo($Logged_In_Array['session_id']);
-         // $udata = unserialize($res)
-     //  $Logged_In_Array['logged_in'] = unserialize($session[0]['user_data']);
-        
         $userinfo = $Logged_In_Array['logged_in'];
-      
+        $this->load->model('Dashboard_model');
 
        $data = array(
             'isselected' => '1',
@@ -120,13 +117,14 @@ class Dashboard extends CI_Controller {
             {
                 if($crntyear == $grading_data[$j]['iyear'])
                 {
+                   
                     $stats['grading'][] =  floatval($grading_data[$j]['Ranking_Score']);
                     $isgradingexist =  1;
                 } 
             }
             if($isgradingexist ==  0)
             {
-                $stats['grading'][] =  null; 
+                $stats['grading'][] =  floatval(0); 
             }
              $crntyear++;
         }
@@ -143,190 +141,5 @@ class Dashboard extends CI_Controller {
         
         
         echo json_encode($stats) ;
-    } 
-    public function Profile()
-    {
-        //////DebugBreak();
-        $Logged_In_Array = $this->session->all_userdata();
-        $userinfo = $Logged_In_Array['logged_in'];
-        $userinfo['isselected'] = 1;
-        $Inst_Id = $userinfo['Inst_Id'];
-        $isgovt = $userinfo['isgovt'];
-        $emis = $userinfo['emis'];
-        $email = $userinfo['email'];
-        $phone = $userinfo['phone'];
-        $cell = $userinfo['cell'];
-        $dist = $userinfo['dist'];
-        $teh = $userinfo['teh'];
-        $zone = $userinfo['zone'];
-        $isInserted = $userinfo['isInserted'];
-        $this->load->model('dashboard_model');
-        if($isInserted == 1)
-        {
-            $newinfo = $this->dashboard_model->Profile_info($Inst_Id);  
-            $emis = $newinfo[0]['emis_code']; 
-            $email =  $newinfo[0]['email']; 
-            $phone = $newinfo[0]['LandLine'];
-            $cell =  $newinfo[0]['MobNo']; 
-        }
-        if($this->session->flashdata('msg'))
-        {
-
-            $msg = $this->session->flashdata('msg');    
-        }
-        else
-        {
-            $msg = '';
-        }
-
-        $info = array('isgovt'=>$isgovt,'emis'=>$emis,'email'=>$email,'phone'=>$phone, 'cell'=>$cell,'isInserted'=>$isInserted,'msg'=>$msg)  ;
-        $this->load->view('common/common_reg/header.php',$userinfo);
-        $this->load->view('common/menu.php',$userinfo);
-        $this->load->view('profile/Profile.php',$info);
-        $this->load->view('common/common_reg/footer.php');
-
-
-    }
-    public function change_pwdView()
-    {
-       $Logged_In_Array = $this->session->all_userdata();
-        $userinfo = $Logged_In_Array['logged_in'];
-        $userinfo['isselected'] = 1;
-        $this->load->view('common/common_reg/header.php',$userinfo);
-        $this->load->view('common/menu.php',$userinfo);
-        $this->load->view('profile/Change_pwd.php',$info);
-        $this->load->view('common/common_reg/footer.php');
-    }
-    public function Profile_Update()
-    {
-        $this->load->model('dashboard_model');
-        //////DebugBreak();
-        $this->load->library('session');
-        $Logged_In_Array = $this->session->all_userdata();
-        $userinfo = $Logged_In_Array['logged_in'];
-        $userinfo['isselected'] = 1;
-        $Inst_Id = $userinfo['Inst_Id'];
-        $this->commonheader($userinfo);
-        $error = array();
-
-        if (!isset($Inst_Id))
-        {
-            //$error['excep'][1] = 'Please Login!';
-            $this->load->view('login/login.php');
-        }
-        if(@$_POST['isGovt']== 1){
-            $emis = @$_POST['Profile_emis'];
-        }
-        else{
-            $emis = '';
-        }
-        $allinputdata = array('dist_cd'=>@$userinfo['dist'],'teh_cd'=>@$userinfo['teh'],'zone_cd'=>@$userinfo['zone'],'isGovt'=>@$_POST['isGovt'],'Profile_email'=>@$_POST['Profile_email'],'Profile_phone'=>@$_POST['Profile_phone'],'Profile_cell'=>@$_POST['Profile_cell'],'isInserted'=>@$_POST['isInserted'],'Inst_Id'=>$Inst_Id,'Inst_Id'=>$Inst_Id,'emis'=>$emis
-        );
-
-        $result =  $this->dashboard_model->Profile_UPDATE($allinputdata); 
-        if($result == true){
-            $msg = 'success';
-            $this->session->set_flashdata('msg',$msg);
-            redirect('Registration/Profile');
-            return;
-        }   
-        else{
-            $msg = 'error';
-            $this->session->set_flashdata('msg',$msg);
-            redirect('Registration/Profile');
-            return;
-
-        }
-
-
-    } 
-    public function chang_PwdUpdate()
-    {
-    
-    //DebugBreak();
-     $this->load->library('session');
-        $Logged_In_Array = $this->session->all_userdata();
-        $userinfo = $Logged_In_Array['logged_in'];
-        $this->load->view('common/header.php',$userinfo);
-        $data = array(
-            'isselected' => '1',
-
-        );
-        $msg = $this->uri->segment(3);
-
-
-
-        if($msg == FALSE){
-
-            $error_msg = $this->session->flashdata('error');    
-        }
-        else{
-            $error_msg = $msg;
-        }
-
-        $Logged_In_Array = $this->session->all_userdata();
-        $user = $Logged_In_Array['logged_in'];
-        $this->load->model('dashboard_model');
-        
-        //  $error['grp_cd'] = $user['grp_cd'];
-        // // DebugBreak();();
-        $Inst_cd = $userinfo['Inst_Id'];
-        $Oldpwd = $_POST['oldPwd'];
-        $pwd = $_POST['Pwd'];
-        $pwd1 = $_POST['Pwd1'];
-        
-        $myarr = array(
-        'Inst_cd'=>$Inst_cd,
-        'oldPwd'=>$Oldpwd,
-        'Pwd'=>$pwd,
-        'Pwd1'=>$pwd1
-        ) ;
-        $RegStdData = $this->dashboard_model->Update_Pwd($myarr);
-        //$total = count($RegStdData)+1;
-        //// DebugBreak();();
-        
-       
-        //$RegStdData[0]['msg'] = $error_msg;
-        if($RegStdData[0]['msg']!="")
-        {
-          
-                        $allinputdata['excep'] = $RegStdData[0]['msg'];
-                        $this->session->set_flashdata('pwd_error',$allinputdata);
-                        redirect('Dashboard/change_pwd/');
-                        return;
-        }
-        else
-        {
-                        
-                        $allinputdata['excep'] = "";
-                        $this->session->set_flashdata('pwd_error',$allinputdata);
-                        redirect('Dashboard/change_pwd/');
-                        return;
-        }
-        
-    }
-    public function change_pwd()
-    {
-    
-       //DebugBreak();
-       $this->load->helper('url');
-       $this->load->library('session');
-       $Logged_In_Array = $this->session->all_userdata();
-       $this->load->model('Dashboard_model');
-       $userinfo = $Logged_In_Array['logged_in'];
-       $data = array(
-            'isselected' => '1',
-        );
-         if($this->session->flashdata('pwd_error')){
-
-            $error['excep'] = $this->session->flashdata('pwd_error');    
-        }
-        else{
-            $error['excep']= '';
-        }
-        $this->load->view('common/header.php',$userinfo);
-        $this->load->view('common/menu.php',$data);
-        $this->load->view('profile/Change_pwd.php',$error);
-        $this->load->view('common/footer.php');
-    }
+    }  
 }

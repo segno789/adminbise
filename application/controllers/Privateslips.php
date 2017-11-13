@@ -178,7 +178,7 @@ class Privateslips extends CI_Controller {
     }
     private function makepdf($pdf,$info)
     {
-        if($info['Session'] ==1) $Session= 'ANNUAL'; else $Session='SUPPLY';
+        if($info['Session'] ==1) $Session= 'ANNUAL'; else $Session='SUPPLEMENTARY';
         if($info['errmessage'] == null) $errmessage = '(PROVISIONALLY)'; else{ $errmessage = ' (PROVISIONALLY OBJECTION SLIP)';};
         // $errmessage = '(PROVISIONALLY)';
 
@@ -205,7 +205,7 @@ class Privateslips extends CI_Controller {
         $pdf->SetXY(22.2,7.2);
         $pdf->Cell(0, 0.2, "BOARD OF INTERMEDIATE & SECONDARY EDUCATION, GUJRANWALA", 0.25, "C");
         // $pdf->SetFont('Arial','R',10);
-        $pdf->SetFont('Arial','',10);
+        $pdf->SetFont('Arial','',9.4);
         $pdf->SetXY(26.2,10.9);
         $pdf->Cell(0, 0.2, "ROLL NUMBER SLIP (WITH DATE SHEET) FOR S.S.C $Session EXAMINATION, ".$info["Year"], 0.25, "C");  
 
@@ -259,7 +259,7 @@ class Privateslips extends CI_Controller {
         //  DebugBreak();
         // $filepath = str_replace('OldPics/', '', $filepath);
         
-        //$pdf->Image($filepath,173.0,15.1, 30.65,30.65, "jpg");  
+        $pdf->Image($filepath,173.0,15.1, 30.65,30.65, "jpg");  
         $pdf->SetFont('Arial','B',9);
         $pdf->SetXY(182.2,48.2);
         $pdf->Cell(0, 0.2, $Gender, 0.25, "C");
@@ -453,23 +453,21 @@ class Privateslips extends CI_Controller {
                 $Y = 18+ $Y;
             }
 
-            if(@$info['slips'][$countter]['subp1count'] +@$info['slips'][0]['subp2count'] <=4)
+            if(@$info['slips'][$countter]['subp1count'] +@$info['slips'][0]['subp2count'] <= 4)
             {
                 $Y = 28+ $Y;
             }
-           
-           
+
 
             // INSTRUCTION PICTURE 
             $pdf->SetXY(40.2,21.2);
             $pdf->Image("assets/img/Note.jpg",165.0,50.1, 40.65,$noteimageheight, "JPG");  
-          
+
             // PRACTICAL BOX
             $tprcount = $countter+$countter9;
             $prcount = 0;
             $pathtml = '';
             $partsubhtml = '';
-           
             if(@$info['slips'][$tprcount]['prcount'] > 0)
             {
 
@@ -1377,7 +1375,7 @@ class Privateslips extends CI_Controller {
             $pdf->SetXY(10,266);
             $pdf->Cell( 0,0, 'Bind - Sr No: '.$info['BindNo'].' - '.$info['SrNo'], 0, 0, 'C', false );
             
-            $pdf->Image("assets/img/CE_Signature.png",170.0,258.5, 30,30, "PNG"); 
+            $pdf->Image(CESIGN,170.0,258.5, 30,30, "PNG"); 
             $pdf->Image("assets/img/NoteForMatric_II.jpg",10.0,268, 140,22, "JPG"); 
             $pdf->SetFont('Arial','',8);
             $pdf->SetXY(158,289);
@@ -2607,7 +2605,7 @@ class Privateslips extends CI_Controller {
         // 
         $pdf->Image("assets/img/Note3.jpg",10.0,262, 145,23, "JPG"); 
         $pdf->SetFont('Arial','',8);
-        $pdf->Image("assets/img/CE_Signature.png",170.0,258, 30,30, "PNG");  
+        $pdf->Image(CESIGN,170.0,258, 30,30, "PNG");  
         $pdf->SetXY(160,288);
         $pdf->Cell(0, 0.2, "CONTROLLER OF EXAMINATIONS", 0.25, "C");
 
@@ -3699,7 +3697,7 @@ class Privateslips extends CI_Controller {
             $pdf->Cell( 0,0, 'Bind - Sr No: '.$info['BindNo'].' - '.$info['SrNo'], 0, 0, 'C', false );
 
 
-            $pdf->Image("assets/img/CE_Signature.png",170.0,234, 30,30, "PNG"); 
+            $pdf->Image(CESIGN,170.0,234, 30,30, "PNG"); 
             $pdf->Image("assets/img/NoteForMatric_I.jpg",10.0,243, 145,30, "JPG"); 
             $pdf->SetFont('Arial','',8);
             $pdf->SetXY(158,267);

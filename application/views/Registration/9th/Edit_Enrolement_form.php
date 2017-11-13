@@ -61,7 +61,7 @@ header("Pragma: no-cache");
                                 <div class="controls controls-row">
                                 <input type="hidden" name="oldbform" value="<?php echo   $data['0']['BForm']; ?>">
                                 <input type="hidden" name="oldfform" value="<?php echo  $data['0']['FNIC']; ?>">
-                                    <input class="span3" type="text" id="bay_form" name="bay_form" placeholder="Bay Form No." value="<?php echo  $data['0']['BForm']; ?>" required="required" <?php if($isReAdm==1 || $isReAdm==2 ) echo "readonly='readonly'";  ?>>
+                                    <input class="span3" type="text" id="bay_form" name="bay_form" placeholder="Bay Form No." value="<?php echo  $data['0']['BForm']; ?>" required="required" <?php //if($isReAdm==1 ) echo "readonly='readonly'";  ?>>
                                     <label class="control-label span2" for="father_cnic">
                                         Father's CNIC :
                                     </label> 
@@ -77,7 +77,7 @@ header("Pragma: no-cache");
                                 <div class="controls controls-row">
                                     <input class="span3" type="text" id="dob" name="dob" placeholder="DOB" value="
                                     <?php
-                                    $source = $data['0']['Dob'];
+                                    $source = $data['0']['Dob'];;
                                     $date = new DateTime($source);
                                     echo $date->format('d-m-Y'); 
                                      ?>" required="required" readonly="readonly"  <?php if($isReAdm==1 || $isReAdm==2) echo "readonly='readonly'"; ?> >
@@ -105,7 +105,7 @@ header("Pragma: no-cache");
                                         {
                                             echo  "<option value='1' >Urdu</option> <option value='2' selected='selected'>English</option>";
                                         }
-                                    ?>       
+                                    ?>
                                         
                                     </select>
                                     <label class="control-label span2" >
@@ -268,37 +268,16 @@ header("Pragma: no-cache");
                                 </div>
                             </div>
                             <hr>
-                            <?php
-                                if($isReAdm == 1)
-                                {
-                                
-                                
-                            ?>
                             <div class="control-group">
                                 <h4 class="span4">Exam Information :</h4>
+                                <div class="controls controls-row">
+                                    <input type="hidden" class="span2 hidden" id="isReAdm" name="isReAdm" value="0">
+                                    <label class="control-label span2">
+
+                                    </label> 
+
+                                </div>
                             </div>
-                             <!--<div class="control-group">
-                                <label class="control-label span1" >
-                                    Roll No.
-                                </label>
-                                <div class="controls controls-row">
-                                    <input class="span3" type="text" disabled="disabled" value="<?php //echo $data['0']['oldRno_reg'] ?>">
-                                    <label class="control-label span2" >
-                                        Year:
-                                    </label> 
-                                    <input class="span3"  type="text"  style="text-transform: uppercase;" value="<?php //echo  YEAR ?>" disabled="disabled">
-                                </div>
-                                <div class="controls controls-row">
-                                    <input class="span3" type="text" disabled="disabled" value="<?php //echo $data['0']['oldRno_reg'] ?>">
-                                    <label class="control-label span2" >
-                                        Year:
-                                    </label> 
-                                    <input class="span3"  type="text"  style="text-transform: uppercase;" value="<?php //echo  YEAR ?>" disabled="disabled">
-                                </div>
-                            </div> -->
-                            <?php
-                                }
-                            ?>
                             <div class="control-group">
                                 <label class="control-label span1" >
                                     Study Group :
@@ -658,8 +637,7 @@ function CancelAlert()
         // user clicked "cancel"
         
     }
-     });
-  
+});
 }
 </script>
 

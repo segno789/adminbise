@@ -92,10 +92,6 @@ else if(Session == '2')
     </div>
 </form>
 <hr class="colorgraph">
-<label class="control-label">In case of any problem regarding Admissions, please send us email on</label>
-<a href="mailto:complaint4bisegrw@gmail.com" class="control-label">complaint4bisegrw@gmail.com</a>
-
-<hr class="colorgraph">
 <div class="form-group">    
     <div class="row">
         <div class="col-md-12">
@@ -107,17 +103,20 @@ else if(Session == '2')
     <div class="form-group" id="delfrm">    
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
-                <input type="text" class="form-control" id="delformid" name="delformid" placeholder="Enter Form No" maxlength="6" required="required">  <br>
-                <input type="text" class="form-control"  id="dob" name="dob"  ><br>
-                <input type="text" class="form-control"  id="mobCode" name="mobCode" maxlength="6" placeholder="Enter Verification Code" style="display:none"  >
+                <input type="text" class="form-control" id="delformid" name="delformid" placeholder="Enter Form No" maxlength="6" required="required"><br>
+                <input type="text" class="form-control"  id="dob" name="dob" maxlength="10"><br>
+                <input type="text" class="form-control"  id="mobCode" name="mobCode" maxlength="6" placeholder="Enter Verification Code" style="display:none">
             </div>         
         </div>
     </div>
     <div class="form-group">    
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
-                <input type="button" value="Delete Form" name="btndelForm" id="btndelForm"  class="btn btn-primary btn-block">
+                <input type="button" value="Delete Form" name="btndelForm" id="btndelForm"  class="btn btn-danger btn-block">
             </div>
         </div>
     </div>
+    <hr class="colorgraph">
+    <label class="control-label">In case of any problem regarding Admissions, please send us email on</label>
+    <a href="mailto:complaint4bisegrw@gmail.com" class="control-label">complaint4bisegrw@gmail.com</a>
 </form>

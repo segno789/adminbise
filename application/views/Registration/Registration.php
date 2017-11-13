@@ -20,9 +20,9 @@
                         <div class="shortcutHome">
                             <a href="<?php echo base_url(); ?>Registration/NewEnrolment"><img src="<?php echo base_url();?>assets/img/enrolment.png"><br>New-Registration</a>
                         </div>
-                        <!--  <div class="shortcutHome">
-                        <a href="GetInfo.php"><img src="<?php echo base_url();?>assets/img/enrolment.png"><br>Re-Admission</a>
-                        </div>  -->    
+                          <div class="shortcutHome">
+                        <a href="<?php echo base_url(); ?>Registration/ReAdmission"><img src="<?php echo base_url();?>assets/img/enrolment.png"><br>Re-Admission</a>
+                        </div>  
                         <div class="shortcutHome">
                             <a href="<?php echo base_url(); ?>Registration/EditForms"><img src="<?php echo base_url();?>assets/img/edit_form.png"><br>Edit Form</a>
                         </div>

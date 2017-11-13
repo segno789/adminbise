@@ -11,7 +11,7 @@
                     <div class="widget-body">
                     <div class="jumbotron">
                         <h1 style="color: red;"><?php  echo @$errno; ?>-An unexpected error has occurred.</h1>
-                        <p> Please <a style="color:blue; text-decoration: underline;" href="http://ssc.bisegrw.com/Admission">try again</a>, and if the problem persists, contact help desk to given below. <b> <?php echo @$msg; ?></b></p>
+                        <p> Please <a style="color:blue; text-decoration: underline;" href="http://localhost:8083/adminbise/Admission">try again</a>, and if the problem persists, contact help desk to given below. <b> <?php echo @$msg; ?></b></p>
                     </div>
                         <div class="info"  style="position:relative;margin:0;padding:0;">
                             <hr />

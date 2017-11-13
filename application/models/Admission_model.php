@@ -90,26 +90,31 @@ class Admission_model extends CI_Model
             return  -1;
         }
     }
+    
     public function checkalready($name,$fnic,$dob)
     {
-        $query = $this->db->query("exec admission_online..NextAppearanceSSC 0,0,0,0,'$name','$dob','$fnic','',2");
-        if (!$query) 
-        {
-            // if query returns null
-            $errNo   = $this->db->error();
-            return;
-        }
+        $query = $this->db->query("exec admission_online..NextAppearanceSSC 0,0,0,0,'$name','$dob','$fnic','',3");
         $rowcount = $query->num_rows();
+
         if($rowcount > 0)
         {
-
             return $query->result_array();
         }
         else
         {
-            return  -1;
+            $query = $this->db->query("exec admission_online..NextAppearanceSSC 0,0,0,0,'$name','$dob','$fnic','',2");
+            $rowcount = $query->num_rows();
+
+            if($rowcount > 0)
+            {
+                return $query->result_array();
+            }
+            else{
+                return false;
+            }
         }
     }
+    
     public function Brd_Name($brd_cd)
     {
         $brd_name = $this->db->get_where("matric..tblboard", array('Brd_cd'=>$brd_cd));
@@ -308,7 +313,7 @@ class Admission_model extends CI_Model
         {
             $exam_type = 2;
         }
-        $iyear = Year;
+        $iyear = Year + 1;
         $ses_s = Session;
         if($regFee == '')
             $regFee=0 ;
@@ -947,7 +952,6 @@ class Admission_model extends CI_Model
         //================== End AAMA khasa
         return $result;	
     }
-    
     public function getdelformno($formno,$dob)
     {
         $table1 = 'admission_online..tblVerificationCode';
@@ -958,7 +962,7 @@ class Admission_model extends CI_Model
         $this->db->where("regpvt = 2 AND formno = '$formno' AND dob ='$dob'  AND IsDeleted IS NULL");
 
         $query = $this->db->get();
-        
+
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -974,7 +978,7 @@ class Admission_model extends CI_Model
                 'isactive'=> 1,
                 'trycount'=> 0,
             );  
-            
+
             $res =  $this->db->insert($table1, $data2);
 
             if($res>0)
@@ -994,12 +998,12 @@ class Admission_model extends CI_Model
         {
             return  0;
         }
-        
+
     }
-    
+
     public function verifycode($formno,$vrCode)
     {
-        
+
         $table1 = 'admission_online..tblVerificationCode';
         $table2 = 'admission_online..tblMAdm';
         $this->db->select("verificationCode,formno,trycount");
@@ -1008,7 +1012,7 @@ class Admission_model extends CI_Model
         $this->db->where("isactive = 1 AND formno = '$formno' AND verificationCode ='$vrCode'");
 
         $query = $this->db->get();
-        
+
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -1031,15 +1035,14 @@ class Admission_model extends CI_Model
             }
 
             return $res;
-            
+
         }
         else
         {
             return  0;
         }
-        
+
     }
-    
-    
+
 }
 ?>

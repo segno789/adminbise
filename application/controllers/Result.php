@@ -25,9 +25,15 @@ class Result extends CI_Controller {
         //this condition checks the existence of session if user is not accessing  
         //login method as it can be accessed without user session
         $this->load->library('session');
+         $this->clear_cache();
         if( !$this->session->userdata('logged_in') && $this->router->method != 'login' ) {
         redirect('login');
         }
+    }
+    function clear_cache()
+    {
+        $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
+        $this->output->set_header("Pragma: no-cache");
     }
     public function dashboard9th()
     {
@@ -81,21 +87,25 @@ class Result extends CI_Controller {
             'isselected' => '5',
 
         );        
-          $this->load->library('session');
-        $Logged_In_Array = $this->session->all_userdata();
-        $userinfo = $Logged_In_Array['logged_in'];
-        $Inst_Id = $userinfo['Inst_Id'];   
+
         $this->load->model('Result_model');
         if($issess ==  1)
         {
-            $info['data'] = $this->Result_model->getResultCardByRNO($rno,10,2017,$Inst_Id);
+            $info['data'] = $this->Result_model->getResultCardByRNO($rno,10,2017);
         }
 
         else if($issess ==  2)
         {
-            $info['data'] = $this->Result_model->getResultCardByRNO($rno,10,2017,$Inst_Id);
+            $info['data'] = $this->Result_model->getResultCardByRNO($rno,10,2017);
         }
-       
+        $Logged_In_Array = $this->session->all_userdata();
+        $userinfo = $Logged_In_Array['logged_in'];
+        $Inst_Id = $userinfo['Inst_Id'];
+
+        if($info['data'][0]['sch_cd'] != $Inst_Id)
+        {
+            redirect('login');
+        }
         $this->load->library('PDFFWithOutPage');
         $pdf=new PDFFWithOutPage('P','in',"A4");   
         $pdf->SetAutoPageBreak(true,2);
@@ -147,23 +157,26 @@ class Result extends CI_Controller {
     }
     public function resultcard9th()
     {
-   // DebugBreak();
         $this->load->helper('url');
         $rno = $this->uri->segment(3);
         $isdownload = $this->uri->segment(4);
         $data = array(
             'isselected' => '5',
 
-        );
-        
-        $this->load->library('session');
-        $Logged_In_Array = $this->session->all_userdata();
-        $userinfo = $Logged_In_Array['logged_in'];
-        $Inst_Id = $userinfo['Inst_Id'];        
+        );        
 
         $this->load->model('Result_model');
-        $info['data'] = $this->Result_model->getResultCardByRNO($rno,9,2017,$Inst_Id);
+        $info['data'] = $this->Result_model->getResultCardByRNO($rno,9,2017);
 
+        $Logged_In_Array = $this->session->all_userdata();
+        $userinfo = $Logged_In_Array['logged_in'];
+        $Inst_Id = $userinfo['Inst_Id'];
+
+        if($info['data'][0]['Sch_cd'] != $Inst_Id)
+        {
+            redirect('login');
+        }
+        
         $this->load->library('PDFFWithOutPage');
         $pdf=new PDFFWithOutPage('P','in',"A4");   
         $pdf->SetAutoPageBreak(true,2);
@@ -182,8 +195,7 @@ class Result extends CI_Controller {
         $data = array(
             'isselected' => '5',
 
-        );     
-       // DebugBreak();   
+        );        
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -471,6 +483,7 @@ class Result extends CI_Controller {
             $Y = 46;
             $cellheight = 10;
             $font = 9;
+
             $floatwidth = 15;
 
             $pdf->SetFont('Arial','B',$font);
@@ -986,7 +999,7 @@ class Result extends CI_Controller {
         }
         else
         {
-            $pdf->Image("assets/img/CE_Signature.png",163.0,252, 38,36, "PNG");     
+            $pdf->Image(CESIGN,163.0,252, 38,36, "PNG");     
         }
 
         $pdf->SetFont('Arial','B',10);
@@ -1386,7 +1399,7 @@ class Result extends CI_Controller {
         $pdf->MultiCell(125, 5, $info['addr'], 0, "L",0);
 
 
-        $pdf->Image("assets/img/CE_Signature.png",160.0,247, 38,36, "PNG"); 
+        $pdf->Image(CESIGN,160.0,247, 38,36, "PNG"); 
 
         $pdf->SetFont('Arial','B',10);
         $pdf->SetXY(145,284);

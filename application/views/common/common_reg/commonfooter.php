@@ -20,7 +20,6 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.fancybox.pack.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/alertify.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
-  <script type="text/javascript" src="<?php echo base_url(); ?>/assets/js/bootstrap.js"></script>
 </body>
 </html>
 
@@ -258,8 +257,7 @@
             console.log(isreg);
         })
         
-        $("#btndwnForm").click(function()
-        {
+        $("#btndwnForm").click(function(){
             var formno = $("#formid").val();
             var dob = $("#dob").val();
            
@@ -298,47 +296,6 @@
                 return false;
             }
             window.location.href='<?php  echo base_url(); ?>Admission/checkFormNo_then_download/'+formno+'/'+dob;  
-        }
-         $("#btndwnForm9th").click(function()
-        {
-            var formno = $("#formid").val();
-           /* var dob = $("#dob").val();   */
-           
-            
-            if(formno == "")
-            {
-            alertify.error("Please write Form No.");
-            return false;    
-            }
-            else if(formno.length != 6)
-            {
-                alertify.error("Please write Valid Form No.");
-            return false;    
-            }
-           /* else if(dob == "")
-            {
-            alertify.error("Please write Date of Birth.");
-            return false;        
-            }      */
-            else
-            {
-            alertify.log("Please wait while your form is downloading....")    
-            downloadform();    
-            }
-            
-            
-        })
-        function downloadform9th(){
-            debugger;
-            var formno = $("#formid").val();
-            var dob = $("#dob").val();
-            if(formno == ""){
-                return false;
-            }
-            if(dob == ""){
-                return false;
-            }
-            window.location.href='<?php  echo base_url(); ?>Admission_9th_pvt/checkFormNo_then_download/'+formno+'/'+dob;  
         }
         
         function validateForm() {

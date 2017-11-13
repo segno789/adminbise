@@ -81,10 +81,9 @@
                                     <td>'.date("d-m-Y", strtotime($vals["Pre_Dob"])).'</td>
                                     <td><button type="button" class="btn btn-info" value="'.$vals['AppNo'].'" onclick="download_corr_form('.$vals['AppNo'].')">Download Correction Form</button>
                                     <button type="button" class="btn btn-info" value="'.$vals['AppNo'].'" onclick="download_challan_form('.$vals['AppNo'].')">Download Challan Form</button>
-                                 
+                                    <button type="button" class="btn btn-danger" value="'.$vals['AppNo'].'" onclick="Corr_App_Delete('.$vals['AppNo'].')">Delete Application</button>
                                     </td>
                                     </tr>';
-                                     //  <button type="button" class="btn btn-danger" value="'.$vals['AppNo'].'" onclick="Corr_App_Delete('.$vals['AppNo'].')">Delete Application</button>
                                      //<button type="button" class="btn btn-info" value="'.$formno.'" onclick="EditForm('.$formno.')">Edit Form</button>
                                     endforeach;
                                     }

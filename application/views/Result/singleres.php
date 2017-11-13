@@ -31,14 +31,14 @@
                 <div class="inHeaderLogin">
                     <a href="" title="BISE Gujranwala" rel="home"><img style="margin-top: 9px;text-align:left;width:150px;float: left;margin-left: 25%;" src="<?php echo base_url(); ?>assets/img/icon.png" alt="Logo BISE GRW"></a>
                     <!--Intimation-->
-                    <p style="color: wheat;text-align: center;font-size: 23px;margin-left: 28px;float: left;  margin-top:55px;">Board of Intermediate & Secondary Education, Gujranwala </br></br>  <?= CURRENT_SESS_YEAR?> </p>
+                    <p style="color: wheat;text-align: center;font-size: 23px;margin-left: 28px;float: left;  margin-top:55px;">Board of Intermediate & Secondary Education, Gujranwala </br></br> <?= CURRENT_SESS_YEAR?> </p>
                 </div>
             </div> 
             <div id="page">
                
              
                 <div id="resultsDiv" style="margin-bottom: 40px;min-height: 473px;">
-                    <div style="  color: #246785;font-size: 20px;     margin-bottom:  35px;     display: inline-block;    margin-left: 75px;"> Gazette & CD Password: <b style="color: red;font-size: 22px;" >grwbise_11th</b></div>
+                    <div style="  color: #246785;font-size: 20px;     margin-bottom:  35px;     display: inline-block;    margin-left: 75px;"> Gazette & CD Password: <b style="color: red;font-size: 22px;" >hssc@bisegrw</b></div>
                     <?php 
                     //  DebugBreak();
                     if(@$isfound == -1)
@@ -49,7 +49,7 @@
                     else if( @$isfound ==1)
                     {
 
-                        include "ia11presult.php";  
+                        include "ia12presult.php";  
                     }   ?>
                    
 

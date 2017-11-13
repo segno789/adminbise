@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+require_once(APPPATH.'controllers/Registration.php');
 class NinthCorrection extends CI_Controller {
     /**
     * Index Page for this controller.
@@ -23,10 +23,16 @@ class NinthCorrection extends CI_Controller {
         $this->load->helper('url');
         //this condition checks the existence of session if user is not accessing  
         //login method as it can be accessed without user session
+          $this->clear_cache();
         $this->load->library('session');
         if( !$this->session->userdata('logged_in') && $this->router->method != 'login' ) {
             redirect('login');
         }
+    }
+     function clear_cache()
+    {
+        $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
+        $this->output->set_header("Pragma: no-cache");
     }
     public function index()
     {
@@ -1143,37 +1149,64 @@ class NinthCorrection extends CI_Controller {
         $cntnine = substr_count(@$_POST['bay_form'],"9");
          if(@$_POST['bay_form'] == ''   )
         {
-        $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
+            $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
              redirect('NinthCorrection/Correction_EditForm/'.$formno);
             return;
 
 
         }
-        
+        else if( (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
+            || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
+            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >8 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7)
+            )
+            {
+                $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
+                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
+                 redirect('NinthCorrection/Correction_EditForm/'.$formno);
+                return;
+
+            }
+            else if(@$_POST['father_cnic'] == ''   )
+            {
+                $allinputdata['excep'] = 'Please Enter Your Father CNIC';
+                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
+                  redirect('NinthCorrection/Correction_EditForm/'.$formno);
+                return;
+
+
+            }
+            else if((@$_POST['bay_form'] == @$_POST['father_cnic']) || (@$_POST['father_cnic'] == @$_POST['bay_form']) )
+            {
+                $allinputdata['excep'] = 'Your Bay Form and FNIC No. are not same';
+                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
+                  redirect('NinthCorrection/Correction_EditForm/'.$formno);
+                return;
+
+            }
        // $_POST['cand_name']=$corr_name;
        // $_POST['dob']=$corr_Dob;
        // $_POST['father_cnic']=$corr_FNIC;
        // $_POST['bay_form']=$corr_BForm;
-       // DebugBreak();
-         require_once(APPPATH.'controllers/Registration.php');
-                    $aObj = new Registration();  //create object 
-                    $reg = $aObj->isExist(); 
-                    
-                 //  $reg = "322913,Annual,2015,AYEZA RUKHSAR,1";
-                 
-                      if($reg !="SUCCESS")
-                      {
-                        //$reg =array($reg);
-                        $comma_separated = explode(",", $reg);
-                        
-                   
-                           $allinputdata['excep'] = 'This Candidate is already appeared in matric '.$comma_separated[1].' examination '.$comma_separated[2].' against roll no.'.$comma_separated[0];
-                                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                                //  echo '<pre>'; print_r($allinputdata['excep']);exit();
-                                redirect('NinthCorrection/Correction_EditForm/'.$formno);
-                                return;
-                      }
+        //DebugBreak();
+        
+        $aObj = new Registration();  //create object 
+        $reg = $aObj->isExist(); 
+
+        //  $reg = "322913,Annual,2015,AYEZA RUKHSAR,1";
+
+        if($reg !="SUCCESS")
+        {
+            //$reg =array($reg);
+            $comma_separated = explode(",", $reg);
+
+
+            $allinputdata['excep'] = 'This Candidate is already appeared in matric '.$comma_separated[1].' examination '.$comma_separated[2].' against roll no.'.$comma_separated[0];
+            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
+            //  echo '<pre>'; print_r($allinputdata['excep']);exit();
+            redirect('NinthCorrection/Correction_EditForm/'.$formno);
+            return;
+        }
         $logedIn = $this->NinthCorrection_model->Update_NewEnorlement($data);//, $fname);//$_POST['username'],$_POST['password']);
         if($logedIn[0]['error'] != 'false')
         {  

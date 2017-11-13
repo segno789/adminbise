@@ -394,7 +394,7 @@ class RollNoSlip extends CI_Controller {
     }
     private function makepdf($pdf,$info)
     {
-        if($info['Session'] ==1) $Session= 'ANNUAL'; else $Session='SUPPLY';
+        if($info['Session'] ==1) $Session= 'ANNUAL'; else $Session='SUPPLEMENTARY';
         if($info['errmessage'] == null) $errmessage = '(PROVISIONALLY)'; else{ $errmessage = ' (PROVISIONALLY OBJECTION SLIP)';};
 
         if($info['grp_cd'] == 1)  $grp_cd = 'SCIENCE'; else if($info['grp_cd'] == 2) $grp_cd='GENERAL';else if($info['grp_cd'] == 5) $grp_cd='DEAF & DEFECTIVE';
@@ -422,7 +422,7 @@ class RollNoSlip extends CI_Controller {
         $pdf->SetXY(22.2,7.2);
         $pdf->Cell(0, 0.2, "BOARD OF INTERMEDIATE & SECONDARY EDUCATION, GUJRANWALA", 0.25, "C");
         // $pdf->SetFont('Arial','R',10);
-        $pdf->SetFont('Arial','',10);
+        $pdf->SetFont('Arial','',9.3);
         $pdf->SetXY(26.2,10.9);
         $pdf->Cell(0, 0.2, "ROLL NUMBER SLIP (WITH DATE SHEET) FOR S.S.C $Session EXAMINATION, ".$info["Year"], 0.25, "C");  
 
@@ -1570,7 +1570,7 @@ class RollNoSlip extends CI_Controller {
             $pdf->Image("assets/img/headsign.jpg",10.0,258, 60,20, "JPG");  
             //  $pdf->Image("assets/img/headsign.jpg",10.0,267, 82,15, "JPG");  
 
-            $pdf->Image("assets/img/CE_Signature.png",170.0,258, 30,30, "PNG"); 
+            $pdf->Image(CESIGN,170.0,258, 30,30, "PNG"); 
 
             $pdf->SetFont('Arial','',8);
             $pdf->SetXY(158,289);
@@ -2624,7 +2624,7 @@ class RollNoSlip extends CI_Controller {
             $pdf->Image("assets/img/headsign.jpg",10.0,234, 72,24, "JPG");  
             //  $pdf->Image("assets/img/headsign.jpg",10.0,267, 82,15, "JPG");  
 
-            $pdf->Image("assets/img/CE_Signature.png",168.0,240, 32,32, "PNG"); 
+            $pdf->Image(CESIGN,168.0,240, 32,32, "PNG"); 
 
             $pdf->SetFont('Arial','',8);
             $pdf->SetXY(160,274);
@@ -3671,7 +3671,7 @@ class RollNoSlip extends CI_Controller {
             $pdf->Image("assets/img/headsign.jpg",10.0,234, 72,24, "JPG");  
             //  $pdf->Image("assets/img/headsign.jpg",10.0,267, 82,15, "JPG");  
 
-            $pdf->Image("assets/img/CE_Signature.png",170.0,245, 26,26, "PNG"); 
+            $pdf->Image(CESIGN,170.0,245, 26,26, "PNG"); 
 
             $pdf->SetFont('Arial','',8);
             $pdf->SetXY(160,274);
@@ -5315,7 +5315,7 @@ class RollNoSlip extends CI_Controller {
             $pdf->Image("assets/img/headsign.jpg",10.0,254, 72,24, "JPG");  
             //  $pdf->Image("assets/img/headsign.jpg",10.0,267, 82,15, "JPG");  
 
-            $pdf->Image("assets/img/CE_Signature.png",170.0,255, 32,32, "PNG"); 
+            $pdf->Image(CESIGN,170.0,255, 32,32, "PNG"); 
 
             $pdf->SetFont('Arial','',8);
             $pdf->SetXY(160,289);
@@ -6410,7 +6410,7 @@ class RollNoSlip extends CI_Controller {
             $pdf->Image("assets/img/headsign.jpg",10.0,234, 72,24, "JPG");  
             //  $pdf->Image("assets/img/headsign.jpg",10.0,267, 82,15, "JPG");  
 
-            $pdf->Image("assets/img/CE_Signature.png",170.0,245, 26,26, "PNG"); 
+            $pdf->Image(CESIGN,170.0,245, 26,26, "PNG"); 
 
             $pdf->SetFont('Arial','',8);
             $pdf->SetXY(160,274);

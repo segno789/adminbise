@@ -113,7 +113,7 @@ else {
                     <tr align="left" height="100">
                         <td height="50" colspan="5" align="center">               	  
                             <span class="style4">
-                                Board of Intermediate & Secondary Education, Gujranwala 
+                                Board of Intermediate & Secondary Education, Gujranwala
                             </span>
                             <h3><?php echo $title;?></h3>
                         </td>

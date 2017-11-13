@@ -126,21 +126,21 @@
                         echo  "<option value='0'>None</option>  
                         <option value='1' selected='selected'>Deaf &amp; Dumb</option>
                         <option value='2'>Board Employee</option>
-                        <option value='3'>Blind</option>";
+                        <option value='3'>Disable</option>";
                     }
                     else if($spec ==2)
                     {
                         echo"<option value='0'>None</option>
                         <option value='1'>Deaf &amp; Dumb</option>
                         <option value='2' selected='selected'>Board Employee</option>
-                        <option value='3'>Blind</option>";
+                        <option value='3'>Disable</option>";
                     }
                     else
                     {
                         echo"<option value='0' selected='selected'>None</option>  
                         <option value='1'>Deaf &amp; Dumb</option>
                         <option value='2'>Board Employee</option>
-                        <option value='3'>Blind</option>";
+                        <option value='3'>Disable</option>";
                     }
                     ?>
                 </select>
@@ -207,8 +207,8 @@
                         <option value='0'selected='selected'>None</option>
                         <option value='1'>MALE</option> 
                         <option value='2'>FEMALE</option>";
-                    }  
-                    ?>  
+                    }
+                    ?>
                 </select>
             </div>
         </div>
@@ -559,7 +559,6 @@
                             echo "<option value='1' selected='selected'>SCIENCE WITH BIOLOGY</option>
 
                             <option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>
-                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
                             <option value='2'>HUMANTIES</option>
                             <option value='5'>DEAF AND DUMB</option>
                             <option value='4'>AAMA GROUP</option>
@@ -571,7 +570,6 @@
                             echo " 
                             <option value='1' >SCIENCE WITH BIOLOGY</option>
                             <option value='7'  selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>
-                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
                             <option value='2'>HUMANTIES</option>";
                         }
 
@@ -580,7 +578,6 @@
                             echo "<option value='2' selected='selected'>HUMANTIES</option>
                             <option value='1' >SCIENCE WITH BIOLOGY</option>
                             <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                            <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
                             ";  
                         }
                     }
@@ -588,7 +585,6 @@
                         echo "<option value='0'>SELECT GROUP</option>
                         <option value='1' >SCIENCE WITH BIOLOGY</option>
                         <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                        <option value='8'>SCIENCE  WITH ELECTRICAL WIRING</option>
                         <option value='2' >GENERAL</option>
                         ";
                     }

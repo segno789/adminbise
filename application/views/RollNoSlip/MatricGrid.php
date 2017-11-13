@@ -16,7 +16,7 @@
                         <div id="dt_example" class="example_alt_pagination">
                            <table width="100%">
                            <tr>
-                             <?php if(mSession ==1) {?>
+                             <?php if(mSession ==1 && $isdeaf == 0) {?>
                                         <td width="50%">  
                                             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="reports_gen">
 

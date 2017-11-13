@@ -408,8 +408,47 @@
         else
         {
             $("button[type='submit']").html('Please wait ...').attr('disabled','disabled'); 
-            $("#myform").submit(); 
-            return true;
+            $.ajax({
+
+                type: "POST",
+                url: "<?php  echo site_url('Admission_9th_pvt/frmvalidation'); ?>",
+                data: $("#myform").serialize() ,
+                datatype : 'html',
+                cache:false,
+                async: false,
+                  beforeSend: function() {  $('.mPageloader').show(); },
+                    complete: function() { $('.mPageloader').hide();},
+
+                success: function(data)
+                {                 
+               
+                   
+                    var obj = JSON.parse (data);
+                    if(obj.excep == 'Success')
+                    {
+                       $("#myform").submit();
+                         $("button[type='submit']").removeAttr("disabled");
+                        return false;
+                    }
+                    else
+                    {
+                        alertify.error(obj.excep);
+                         $("button[type='submit']").removeAttr("disabled");
+                        return false;     
+
+                    }
+                },
+                 error: function(request, status, error){
+                        alertify.error(request.responseText);
+                    }
+            });
+
+             
+            
+            
+            
+             
+            return false;
         } 
     }
     function  check_NewEnrol_validation(){

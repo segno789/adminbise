@@ -311,7 +311,8 @@
 
 
                         <div id="dt_example" class="example_alt_pagination">
-                            <form method="POST" id="frmchk" action="<?=base_url()?>/index.php/Admission_matric/Make_Batch_Formwise">
+                            <!--<form method="POST" id="frmchk" action="<?=base_url()?>/index.php/Admission_matric/Make_Batch_Formwise">-->
+                            <form method="POST" id="frmchk" action="<?=base_url()?>Admission_matric/Make_Batch_Group_wise">
                                 <table class="table table-condensed table-striped table-hover table-bordered pull-left"  id="data-table">
                                     <thead>
                                         <tr>

@@ -12,7 +12,7 @@ class Admission_matric extends CI_Controller {
     }
     public function index()
     {   
-    //DebugBreak();
+
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -24,19 +24,13 @@ class Admission_matric extends CI_Controller {
         $inst_cd = 151087;
 
         $isset = $this->Admission_matric_model->iszoneset($Inst_Id);
-        //DebugBreak();
+
         if($Inst_Id == $inst_cd)
         {
             $this->load->view('Admission/Matric/errorPage.php',$userinfo);
             $this->load->view('common/footer.php'); 
         }
-        else if($isset == 0)
-        {
 
-            // $this->load->view('common/menu.php',$userinfo);
-            $this->load->view('Admission/Matric/Incomplete_inst_info.php',$userinfo);
-            $this->load->view('common/footer.php');
-        }
         else{
             $userinfo['isselected'] = 9;
             $userinfo['isinterfeeding'] = 0;
@@ -44,11 +38,8 @@ class Admission_matric extends CI_Controller {
             $this->load->view('common/menu.php',$userinfo);
             $info = array('count'=>$count,'Inst_id'=>$Inst_Id,'Inst_name'=>$Inst_name);
             $this->load->view('Admission/Matric/Admission.php',$info);
-            $this->load->view('common/footer.php');    
-
-
-        } 
-
+            $this->load->view('common/footer.php');
+        }
     }
     function updatezone()
     {
@@ -63,8 +54,6 @@ class Admission_matric extends CI_Controller {
         {
             redirect('Admission_matric');
         }
-
-
     }
 
     public function ChallanForm_Adm10th_Regular()
@@ -76,14 +65,11 @@ class Admission_matric extends CI_Controller {
         $user = $Logged_In_Array['logged_in'];
         $this->load->model('Admission_matric_model');
         $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'Batch_Id'=>$Batch_Id);
-        //$grp_cd = $this->uri->segment(3);
-        // $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'formno'=>$formno);
-        //  DebugBreak();
+
         $result = $this->Admission_matric_model->Print_challan_Form($fetch_data);
         $this->load->library('PDF_Rotate');
 
-        $ctid=1;  //correction type of id starts from one and multiples by 2 for next type of correction id
-        //DebugBreak();
+        $ctid=1; 
         $feestructure[]    =  $result[0]['Total_ProcessingFee'];    
         $displayfeetitle[] =  'Total Processing Fee';    
 
@@ -116,7 +102,7 @@ class Admission_matric extends CI_Controller {
         $challanMSG=array(1=>"(May be deposited in any HBL Branch)",2=>"(To be sent to the Admission Branch Via BISE One Window)", 3=>"(To be retained with HBL)", 4=>"(To be sent to the Board via HBL Branch aloongwith scroll)"  );
         $challanNo = $result[0]['Challan_No']; 
 
-        //DebugBreak();
+
         if(date('Y-m-d',strtotime(SINGLE_LAST_DATE11))>=date('Y-m-d'))
         {
             $rule_fee   =  $this->Admission_matric_model->getrulefee(date('Y-m-d')); 
@@ -130,17 +116,14 @@ class Admission_matric extends CI_Controller {
 
         $obj    = new NumbertoWord();
         $obj->toWords($result[0]['Amount'],"Only.","");
-        // $pdf->Cell( 0.5,0.5,ucwords($obj->words),0,'L');
-        $feeInWords = ucwords($obj->words);//strtoupper(cNum2Words($totalfee)); 
 
-        //-------------------- PRINT BARCODE
-        //  $pdf->SetDrawColor(0,0,0);
-        // $temp = $user['Inst_Id'].'11-2017-19';
-        //$image =  $this->set_barcode($temp);
+        $feeInWords = ucwords($obj->words);
 
-        $temp = $challanNo.'@'.$Batch_Id.'@10@'.Year.'@'.Session;
-        //  $image =  $this->set_barcode($temp);
-        //DebugBreak();
+
+        $CurrentYear = Year + 1;
+        $temp = $challanNo.'@'.$Batch_Id.'@10@'.$CurrentYear.'@'.Session;
+
+
         $temp =  $this->set_barcode($temp);
         $pdf->Image("assets/img/M6.jpg",7.5, .2, .3, .3, "jpg");
         $yy = 0.05;
@@ -160,10 +143,10 @@ class Admission_matric extends CI_Controller {
             $corcnt = 0;
             $pdf->SetFont('Arial','BI',11);
             $pdf->SetXY(1.0,$yy+$dyy);
-            //   DebugBreak();
+
             $pdf->Cell(2.45, 0.4, "BOARD OF INTERMEDIATE AND SECONDARY EDUCATION, GUJRANWALA", 0.25, "L");
             $pdf->Image(base_url()."assets/img/icon2.png",0.30,$yy+$dyy, 0.50,0.50, "PNG", "http://www.bisegrw.com");
-            //  $pdf->Image(BARCODE_PATH.$Barcode,3.2, 1.15+$yy ,1.8,0.20,"PNG");
+
             $pdf->Image(base_url().BARCODE_PATH.$temp,5.8, $yy+$dyy+0.30 ,1.9,0.22,"PNG");
             $challanTitle = $challanCopy[$j];
             $generatingpdf=true;
@@ -174,11 +157,6 @@ class Admission_matric extends CI_Controller {
             }
             $turn++;
             $y = 0.08;
-
-            //$pdf->SetFont('Arial','BI',14);
-            //$pdf->SetXY(5.5,$y+$dy);
-            //$pdf->Image(BARCODE_PATH.$image,3.2, 0.61  ,1.8,0.20,"PNG");
-            //$pdf->Cell(0.5, $y, $challanCopy[$j], 0.25, "L");
 
             $pdf->SetFont('Arial','BI',9);
             $pdf->SetXY(1.0,$y+$dy);
@@ -205,13 +183,13 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','BI',8);
             $pdf->SetXY(2.0,$y+$dy-0.04);
             $pdf->Cell(0, 0.25, "Printing Date: ".date("d/m/y",time())."  Account Title: BISE, GUJRANWALA   CMD Account No. 00427900072103", 0.25, "C");
-            //CMD Account No. 00427900072103
+
             //--------------------------- Fee Description
             $pdf->SetXY(2.8,$y+$dy);
             $pdf->SetFont('Arial','U',8);
             $pdf->Cell(0.5,0.5,"Fee Description",0,'L');
 
-            //  DebugBreak();
+
             //--------------------------- Challan Depositor Information
             $pdf->SetXY(4,$y+0.1+$dy);
             $pdf->SetFont('Arial','B',10);
@@ -221,13 +199,10 @@ class Admission_matric extends CI_Controller {
             $pdf->SetX(4.0);
             $pdf->SetFont('Arial','B',8);
 
-            //if(intval($result[0]['sex'])==1){$sodo="S/O ";}else{$sodo="D/O ";}
-            // $pdf->Cell(0.5,0.25,$user['Inst_Id'].'-'.$user['inst_Name'],0,2,'L');
-            // $pdf->Cell(0.5,0.25,,0,2,'L');
+
             $pdf->SetX(4);
             $pdf->SetFont('Arial','I',6.5);
-            // DebugBreak();
-            //$pdf->Cell(0.5,0.3,"Institute Code: ".$user['Inst_Id'].'-'.$user['inst_Name'],0,2,'L');
+
             $pdf->MultiCell(4, .1, "Institute Code: ".$user['Inst_Id'].'-'.$user['inst_Name'],0);
             $pdf->SetXY(4,$y+1.15+$dy);
             $pdf->SetFont('Arial','B',9);
@@ -236,46 +211,24 @@ class Admission_matric extends CI_Controller {
             $x = 0.55;
             $y += 0.2;
 
-            //------------- Fee Statement
-            //  DebugBreak();
+
             $ctid=1;
             $multiply=1;
 
-            /*    foreach ($feestructure as $value) {
-            //  $value = $value * 2;
 
-            $pdf->SetFont('Arial','',9);
-            $pdf->SetXY(0.5,$y+$dy);
-            $pdf->Cell( 0.5,0.5,$displayfeetitle[$ctid],0,'L');
-            $pdf->SetFont('Arial','B',10);
-            $pdf->SetXY(3,$y+$dy);
-            $pdf->Cell(0.8,0.5,$feestructure[$ctid],0,'C');
-            $ctid *= 2;
-            $y += 0.18;
-            }*/
-            // DebugBreak();
             $total =  count($feestructure);
             for ($k = 0; $k<count($feestructure); $k++){
 
 
                 $pdf->SetFont('Arial','',9);
                 $pdf->SetXY(0.5,$y+$dy);
-
-                //$feestructure = array(1=>0, 2=>0, 4=>0, 8=>0, 16=>0, 32=>0, 64=>0, 128=>0);
                 $pdf->Cell( 0.5,0.5,$displayfeetitle[$k],0,'L');
                 $pdf->SetFont('Arial','B',10);
                 $pdf->SetXY(3,$y+$dy);
                 $pdf->Cell(0.8,0.5,$feestructure[$k],0,'C');
                 $y += 0.18;
                 $corcnt = $k;
-
-
-
-
             }
-
-            //------------- Total Amount
-
 
             if($corcnt ==0){
                 $y += 1.0;
@@ -318,7 +271,7 @@ class Admission_matric extends CI_Controller {
             if ($turn>1){
                 $y += 0.4;
                 $pdf->Image( base_url().'assets/img/cut_line.png' ,0.3,$y+$dy, 7.5,0.15, "PNG");   
-                // $pdf->Image("images/cut_line.png",0.3,$y+$dy, 7.5,0.15, "PNG");
+
             }            
         }  
         if ($generatingpdf==true)
@@ -328,15 +281,10 @@ class Admission_matric extends CI_Controller {
             $containsError=true;
             $errorMessage = "<br />Your Institute does not have any student registration card in accordance with selected group or form no. range.";
         }  
-
-        //======================================================================================
-        //  }
-
-        //  $pdf->Output($data["Sch_cd"].'.pdf', 'I');
     }
     public function cutlist()
     {
-       // DebugBreak();
+
         $Batch_Id = $this->uri->segment(3);
         $this->load->library('session');
         $this->load->library('NumbertoWord');
@@ -396,21 +344,19 @@ class Admission_matric extends CI_Controller {
             return;
 
         }
-        //$grp_cd = $this->uri->segment(3);
-        // $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'formno'=>$formno);
-        //  DebugBreak();
-        // $result = $this->Admission_matric_model->cutlist($fetch_data);
+
+
         $this->load->library('PDF_Rotate');
-        $temp = $user['Inst_Id'].'@'.'10@'.Year.'@'.Session;
-        //  $image =  $this->set_barcode($temp);
-        //DebugBreak();
+        $CurrentYear = Year + 1;
+        $temp = $user['Inst_Id'].'@'.'10@'.$CurrentYear.'@'.Session;
+
         $temp =  $this->set_barcode($temp);
         $pdf=new PDF_Rotate("P","in","A4");
         $pdf->SetMargins(0.5,0.5,0.5);
+        $pdf->AliasNbPages();
         $lmargin =0.5;
         $rmargin =7.5;
         $topMargin = 0.5;
-
 
         ///=========================================
         $countofrecords=14;
@@ -420,10 +366,10 @@ class Admission_matric extends CI_Controller {
         while($cnt<15) 
         {
             $cnt++;
-            $ln[$cnt]=$ln[$cnt-1]+ 0.6;  //0.5;
+            $ln[$cnt]=$ln[$cnt-1]+ 0.6; 
         }
 
-        //if(!empty($result)):
+
         $i = 2;
         $result = $result['data'];
         foreach ($result as $key=>$data) 
@@ -455,23 +401,14 @@ class Admission_matric extends CI_Controller {
             {
                 $countofrecords=0;
                 $pdf->AddPage();
-                // DebugBreak();
 
-
-                //        $pdf->SetFont('Arial','B',12);    
-                //        $txt="BOARD OF INTERMEDIATE AND SECONDARY EDUCATION, GUJRANWALA";                
-                //        $pdf->Cell(0,0,$txt,0,1,'C');                $pdf->ln(0.2);
-
-                //            $txt="MATRIC PART-I ENROLMENT RETURN SESSION (2014-2016) ";                
-                //            $pdf->Cell(0,0,$txt,0,1,'C');                $pdf->ln(0.3);
-                //    DebugBreak();
                 $pdf->SetFont('Arial','U',12);
                 $pdf->SetXY( 1.0,0.2);
                 $pdf->Cell(0, 0.2, "BOARD OF INTERMEDIATE AND SECONDARY EDUCATION, GUJRANWALA", 0.25, "C");
                 $pdf->SetXY( 1.0,0.2);
                 $pdf->Image( 'assets/img/M5.jpg' ,7.5,0.2 , 0.2,0.2 , "JPG");     
 
-                //  if($data['batch_id'] == 0)
+
                 if($Condition == 1 || $Condition ==2)
                 {
                     $pdf->Image( 'assets/img/PROOF_READ.jpg' ,1,3.5 , 6,4 , "JPG");     
@@ -488,15 +425,14 @@ class Admission_matric extends CI_Controller {
                 {
                     $sess = "Supplementary";
                 }
-                $pdf->Cell(0, 0.25, "Cutlist of Admission Forms SSC Examination ".$sess." ".Year." ", 0.25, "C");
+                $pdf->Cell(0, 0.25, "Cutlist of Admission Forms SSC ".strtoupper($sess)." Examination ".$data["Iyear"]." ", 0.25, "C");
 
                 $pdf->SetFont('Arial','',10);
                 $pdf->SetXY(0.5,0.6);
                 $pdf->Cell(0, 0.25,'Institute: '.$user['Inst_Id']. "-". ($user['inst_Name']), 0.25, "L");
-                // DebugBreak();
-                $pdf->Image(BARCODE_PATH.$temp,6.15,0.5 ,1.9,0.22,"PNG");
 
-                // $pdf->PrintBarcode(5.75,0.5,($user->Inst_Id."@2016"),.3,.0099);
+                $pdf->Image(BARCODE_PATH.$temp,6.15,0.43 ,1.9,0.22,"PNG");
+
 
                 $pdf->SetFont('Arial','',10);
                 $pdf->SetXY(6.9,0.8);
@@ -521,12 +457,10 @@ class Admission_matric extends CI_Controller {
                     default:
                         $grp_name = "No Group Selected.";
                 }
-                $pdf->SetFont('Arial','',10);
-                $pdf->SetXY(0.5,0.8);
-                $pdf->Cell(0, 0.25,  'Group: '.$grp_name, 0.25, "C");
 
 
-                $pdf->rect($lmargin,1,$rmargin,10.5);                //the main rectangle box
+
+                $pdf->rect($lmargin,1,$rmargin,10.5);          
                 $cnt=-1;
 
                 while($cnt<15) 
@@ -551,7 +485,7 @@ class Admission_matric extends CI_Controller {
                 $pdf->Line($col6,$title,$col6,$ln[15]);
 
                 $pdf->SetFont('Arial','B',9);
-                $pdf->Text($lmargin+.03,$title+.3,"Sr#");    //$pdf->Text(3,3,"TEXT TO DISPLAY");
+                $pdf->Text($lmargin+.03,$title+.3,"Sr#");   
                 $pdf->Text($col1+.2,$title+.3,"FormNo.");
 
                 $pdf->Text($col2+.1,$title+.2,"Name / Father`s Name");
@@ -575,9 +509,9 @@ class Admission_matric extends CI_Controller {
             $adm = date("d-m-Y", strtotime($data["edate"]));
 
             //============================ Values ==========================================            
-            $pdf->SetFont('Arial','',10);    
-            $pdf->Text($lmargin+.1  , $ln[$countofrecords]+0.3 , $SR);                 // Sr No
-            $pdf->Text($col1+.05    , $ln[$countofrecords]+0.3,$data["formNo"]);       // Form No
+            $pdf->SetFont('Arial','',10);                                                                
+            $pdf->Text($lmargin+.1  , $ln[$countofrecords]+0.3 , $SR);                
+            $pdf->Text($col1+.05    , $ln[$countofrecords]+0.3,$data["formNo"]);      
 
 
             $pdf->SetFont('Arial','B',8);    
@@ -597,21 +531,20 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',6.5);
 
 
-            //            $pdf->Text($col5+.05,$ln[$countofrecords]+0.2,GroupName($data["Grp_Cd"]));
+
             $pdf->Text($col5+.05,$ln[$countofrecords]+0.2,"Part-I: ".$p1sub);
             $pdf->SetFont('Arial','B',6.5);    
             $pdf->Text($col5+.05,$ln[$countofrecords]+0.4,"Part-II: ".$p2sub);
-            // DebugBreak();
-             $pdf->Image(REGULAR_IMAGE_PATH.$user['Inst_Id']."/".$data["PicPath"],$col6+0.1,$ln[$countofrecords]+0.1 , 0.40, 0.40, "JPG"); 
-           // $pdf->Image(PRIVATE_IMAGE_PATH.'400005.jpg',$col6+0.1,$ln[$countofrecords]+0.1 , 0.40, 0.40, "JPG"); 
-            // $pdf->Image( PRIVATE_IMAGE_PATH.'400005.jpg',6.5, 1.55+$Y, 1.25, 1.4, "JPG");
+
+            $pdf->Image($data["PicPath"],$col6+0.1,$ln[$countofrecords]+0.1 , 0.40, 0.40, "JPG"); 
+
             ++$SR;
 
 
             //Certified that I have checked all the relevant record of the students and the particulars as mentioned above are correct.
             $pdf->SetFont('Arial','',8);
             $pdf->Text($lmargin+.5,10.8,"Certified that I have checked all the relevant record of the students and the particulars as mentioned above are correct.");
-            //$pdf->Text($lmargin+.5,11,"Signature _____________________");
+
 
             $pdf->SetFont('Arial','',10);
             $pdf->Text($rmargin-2.5,11.2,"_____________________________________");
@@ -621,30 +554,12 @@ class Admission_matric extends CI_Controller {
 
         }
 
-        /*========================================
-        if(isset($_GET['group']))
-        {
-        if($_GET['group'] == 1) 
-        $filename="CutList_". $inst_cd."_".GroupName($grp).   ".pdf";    
-        else $filename="CutList_". $inst_cd.  ".pdf";    
-        }
-        else if(isset($_GET['batch_id']))
-        {
-        $filename="CutList_". $user->inst_cd. "Batch Id-".$_GET['batch_id'].  ".pdf";    
-        }
-        $pdf->Output($filename,'D');
-        ======================================*/
-
         $pdf->Output();
 
     }
     public function StudentsData()
     {    
-        // //DebugBreak();
 
-        //$Logged_In_Array = $this->session->all_userdata();
-        // $userinfo = $Logged_In_Array['logged_in'];
-        // $this->load->view('common/header.php',$userinfo);
         $data = array(
             'isselected' => '9',
 
@@ -663,9 +578,9 @@ class Admission_matric extends CI_Controller {
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
-        //print_r($Logged_In_Array);die();
+
         $this->load->model('Admission_matric_model');
-        //  $error['grp_cd'] = $user['grp_cd'];
+
         $myarr = array('Inst_Id'=>$userinfo['Inst_Id'],'gender'=>$userinfo['gender']);
         $data = array(
             'data' => $this->Admission_matric_model->getStudentsData($myarr),
@@ -676,13 +591,6 @@ class Admission_matric extends CI_Controller {
         $this->load->view('common/menu.php',$data);
         $this->load->view('Admission/Matric/OldStudentsData.php',$data);
         $this->load->view('common/commonfooter.php');
-
-
-        //$stdData = $this->Admission_model->getStudentsData($user['logged_in']['Inst_Id']);
-
-
-        // $this->commonheader($data);
-
     }
     public function Profile(){
 
@@ -730,7 +638,7 @@ class Admission_matric extends CI_Controller {
     }
     public function Profile_Update(){
         $this->load->model('Admission_matric_model');
-        // //DebugBreak();
+
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -741,7 +649,7 @@ class Admission_matric extends CI_Controller {
 
         if (!isset($Inst_Id))
         {
-            //$error['excep'][1] = 'Please Login!';
+
             $this->load->view('login/login.php');
         }
         if(@$_POST['isGovt']== 1){
@@ -772,9 +680,9 @@ class Admission_matric extends CI_Controller {
     }
     public function NewEnrolment_update_matric()
     {
-        // DebugBreak();
+
         $this->load->model('Admission_matric_model');
-        // //DebugBreak();
+
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -783,25 +691,15 @@ class Admission_matric extends CI_Controller {
         $this->commonheader($userinfo);
         $error = array();
 
-        // //DebugBreak();
-
         if (!isset($Inst_Id))
         {
-            //$error['excep'][1] = 'Please Login!';
             $this->load->view('login/login.php');
-        }
-        // if (!isset($Inst_Id))
-        // {
-        //$error['excep'][1] = 'Please Login!';
-        //    $this->load->view('login/login.php');
-        // }
-        // $this->Registration_model->Insert_NewEnorlement($data);    
-        //  $formno = $formno = $this->Admission_matric_model->GetFormNo($Inst_Id);// $this->Admission_model->GetFormNo();//, $fname);//$_POST['username'],$_POST['password']);
+        }                                                                                                                                                                      
 
         $allinputdata = array('cand_name'=>@$_POST['cand_name'],'father_name'=>@$_POST['father_name'],
             'bay_form'=>@$_POST['bay_form'],'father_cnic'=>@$_POST['father_cnic'],
             'dob'=>@$_POST['dob'],'mob_number'=>@$_POST['mob_number'],
-            'medium'=>@$_POST['medium'],//'Inst_Rno'=>@$_POST['Inst_Rno'],
+            'medium'=>@$_POST['medium'],
             'speciality'=>@$_POST['speciality'],'MarkOfIden'=>@$_POST['MarkOfIden'],
             'medium'=>@$_POST['medium'],'nationality'=>@$_POST['nationality'],
             'gender'=>@$_POST['gend'],'hafiz'=>@$_POST['hafiz'],
@@ -827,8 +725,7 @@ class Admission_matric extends CI_Controller {
         );
 
 
-        // $name = 'Waseem Saleem';
-        // $fname = 'Muhammad Saleem'; 
+
         $sub1ap1 = 0;
         $sub2ap1 = 0;
         $sub3ap1 = 0;
@@ -910,7 +807,6 @@ class Admission_matric extends CI_Controller {
         {
             $sub8ap2 = 1;    
         }
-        ////DebugBreak();
 
         $cat09 = 0;
         for($i=1; $i<9; $i++)
@@ -922,7 +818,7 @@ class Admission_matric extends CI_Controller {
             }
         }
 
-        //  DebugBreak();
+
         if(@$_POST['speciality'] != 0)
         {
             $ispract = 0;
@@ -1024,19 +920,13 @@ class Admission_matric extends CI_Controller {
             'schm'=>1,
             'AdmProcessFee'=>295,
             'AdmFee'=>$AdmFee,
-            'AdmTotalFee'=>$TotalAdmFee,
-
-
-
-
-
-
+            'AdmTotalFee'=>$TotalAdmFee
         );
 
         $this->frmvalidation('NewEnrolment_EditForm_matric',$data,0);
         $data['isupdate']=2;
-        $logedIn = $this->Admission_matric_model->Insert_NewEnorlement($data);//, $fname);//$_POST['username'],$_POST['password']);
-        ////DebugBreak();
+        $logedIn = $this->Admission_matric_model->Insert_NewEnorlement($data);
+
         if( !isset($logedIn))
         {  
             $allinputdata = "";
@@ -1058,9 +948,9 @@ class Admission_matric extends CI_Controller {
     }
     public function NewEnrolment_INSERT_matric()
     {
-      //  DebugBreak();
+
         $this->load->model('Admission_matric_model');
-        // //DebugBreak();
+
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -1069,25 +959,17 @@ class Admission_matric extends CI_Controller {
         $this->commonheader($userinfo);
         $error = array();
 
-        // //DebugBreak();
-
         if (!isset($Inst_Id))
         {
-            //$error['excep'][1] = 'Please Login!';
+
             $this->load->view('login/login.php');
         }
-        // if (!isset($Inst_Id))
-        // {
-        //$error['excep'][1] = 'Please Login!';
-        //    $this->load->view('login/login.php');
-        // }
-        // $this->Registration_model->Insert_NewEnorlement($data);    
-        $formno = $formno = $this->Admission_matric_model->GetFormNo($Inst_Id);// $this->Admission_model->GetFormNo();//, $fname);//$_POST['username'],$_POST['password']);
 
+        $formno = $formno = $this->Admission_matric_model->GetFormNo($Inst_Id);
         $allinputdata = array('cand_name'=>@$_POST['cand_name'],'father_name'=>@$_POST['father_name'],
             'bay_form'=>@$_POST['bay_form'],'father_cnic'=>@$_POST['father_cnic'],
             'dob'=>@$_POST['dob'],'mob_number'=>@$_POST['mob_number'],
-            'medium'=>@$_POST['medium'],//'Inst_Rno'=>@$_POST['Inst_Rno'],
+            'medium'=>@$_POST['medium'],
             'speciality'=>@$_POST['speciality'],'MarkOfIden'=>@$_POST['MarkOfIden'],
             'medium'=>@$_POST['medium'],'nationality'=>@$_POST['nationality'],
             'gender'=>@$_POST['gend'],'hafiz'=>@$_POST['hafiz'],
@@ -1112,8 +994,7 @@ class Admission_matric extends CI_Controller {
 
         );
 
-        // $name = 'Waseem Saleem';
-        // $fname = 'Muhammad Saleem'; 
+
         $sub1ap1 = 0;
         $sub2ap1 = 0;
         $sub3ap1 = 0;
@@ -1195,7 +1076,7 @@ class Admission_matric extends CI_Controller {
         {
             $sub8ap2 = 1;    
         }
-        ////DebugBreak();
+
         if(@$_POST['speciality'] != 0)
         {
             $ispract = 0;
@@ -1231,9 +1112,6 @@ class Admission_matric extends CI_Controller {
             $TotalAdmFee = $AdmFee+295;
         }
 
-
-
-        //  DebugBreak();
         $cat09 = '0';
         for($i=1; $i<9; $i++)
         {
@@ -1317,30 +1195,11 @@ class Admission_matric extends CI_Controller {
 
         );
 
-      //   DebugBreak();
-
-        /*
-        $target_path = REGULAR_IMAGE_PATH.$Inst_Id.'/';
-        if (!file_exists($target_path)){
-
-        mkdir($target_path);
-        } */
-
-        //$base_path = GET_PRIVATE_IMAGE_PATH_COPY.@$_POST['pic'];
-        //$copyimg = $target_path.$formno.'.jpg';
-
-        //$this->base64_to_jpeg($_POST['pic'],$copyimg)   ;
-
-
-
-
-
-
 
         $this->frmvalidation('NewEnrolment_NewForm_matric/'.$_POST['OldRno'],$data,0);
         $data['isupdate']=1;
-        $logedIn = $this->Admission_matric_model->Insert_NewEnorlement($data);//, $fname);//$_POST['username'],$_POST['password']);
-        ////DebugBreak();
+        $logedIn = $this->Admission_matric_model->Insert_NewEnorlement($data);
+
         if( !isset($logedIn))
         {  
             $allinputdata = "";
@@ -1362,23 +1221,22 @@ class Admission_matric extends CI_Controller {
     }
     public function NewEnrolment_NewForm_matric()
     {    
-        // DebugBreak();
-        // $this->uri->segment(3);
+
         $formno = $this->uri->segment(3);
-        $brd_cd = 1;//$this->uri->segment(4);
+        $brd_cd = 1;
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
         $Inst_Id = $userinfo['Inst_Id'];
         $this->load->view('common/header.php',$userinfo);
         $isReAdm = 0;
-        $year = 0;
+        $year = YEAR;
         $data = array(
             'isselected' => '9',
         );
         $this->load->model('Admission_matric_model');
         if($this->session->flashdata('NewEnrolment_error')){
-            //  //DebugBreak();
+
             $RegStdData['data'][0] = $this->session->flashdata('NewEnrolment_error');   
             $isReAdm = 0;
             $RegStdData['isReAdm']=$isReAdm;
@@ -1395,7 +1253,7 @@ class Admission_matric extends CI_Controller {
                 $isReAdm = 0;
                 $year = Year;    
             }
-            $RegStdData = array('data'=>$this->Admission_matric_model->EditEnrolement_data($formno,$year,$Inst_Id,$brd_cd),'isReAdm'=>$isReAdm,'Oldrno'=>0);
+            $RegStdData = array('data'=>$this->Admission_matric_model->EditEnrolement_data($formno,$year,$Inst_Id,$brd_cd),' isReAdm'=>$isReAdm, 'Oldrno'=>0);
         }
         $this->load->view('common/menu.php',$data);
         $this->load->view('Admission/Matric/New_Enrolement_form.php',$RegStdData);   
@@ -1404,7 +1262,7 @@ class Admission_matric extends CI_Controller {
     }
     public function NewEnrolment_EditForm_matric()
     {    
-        /// DebugBreak();
+
         $this->load->library('session');
         $formno = $this->uri->segment(3);
         $Logged_In_Array = $this->session->all_userdata();
@@ -1422,9 +1280,9 @@ class Admission_matric extends CI_Controller {
             $formno=$msg;  
         }
         $this->load->model('Admission_matric_model');
-        //   DebugBreak();
+
         if($this->session->flashdata('NewEnrolment_error')){
-            //DebugBreak();
+
             $RegStdData['data'][0] = $this->session->flashdata('NewEnrolment_error');   
             $isReAdm = 0;
             $RegStdData['isReAdm']=$isReAdm;
@@ -1451,8 +1309,6 @@ class Admission_matric extends CI_Controller {
     }
     public function NewEnrolment_update()
     {
-        // //DebugBreak();
-
         $this->load->model('Admission_matric_model');
 
         $this->load->library('session');
@@ -1463,38 +1319,11 @@ class Admission_matric extends CI_Controller {
         $this->commonheader($userinfo);
         if (!isset($Inst_Id))
         {
-            //$error['excep'][1] = 'Please Login!';
             $this->load->view('login/login.php');
         }
         $error = array();
-        // //DebugBreak();
-        $formno =  $_POST['formNo'];  //$this->Admission_matric_model->GetFormNo($Inst_Id);//, $fname);//$_POST['username'],$_POST['password']);
-       /* $target_path = IMAGE_PATH.$Inst_Id.'/';
-        // $target_path = '../uploads2/'.$Inst_Id.'/';
-        if (!file_exists($target_path)){
 
-            mkdir($target_path);
-        }
-        $target_path = IMAGE_PATH.$Inst_Id.'/';
-        if (!file_exists($target_path)){
-
-            mkdir($target_path);
-        }
-
-        $config['upload_path']   = $target_path;
-        $config['allowed_types'] = 'jpg';
-        $config['max_size']      = '20';
-        $config['max_width']     = '260';
-        $config['max_height']    = '290';
-        $config['overwrite']     = TRUE;
-        $config['file_name']     = $formno.'.jpg';
-
-        $filepath = $target_path. $config['file_name']  ;
-
-
-        //$config['new_image']    = $formno.'.JPEG';
-
-        $this->load->library('upload', $config);             */
+        $formno =  $_POST['formNo']; 
         $sub1ap1 = 0;
         $sub2ap1 = 0;
         $sub3ap1 = 0;
@@ -1536,21 +1365,20 @@ class Admission_matric extends CI_Controller {
             $sub8ap1 = 1;    
         }
         $check = getimagesize($_FILES["image"]["tmp_name"]);
-        // //DebugBreak();
+
         if(@$_POST['IsReAdm'] == '1')
         {
 
 
             $User_info_data = array('Inst_Id'=>$Inst_Id,'RollNo'=>@$_POST['OldRno'],'spl_case'=>17);
-            $user_info  =  $this->Admission_matric_model->readmission_check($User_info_data); //$db->first("SELECT * FROM  Admission_online..tblinstitutes_all WHERE Inst_Cd = " .$user->inst_cd);
-
+            $user_info  =  $this->Admission_matric_model->readmission_check($User_info_data); 
             if($user_info == false)
             {
                 $this->session->set_flashdata('error', 'This Roll No. Result is not cancelled. Please Cancel result from 9th Branch Before proceeding!');
                 redirect('Admission_matric/ReAdmission');
                 return;
             }
-            // //DebugBreak();
+
             $allinputdata = array('CellNo'=>@$_POST['mob_number'],
                 'med'=>@$_POST['medium'],'classRno'=>@$_POST['Inst_Rno'],
                 'speciality'=>@$_POST['speciality'],'markOfIden'=>@$_POST['MarkOfIden'],
@@ -1585,7 +1413,7 @@ class Admission_matric extends CI_Controller {
             $allinputdata['isreadm']= 1;
             $formno = $this->Admission_matric_model->GetFormNo($Inst_Id);
             $allinputdata['formNo']= $formno;
-            ////DebugBreak();
+
 
         }
         else{
@@ -1620,63 +1448,6 @@ class Admission_matric extends CI_Controller {
         }
 
 
-        /*  $this->upload->initialize($config);
-
-        if($check !== false) {
-
-        $file_size = round($_FILES['image']['size']/1024, 2);
-        if($file_size<=20)
-        {
-
-        if ( !$this->upload->do_upload('image',True))
-        {
-        if($this->upload->error_msg[0] != "")
-        {
-        $error['excep']= $this->upload->error_msg[0];
-        $allinputdata['excep'] = $this->upload->error_msg[0];
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/NewEnrolment_EditForm/'.$formno);
-        return;
-
-        }
-
-        }
-        }
-        else
-        {
-        $allinputdata['excep'] = 'The file you are attempting to upload is larger than the permitted size.';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        //  echo '<pre>'; print_r($allinputdata['excep']);exit();
-        redirect('Admission_matric/NewEnrolment_EditForm/'.$formno);
-
-        }
-
-
-        }
-        else
-        {
-        $check = getimagesize($filepath);
-        if($check === false)
-        {
-        $allinputdata['excep'] = 'Please Upload Your Picture';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/NewEnrolment_EditForm/'.$formno);
-        return;
-        }
-        }*/
-
-
-        ////DebugBreak();
-
-
-        /*  $a = getimagesize($filepath);
-        if($a[2]!=2)
-        {
-        $this->convertImage($filepath,$filepath,100,$a['mime']);
-        }*/
-
-        // $name = 'Waseem Saleem'; Edit_Enrolement_form
-        // $fname = 'Muhammad Saleem'; 
         $sub1ap1 = 0;
         $sub2ap1 = 0;
         $sub3ap1 = 0;
@@ -1717,7 +1488,7 @@ class Admission_matric extends CI_Controller {
         {
             $sub8ap1 = 1;    
         }
-        // //DebugBreak();
+
         $data = array(
             'name' =>$this->input->post('cand_name'),
             'Fname' =>$this->input->post('father_name'),
@@ -1765,7 +1536,7 @@ class Admission_matric extends CI_Controller {
 
         );
         $this->frmvalidation('NewEnrolment_EditForm/',$data);
-        $logedIn = $this->Admission_matric_model->Update_NewEnorlement($data);//, $fname);//$_POST['username'],$_POST['password']);
+        $logedIn = $this->Admission_matric_model->Update_NewEnorlement($data);
         if($logedIn != false)
         {  
 
@@ -1788,7 +1559,6 @@ class Admission_matric extends CI_Controller {
     }
     public function NewEnrolment_Delete($formno)
     {
-        // //DebugBreak();
         $this->load->model('Admission_matric_model');
         $RegStdData = array('data'=>$this->Admission_matric_model->Delete_NewEnrolement($formno));
         $this->load->library('session');
@@ -1801,7 +1571,7 @@ class Admission_matric extends CI_Controller {
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
-        // //DebugBreak();
+
         $data = array(
             'isselected' => '9',
         );
@@ -1815,9 +1585,8 @@ class Admission_matric extends CI_Controller {
         else{
             $error = $this->session->flashdata('BatchList_error');
         }
-        // echo $error['batchId'];
-        // $myinfo = array('error'=>$error_msg_readmission);
-        $this->load->view('Admission/Matric/BatchRelease.php',$error);//,$myinfo);
+
+        $this->load->view('Admission/Matric/BatchRelease.php',$error);
         $this->load->view('common/commonfooter.php');
     }
     public function Batchlist_INSERT()
@@ -1844,7 +1613,7 @@ class Admission_matric extends CI_Controller {
         $allinputdata['challan'] = $challan;
         $allinputdata['amount'] = $amount;
         $allinputdata['date'] = $date;
-        //DebugBreak();
+
         if($batchId == 0 || $batchId == ''){
             $allinputdata['BatchRelease_excep'] = 'Please Select Batch From Batch List Section';
             $this->session->set_flashdata('BatchList_error',$allinputdata);
@@ -1883,7 +1652,7 @@ class Admission_matric extends CI_Controller {
         }
 
         $allinputdata['Inst_Id'] = $Inst_Id;
-        $user_info  =  $this->Admission_matric_model->ReleaseBatch_INSERT($allinputdata); //$db->first("SELECT * FROM  Admission_online..tblinstitutes_all WHERE Inst_Cd = " .$user->inst_cd);
+        $user_info  =  $this->Admission_matric_model->ReleaseBatch_INSERT($allinputdata); 
         if($user_info == true){
             $allinputdata['BatchRelease_excep'] = 'Applied Successfully.';
             $this->session->set_flashdata('BatchList_error',$allinputdata);
@@ -1901,7 +1670,7 @@ class Admission_matric extends CI_Controller {
 
     public function EditForms()
     {
-        //  DebugBreak();
+
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -1925,7 +1694,7 @@ class Admission_matric extends CI_Controller {
         $Logged_In_Array = $this->session->all_userdata();
         $user = $Logged_In_Array['logged_in'];
         $this->load->model('Admission_matric_model');
-        //  $error['grp_cd'] = $user['grp_cd'];
+
         $RegStdData = array('data'=>$this->Admission_matric_model->EditEnrolement($user['Inst_Id']),'grp_cd'=>$user['grp_cd']);
         $RegStdData['msg_status'] = $error_msg;
         $userinfo = $Logged_In_Array['logged_in'];
@@ -1939,7 +1708,7 @@ class Admission_matric extends CI_Controller {
     }
     public function NewForms()
     {
-        //  DebugBreak();
+
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -1963,7 +1732,7 @@ class Admission_matric extends CI_Controller {
         $Logged_In_Array = $this->session->all_userdata();
         $user = $Logged_In_Array['logged_in'];
         $this->load->model('Admission_matric_model');
-        //  $error['grp_cd'] = $user['grp_cd'];
+
         $RegStdData = array('data'=>$this->Admission_matric_model->EditEnrolement($user['Inst_Id']),'grp_cd'=>$user['grp_cd']);
         $RegStdData['msg_status'] = $error_msg;
         $userinfo = $Logged_In_Array['logged_in'];
@@ -1977,19 +1746,19 @@ class Admission_matric extends CI_Controller {
     }
     public function BatchList()
     {
-        // //DebugBreak();
+
         $data = array(
             'isselected' => '9',
 
         );
-        // $this->commonheader($data);
+
         $this->load->model('Admission_matric_model');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
         $userinfo['isselected'] = 2;
         $Inst_Id = $userinfo['Inst_Id'];
-        //$page_name  = "Create Batch";
+
         if($this->session->flashdata('BatchList_error')){
 
             $error_msg = $this->session->flashdata('BatchList_error');    
@@ -2008,9 +1777,7 @@ class Admission_matric extends CI_Controller {
 
 
         $this->load->view('common/commonfooter.php');
-        //$this->commonheader($data);
-        //  $this->load->view('Admission_matric/9th/BatchList.php');
-        //$this->commonfooter();
+
     }
     public function ProofReading()
     {
@@ -2024,7 +1791,7 @@ class Admission_matric extends CI_Controller {
     }
     public function CreateBatch()
     {
-        // DebugBreak();
+
         $data = array(
             'isselected' => '9',
 
@@ -2063,9 +1830,6 @@ class Admission_matric extends CI_Controller {
     }
     public function Make_Batch_Group_wise()
     {
-       // DebugBreak();
-        $RegGrp = $this->uri->segment(3);
-        $Spl_case = $this->uri->segment(4);
 
         $this->load->model('Admission_matric_model');
         $this->load->library('session');
@@ -2074,8 +1838,20 @@ class Admission_matric extends CI_Controller {
         $userinfo['isselected'] = 9;
         $Inst_Id = $userinfo['Inst_Id'];
         $page_name  = "Create Batch";
-        $User_info_data = array('Inst_Id'=>$Inst_Id,'RegGrp'=>$RegGrp,'spl_case'=>$Spl_case);
-        $user_info  =  $this->Admission_matric_model->user_info($User_info_data); //$db->first("SELECT * FROM  Admission_online..tblinstitutes_all WHERE Inst_Cd = " .$user->inst_cd);
+
+        if(!empty($_POST["chk"]))
+        {
+            $forms_id =   "'".implode("','",$_POST["chk"])."'";    
+            $User_info_data = array('Inst_Id'=>$Inst_Id,'forms_id'=>$forms_id);
+            $user_info  =  $this->Admission_matric_model->user_info_Formwise($User_info_data);
+        }
+        else
+        {
+            $RegGrp = $this->uri->segment(3);
+            $Spl_case = $this->uri->segment(4);
+            $User_info_data = array('Inst_Id'=>$Inst_Id,'RegGrp'=>$RegGrp,'spl_case'=>$Spl_case);
+            $user_info  =  $this->Admission_matric_model->user_info($User_info_data);
+        }
         $is_gov            =  $user_info['info'][0]['IsGovernment'];
         if($user_info == false)
         {
@@ -2083,8 +1859,7 @@ class Admission_matric extends CI_Controller {
             redirect('Admission_matric/CreateBatch');
             return;
         }
-        // $is_gov            =  $user_info['info'][0]['IsGovernment'];  //getValue("IsGovernment", " Admission_online..tblinstitutes_all", "Inst_cd =".$user->inst_cd);
-        /*====================  Counting Fee  ==============================*/
+
         $processing_fee = 0;
         $Adm_fee           = 0;
         $LAdm_fee          = 0;
@@ -2095,7 +1870,7 @@ class Admission_matric extends CI_Controller {
         $certFee = 550;
 
         $total_certFee = 0;
-        /*====================  Counting Fee  ==============================*/    
+
         $practical_Sub = array(
             'PHY'=>'6',
             'CHM'=>'7',
@@ -2123,22 +1898,22 @@ class Admission_matric extends CI_Controller {
             'CSC/D'=>'93',
             'HPD/D'=>'94'
         );
-        //   DebugBreak();
+
         $ispractical = 0;
         $isSignalDate = 0;
         $AdmFee = $this->Admission_matric_model->getrulefee(date('Y-m-d'));
 
         if(empty($AdmFee)) 
         {  
-             $isSignalDate = 1;
+            $isSignalDate = 1;
             $date = new DateTime(SingleDateFee9th);
             $singleDate =  $date->format('Y-m-d');                                                                     
-            // $User_info_data = array('Inst_Id'=>999999, 'date' => $singleDate,'isPratical'=>$isper);
+
             $AdmFee  =  $this->Admission_matric_model->getrulefee($singleDate);
 
 
             $TripleDate = date('Y-m-d',strtotime(TripleDateFee9th)); 
-            $now = date('Y-m-d'); // or your date as well
+            $now = date('Y-m-d');
             $days = (strtotime($TripleDate) - strtotime($now)) / (60 * 60 * 24);
             $fine = 500;
             $days = abs($days);
@@ -2153,11 +1928,11 @@ class Admission_matric extends CI_Controller {
             $LAdm_fee = $days*$fine;    
             if($AdmFee[0]['Fee_Type']=="Single Fee")
             {
-            $isSignalDate = 0;
+                $isSignalDate = 0;
             }
             else
             {
-              $isSignalDate = 1;
+                $isSignalDate = 1;
             }
 
         }
@@ -2170,12 +1945,7 @@ class Admission_matric extends CI_Controller {
             $Adm_ProcessingFee = $AdmFee[0]['Processing_Fee'];
             $LAdm_fee = 0;
         }
-        //  echo '<pre>'; print_r($AdmFee);die;
-        //$this->makefee($cat,$Speciality,$sub7,$sub8,$grp_cd,$per_grp);
 
-
-
-        // DebugBreak();
         $q1 = $user_info['fee'];
         $total_std = 0;
         $AllStdFee = array();
@@ -2186,13 +1956,10 @@ class Admission_matric extends CI_Controller {
             $total_std++;
             $ispractical = 0;
             $is9th = 0;
-            if(($v["Spec"] == 1 || $v["Spec"] ==  2) && $isSignalDate == 0)     // ||  $is_gov ==1
+            if(($v["Spec"] == 1 || $v["Spec"] ==  2) && $isSignalDate == 0)   
             {
                 $Adm_fee = 0;
                 $TotalLatefee = $TotalLatefee + $LAdm_fee;
-                //  $total_certFee = $total_certFee+$certFee;
-                //$Adm_ProcessingFee; 
-                // $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;
 
                 if($v['cat09'] == 2)
                 {
@@ -2249,10 +2016,6 @@ class Admission_matric extends CI_Controller {
                     $TotalLatefee = $TotalLatefee + $LAdm_fee;
 
                     $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);
-
-
-
-                    // $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;
                 }
                 else if($ispractical == 1 && $is9th != 0)
                 {
@@ -2264,10 +2027,10 @@ class Admission_matric extends CI_Controller {
                     {
                         $Adm_fee = $Adm_Fee_withSci_Composite;
                     }
-                    //  $Adm_fee = $Adm_Fee_withSci_Composite;
+
                     $TotalLatefee = $TotalLatefee + $LAdm_fee;
                     $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);
-                    // $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;  
+
                 }
                 else if($ispractical == 0 && $is9th ==0)
                 {
@@ -2279,7 +2042,7 @@ class Admission_matric extends CI_Controller {
                     }
                     $TotalLatefee = $TotalLatefee + $LAdm_fee;
                     $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);
-                    // $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;  
+
                 }
                 else if($ispractical == 0 && $is9th !=0)
                 {
@@ -2291,12 +2054,10 @@ class Admission_matric extends CI_Controller {
                     {
                         $Adm_fee = $Adm_Fee_withArts_Composite;
                     }
-                    //  $Adm_fee = $Adm_Fee_withArts_Composite;
                     $TotalLatefee = $TotalLatefee + $LAdm_fee;
                     $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee); 
-                    //  $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;  
                 }
-                //$AdmFee
+
             }
             $TotalAdmFee = $TotalAdmFee + $Adm_fee;
             $TotalLatefee = $TotalLatefee + $LAdm_fee;
@@ -2315,16 +2076,11 @@ class Admission_matric extends CI_Controller {
         $this->Admission_matric_model->Batch_Insertion($data); 
         redirect('Admission_matric/BatchList');
         return;
-        // $result    = $db->query(" EXEC Batch_Create @Inst_Cd = ".$user->inst_cd.",@UserId = ".$user->get_currentUser_ID()."@Amount = ".$tot_fee.",@Total_ProcessingFee = ".$prs_fee.",@Total_Admission_matricFee = ".$reg_fee.",@Total_LateAdmission_matricFee =".$late_fee.",@Total_LateAdmissionFee = 0,@Valid_Date = '$today',@form_ids = '$forms_id'");
 
-        // redirect_to("create-batch.php");
-
-
-        //  $iselectricalactive = getValue("iselectricalallow", "Admission_online..tblinstitutes_all", "Inst_cd =".$user->inst_cd); 
     }
     public function Make_Batch_Formwise()
     {
-       // DebugBreak();
+
         if(!empty($_POST["chk"]))
         {
 
@@ -2334,7 +2090,7 @@ class Admission_matric extends CI_Controller {
             return;
         }
 
-      //  DebugBreak();
+
         $RegGrp = $this->uri->segment(3);
         $this->load->model('Admission_matric_model');
         $this->load->library('session');
@@ -2344,9 +2100,8 @@ class Admission_matric extends CI_Controller {
         $Inst_Id = $userinfo['Inst_Id'];
         $page_name  = "Create Batch";
         $User_info_data = array('Inst_Id'=>$Inst_Id,'forms_id'=>$forms_id);
-        $user_info  =  $this->Admission_matric_model->user_info_Formwise($User_info_data); //$db->first("SELECT * FROM  Admission_online..tblinstitutes_all WHERE Inst_Cd = " .$user->inst_cd);
-        $is_gov            =  $user_info['info'][0]['IsGovernment'];  //getValue("IsGovernment", " Admission_online..tblinstitutes_all", "Inst_cd =".$user->inst_cd);
-        /*====================  Counting Fee  ==============================*/
+        $user_info  =  $this->Admission_matric_model->user_info_Formwise($User_info_data); 
+        $is_gov            =  $user_info['info'][0]['IsGovernment'];  
         $processing_fee = 0;
         $Adm_fee           = 0;
         $LAdm_fee          = 0;
@@ -2358,7 +2113,6 @@ class Admission_matric extends CI_Controller {
 
         $total_certFee = 0;
 
-        /*====================  Counting Fee  ==============================*/    
         $practical_Sub = array(
             'PHY'=>'6',
             'CHM'=>'7',
@@ -2386,23 +2140,23 @@ class Admission_matric extends CI_Controller {
             'CSC/D'=>'93',
             'HPD/D'=>'94'
         );
-       // DebugBreak();
+
         $ispractical = 0;
         $isSignalDate = 0;
         $AdmFee = $this->Admission_matric_model->getrulefee(date('Y-m-d'));
-        
-        
+
+
         if(empty($AdmFee)) 
         {  
-             $isSignalDate = 1;
+            $isSignalDate = 1;
             $date = new DateTime(SingleDateFee9th);
             $singleDate =  $date->format('Y-m-d');                                                                     
-            // $User_info_data = array('Inst_Id'=>999999, 'date' => $singleDate,'isPratical'=>$isper);
+
             $AdmFee  =  $this->Admission_matric_model->getrulefee($singleDate);
 
 
             $TripleDate = date('Y-m-d',strtotime(TripleDateFee9th)); 
-            $now = date('Y-m-d'); // or your date as well
+            $now = date('Y-m-d'); 
             $days = (strtotime($TripleDate) - strtotime($now)) / (60 * 60 * 24);
             $fine = 500;
             $days = abs($days);
@@ -2427,33 +2181,33 @@ class Admission_matric extends CI_Controller {
             $Total_fine = 0;
             if($AdmFee[0]['Fee_Type']=="Single Fee")
             {
-            $isSignalDate = 0;
+                $isSignalDate = 0;
             }
             else
             {
-              $isSignalDate = 1;
+                $isSignalDate = 1;
             }
-            
+
         }
-        
+
         $q1 = $user_info['fee'];
         $total_std = 0;
         $AllStdFee = array();
         $n = 0;
         $LAdm_fee = $Total_fine;
+
+
         foreach($q1 as $k=>$v) 
         {
             $ids[] = $v["formNo"];
             $total_std++;
             $ispractical = 0;
             $is9th = 0;
-            if(($v["Spec"] == 1 || $v["Spec"] ==  2) && $isSignalDate == 0)      //||  $is_gov ==1
+            if(($v["Spec"] == 1 || $v["Spec"] ==  2) && $isSignalDate == 0)    
             {
                 $Adm_fee = 0;
                 $TotalLatefee = $TotalLatefee + $LAdm_fee;
-                //  $total_certFee = $total_certFee+$certFee;
-                //$Adm_ProcessingFee; 
-                // $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;
+
 
                 if($v['cat09'] == 2)
                 {
@@ -2463,7 +2217,7 @@ class Admission_matric extends CI_Controller {
                     }
                     else
                     {
-                        $Adm_fee = 0;//$Adm_Fee_withArts_10th_Only;
+                        $Adm_fee = 0;
                     }
                     $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);
                 }
@@ -2498,7 +2252,7 @@ class Admission_matric extends CI_Controller {
                 {
                     $is9th=0;
                 }
-                if($ispractical == 1 && $is9th==0)
+                if($ispractical == 1 && $is9th==0 )
                 {
 
                     $Adm_fee = $Adm_Fee_withSci_10th_Only;
@@ -2506,14 +2260,11 @@ class Admission_matric extends CI_Controller {
 
                     $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);
 
-
-
-                    // $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;
                 }
-                else if($ispractical == 1 && $is9th != 0)
+                else if($ispractical == 1 && $is9th != 0 )
                 {
 
-                    if($is_gov==1 && $isSignalDate == 0 )
+                    if($is_gov == 1 && $isSignalDate == 0)
                     {
                         $Adm_fee = $Adm_Fee_withSci_10th_Only;
                     }
@@ -2524,14 +2275,7 @@ class Admission_matric extends CI_Controller {
 
                     $TotalLatefee = $TotalLatefee + $LAdm_fee;
                     $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);
-                    // $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;  
-                }
-                else if($ispractical == 0 && $is9th ==0)
-                {
-                    $Adm_fee = $Adm_Fee_withArts_10th_Only;
-                    $TotalLatefee = $TotalLatefee + $LAdm_fee;
-                    $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);
-                    // $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;  
+
                 }
                 else if($ispractical == 0 && $is9th !=0)
                 {
@@ -2546,28 +2290,33 @@ class Admission_matric extends CI_Controller {
 
                     $TotalLatefee = $TotalLatefee + $LAdm_fee;
                     $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee); 
-                    //  $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;  
+
                 }
-                //$AdmFee
+                else if($ispractical == 0 && $is9th ==0 )
+                {
+                    if(($is_gov == 1 && $isSignalDate == 0) || $is_gov != 1)
+                    {
+                        $Adm_fee = $Adm_Fee_withArts_10th_Only;
+                    }
+                    $TotalLatefee = $TotalLatefee + $LAdm_fee;
+                    $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);
+
+                }
+
+
             }
 
             $TotalAdmFee = $TotalAdmFee + $Adm_fee;
-           // $TotalLatefee = $TotalLatefee + $LAdm_fee;
+
             $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;
             $total_certFee = $total_certFee+$certFee;
             $n++;
         } 
         $mydata_final = $this->Admission_matric_model->Update_AdmissionFee($AllStdFee);
 
-
-
-        //  $netTotal = (int)$netTotal +$Adm_fee + $LAdm_fee+$Adm_ProcessingFee+$certFee;
-
-
-
         $forms_id   = implode(",",$ids);        
         $tot_fee     = $Totalprocessing_fee+$TotalAdmFee+$TotalLatefee+$total_certFee;
-        // $challan_No = 0;
+
         $today = date("Y-m-d H:i:s");
         $data = array('inst_cd'=>$Inst_Id,'CertFee'=>$certFee,'total_fee'=>$tot_fee,'proces_fee'=>$Adm_ProcessingFee,'reg_fee'=>$Adm_fee,'fine'=>$LAdm_fee,'TotalCertFee'=>$total_certFee,'TotalRegFee'=>$TotalAdmFee,'TotalLatefee'=>$TotalLatefee,'Totalprocessing_fee'=>$Totalprocessing_fee,'forms_id'=>$forms_id,'todaydate'=>$today,'total_std'=>$total_std);
         $this->Admission_matric_model->Batch_Insertion($data); 
@@ -2578,7 +2327,7 @@ class Admission_matric extends CI_Controller {
     {
 
         $this->load->library('session');
-        ////DebugBreak();
+
         if(!( $this->session->flashdata('error'))){
 
             $error_msg = "0";    
@@ -2592,7 +2341,7 @@ class Admission_matric extends CI_Controller {
         $data = array(
             'isselected' => '9',
         );
-        //  //DebugBreak();
+
         $error = array();
         $error['excep'] = '';
         $error['gender'] = $userinfo['gender'];
@@ -2601,21 +2350,18 @@ class Admission_matric extends CI_Controller {
         $this->commonheader($data);
         $this->load->view('Admission/Matric/FormPrinting.php',$error);
         $this->load->view('common/commonfooter.php');
-        //$this->commonfooter(array("files"=>array("jquery.maskedinput.js","validate.NewEnrolment.js")));
 
-        //$this->load->model('Admission_matric_model');
     }
     private function set_barcode($code)
     {
-        ////DebugBreak()  ;
-        //load library
+
         $this->load->library('zend');
-        //load in folder Zend
+
         $this->zend->load('Zend/Barcode');
 
 
         $file = Zend_Barcode::draw('code128','image', array('text' => $code,'drawText'=>false), array());
-        //$code = $code;
+
         $store_image = imagepng($file,BARCODE_PATH."{$code}.png");
         return $code.'.png';
 
@@ -2623,7 +2369,6 @@ class Admission_matric extends CI_Controller {
     public function forwarding_pdf()
     {
 
-        //  DebugBreak();
 
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
@@ -2636,14 +2381,11 @@ class Admission_matric extends CI_Controller {
             return; }
         $temp = $user['Inst_Id'].'@'.Year.'@'.Session;
         $image =  $this->set_barcode($temp);
-        // $pdf->Image(base_url().'assets/pdfs/'.'/'.$image,6.3,0.5, 1.8, 0.20, "PNG");
-        //$studeninfo['data']['info'][0]['barcode'] = $image;
+
         $this->load->library('PDF_rotateWithOutPage');
         $pdf = new PDF_rotateWithOutPage('P','in',"A4");
         $pdf->Rotate(0,-1,-1);
-        //   $pdf->SetFont('Arial','B',50);
-        //             $pdf->SetTextColor(255,192,203);
-        //             $pdf->Rotate(35,190,'W a t e r m a r k   d e m o',45);
+
         $pdf->AliasNbPages();
         $pdf->SetTitle('Forwarding Letter');
         $pdf->SetMargins(0.5,0.5,0.5);
@@ -2680,7 +2422,7 @@ class Admission_matric extends CI_Controller {
         $pdf->SetTextColor(255,255,255) ;
         $pdf->SetFont('Arial','',$fnt);
         $pdf->SetXY(2.05,.95);
-        $pdf->Cell(0, 0, "FORWARDING LETTER FOR SSC EXAMINATION  ".$sessname." ".CURRENT_SESS1, 0.25, "C");
+        $pdf->Cell(0, 0, "FORWARDING LETTER FOR SSC ".strtoupper($sessname)." EXAMINATION ".CURRENT_SESS1, 0.25, "C");
 
         $pdf->Image(BARCODE_PATH.$image,6.3,1.2, 1.8, 0.20, "PNG"); 
 
@@ -2695,7 +2437,7 @@ class Admission_matric extends CI_Controller {
 
         $pdf->SetFont('Arial','',10);
         $pdf->SetXY(.95+$x,0.7+$y);
-        $pdf->Cell(0, 0, "Head Master/Head Mistress/Principal", 0.25, "C");
+        $pdf->Cell(0, 0, "Head Master/Headmistress/Principal", 0.25, "C");
         $result=$result['data'][0];
 
         $pdf->SetFont('Arial','B',9);
@@ -2814,16 +2556,10 @@ class Admission_matric extends CI_Controller {
     public function return_pdf()
     {
 
-        //  DebugBreak();
+
 
         $Condition = $this->uri->segment(4);
-        /*
-        $Condition  1 == Batch Id wise printing.
-        2 == Final Group wise prining.
-        3 == Final Formno wise Printing.
-        4 == Proof reading Group wise Printing.
-        5 == Proof reading Formno wise Printing.
-        */
+
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $user = $Logged_In_Array['logged_in'];
@@ -2867,7 +2603,7 @@ class Admission_matric extends CI_Controller {
 
         }
 
-        // //DebugBreak();
+
         if(empty($result['data'])){
             $this->session->set_flashdata('error', $Condition);
             redirect('Admission_matric/FormPrinting');
@@ -2876,16 +2612,13 @@ class Admission_matric extends CI_Controller {
         }
         $temp = $user['Inst_Id'].'@10@'.Year;
         $image =  $this->set_barcode($temp);
-        // $pdf->Image(base_url().'assets/pdfs/'.'/'.$image,6.3,0.5, 1.8, 0.20, "PNG");
-        //$studeninfo['data']['info'][0]['barcode'] = $image;
+
         $this->load->library('PDF_Rotate');
 
 
         $pdf = new PDF_Rotate('P','in',"A4");
         $pdf->Rotate(0,-1,-1);
-        //   $pdf->SetFont('Arial','B',50);
-        //             $pdf->SetTextColor(255,192,203);
-        //             $pdf->Rotate(35,190,'W a t e r m a r k   d e m o',45);
+
         $pdf->AliasNbPages();
         if($Condition==4 or $Condition == 5)
         {
@@ -2908,27 +2641,21 @@ class Admission_matric extends CI_Controller {
         while($cnt<15) 
         {
             $cnt++;
-            $ln[$cnt]=$ln[$cnt-1]+ 0.6;  //0.5;
+            $ln[$cnt]=$ln[$cnt-1]+ 0.6; 
         }
 
         $i = 4;
         $result = $result['data'] ;
-        // //DebugBreak();
+
         foreach ($result as $key=>$data) 
         {
-            ////DebugBreak();
-            ////DebugBreak();
+
             $i++;
             $countofrecords=$countofrecords+1;
             if($countofrecords==15) {
                 $countofrecords=0;
 
                 $pdf->AddPage();
-
-                //     $pdf->SetFont('Arial','B',50);
-                //                 $pdf->SetTextColor(255,192,203);
-                //                 $pdf->Rotate(35,190,'W a t e r m a r k   d e m o',45);
-
 
                 if($Condition==4 or $Condition == 5)
                 {
@@ -2978,7 +2705,7 @@ class Admission_matric extends CI_Controller {
                 $pdf->Cell(0, 0.25,  'Group: '.$grp_name, 0.25, "C");
 
 
-                $pdf->rect($lmargin,1,$rmargin,10.5);                //the main rectangle box
+                $pdf->rect($lmargin,1,$rmargin,10.5);               
                 $cnt=-1;
 
                 while($cnt<15) 
@@ -3003,7 +2730,7 @@ class Admission_matric extends CI_Controller {
                 $pdf->Line($col6,$title,$col6,$ln[15]);
 
                 $pdf->SetFont('Arial','B',9);
-                $pdf->Text($lmargin+.03,$title+.3,"Sr#");    //$pdf->Text(3,3,"TEXT TO DISPLAY");
+                $pdf->Text($lmargin+.03,$title+.3,"Sr#");   
                 $pdf->Text($col1+.2,$title+.3,"FormNo.");
 
                 $pdf->Text($col2+.1,$title+.2,"Name / Father`s Name");
@@ -3025,8 +2752,8 @@ class Admission_matric extends CI_Controller {
 
             //============================ Values ==========================================            
             $pdf->SetFont('Arial','',10);    
-            $pdf->Text($lmargin+.1  , $ln[$countofrecords]+0.3 , $SR);                 // Sr No
-            $pdf->Text($col1+.05    , $ln[$countofrecords]+0.3,$data["formNo"]);       // Form No
+            $pdf->Text($lmargin+.1  , $ln[$countofrecords]+0.3 , $SR);                
+            $pdf->Text($col1+.05    , $ln[$countofrecords]+0.3,$data["formNo"]);      
 
             $pdf->SetFont('Arial','B',8);    
             $pdf->Text($col2+.1,$ln[$countofrecords]+0.2,strtoupper($data["name"]));
@@ -3043,25 +2770,26 @@ class Admission_matric extends CI_Controller {
 
             if($data["IsReAdm"] == '1' )
                 $pdf->Text($col4+.1,$ln[$countofrecords]+0.55,strtoupper($data["oldRno_reg"]).'-'.$data["oldYear_reg"]);
-            //$pdf->Text($col4+.1,$ln[$countofrecords]+0.55,'(Re-Admission)');
+
             else
                 $pdf->Text($col4+.1,$ln[$countofrecords]+0.55,'(NEW)');
 
             $pdf->SetFont('Arial','B',7);    
-            //            $pdf->Text($col5+.05,$ln[$countofrecords]+0.2,GroupName($data["Grp_Cd"]));
+
             $pdf->Text($col5+.05,$ln[$countofrecords]+0.2,  $data["sub1_abr"].','.$data["sub2_abr"].','.$data["sub3_abr"].','.$data["sub4_abr"]);
             $pdf->SetFont('Arial','',7);    
             $pdf->Text($col5+.05,$ln[$countofrecords]+0.4,$data["sub5_abr"].','.$data["sub6_abr"].','.$data["sub7_abr"].','.$data["sub8_abr"]);
 
-            $pdf->Image(IMAGE_PATH.$data["Sch_cd"].'/'.$data["PicPath"],$col6+0.05,$ln[$countofrecords]+0.05 , 0.50, 0.50, "JPG"); 
+
+            $pdf->Image($data["PicPath"],$col6+0.05,$ln[$countofrecords]+0.05 , 0.50, 0.50, "JPG"); 
 
             ++$SR;
 
 
-            //Certified that I have checked all the relevant record of the students and the particulars as mentioned above are correct.
+
             $pdf->SetFont('Arial','',8);
             $pdf->Text($lmargin+.5,10.8,"Certified that I have checked all the relevant record of the students and the particulars as mentioned above are correct.");
-            //$pdf->Text($lmargin+.5,11,"Signature _____________________");
+
             $pdf->SetFont('Arial','',10);
             $pdf->Text($rmargin-2.5,11.2,"_____________________________________");
             $pdf->Text($rmargin-2.5,11.4,"Signature of Head of Institution with Stamp");
@@ -3072,14 +2800,14 @@ class Admission_matric extends CI_Controller {
     }
     public function revenue_pdf()
     {
-        //  DebugBreak();
         $Batch_Id = $this->uri->segment(3);
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $user = $Logged_In_Array['logged_in'];
         $this->load->model('Admission_matric_model');
         $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'Batch_Id'=>$Batch_Id);
-        $temp = $user['Inst_Id'].'@10@'.Session.'@'.Year;
+        $CurrentYear = Year + 1;
+        $temp = $user['Inst_Id'].'@10@'.Session.'@'.$CurrentYear;
         $image =  $this->set_barcode($temp);
         $data = array('data'=>$this->Admission_matric_model->revenue_pdf($fetch_data),'inst_Name'=>$user['inst_Name'],'inst_cd'=>$user['Inst_Id'],'barcode'=>$image);
         $this->load->view('Admission/Matric/RevenueForm.php',$data);
@@ -3195,8 +2923,6 @@ class Admission_matric extends CI_Controller {
     }
     public function Print_Admission_matric_Form_Proofreading_Groupwise()
     {
-
-           //  DebugBreak();
         $Condition = $this->uri->segment(4);
 
         $this->load->library('session');
@@ -3273,22 +2999,22 @@ class Admission_matric extends CI_Controller {
 
         $type     = 'code128';
         $black    = '000000'; // color in hex
-        // //DebugBreak();
+
         $result = $result['data'] ;
-        //if(!empty($result)):
+
         $session_constant='';
         if(Session==1){
             $session_constant="ANNUAL";
         }
         else if(Session==2){
-            $session_constant="SUPPLYMENTARY";
+            $session_constant="SUPPLEMENTARY";
         }
         foreach ($result as $key=>$data) 
         {
 
-            // //DebugBreak();
+
             $form_No = $data["formNo"]; 
-            //   $data = '';
+
             $fontSize = 8; 
             $marge    = .4;   // between barcode and hri in pixel
             $bx        = 4.2;  // barcode center
@@ -3304,10 +3030,6 @@ class Admission_matric extends CI_Controller {
             $pdf->AddPage();
             $Y = 0;
 
-            //$Barcode = $form_No.$data["iYear"].$data['sess'].$data['class'];
-
-            //  DebugBreak();
-
             $Barcode = $form_No."@10".'@'.$data["sess"].'@'.$data["Iyear"];
 
             $bardata = Barcode::fpdf($pdf, $black, $bx, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
@@ -3318,7 +3040,7 @@ class Admission_matric extends CI_Controller {
             $pdf->SetDrawColor(0, 0, 0, 50);
             $pdf->SetFillColor(0, 0, 0, 100);
             $pdf->SetTextColor(0, 0, 0, 100);
-            //$pdf->PrintBarcode(3.75,0.8,(int)$Barcode,.3,.0099);
+
             $pdf->SetFont('Arial','U',14);
             $pdf->SetXY( 0.75,0.2);
             $pdf->Cell(0, 0.2, "BOARD OF INTERMEDIATE AND SECONDARY EDUCATION, GUJRANWALA", 0.25, "C");
@@ -3337,8 +3059,8 @@ class Admission_matric extends CI_Controller {
                 $pdf->SetXY(1.2,0.4);    
             }
 
-            $pdf->Cell(0, 0.25, "ADMISSION FORM FOR SECONDARY SCHOOL ".$session_constant." (10TH) EXAMINATION, ".Year, 0.25, "C");
-            // DebugBreak();
+            $pdf->Cell(0, 0.25, "ADMISSION FORM FOR SECONDARY SCHOOL ".$session_constant." (10TH) EXAMINATION, ".$data['Iyear'], 0.25, "C");
+
             //--------------- Proof Read    
             if($data['Batch_ID'] == 0 || empty($data['Batch_ID']) and $data['regPvt']==1)
             {
@@ -3372,7 +3094,7 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',7);
             $pdf->SetXY(6.6,.80+$Y);
             $pdf->Cell(0.5,0.5, "(For office use only)",0,'L');
-            // //DebugBreak();
+
             if($data["regPvt"]==1)
             {
 
@@ -3381,21 +3103,13 @@ class Admission_matric extends CI_Controller {
                 $pdf->Cell( 0.5,0.5,'('.$user['Inst_Id'].')'.'-'.$user['inst_Name'],0,'R');
                 $pdf->SetFillColor(0,0,0);
 
-
             }
-
-
-          //  DebugBreak();
             //------ Picture Box on Centre      
             $pdf->SetXY(6.5, 1.55+$Y );
             $pdf->Cell(1.25,1.4,'',1,0,'C',0);
-            // $pdf->Image(REGULAR_IMAGE_PATH.$user['Inst_Id']."/".$data["PicPath"],6.5, 1.55+$Y, 1.25, 1.4, "JPG");
-             $path = $data['PicPath'];  
-             $picpath = DIRPATH.'\\'.$path;
-             $type = pathinfo($picpath, PATHINFO_EXTENSION);
-             $data['PicPath'] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($picpath));
-             $pdf->Image($data['PicPath'],6.5, 1.55+$Y, 1.25, 1.4, "JPG");
-           // $pdf->Image( PRIVATE_IMAGE_PATH.'60002.jpg',6.5, 1.55+$Y, 1.25, 1.4, "JPG");
+
+            $pdf->Image($data["PicPath"],6.5, 1.55+$Y, 1.25, 1.4, "JPG");
+
             $pdf->SetFont('Arial','',8);
 
             //------------- Personal Infor Box
@@ -3407,7 +3121,7 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->Cell(8,0.2,'PERSONAL INFORMATION',1,0,'L',1);
             $pdf->SetFillColor(0,0,0);
-            // $pdf->Image('assets/img/name_inst.png',6,1.26+$Y, 2.2, .22, "png");
+
             $Y = -0.2;
             //--------------------------- 1st line 
             $pdf->SetXY(0.5,1.6+$Y);
@@ -3464,14 +3178,7 @@ class Admission_matric extends CI_Controller {
             $pdf->SetXY(1.5,2.35+$Y);
             $pdf->Cell(0.5,0.5,$data["rel"]==1?"MUSLIM":"NON-MUSLIM",0,'L');
 
-            /*     $pdf->SetXY(2.4,$Y+2.7);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Nationality:",0,'R');
-            $pdf->SetFont('Arial','B',8);
-            $pdf->SetXY(3.4,$Y+2.7);
-            $pdf->Cell(0.5,0.5,$data["nat"]==1?"PAKISTANI":"NON-PAKISTANI",0,'R');
 
-            */
             $pdf->SetXY(3.5+$x,2.35+$Y);
             $pdf->SetFont('Arial','',8);
             $pdf->Cell(0.5,0.5,"Locality:",0,'R');
@@ -3495,16 +3202,11 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(1.5,2.60+$Y);
 
-            /*    if($data["sex"] == 0)
-            {
-            $arr1 = array( 
-            "sex"           => trim($gender_allowed));
-            $db->update("Admission_online..adm_reg_ma2016",$arr1,"sch_cd = ".trim($user->inst_cd));
-            }*/
+
 
 
             $pdf->Cell(0.5,0.5,$data['sex']==1?"MALE":"FEMALE",0,'L');
-            // //DebugBreak();
+
             $pdf->SetXY(3.5+$x,2.60+$Y);
             $pdf->SetFont('Arial','',8);
             $pdf->Cell( 0.5,0.5,"Nationality:",0,'L');
@@ -3546,14 +3248,6 @@ class Admission_matric extends CI_Controller {
             $pdf->SetXY(4.5+$x,2.85+$Y);
             $pdf->Cell(0.5,0.5, $data["MobNo"],0,'L');      
 
-            //         
-            //    $pdf->SetXY(3.5+$x,2.85+$Y);
-            //     $pdf->SetFont('Arial','',8);
-            //     $pdf->Cell( 0.5,0.5,"Medium:",0,'L');
-            //               $pdf->SetFont('Arial','B',8);
-            //             $pdf->SetXY(4.5+$x,2.85+$Y);
-            //             $pdf->Cell(0.5,0.5,$data["med"]==1?"URDU":"ENGLISH",0,'L');            
-
             //--------------------------- Speciality and Internal Grade 
             $pdf->SetXY(0.5,3.1+$Y);
             $pdf->SetFont('Arial','',8);
@@ -3567,14 +3261,6 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',$FontSize+15);
             $pdf->TextWithRotation($x-.13,3.2+$Y, $data['formNo'],90,0); 
 
-            /* $pdf->SetXY(3.5+$x,3.1+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Scheme:",0,'L');
-            $pdf->SetFont('Arial','B',8);
-            $pdf->SetXY(4.5+$x,3.1+$Y);
-            $pdf->Cell(0.5,0.5, ($data["schm"]==1? "NEW": "OLD"),0,'L');            */
-
-
 
             //====================================================================================================================            
             //--------------------------- Speciality and Internal Grade 
@@ -3584,15 +3270,6 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(1.68,3.35+$Y);
             $pdf->Cell(0.5,0.5,strtoupper($data["SchGrade"]),0,'L');
-
-
-
-            /*$pdf->SetXY(3.5+$x,3.35+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Contact No:",0,'L');
-            $pdf->SetFont('Arial','B',8);
-            $pdf->SetXY(4.5+$x,3.35+$Y);
-            $pdf->Cell(0.5,0.5, $data["mobNo"],0,'L');     */
 
             $Y= $Y+0.30;            
 
@@ -3622,7 +3299,7 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(4.3,3.6+$Y);
             $pdf->Cell(0.5,0.5,$data["SessOfLastAp"]==1?"Annual":"Supplementary",0,'R');
-            // //DebugBreak();
+
             $pdf->SetXY(5.3,3.6+$Y);
             $pdf->SetFont('Arial','',8);
             $pdf->Cell( 0.5,0.5,"Board:",0,'L');
@@ -3658,22 +3335,6 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(4.0,4.05+$Y);
             $pdf->Cell( 0.5,0.5,$data['Zone_cd']." - ".$data['ZoneName']."",0,'L');
-            /*     //__Mobile    
-            $pdf->SetXY(6.4,4.05+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Mobile No:",0,'L');
-            $pdf->SetFont('Arial','b',8);
-            $pdf->SetXY(7.0,4.05+$Y);
-            $pdf->Cell(0.5,0.5,$data["mobNo"],0,'R');*/
-
-
-            //__Address
-            /*  $pdf->SetXY(0.5,4.05+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Address(In Urdu):",0,'L');
-            $pdf->SetFont('Arial','b',8);
-            $pdf->SetXY(1.45,4.05+$Y);
-            $pdf->Cell(0.5,0.5,'_______________________________________________________________________________________________',0,'L');       */
 
 
             //__Address
@@ -3693,25 +3354,6 @@ class Admission_matric extends CI_Controller {
             $pdf->Cell(0.5,0.5,'__________________________________________________________________________________________________',0,'L');     
 
 
-
-            //-----
-
-            /* //__Address
-            $pdf->SetXY(0.5,4.05+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Address(In Urdu):",0,'L');
-            $pdf->SetFont('Arial','b',8);
-            $pdf->SetXY(1.45,4.05+$Y);
-            $pdf->Cell(0.5,0.5,'______________________________________________________________________________________',0,'L');     
-
-            //__Address
-            $pdf->SetXY(0.5,4.30+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Address:",0,'L');
-            $pdf->SetFont('Arial','b',8);
-            $pdf->SetXY(1.2,4.30+$Y);
-            $pdf->Cell(0.5,0.5,$data["addr"],0,'L');    */
-            ////DebugBreak();
             //------------- Exam Info Box
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(0.2,4.99+$Y);
@@ -3773,7 +3415,7 @@ class Admission_matric extends CI_Controller {
 
             $len = $pdf->GetStringWidth($bardata['hri']);
             Barcode::rotate(-$len / 2, ($bardata['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
-            ////DebugBreak();
+
             $cat = $data['cat09'];
             $cat_name ="";
             if ($cat==1) $cat_name= "Full Appear";
@@ -3840,7 +3482,7 @@ class Admission_matric extends CI_Controller {
             $pdf->Cell(0.3,0.4,"3._______________________________",0,'L');    
             $pdf->SetXY(1.15,6.25+$Y);
             $pdf->Cell(0.5,0.5,  $data['sub3Ap1'] != 1 ? '':   '    '. $data['sub3_NAME'],0,'L');
-            ////DebugBreak();
+
             $pdf->SetXY(4.6,6.35+$Y);
             $pdf->Cell(0.3,0.4,"3._______________________________",0,'L');
             $pdf->SetXY(4.65,6.25+$Y);
@@ -3945,8 +3587,7 @@ class Admission_matric extends CI_Controller {
             $pdf->Cell(1.6,0.001,'_____________________________________','',0,'L',0);
             $pdf->SetXY(3.65,9.9+$Y);
             $pdf->Cell(1.6,0.67,$emstxt ,'',0,'L',0);  
-            /*$pdf->SetXY(2.5,10.1+$Y);
-            $pdf->Cell(1.6,0.69,$inst ,'',0,'L',0); */
+
             //---------------------------------------------------------------------------
 
             $pdf->SetXY(0.2,9.25+$Y);
@@ -4025,8 +3666,7 @@ class Admission_matric extends CI_Controller {
 
 
         $pdf = new PDF_Rotate('P','in',"A4");
-        //      $this->load->library('PDFF');
-        //        $pdf=new PDFF('P','in',"A4");  
+
         $pdf->AliasNbPages();
         $pdf->SetMargins(0.5,0.5,0.5);
         $grp_cd = $this->uri->segment(3);
@@ -4043,22 +3683,22 @@ class Admission_matric extends CI_Controller {
 
         $type     = 'code128';
         $black    = '000000'; // color in hex
-        // //DebugBreak();
+
         $result = $result['data'] ;
-        //if(!empty($result)):
+
         $session_constant='';
         if(Session==1){
             $session_constant="ANNUAL";
         }
         else if(Session==2){
-            $session_constant="SUPPLYMENTARY";
+            $session_constant="SUPPLEMENTARY";
         }
         foreach ($result as $key=>$data) 
         {
 
-            // //DebugBreak();
+
             $form_No = $data["formNo"]; 
-            //   $data = '';
+
             $fontSize = 8; 
             $marge    = .4;   // between barcode and hri in pixel
             $bx        = 4.2;  // barcode center
@@ -4074,10 +3714,6 @@ class Admission_matric extends CI_Controller {
             $pdf->AddPage();
             $Y = 0;
 
-            //$Barcode = $form_No.$data["iYear"].$data['sess'].$data['class'];
-
-            //  DebugBreak();
-
             $Barcode = $form_No."@".'10'.'@2'.'@'.$data["Iyear"];
 
             $bardata = Barcode::fpdf($pdf, $black, $bx, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
@@ -4088,7 +3724,7 @@ class Admission_matric extends CI_Controller {
             $pdf->SetDrawColor(0, 0, 0, 50);
             $pdf->SetFillColor(0, 0, 0, 100);
             $pdf->SetTextColor(0, 0, 0, 100);
-            //$pdf->PrintBarcode(3.75,0.8,(int)$Barcode,.3,.0099);
+
             $pdf->SetFont('Arial','U',14);
             $pdf->SetXY( 0.75,0.2);
             $pdf->Cell(0, 0.2, "BOARD OF INTERMEDIATE AND SECONDARY EDUCATION, GUJRANWALA", 0.25, "C");
@@ -4107,8 +3743,8 @@ class Admission_matric extends CI_Controller {
                 $pdf->SetXY(1.2,0.4);    
             }
 
-            $pdf->Cell(0, 0.25, "ADMISSION FORM FOR SECONDARY SCHOOL ".$session_constant." (10TH) EXAMINATION, ".CURRENT_SESS1, 0.25, "C");
-            // DebugBreak();
+            $pdf->Cell(0, 0.25, "ADMISSION FORM FOR SECONDARY SCHOOL ".$session_constant." (10TH) EXAMINATION, ".$data['Iyear'], 0.25, "C");
+
             //--------------- Proof Read    
             if($data['Batch_ID'] == 0 and $data['regPvt']==1)
             {
@@ -4118,9 +3754,6 @@ class Admission_matric extends CI_Controller {
                 $pdf->SetFont("Arial",'',8);
                 $pdf->Cell(0, 0.25, $ProofReed   ,0,'C');
             }
-
-
-
 
             $pdf->SetFont('Arial','B',10);
             $pdf->SetXY(5.7,0.4);
@@ -4142,7 +3775,7 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',7);
             $pdf->SetXY(6.6,.80+$Y);
             $pdf->Cell(0.5,0.5, "(For office use only)",0,'L');
-            // //DebugBreak();
+
             if($data["regPvt"]==1)
             {
 
@@ -4151,16 +3784,14 @@ class Admission_matric extends CI_Controller {
                 $pdf->Cell( 0.5,0.5,'',0,'R');
                 $pdf->SetFillColor(0,0,0);
 
-
             }
 
-
-            // DebugBreak();
             //------ Picture Box on Centre      
             $pdf->SetXY(6.5, 1.55+$Y );
             $pdf->Cell(1.25,1.4,'',1,0,'C',0);
-             $pdf->Image(REGULAR_IMAGE_PATH.$user['Inst_Id']."/".$data["PicPath"],6.5, 1.55+$Y, 1.25, 1.4, "JPG");
-           // $pdf->Image( 'assets/img/BrowseImage.PNG',6.5, 1.55+$Y, 1.25, 1.4, "PNG");
+
+            $pdf->Image($data["PicPath"],6.5, 1.55+$Y, 1.25, 1.4, "JPG");
+
             $pdf->SetFont('Arial','',8);
 
             //------------- Personal Infor Box
@@ -4178,7 +3809,7 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->Cell(8,0.2,'PERSONAL INFORMATION',1,0,'L',1);
             $pdf->SetFillColor(0,0,0);
-            //    $pdf->Image('assets/img/name_inst.png',6,1.26+$Y, 2.2, .22, "png");
+
             $Y = -0.2;
             //--------------------------- 1st line 
             $pdf->SetXY(0.5,1.6+$Y);
@@ -4266,16 +3897,8 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(1.5,2.60+$Y);
 
-            /*    if($data["sex"] == 0)
-            {
-            $arr1 = array( 
-            "sex"           => trim($gender_allowed));
-            $db->update("Admission_online..adm_reg_ma2016",$arr1,"sch_cd = ".trim($user->inst_cd));
-            }*/
-
-
             $pdf->Cell(0.5,0.5,"",0,'L');
-            // //DebugBreak();
+
             $pdf->SetXY(3.5+$x,2.60+$Y);
             $pdf->SetFont('Arial','',8);
             $pdf->Cell( 0.5,0.5,"Nationality:",0,'L');
@@ -4304,26 +3927,14 @@ class Admission_matric extends CI_Controller {
             $pdf->Cell(0.5,0.5,"",0,'L');
 
 
-
-
-
             $pdf->SetFont('Arial','B',8);
-            /* $pdf->SetXY(4.5+$x,3.35+$Y);
-            $pdf->Cell(0.5,0.5, $data["mobNo"],0,'L');    */
+
             $pdf->SetXY(3.5+$x,2.85+$Y);
             $pdf->SetFont('Arial','',8);
             $pdf->Cell( 0.5,0.5,"Contact No:",0,'L');
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(4.5+$x,2.85+$Y);
-            $pdf->Cell(0.5,0.5, "",0,'L');      
-
-            //         
-            //    $pdf->SetXY(3.5+$x,2.85+$Y);
-            //     $pdf->SetFont('Arial','',8);
-            //     $pdf->Cell( 0.5,0.5,"Medium:",0,'L');
-            //               $pdf->SetFont('Arial','B',8);
-            //             $pdf->SetXY(4.5+$x,2.85+$Y);
-            //             $pdf->Cell(0.5,0.5,$data["med"]==1?"URDU":"ENGLISH",0,'L');            
+            $pdf->Cell(0.5,0.5, "",0,'L');                                                        
 
             //--------------------------- Speciality and Internal Grade 
             $pdf->SetXY(0.5,3.1+$Y);
@@ -4331,20 +3942,8 @@ class Admission_matric extends CI_Controller {
             $pdf->Cell( 0.5,0.5,"Identification:",0,'L');
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(1.50,3.1+$Y);
-            $pdf->Cell(0.5,0.5,"",0,'L');
+            $pdf->Cell(0.5,0.5,"",0,'L');                                                         
 
-
-
-            /* $pdf->SetXY(3.5+$x,3.1+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Scheme:",0,'L');
-            $pdf->SetFont('Arial','B',8);
-            $pdf->SetXY(4.5+$x,3.1+$Y);
-            $pdf->Cell(0.5,0.5, ($data["schm"]==1? "NEW": "OLD"),0,'L');            */
-
-
-
-            //====================================================================================================================            
             //--------------------------- Speciality and Internal Grade 
             $pdf->SetXY(0.5,3.35+$Y);
             $pdf->SetFont('Arial','',8);
@@ -4352,15 +3951,6 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(1.68,3.35+$Y);
             $pdf->Cell(0.5,0.5,"",0,'L');
-
-
-
-            /*$pdf->SetXY(3.5+$x,3.35+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Contact No:",0,'L');
-            $pdf->SetFont('Arial','B',8);
-            $pdf->SetXY(4.5+$x,3.35+$Y);
-            $pdf->Cell(0.5,0.5, $data["mobNo"],0,'L');     */
 
             $Y= $Y+0.30;            
 
@@ -4390,7 +3980,7 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(4.3,3.6+$Y);
             $pdf->Cell(0.5,0.5,"",0,'R');
-            // //DebugBreak();
+
             $pdf->SetXY(5.3,3.6+$Y);
             $pdf->SetFont('Arial','',8);
             $pdf->Cell( 0.5,0.5,"Board:",0,'L');
@@ -4426,24 +4016,6 @@ class Admission_matric extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(4.0,4.05+$Y);
             $pdf->Cell( 0.5,0.5,"",0,'L');
-            /*     //__Mobile    
-            $pdf->SetXY(6.4,4.05+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Mobile No:",0,'L');
-            $pdf->SetFont('Arial','b',8);
-            $pdf->SetXY(7.0,4.05+$Y);
-            $pdf->Cell(0.5,0.5,$data["mobNo"],0,'R');*/
-
-
-            //__Address
-            /*  $pdf->SetXY(0.5,4.05+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Address(In Urdu):",0,'L');
-            $pdf->SetFont('Arial','b',8);
-            $pdf->SetXY(1.45,4.05+$Y);
-            $pdf->Cell(0.5,0.5,'_______________________________________________________________________________________________',0,'L');       */
-
-
             //__Address
             $pdf->SetXY(0.5,4.25+$Y);
             $pdf->SetFont('Arial','',8);
@@ -4461,25 +4033,6 @@ class Admission_matric extends CI_Controller {
             $pdf->Cell(0.5,0.5,'__________________________________________________________________________________________________',0,'L');     
 
 
-
-            //-----
-
-            /* //__Address
-            $pdf->SetXY(0.5,4.05+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Address(In Urdu):",0,'L');
-            $pdf->SetFont('Arial','b',8);
-            $pdf->SetXY(1.45,4.05+$Y);
-            $pdf->Cell(0.5,0.5,'______________________________________________________________________________________',0,'L');     
-
-            //__Address
-            $pdf->SetXY(0.5,4.30+$Y);
-            $pdf->SetFont('Arial','',8);
-            $pdf->Cell( 0.5,0.5,"Address:",0,'L');
-            $pdf->SetFont('Arial','b',8);
-            $pdf->SetXY(1.2,4.30+$Y);
-            $pdf->Cell(0.5,0.5,$data["addr"],0,'L');    */
-            ////DebugBreak();
             //------------- Exam Info Box
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(0.2,4.99+$Y);
@@ -4541,7 +4094,7 @@ class Admission_matric extends CI_Controller {
 
             $len = $pdf->GetStringWidth($bardata['hri']);
             Barcode::rotate(-$len / 2, ($bardata['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
-            ////DebugBreak();
+
             $cat = $data['cat09'];
             $cat_name ="";
             if ($cat==1) $cat_name= "Full Appear";
@@ -4583,7 +4136,7 @@ class Admission_matric extends CI_Controller {
 
             $x = 1;
             //--------------------------- Subjects
-            //    DebugBreak();
+
             $pdf->SetFont('Arial','',8);
             $pdf->SetXY(1.1,5.85+$Y);
             $pdf->Cell(0.3,0.4,"1._______________________________",0,'L');             
@@ -4609,7 +4162,7 @@ class Admission_matric extends CI_Controller {
             $pdf->Cell(0.3,0.4,"3._______________________________",0,'L');    
             $pdf->SetXY(1.15,6.25+$Y);
             $pdf->Cell(0.5,0.5,  $data['sub3Ap1'] != 1 ? '':   '    '. $data['sub3_NAME'],0,'L');
-            ////DebugBreak();
+
             $pdf->SetXY(4.6,6.35+$Y);
             $pdf->Cell(0.3,0.4,"3._______________________________",0,'L');
             $pdf->SetXY(4.65,6.25+$Y);
@@ -4714,8 +4267,7 @@ class Admission_matric extends CI_Controller {
             $pdf->Cell(1.6,0.001,'_____________________________________','',0,'L',0);
             $pdf->SetXY(3.65,9.9+$Y);
             $pdf->Cell(1.6,0.67,$emstxt ,'',0,'L',0);  
-            /*$pdf->SetXY(2.5,10.1+$Y);
-            $pdf->Cell(1.6,0.69,$inst ,'',0,'L',0); */
+
             //---------------------------------------------------------------------------
 
             $pdf->SetXY(0.2,9.25+$Y);
@@ -4742,233 +4294,13 @@ class Admission_matric extends CI_Controller {
 
             break;
 
-            //======================================================================================
         }
 
         $pdf->Output($data["Sch_cd"].'.pdf', 'I');
     }
-    /* public function financeReoprt()
-    {
-    $this->load->library('PDFFWithOutPage');
-    $pdf=new PDFFWithOutPage();   
-    $pdf->SetAutoPageBreak(true,2);
-    $pdf->AddPage('L',"A4");
-
-    $fontSize = 10; 
-    $marge    = .95;   // between barcode and hri in pixel
-    $bx        = 245.6;  // barcode center
-    $by        = 23.75;  // barcode center
-    $height   = 5.7;   // barcode height in 1D ; module size in 2D
-    $width    = .26;  // barcode height in 1D ; not use in 2D
-    $angle    = 0;   // rotation in degrees
-
-    $code     = '222020';     // barcode (CP852 encoding for Polish and other Central European languages)
-    $type     = 'code128';
-    $black    = '000000'; // color in hex
-    $Y = 3;
-    $x = 5;
-    $pdf->SetTextColor(0 ,0,0);
-    $pdf->SetFont('Arial','B',14);
-    $pdf->SetXY(58.2,8);
-    $pdf->Cell(0, 0.2, "BOARD OF INTERMEDIATE & SECONDARY EDUCATION, GUJRANWALA", 0.25, "C");
-    $pdf->SetFont('Arial','',10);
-    $pdf->SetXY(74.2,13);
-    $pdf->Cell(0, 0.25, "FINANCE REPORT FOR SECONDARY SCHOOL ANNUAL (10TH) EXAMINATION, 2016", 0.25, "C");
-
-    $pdf->Image("assets/img/icon2.png",5,6, 35,30, "PNG");
-
-    $pdf->SetXY(40,22);
-    $pdf->SetFont('Arial','',10);
-    $pdf->Cell( 0.5,0.5,"Name of Institute:",0,'L');
-
-    $boxWidth = 150.0;
-
-    $pdf->SetFillColor(255,255,255);
-    //Table cell Global varibales;
-    $Y = 40;
-    $cellheight = 14;
-    $font = 9;
-    $x = 30.2;
-    $floatwidth = 15;
-
-    $pdf->SetXY(70,20);
-    $pdf->MultiCell(154.6,5,'152027-GOVT. GIRLS HIGH SCHOOL AHMAD ABAD (NAROWAL)',0,'L');
-
-
-    $Barcode = "10@2016@1@122345";
-
-    $bardata = Barcode::fpdf($pdf, $black, $bx, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
-
-    $len = $pdf->GetStringWidth($bardata['hri']);
-    Barcode::rotate(-$len / 2, ($bardata['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
-
-    $pdf->SetFillColor(255,255,255);
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x, $Y);
-    $pdf->Cell(12,$cellheight,'Sr. No.',1,0,'C',1);
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+12, $Y);
-    //$pdf->Cell(70.6,$cellheight,'',1,0,'L',1);
-    $pdf->MultiCell(70.6,$cellheight,'Name of Category',1,'L');
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+82.8, $Y);
-    $pdf->MultiCell($floatwidth+38,$cellheight/2,'Pratical Students',1,'C');
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+82.8, $Y+7);
-    $pdf->Cell(26.5,$cellheight/2,'Count',1,0,'C',1);
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+109.3, $Y+7);
-    $pdf->Cell(26.5,$cellheight/2,'Fees',1,0,'C',1);
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+135.8, $Y);
-    $pdf->MultiCell($floatwidth+38,$cellheight/2,'Non-Pratical Students',1,'C');
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+135.8, $Y+7);
-    $pdf->Cell(26.5,$cellheight/2,'Count',1,0,'C',1);
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+162.3, $Y+7);
-    $pdf->Cell(26.5,$cellheight/2,'Fees',1,0,'C',1);
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+188.8, $Y);
-    $pdf->MultiCell($floatwidth+38,$cellheight/2,'Total Students',1,'C');
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+188.8, $Y+7);
-    $pdf->Cell(26.5,$cellheight/2,'Total Count',1,0,'C',1);
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+215.3, $Y+7);
-    $pdf->Cell(26.5,$cellheight/2,'Total Fees',1,0,'C',1);
-
-    $items[]['name'] = '10th Class Arts Students(Fresh)';
-    $items[]['name'] = '10th Class Scince Students(Fresh)';
-    $items[]['name'] = '10th Class Arts Students(Composite)';
-    $items[]['name'] = '10th Class Scince Students(Composite)';
-    //  
-    //   $pdf->SetFillColor(255,0,0);
-    // $pdf->SetLineWidth(.005);
-    //   $pdf->SetAlpha(.6);
-    //$pdf->Image("assets/img/icon2.png",85,35, 120,100, "PNG");
-    // $pdf->SetAlpha(.9);
-    $pdf->SetTextColor(0,0,0);
-
-    // $pdf->SetTextColor(0,0,0);
-    //$pdf->SetFillColor(255,255,255);
-    $cellheight = $cellheight -3;
-    $pcountstd = '';
-    $npcountstd = '';
-    $npfeestd = '';
-    $pfeestd = '';
-    $rowfee = '';
-    $rowstd = '';
-    for($i = 0 ; $i<count($items); $i++)
-    {
-    if($i == 0)
-    {
-    $Y  = $Y + 14.2;  
-    }
-    else
-    {
-    $Y  = $Y + 11.2;  
-    }
-
-    $itemname = $items[$i]['name'];
-
-    $pdf->SetXY($x,$Y);
-    $pdf->Cell(12,$cellheight,$i+1,1,0,'C',1);
-
-    $pdf->SetXY($x+12, $Y);
-    //$pdf->Cell(70.6,$cellheight,'',1,0,'L',1);
-    $pdf->MultiCell(70.6,$cellheight,$itemname,1,'L');
-
-    $pdf->SetXY($x+82.8, $Y);
-    $pdf->Cell(26.5,$cellheight,'2',1,0,'C',1);
-    $pcountstd+=2;
-
-    $pdf->SetXY($x+109.3, $Y);
-    $pdf->Cell(26.5,$cellheight,'2000',1,0,'C',1);
-    $pfeestd+=2000;
-
-    $pdf->SetXY($x+135.8, $Y);
-    $pdf->Cell(26.5,$cellheight,'2',1,0,'C',1);
-    $npcountstd+=2;
-
-    $pdf->SetXY($x+162.3, $Y);
-    $pdf->Cell(26.5,$cellheight,'2000',1,0,'C',1);
-    $npfeestd+= 2000;
-
-    $rowfee = 2+2;
-    $rowstd = 2000+2000;
-
-    $pdf->SetXY($x+188.8, $Y);
-    $pdf->Cell(26.5,$cellheight,'4',1,0,'C',1);
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+215.3, $Y);
-    $pdf->Cell(26.5,$cellheight,'4000',1,0,'C',1);
-
-    //   $pdf->SetXY($x+82.8, $Y);
-    // $pdf->MultiCell($floatwidth+38,$cellheight-3,'Pratical Students',1,'C');
-    }
-    $Y= $Y+11;
-    $pdf->SetXY($x, $Y);
-    //$pdf->Cell(70.6,$cellheight,'',1,0,'L',1);
-    $cellheight  = $cellheight-4;
-    $pdf->MultiCell(82.6,$cellheight,"Sub Total:",1,'R');
-    $pdf->SetXY($x+82.8, $Y);
-    $pdf->Cell(26.5,$cellheight,$pcountstd,1,0,'C',1);
-
-    $pdf->SetXY($x+109.3, $Y);
-    $pdf->Cell(26.5,$cellheight,$pfeestd,1,0,'C',1);
-
-    $pdf->SetXY($x+135.8, $Y);
-    $pdf->Cell(26.5,$cellheight,$npcountstd,1,0,'C',1);
-
-    $pdf->SetXY($x+162.3, $Y);
-    $pdf->Cell(26.5,$cellheight,$npfeestd,1,0,'C',1);
-
-    $pdf->SetXY($x+188.8, $Y);
-    $pdf->Cell(26.5,$cellheight,$pcountstd+$npcountstd,1,0,'C',1);
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+215.3, $Y);
-    $pdf->Cell(26.5,$cellheight,$npfeestd+$pfeestd,1,0,'C',1);
-    $cellheight  = $cellheight+1;
-    $pdf->SetXY($x, $Y+7);
-    //$pdf->Cell(70.6,$cellheight,'',1,0,'L',1);
-    $pdf->MultiCell(188.8,$cellheight,"Grand Total:",1,'R');
-
-    $pdf->SetXY($x+188.8, $Y+7);
-    $pdf->Cell(26.5,$cellheight,$pcountstd+$npcountstd,1,0,'C',1);
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+215.3, $Y+7);
-    $pdf->Cell(26.5,$cellheight,$npfeestd+$pfeestd,1,0,'C',1);
-
-    $pdf->Image("assets/img/headsign.jpg",$x,$Y+30, 72,24, "JPG"); 
-
-    $pdf->SetFont('Arial','B',$font);
-    $pdf->SetXY($x+170,$Y+30);
-    $pdf->Cell(50,$cellheight,"Printing Date:",0,0,'C',1);
-    $pdf->SetXY($x+205,$Y+30);
-    $pdf->Cell(20,$cellheight,"16-05-2016",0,0,'C',1);
-    $pdf->Output('financeReoprt.pdf', 'I'); 
-    }  */
-
 
     public function financeReoprt()
     {
-
-        //  DebugBreak();
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $user = $Logged_In_Array['logged_in'];
@@ -4977,10 +4309,10 @@ class Admission_matric extends CI_Controller {
         $result = array('data'=>$this->Admission_matric_model->forwarding_pdf_Finance_final($fetch_data),'inst_Name'=>$user['inst_Name']);    
         if(empty($result['data']))
         {
-            //redirect('Admission_matric'); 
+
         }
-        $temp = $user['Inst_Id'].'@'.Year.'@'.Session;
-        //$image =  $this->set_barcode($temp);
+        $CurrentYear = Year + 1;
+        $temp = $user['Inst_Id'].'@'.$CurrentYear.'@'.Session;
 
         $this->load->library('PDFFWithOutPage');
         $pdf=new PDFFWithOutPage();   
@@ -5000,13 +4332,13 @@ class Admission_matric extends CI_Controller {
         $type     = 'code128';
         $black    = '000000'; // color in hex
 
-        $data['iyear'] = CURRENT_SESS1;
+        $data['iyear'] = Year;
         $data['sess'] = Session;
 
         $Barcode = $temp;
 
         $result[0] = $result['data'][0];
-        // DebugBreak();
+
         $pdf->Image("assets/img/10thFinancebranch.png",5,6, 200,280, "PNG");
         $pdf->Image("assets/img/M2.jpg",100, 2.8, 10, 10, "jpg");
         $bardata = Barcode::fpdf($pdf, $black, $bx, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
@@ -5016,8 +4348,8 @@ class Admission_matric extends CI_Controller {
 
         $pdf->SetFont('Arial','B',11.5);
         $pdf->SetXY(72.5, 47);
-        $pdf->Cell(0,0,CURRENT_SESS1,0,0,'L',0);
-       //  DebugBreak();
+        $pdf->Cell(0,0,$CurrentYear,0,0,'L',0);
+
         if($data['sess'] ==  1)
         {
             $pdf->Image("assets/img/Annual.jpg",84.9,43, 14,8, "JPG"); 
@@ -5031,204 +4363,186 @@ class Admission_matric extends CI_Controller {
         $print = 7;
         if($rule_fee[0]['Fee_Type']=='Single Fee')
         {
-        $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")";
+            $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")";
 
             $Y = 70; //single Fee
-             $print = 7;
+            $print = 7;
         }
         else if($rule_fee[0]['Fee_Type']=='Double Fee')
         {
-         $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")". '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
+            $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")". '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
             $Y = 80; //double Fee
-             $print = 15;
+            $print = 15;
         }
-       else if($rule_fee[0]['Fee_Type']=='Triple Fee')
+        else if($rule_fee[0]['Fee_Type']=='Triple Fee')
         {
 
             if($rule_fee[0]['Fine']=='0'){
-            $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
-             '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
-            $specFee2 = '  T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")";
+                $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
+                '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
+                $specFee2 = '  T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")";
 
                 $Y = 90; //Tripple Fee
-                 $print = 23;
+                $print = 23;
             }
             else{
-            $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
-             '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
-            $specFee2= '  T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")".
-             '    F('.$result[0]['Total_Fee_Spec_fineFee'].'/-    '.$result[0]['Total_SpeCandidate_fineFee'].")";
+                $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
+                '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
+                $specFee2= '  T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")".
+                '    F('.$result[0]['Total_Fee_Spec_fineFee'].'/-    '.$result[0]['Total_SpeCandidate_fineFee'].")";
 
                 $Y = 100; // per day fee
-                 $print = 31;
+                $print = 31;
             }
         }
         else
         {
-        $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
-             '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
+            $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
+            '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
             $specFee2= '  T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")".
-             '    F('.$result[0]['Total_Fee_Spec_fineFee'].'/-    '.$result[0]['Total_SpeCandidate_fineFee'].")";
+            '    F('.$result[0]['Total_Fee_Spec_fineFee'].'/-    '.$result[0]['Total_SpeCandidate_fineFee'].")";
 
-                    $Y = 100; // per day fee 
-                     $print = 31;       
+            $Y = 100; // per day fee 
+            $print = 31;       
         }
         $font = 12;
         $x = 13; 
         $tempx ;
-//        DebugBreak();
+
         for($i =0 ; $i<$print ; $i++)
         {
-        /* if($i>0 && $i<=7)  // Single
-              {
-                $Y = 70;
-              }
-              else if($i>7 && $i<=13)  // Double
-              {
-                $Y = 80;
-              }
-              else if($i>13 && $i<=20)     // Triple 
-              {
-                $Y = 90;
-              }
-              else if($i>20)
-              {
-                $Y = 100;
-              } */
             $pdf->SetFont('Arial','B',$font);
             $pdf->SetXY($x, $Y+2);
             $isschedule = 0;
-            //$result[0]['Total_sci']
+
             if($i == 6 || $i == 13 || $i == 20 || $i == 27)
             {
-                //$pdf->SetXY(30, $Y+2);
-                //$pdf->Cell(0,0,$result[0][''],0,0,'L',0);
                 if($i==6)
                 {
-                 $Y = 70;
-                $Total_sci = $result[0]['Total_sci_singleFee'];
+                    $Y = 70;
+                    $Total_sci = $result[0]['Total_sci_singleFee'];
                 }
                 if($i==13)
                 {
-                $Y = 80;
-                $Total_sci= $result[0]['Total_sci_doubleFee'];
+                    $Y = 80;
+                    $Total_sci= $result[0]['Total_sci_doubleFee'];
                 }
                 if($i==20)
                 {
-                 $Y = 90;
-                $Total_sci= $result[0]['Total_sci_tripleFee'];
+                    $Y = 90;
+                    $Total_sci= $result[0]['Total_sci_tripleFee'];
                 }
                 if($i==27)
                 {
-                 $Y = 100;
-                $Total_sci= $result[0]['Total_sci_fineFee'];
+                    $Y = 100;
+                    $Total_sci= $result[0]['Total_sci_fineFee'];
                 }
                 $pdf->SetXY($x-20, $Y+$isschedule);
                 $pdf->Cell(0,0,$Total_sci,0,0,'L',0);
             }
             else if($i == 5 || $i == 12 || $i == 19 || $i == 26)
             {
-               
-                 if($i==5)
+
+                if($i==5)
                 {
-                 $Y = 70;
-                $Total_Arts = $result[0]['Total_Arts_singleFee'];
-                
+                    $Y = 70;
+                    $Total_Arts = $result[0]['Total_Arts_singleFee'];
+
                 }
                 if($i==12)
                 {
-                $Y = 80;
-                $Total_Arts= $result[0]['Total_Arts_doubleFee'];
-                
+                    $Y = 80;
+                    $Total_Arts= $result[0]['Total_Arts_doubleFee'];
+
                 }
                 if($i==19)
                 {
-                 $Y = 90;
-                $Total_Arts= $result[0]['Total_Arts_tripleFee'];
+                    $Y = 90;
+                    $Total_Arts= $result[0]['Total_Arts_tripleFee'];
                 }
                 if($i==26)
                 {
-                 $Y = 100;
-                $Total_Arts= $result[0]['Total_Arts_fineFee'];
+                    $Y = 100;
+                    $Total_Arts= $result[0]['Total_Arts_fineFee'];
                 }
-                 $pdf->SetXY($x-16, $Y+$isschedule);
+                $pdf->SetXY($x-16, $Y+$isschedule);
                 $pdf->Cell(0,0,$Total_Arts,0,0,'L',0);
             }
             else if($i == 4 || $i == 11 || $i == 18 || $i == 25)
             {
-               
+
                 if($i==4)
                 {
-                 $Y = 70;
-                $Total_ArtsPr = $result[0]['Total_ArtsPr_singleFee'];
-               
+                    $Y = 70;
+                    $Total_ArtsPr = $result[0]['Total_ArtsPr_singleFee'];
+
                 }
                 if($i==11)
                 {
-                 $Y = 80;
-                $Total_ArtsPr= $result[0]['Total_ArtsPr_doubleFee'];
-               
+                    $Y = 80;
+                    $Total_ArtsPr= $result[0]['Total_ArtsPr_doubleFee'];
+
                 }
                 if($i==18)
                 {
-                 $Y = 90;
-                $Total_ArtsPr= $result[0]['Total_ArtsPr_tripleFee'];
+                    $Y = 90;
+                    $Total_ArtsPr= $result[0]['Total_ArtsPr_tripleFee'];
                 }
                 if($i==25)
                 {
-                 $Y = 100;
-                $Total_ArtsPr = $result[0]['Total_ArtsPr_fineFee'];
+                    $Y = 100;
+                    $Total_ArtsPr = $result[0]['Total_ArtsPr_fineFee'];
                 }
-                 $pdf->SetXY($x-14, $Y+$isschedule); 
+                $pdf->SetXY($x-14, $Y+$isschedule); 
                 $pdf->Cell(0,0,$Total_ArtsPr,0,0,'L',0);
             }
             else if($i == 3 || $i == 10 || $i == 17 || $i == 24)
             {
                 $pdf->SetXY($x-12, $Y+$isschedule);
-                 if($i==3)
+                if($i==3)
                 {
-                 $Y = 70;
-                $Total_ReApSc = $result[0]['Total_ReApSc_singleFee'];
+                    $Y = 70;
+                    $Total_ReApSc = $result[0]['Total_ReApSc_singleFee'];
                 }
                 if($i==10)
                 {
-                 $Y = 80;
-                $Total_ReApSc= $result[0]['Total_ReApSc_doubleFee'];
+                    $Y = 80;
+                    $Total_ReApSc= $result[0]['Total_ReApSc_doubleFee'];
                 }
                 if($i==17)
                 {
-                 $Y = 90;
-                $Total_ReApSc= $result[0]['Total_ReApSc_tripleFee'];
+                    $Y = 90;
+                    $Total_ReApSc= $result[0]['Total_ReApSc_tripleFee'];
                 }
                 if($i==24)
                 {
-                 $Y = 100;
-                $Total_ReApSc = $result[0]['Total_ReApSc_fineFee'];
+                    $Y = 100;
+                    $Total_ReApSc = $result[0]['Total_ReApSc_fineFee'];
                 }
                 $pdf->Cell(0,0,$Total_ReApSc,0,0,'L',0);
             }
             else if($i == 2 || $i == 9 || $i == 16 || $i == 23)
             {
                 $pdf->SetXY($x-8, $Y+$isschedule);
-                 if($i==2)
+                if($i==2)
                 {
-                $Y = 70;
-                $Total_ReApArts = $result[0]['Total_ReApArts_singleFee'];
+                    $Y = 70;
+                    $Total_ReApArts = $result[0]['Total_ReApArts_singleFee'];
                 }
                 if($i==9)
                 {
-                 $Y = 80;
-                $Total_ReApArts= $result[0]['Total_ReApArts_doubleFee'];
+                    $Y = 80;
+                    $Total_ReApArts= $result[0]['Total_ReApArts_doubleFee'];
                 }
                 if($i==16)
                 {
-                 $Y = 90;
-                $Total_ReApArts= $result[0]['Total_ReApArts_tripleFee'];
+                    $Y = 90;
+                    $Total_ReApArts= $result[0]['Total_ReApArts_tripleFee'];
                 }
                 if($i==23)
                 {
-                 $Y = 100;
-                $Total_ReApArts = $result[0]['Total_ReApArts_fineFee'];
+                    $Y = 100;
+                    $Total_ReApArts = $result[0]['Total_ReApArts_fineFee'];
                 }
                 $pdf->Cell(0,0,$Total_ReApArts,0,0,'L',0);
             }
@@ -5237,65 +4551,64 @@ class Admission_matric extends CI_Controller {
                 $pdf->SetXY($x, $Y+$isschedule);
                 if($i==1)
                 {
-                 $Y = 70;
-                 $pdf->SetXY($x, $Y+$isschedule);
-                $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_singleFee'];
+                    $Y = 70;
+                    $pdf->SetXY($x, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_singleFee'];
                 }
                 if($i==8)
                 {
-                 $Y = 80;
-                 $pdf->SetXY($x-4, $Y+$isschedule);
-                $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_doubleFee'];
+                    $Y = 80;
+                    $pdf->SetXY($x-4, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_doubleFee'];
                 }
                 if($i==15)
                 {
-                 $Y = 90;
-                 $pdf->SetXY($x-4, $Y+$isschedule);
-                $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_tripleFee'];
+                    $Y = 90;
+                    $pdf->SetXY($x-4, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_tripleFee'];
                 }
                 if($i==22)
                 {
-                 $Y = 100;
-                 $pdf->SetXY($x-4, $Y+$isschedule);
-                $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_fineFee'];
+                    $Y = 100;
+                    $pdf->SetXY($x-4, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_fineFee'];
                 }
                 $pdf->Cell(0,0,$Total_ReApArtsPr_singleFee,0,0,'L',0);
             }
             else if($i == 0 || $i == 7 || $i == 14 || $i == 21)
             {
-             //  DebugBreak();
                 $font = 9;
                 $pdf->SetFont('Arial','B',$font);
-                
+
                 if($i==0)
                 {
-                 $Y = 70;
-                $total_singleFee = $result[0]['Total_Fee_singleFee'];
+                    $Y = 70;
+                    $total_singleFee = $result[0]['Total_Fee_singleFee'];
                 }
                 if($i==7)
                 {
-                 $Y = 80;
-                  $x = 13; 
-                $total_singleFee = $result[0]['Total_Fee_doubleFee'];
+                    $Y = 80;
+                    $x = 13; 
+                    $total_singleFee = $result[0]['Total_Fee_doubleFee'];
                 }
                 if($i==14)
                 {
-                $Y = 90;
-                 $x = 13; 
-                $total_singleFee = $result[0]['Total_Fee_tripleFee'];
+                    $Y = 90;
+                    $x = 13; 
+                    $total_singleFee = $result[0]['Total_Fee_tripleFee'];
                 }
                 if($i==21)
                 {
-                 $Y = 100;
-                  $x = 13; 
-                $total_singleFee = $result[0]['Total_Fee_fineFee'];
+                    $Y = 100;
+                    $x = 13; 
+                    $total_singleFee = $result[0]['Total_Fee_fineFee'];
                 }
                 $pdf->SetXY($x-1, $Y+$isschedule);
                 $pdf->Cell(0,0,$total_singleFee.'/-',0,0,'L',0);
-                
+
                 $font = 14;
             }
-           
+
             if($i==1 || $i == 7 || $i == 14 || $i == 21)
             {
                 $x= $x+26; 
@@ -5308,38 +4621,7 @@ class Admission_matric extends CI_Controller {
                 {
                     $x= $x-5; 
                 }
-               
             }
-              
-           /* else if($i==7)
-            {
-                $x= $x-22; 
-            }  */          
-            /*else if($i>7 && $i<13 )
-            {
-                $x= $x-22; 
-
-                if($i == 11)
-                {
-                    $x= $x-5; 
-                }
-            }                      */
-            
-            
-           /*  if($i==1 || $i == 8 || $i == 15 || $i == 22)
-            {
-                $x= $x+26; 
-            }
-            else if($i<6 || $i < 13 || $i < 20 || $i < 27)
-            {
-                $x= $x+22; 
-
-                if($i==4 || $i == 11 || $i == 18 || $i == 25)
-                {
-                    $x= $x-5; 
-                }
-            }        */
-        
         }
         $x = 144;
         $Y = 70;
@@ -5353,7 +4635,6 @@ class Admission_matric extends CI_Controller {
         $pdf->SetXY($x-75, $Y+47.5);
         $pdf->Cell(0,0,$specFee2,0,0,'L',0);
 
-        // DebugBreak();
         $pdf->SetFont('Arial','B',$font);
         $pdf->SetXY($x-30, $Y+172);
         $pdf->Cell(0,0,$user['Inst_Id'],0,0,'L',0);
@@ -5369,57 +4650,42 @@ class Admission_matric extends CI_Controller {
         $pdf->SetFont('Arial','B',$font);
         $pdf->SetXY($x-30, $Y+206);
         $pdf->Cell(0,0,$user['cell'],0,0,'L',0);
-        
+
         $pdf->SetFont('Arial','B',8);
         $pdf->SetXY($x-135, $Y+215);
         $pdf->Cell(0,0,"* S = Single Fee Schedule, D = Double Fee Schedule, T = Triple Fee Schedule, F = Fine Fee Schedule    Printing Date: ".date('d-m-Y h:i A'),0,0,'L',0);
-        /////Matric Branch Copy
-          $print = 7;
-       //   $specFee1 = "";
-       //   $specFee2 = "";
+
+        $print = 7;
         if($rule_fee[0]['Fee_Type']=='Single Fee')
         {
-       // $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")";
             $Y = 65; //single Fee
-              $print = 7;
+            $print = 7;
         }
         else if($rule_fee[0]['Fee_Type']=='Double Fee')
         {
-        //$specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")". '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
             $Y = 75; //double Fee
-             $print = 15;
+            $print = 15;
         }
-       else if($rule_fee[0]['Fee_Type']=='Triple Fee')
+        else if($rule_fee[0]['Fee_Type']=='Triple Fee')
         {
 
             if($rule_fee[0]['Fine']=='0')
             {
-           // $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
-           //  '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
-         //   $specFee2 = 'T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")";
-
                 $Y = 85; //Tripple Fee
-                  $print = 23;
+                $print = 23;
             }
             else{
-         //   $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
-         //    '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
-         //   $specFee2= 'T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")".
-         //    '    F('.$result[0]['Total_Fee_Spec_fineFee'].'/-    '.$result[0]['Total_SpeCandidate_fineFee'].")";
                 $Y = 95; // per day fee
-                   $print = 31;  
+                $print = 31;  
             }
         }
         else
         {
-           $Y = 95; // per day fee
-           $print = 31;  
-         //  $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
-        //     '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
-        //    $specFee2= 'T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")".
-         //    '    F('.$result[0]['Total_Fee_Spec_fineFee'].'/-    '.$result[0]['Total_SpeCandidate_fineFee'].")";
+            $Y = 95; // per day fee
+            $print = 31;  
+
         }
-         
+
         $font = 12;
         $x = 13; 
         $pdf->AddPage('P',"A4");
@@ -5432,7 +4698,7 @@ class Admission_matric extends CI_Controller {
 
         $pdf->SetFont('Arial','B',11.5);
         $pdf->SetXY(72.5, 50);
-        $pdf->Cell(0,0,CURRENT_SESS1,0,0,'L',0);
+        $pdf->Cell(0,0,$CurrentYear,0,0,'L',0);
 
         if($data['sess'] ==  1)
         {
@@ -5443,165 +4709,147 @@ class Admission_matric extends CI_Controller {
         {
             $pdf->Image("assets/img/Supply.png",87,46, 12,8, "png");
         }
-//        DebugBreak();
         $isschedule = 8;
         $Y= 64;
         $sY = 75;
         $dY = 85;
         $tY = 94;
         $fY = 103;
-     for($i =0 ; $i<$print ; $i++)
+        for($i =0 ; $i<$print ; $i++)
         {
-        /* if($i>0 && $i<=7)  // Single
-              {
-                $Y = 70;
-              }
-              else if($i>7 && $i<=13)  // Double
-              {
-                $Y = 80;
-              }
-              else if($i>13 && $i<=20)     // Triple 
-              {
-                $Y = 90;
-              }
-              else if($i>20)
-              {
-                $Y = 100;
-              } */
+
             $pdf->SetFont('Arial','B',$font);
             $pdf->SetXY($x, $Y+2);
             $isschedule = 0;
-            //$result[0]['Total_sci']
+
             if($i == 6 || $i == 13 || $i == 20 || $i == 27)
             {
-                //$pdf->SetXY(30, $Y+2);
-                //$pdf->Cell(0,0,$result[0][''],0,0,'L',0);
                 if($i==6)
                 {
-                 $Y = $sY;
-                $Total_sci = $result[0]['Total_sci_singleFee'];
+                    $Y = $sY;
+                    $Total_sci = $result[0]['Total_sci_singleFee'];
                 }
                 if($i==13)
                 {
-                $Y = $dY;
-                $Total_sci= $result[0]['Total_sci_doubleFee'];
+                    $Y = $dY;
+                    $Total_sci= $result[0]['Total_sci_doubleFee'];
                 }
                 if($i==20)
                 {
-                 $Y = $tY;
-                $Total_sci= $result[0]['Total_sci_tripleFee'];
+                    $Y = $tY;
+                    $Total_sci= $result[0]['Total_sci_tripleFee'];
                 }
                 if($i==27)
                 {
-                 $Y = $fY;
-                $Total_sci= $result[0]['Total_sci_fineFee'];
+                    $Y = $fY;
+                    $Total_sci= $result[0]['Total_sci_fineFee'];
                 }
                 $pdf->SetXY($x-20, $Y+$isschedule);
                 $pdf->Cell(0,0,$Total_sci,0,0,'L',0);
             }
             else if($i == 5 || $i == 12 || $i == 19 || $i == 26)
             {
-               
-                 if($i==5)
+
+                if($i==5)
                 {
-                 $Y = $sY;
-                $Total_Arts = $result[0]['Total_Arts_singleFee'];
-                
+                    $Y = $sY;
+                    $Total_Arts = $result[0]['Total_Arts_singleFee'];
+
                 }
                 if($i==12)
                 {
-                $Y = $dY;
-                $Total_Arts= $result[0]['Total_Arts_doubleFee'];
-                
+                    $Y = $dY;
+                    $Total_Arts= $result[0]['Total_Arts_doubleFee'];
+
                 }
                 if($i==19)
                 {
-                 $Y = $tY;
-                $Total_Arts= $result[0]['Total_Arts_tripleFee'];
+                    $Y = $tY;
+                    $Total_Arts= $result[0]['Total_Arts_tripleFee'];
                 }
                 if($i==26)
                 {
-                 $Y = $fY;
-                $Total_Arts= $result[0]['Total_Arts_fineFee'];
+                    $Y = $fY;
+                    $Total_Arts= $result[0]['Total_Arts_fineFee'];
                 }
-                 $pdf->SetXY($x-16, $Y+$isschedule);
+                $pdf->SetXY($x-16, $Y+$isschedule);
                 $pdf->Cell(0,0,$Total_Arts,0,0,'L',0);
             }
             else if($i == 4 || $i == 11 || $i == 18 || $i == 25)
             {
-               
+
                 if($i==4)
                 {
-                 $Y = $sY;
-                $Total_ArtsPr = $result[0]['Total_ArtsPr_singleFee'];
-               
+                    $Y = $sY;
+                    $Total_ArtsPr = $result[0]['Total_ArtsPr_singleFee'];
+
                 }
                 if($i==11)
                 {
-                 $Y = $dY;
-                $Total_ArtsPr= $result[0]['Total_ArtsPr_doubleFee'];
-               
+                    $Y = $dY;
+                    $Total_ArtsPr= $result[0]['Total_ArtsPr_doubleFee'];
+
                 }
                 if($i==18)
                 {
-                 $Y = $tY;
-                $Total_ArtsPr= $result[0]['Total_ArtsPr_tripleFee'];
+                    $Y = $tY;
+                    $Total_ArtsPr= $result[0]['Total_ArtsPr_tripleFee'];
                 }
                 if($i==25)
                 {
-                 $Y = $fY;
-                $Total_ArtsPr = $result[0]['Total_ArtsPr_fineFee'];
+                    $Y = $fY;
+                    $Total_ArtsPr = $result[0]['Total_ArtsPr_fineFee'];
                 }
-                 $pdf->SetXY($x-14, $Y+$isschedule); 
+                $pdf->SetXY($x-14, $Y+$isschedule); 
                 $pdf->Cell(0,0,$Total_ArtsPr,0,0,'L',0);
             }
             else if($i == 3 || $i == 10 || $i == 17 || $i == 24)
             {
                 $pdf->SetXY($x-12, $Y+$isschedule);
-                 if($i==3)
+                if($i==3)
                 {
-                 $Y = $sY;
-                $Total_ReApSc = $result[0]['Total_ReApSc_singleFee'];
+                    $Y = $sY;
+                    $Total_ReApSc = $result[0]['Total_ReApSc_singleFee'];
                 }
                 if($i==10)
                 {
-                 $Y = $dY;
-                $Total_ReApSc= $result[0]['Total_ReApSc_doubleFee'];
+                    $Y = $dY;
+                    $Total_ReApSc= $result[0]['Total_ReApSc_doubleFee'];
                 }
                 if($i==17)
                 {
-                 $Y = $tY;
-                $Total_ReApSc= $result[0]['Total_ReApSc_tripleFee'];
+                    $Y = $tY;
+                    $Total_ReApSc= $result[0]['Total_ReApSc_tripleFee'];
                 }
                 if($i==24)
                 {
-                 $Y = $fY;
-                $Total_ReApSc = $result[0]['Total_ReApSc_fineFee'];
+                    $Y = $fY;
+                    $Total_ReApSc = $result[0]['Total_ReApSc_fineFee'];
                 }
                 $pdf->Cell(0,0,$Total_ReApSc,0,0,'L',0);
             }
             else if($i == 2 || $i == 9 || $i == 16 || $i == 23)
             {
                 $pdf->SetXY($x-8, $Y+$isschedule);
-                 if($i==2)
+                if($i==2)
                 {
-                $Y = $sY;
-                $Total_ReApArts = $result[0]['Total_ReApArts_singleFee'];
+                    $Y = $sY;
+                    $Total_ReApArts = $result[0]['Total_ReApArts_singleFee'];
                 }
                 if($i==9)
                 {
-                 $Y = $dY;
-                $Total_ReApArts= $result[0]['Total_ReApArts_doubleFee'];
+                    $Y = $dY;
+                    $Total_ReApArts= $result[0]['Total_ReApArts_doubleFee'];
                 }
                 if($i==16)
                 {
-                 $Y = $tY;
-                $Total_ReApArts= $result[0]['Total_ReApArts_tripleFee'];
+                    $Y = $tY;
+                    $Total_ReApArts= $result[0]['Total_ReApArts_tripleFee'];
                 }
                 if($i==23)
                 {
-                 $Y = $fY;
-                $Total_ReApArts = $result[0]['Total_ReApArts_fineFee'];
+                    $Y = $fY;
+                    $Total_ReApArts = $result[0]['Total_ReApArts_fineFee'];
                 }
                 $pdf->Cell(0,0,$Total_ReApArts,0,0,'L',0);
             }
@@ -5610,64 +4858,64 @@ class Admission_matric extends CI_Controller {
                 $pdf->SetXY($x, $Y+$isschedule);
                 if($i==1)
                 {
-                 $Y = $sY;
-                $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_singleFee'];
+                    $Y = $sY;
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_singleFee'];
                 }
                 if($i==8)
                 {
-                 $Y = $dY;
-                  $pdf->SetXY($x-4, $Y+$isschedule);
-                $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_doubleFee'];
+                    $Y = $dY;
+                    $pdf->SetXY($x-4, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_doubleFee'];
                 }
                 if($i==15)
                 {
-                 $Y = $tY;
-                 $pdf->SetXY($x-4, $Y+$isschedule);
-                $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_tripleFee'];
+                    $Y = $tY;
+                    $pdf->SetXY($x-4, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_tripleFee'];
                 }
                 if($i==22)
                 {
-                 $Y = $fY;
-                 $pdf->SetXY($x-4, $Y+$isschedule);
-                $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_fineFee'];
+                    $Y = $fY;
+                    $pdf->SetXY($x-4, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_fineFee'];
                 }
                 $pdf->Cell(0,0,$Total_ReApArtsPr_singleFee,0,0,'L',0);
             }
             else if($i == 0 || $i == 7 || $i == 14 || $i == 21)
             {
-             //  DebugBreak();
+
                 $font = 9;
                 $pdf->SetFont('Arial','B',$font);
-                
+
                 if($i==0)
                 {
-                 $Y = $sY;
-                $total_singleFee = $result[0]['Total_Fee_singleFee'];
+                    $Y = $sY;
+                    $total_singleFee = $result[0]['Total_Fee_singleFee'];
                 }
                 if($i==7)
                 {
-                 $Y = $dY;
-                  $x = 13; 
-                $total_singleFee = $result[0]['Total_Fee_doubleFee'];
+                    $Y = $dY;
+                    $x = 13; 
+                    $total_singleFee = $result[0]['Total_Fee_doubleFee'];
                 }
                 if($i==14)
                 {
-                $Y = $tY;
-                 $x = 13; 
-                $total_singleFee = $result[0]['Total_Fee_tripleFee'];
+                    $Y = $tY;
+                    $x = 13; 
+                    $total_singleFee = $result[0]['Total_Fee_tripleFee'];
                 }
                 if($i==21)
                 {
-                 $Y = $fY;
-                  $x = 13; 
-                $total_singleFee = $result[0]['Total_Fee_fineFee'];
+                    $Y = $fY;
+                    $x = 13; 
+                    $total_singleFee = $result[0]['Total_Fee_fineFee'];
                 }
                 $pdf->SetXY($x-1, $Y+$isschedule);
                 $pdf->Cell(0,0,$total_singleFee.'/-',0,0,'L',0);
-                
+
                 $font = 14;
             }
-           
+
             if($i==1 || $i == 7 || $i == 14 || $i == 21)
             {
                 $x= $x+26; 
@@ -5680,46 +4928,15 @@ class Admission_matric extends CI_Controller {
                 {
                     $x= $x-5; 
                 }
-               
             }
-              
-           /* else if($i==7)
-            {
-                $x= $x-22; 
-            }  */          
-            /*else if($i>7 && $i<13 )
-            {
-                $x= $x-22; 
-
-                if($i == 11)
-                {
-                    $x= $x-5; 
-                }
-            }                      */
-            
-            
-           /*  if($i==1 || $i == 8 || $i == 15 || $i == 22)
-            {
-                $x= $x+26; 
-            }
-            else if($i<6 || $i < 13 || $i < 20 || $i < 27)
-            {
-                $x= $x+22; 
-
-                if($i==4 || $i == 11 || $i == 18 || $i == 25)
-                {
-                    $x= $x-5; 
-                }
-            }        */
-        
         }
-         $x = 144;
-         $Y= 64;
-        //$x = 144;
+        $x = 144;
+        $Y= 64;
+
         $pdf->SetFont('Arial','B',$font);
         $pdf->SetXY($x-115, $Y+54);
         $pdf->Cell(0,0,$result[0]['Grand_Total_Fee'].'/-',0,0,'L',0);
-       // DebugBreak();
+
         $pdf->SetFont('Arial','B',8);
         $pdf->SetXY($x-80, $Y+53);
         $pdf->Cell(0,0,$specFee1,0,0,'L',0);
@@ -5744,7 +4961,7 @@ class Admission_matric extends CI_Controller {
         $pdf->SetXY($x-30, $Y+213);
         $pdf->Cell(0,0,$user['cell'],0,0,'L',0);
 
-          $pdf->SetFont('Arial','B',8);
+        $pdf->SetFont('Arial','B',8);
         $pdf->SetXY($x-135, $Y+225);
         $pdf->Cell(0,0,"* S = Single Fee Schedule, D = Double Fee Schedule, T = Triple Fee Schedule, F = Fine Fee Schedule    Printing Date: ".date('d-m-Y h:i A'),0,0,'L',0);
 
@@ -5773,7 +4990,7 @@ class Admission_matric extends CI_Controller {
         return 1;
     }
     function frmvalidation($viewName,$allinputdata,$isupdate)
-    {  // DebugBreak();
+    {
         $_POST['address']  = str_replace("'", "", $_POST['address'] );
 
         if(@$_POST['dob_hidden'] != null)
@@ -5787,11 +5004,9 @@ class Admission_matric extends CI_Controller {
             $allinputdata['excep'] = 'Please Enter Your Name';
             $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
             redirect('Admission_matric/'.$viewName);
-            return; //"NewEnrolment_EditForm_matric"
+            return;
 
         }
-        //(strpos($a, 'are') !== false)
-
 
         else if (@$_POST['father_name'] == '')
         {
@@ -5863,11 +5078,7 @@ class Admission_matric extends CI_Controller {
             return;
 
         }
-        /* else if((@$_POST['speciality'] != '0')or (@$_POST['speciality'] != '1') or (@$_POST['speciality'] != '2'))
-        {
-        $error['excep'] = 'Please Enter Your Speciality';
-        $this->load->view('Admission_matric/9th/NewEnrolment.php',$error);
-        }*/
+
         else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
         {
             $allinputdata['excep'] = 'Please Select Your medium';
@@ -5908,14 +5119,7 @@ class Admission_matric extends CI_Controller {
             return;
 
         }
-        /*else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
-        {
-        $allinputdata['excep'] = 'Please Select Your Residency';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/'.$viewName);
-        return;
 
-        }*/
         else if(@$_POST['address'] =='')
         {
             $allinputdata['excep'] = 'Please Enter Your Address';
@@ -5976,73 +5180,6 @@ class Admission_matric extends CI_Controller {
 
         }
 
-        /*  else if((@$_POST['sub1p2'] == @$_POST['sub2p2']) ||(@$_POST['sub1p2'] == @$_POST['sub3p2'])||(@$_POST['sub1p2'] == @$_POST['sub4p2'])||(@$_POST['sub1p2'] == @$_POST['sub5p2'])||(@$_POST['sub1p2'] == @$_POST['sub6p2'])||(@$_POST['sub1p2'] == @$_POST['sub7p2'])||
-        (@$_POST['sub1p2'] == @$_POST['sub8p2']))
-        {
-        $allinputdata['excep'] = 'Please Select Different Subjects';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/'.$viewName);
-        return;
-
-        }
-        else if((@$_POST['sub2p2'] == @$_POST['sub1p2']) ||(@$_POST['sub2p2'] == @$_POST['sub3p2'])||(@$_POST['sub2p2'] == @$_POST['sub4p2'])||(@$_POST['sub2p2'] == @$_POST['sub5p2'])||(@$_POST['sub2p2'] == @$_POST['sub6p2'])||(@$_POST['sub2p2'] == @$_POST['sub7p2'])                         ||(@$_POST['sub2'] == @$_POST['sub8'])
-        )
-        {
-        $allinputdata['excep'] = 'Please Select Different Subjects';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/'.$viewName);
-        return;
-
-        }
-        else if((@$_POST['sub3p2'] == @$_POST['sub1p2']) ||(@$_POST['sub3p2'] == @$_POST['sub2p2'])||(@$_POST['sub3p2'] == @$_POST['sub4p2'])||(@$_POST['sub3p2'] == @$_POST['sub5p2'])||(@$_POST['sub3p2'] == @$_POST['sub6p2'])||(@$_POST['sub3p2'] == @$_POST['                                sub7'])||(@$_POST['sub3'] == @$_POST['sub8'])
-        )
-        {
-        $allinputdata['excep'] = 'Please Select Different Subjects';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/'.$viewName);
-        return;
-
-        }
-        else if((@$_POST['sub4p2'] == @$_POST['sub1p2']) ||(@$_POST['sub4p2'] == @$_POST['sub3p2'])||(@$_POST['sub4p2'] == @$_POST['sub2p2'])||(@$_POST['sub4p2'] == @$_POST['sub5p2'])||(@$_POST['sub4p2'] == @$_POST['sub6p2'])||(@$_POST['sub4p2'] == @$_POST[                                 'sub7p2'])||(@$_POST['sub4p2'] == @$_POST['sub8p2']))
-        {
-        $allinputdata['excep'] = 'Please Select Different Subjects';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/'.$viewName);
-        return;
-
-        }
-        else if((@$_POST['sub5p2'] == @$_POST['sub1p2']) ||(@$_POST['sub5p2'] == @$_POST['sub3p2'])||(@$_POST['sub5p2'] == @$_POST['sub4p2'])||(@$_POST['sub5p2'] == @$_POST['sub2p2'])||(@$_POST['sub5p2'] == @$_POST['sub6p2'])||(@$_POST['sub5p2'] == @                                        $_POST['sub7'])||(@$_POST['sub5'] == @$_POST['sub8']))
-        {
-        $allinputdata['excep'] = 'Please Select Different Subjects';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/'.$viewName);
-        return;
-
-        }
-        else if((@$_POST['sub6p2'] == @$_POST['sub1p2']) ||(@$_POST['sub6p2'] == @$_POST['sub3p2'])||(@$_POST['sub6p2'] == @$_POST['sub4p2'])||(@$_POST['sub6p2'] == @$_POST['sub5p2'])||(@$_POST['sub6p2'] == @$_POST['sub2p2'])||(@$_POST['sub6p2'] ==                                          @$_POST['sub7'])||(@$_POST['sub6'] == @$_POST['sub8']))
-        {
-        $allinputdata['excep'] = 'Please Select Different Subjects';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/'.$viewName);
-        return;
-
-        }
-        else if((@$_POST['sub7p2'] == @$_POST['sub1p2']) ||(@$_POST['sub7p2'] == @$_POST['sub3p2'])||(@$_POST['sub7p2'] == @$_POST['sub4p2'])||(@$_POST['sub7p2'] == @$_POST['sub5p2'])||(@$_POST['sub7p2'] == @$_POST['sub6p2'])||(@$_POST['sub7p2']                                              == @$_POST['sub2'])||(@$_POST['sub7'] == @$_POST['sub8']))
-        {
-        $allinputdata['excep'] = 'Please Select Different Subjects';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/'.$viewName);
-        return;
-
-        }
-        else if((@$_POST['sub8p2'] == @$_POST['sub1p2']) ||(@$_POST['sub8p2'] == @$_POST['sub3p2'])||(@$_POST['sub8p2'] == @$_POST['sub4p2'])||(@$_POST['sub8p2'] == @$_POST['sub5p2'])||(@$_POST['sub8p2'] == @$_POST['sub6p2'])||(@$_POST['                                                   sub8'] == @$_POST['sub7'])||(@$_POST['sub8'] == @$_POST['sub2']))
-        {
-        $allinputdata['excep'] = 'Please Select Different Subjects';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Admission_matric/'.$viewName);
-        return;
-
-        }*/
         else if((@$_POST['sub7p2'] ==20) && (@$_POST['sub8p2']==21))
         {
             $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
@@ -6139,6 +5276,7 @@ class Admission_matric extends CI_Controller {
 
         }
     }
+    
     function base64_to_jpeg($base64_string, $output_file) {
         $ifp = fopen($output_file, "wb"); 
 
@@ -6154,5 +5292,4 @@ class Admission_matric extends CI_Controller {
         $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
         $this->output->set_header("Pragma: no-cache");
     }
-
 }

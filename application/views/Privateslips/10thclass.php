@@ -148,7 +148,7 @@
                 <div class="inHeaderLogin">
                     <a href="" title="BISE Gujranwala" rel="home"><img style="margin-top: 9px;text-align:left;width:150px;float: left;margin-left: 14px;" src="<?=base_url()?>assets/img/icon.png" alt="Logo BISE GRW"></a>
                     <!--Intimation-->
-                    <p style="color: wheat;text-align: center;font-size: 23px;margin-left: 28px;float: left;  margin-top:35px;">Board of Intermediate & Secondary Education, Gujranwala </br></br><?=PVT_TITLE?></p>
+                    <p style="color: wheat;text-align: center;font-size: 23px;margin-left: 28px;float: left;  margin-top:35px;">Board of Intermediate & Secondary Education, Gujranwala </br></br> <?= PVT_TITLE?></p>
                 </div>
             </div> 
             <div id="wraper2">
@@ -157,11 +157,11 @@
 
                    
                         <label>
-                            <input type="radio" name="type" checked="checked" value="1" />By Form No.</label>
+                            <input type="radio" name="type" checked="checked" value="1" >By Form No.</label>
                         <label>
-                            <input type="radio" name="type" value="2"/>By Roll No.</label>
+                            <input type="radio" name="type" value="2">By Roll No.</label>
                         <label>
-                            <input type="radio" name="type" value="3"/>By Personal Informaiton</label>
+                            <input type="radio" name="type" value="3">By Personal Informaiton</label>
  <br />
  <br />
                              <b style="color: red;margin-left: 260px;font-size: 20px;"><?= $message?></b>

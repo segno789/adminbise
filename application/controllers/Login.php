@@ -40,7 +40,7 @@ class Login extends CI_Controller {
             'user_status' => ''                     
 
         );
-       // DebugBreak();
+//DebugBreak();
         //$this->is_logged_in();
         
         
@@ -60,7 +60,7 @@ class Login extends CI_Controller {
             }
 
             }*/
-          //  DebugBreak();
+            //DebugBreak();
             $this->load->model('login_model'); 
             $isdefualter = $this->login_model->chekdefultar($_POST['username']);
             if( $isdefualter != -1)
@@ -82,7 +82,7 @@ class Login extends CI_Controller {
             $appConfig = $this->login_model->getappconfig();
 
             
-            if($logedIn['tbl_inst']['feedingDate'] != null || $logedIn['SpecPermission']==1)
+          /*  if($logedIn['tbl_inst']['feedingDate'] != null || $logedIn['SpecPermission']==1)
             {
                 $lastdate  = date('Y-m-d',strtotime($logedIn['tbl_inst']['feedingDate'])) ;
                 $spec_lastdate = date('Y-m-d',strtotime($logedIn['spec_info']['FeedingDate']));
@@ -93,7 +93,7 @@ class Login extends CI_Controller {
                     $appConfig['isadmP1'] = 1;
                 }
 
-            }
+            }*/
             
             
           
@@ -190,21 +190,16 @@ class Login extends CI_Controller {
                             }
                         }
                     }
-                    if($_POST['username'] == 399901 || $_POST['username'] == 399903 )
-                    {
-                        //$appConfig['isadmP1'] = 1;
-                        $appConfig['isreg'] = 1;
-                        $isfeeding = 1; 
-                    }
+                  
                     
-                     $appConfig['isresultP2'] = 1;
-                     //$isfeeding = 1; 
+                   // $isfeeding = 1;
+                    
                     //DebugBreak();
                     $sess_array = array(
-                        'Inst_Id' => $logedIn['flusers']['inst_cd'] ,
+                        'Inst_Id' => $logedIn['tbl_inst']['Inst_cd'] ,
                         'pass' => $logedIn['flusers']['pass'] ,
                         'edu_lvl' => $logedIn['tbl_inst']['edu_lvl'],
-                        'inst_Name' => $logedIn['flusers']['inst_name'],
+                        'inst_Name' => $logedIn['tbl_inst']['Name'],
                         'gender' => $logedIn['tbl_inst']['Gender'],
                         'isrural' => $logedIn['tbl_inst']['IsRural'],
                         'grp_cd' => $logedIn['tbl_inst']['allowed_mGrp'],
@@ -228,7 +223,7 @@ class Login extends CI_Controller {
                     $this->load->library('session');
 
                     $this->session->set_userdata('logged_in', $sess_array); 
-                    redirect('Registration/');
+                    redirect('dashboard/');
 
 
                 }
@@ -264,7 +259,7 @@ class Login extends CI_Controller {
 
         if(@$_POST['username'] != '' && @$_POST['password'] != '')
         {   
-            if(@$_POST['username'] == 2222 || @$_POST['username'] == 2229)
+            if(@$_POST['username'] == 2222 || @$_POST['username'] == 2303)
             {
 
 
@@ -274,8 +269,8 @@ class Login extends CI_Controller {
                 if($logedIn != false)
                 {  
                     $sess_array = array(
-                        'Inst_Id' => $logedIn['emp_cd'] ,
-                        'edu_lvl' => $logedIn['bs'],
+                        'Inst_Id' => $logedIn['Emp_cd'] ,
+                        'edu_lvl' => $logedIn['BS'],
                         'inst_Name' => $logedIn['Name'],
                         'isdeaf' => 0,
                         'isboardoperator' => 1,

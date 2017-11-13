@@ -20,7 +20,7 @@
                                         </div>
                                     </a>
                                 </div>
-
+                               
                                 <?php 
 
                                 //  DebugBreak();
@@ -91,10 +91,10 @@
                                     <div class="metro-nav-block nav-block-red">
 
                                         <a href="<?php echo base_url(); ?>RollNoSlip/NinthStd">
-                                            <div class="fs1" aria-hidden="true" data-icon="&#xe05c;"></div>
-                                            <div class="brand">
-                                                9th Roll Number Slips
-                                            </div>
+                                        <div class="fs1" aria-hidden="true" data-icon="&#xe05c;"></div>
+                                        <div class="brand">
+                                            9th Roll Number Slips
+                                        </div>
                                         </a>
                                     </div>
                                     <?php }
@@ -102,7 +102,7 @@
                                 if($appconfig['isslipP2S'] == 1) {
                                     ?>
 
-                                    <div class="metro-nav-block nav-block-yellow">
+                                     <div class="metro-nav-block nav-block-yellow">
 
                                         <a  href="<?=base_url();?>RollNoSlip/TenthStd" >
                                             <div class="fs1" aria-hidden="true" data-icon="&#xe05c;"></div>
@@ -111,30 +111,30 @@
                                             </div>
                                         </a>
                                     </div>
+                                    
 
                                     <?php }
 
 
-                                if($appconfig['isresultP1'] == 1)
-                                {
+                                if($appconfig['isresultP1'] == 1){
 
                                     ?>
-                                    <div class="metro-nav-block nav-block-green">
-                                        <a  href"<?=base_url();?>Result/dashboard9th" >
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe05c;"></div>
-                                        <div class="brand">
-                                            9th Result Cards
-                                        </div>
-                                        </a>
+                                      <div class="metro-nav-block nav-block-green">
 
+                                        <a  href="<?=base_url();?>Result/dashboard9th" >
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe0b8;"></div>
+                                            <div class="brand">
+                                                9th Result Cards
+                                            </div>
+                                        </a>
                                     </div>
-                                    <?php 
-                                }
+                                    
+                                    <?php }
 
                                 if($appconfig['isresultP2'] == 1){
                                     ?>
-
-
+                                   
+                                    
                                     <div class="metro-nav-block nav-block-blue">
 
                                         <a  href="<?=base_url();?>Result/dashboard10th" >
@@ -145,8 +145,8 @@
                                         </a>
                                     </div>
 
-
-
+                                    
+                                    
                                     <?php } 
 
                                 if($appconfig['isresultP2S'] == 1){
@@ -161,8 +161,7 @@
                                     </div>
 
                                     <?php }?>
-                                    
-                               
+
 
                             </div>
                         </div>

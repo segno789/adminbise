@@ -110,6 +110,8 @@
 
 
 
+
+
         a.imglink{
             background:         #000;
             display:            inline-block;
@@ -121,6 +123,42 @@
         }
         a.imglink:hover img{
             opacity:            0.5;
+        }
+
+
+        .blink_me {
+            -webkit-animation-name: blinker;
+            -webkit-animation-duration: 3s;
+            -webkit-animation-timing-function: linear;
+            -webkit-animation-iteration-count: infinite;
+
+            -moz-animation-name: blinker;
+            -moz-animation-duration: 3s;
+            -moz-animation-timing-function: linear;
+            -moz-animation-iteration-count: infinite;
+
+            animation-name: blinker;
+            animation-duration: 3s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @-moz-keyframes blinker {  
+            0% { opacity: 1.0; }
+        50% { opacity: 0.0; }
+        100% { opacity: 1.0; }
+        }
+
+        @-webkit-keyframes blinker {  
+            0% { opacity: 1.0; }
+        50% { opacity: 0.0; }
+        100% { opacity: 1.0; }
+        }
+
+        @keyframes blinker {  
+            0% { opacity: 1.0; }
+        50% { opacity: 0.0; }
+        100% { opacity: 1.0; }
         }
 
     </style>
@@ -150,7 +188,7 @@
             <div class="circle4"></div>
         </div>
     </div>
-</div> 
+</div>
 
 <div class="container">
 <div class="row-fluid">

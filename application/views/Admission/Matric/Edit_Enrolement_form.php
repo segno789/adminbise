@@ -1,3 +1,8 @@
+<?php 
+$type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION); 
+@$image_path_selected = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents(@$data[0]['PicPath']));
+?>
+
 <div class="dashboard-wrapper class wysihtml5-supported">
     <div class="left-sidebar">
         <div class="row-fluid">
@@ -21,23 +26,9 @@
                                     <label class="control-label span2" >
 
                                     </label> 
-                                    <!--echo '/'.IMAGE_PATH.$Inst_Id.'/'.$data[0]['PicPath'];-->
-                                    <?php
-                                    if($data[0]["Brd_cd"] ==  1)
-                                    {
-                                        $picpath = DIRPATH.'\\'.@$data[0]['PicPath'];
-                                    }
-                                    else
-                                    {
-                                        $picpath =  DIRPATHOTHER.'/'.$data[0]["Sch_cd"].'/'.$data[0]['PicPath']; 
-                                    }
-                                   // echo $picpath;
-                                    $type = pathinfo($picpath, PATHINFO_EXTENSION);
-                                    $data[0]['PicPath'] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($picpath));
-                                    
-                                    ?>
-                                    <img id="previewImg" style="width:80px; height: 80px;" class="span2" src="<?php echo $data[0]['PicPath']; ?>" alt="Candidate Image">
-                               <input type="hidden" value="<?php echo @$data[0]['PicPath'];?>" name="pic">
+                                   
+                                    <img id="previewImg" style="width:80px; height: 80px;" class="span2" src="<?php  echo $image_path_selected;?>" alt="Candidate Image">
+                               <input type="hidden" value="<?php echo $image_path_selected;?>" name="pic">
                                 </div>
                             </div>
                             <div class="control-group">

@@ -410,7 +410,7 @@
         40: 'HEALTH & PHYSICAL EDUCATION',
         78: 'COMPUTER SCIENCE',
         15 : 'GEOMETRICAL & TECHNICAL DRAWING',
-       /* 43 : 'ELECTRICAL WIRING',*/
+        //43 : 'ELECTRICAL WIRING',
         48 : 'WOOD WORK (FURNITURE MAKING)',
         90 : 'COMPUTER HARDWARE',
         83 : 'POULTRY FARMING',
@@ -441,7 +441,7 @@
         40: 'HEALTH & PHYSICAL EDUCATION',
         78: 'COMPUTER SCIENCE',
         15 : 'GEOMETRICAL & TECHNICAL DRAWING',
-        /*43 : 'ELECTRICAL WIRING',*/
+        //43 : 'ELECTRICAL WIRING',
         48 : 'WOOD WORK (FURNITURE MAKING)',
         90 : 'COMPUTER HARDWARE',
         83 : 'POULTRY FARMING',
@@ -1010,7 +1010,7 @@
         else if($("#std_group").val() == "8"){
 
             load_Bio_CS_Sub_NewEnrolement();
-            $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
+            //$("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
         }
         else if($("#std_group").val() == "2"){
 
@@ -1670,9 +1670,7 @@
                 complete: function() { $('.mPageloader').hide();},
                 success: function(json) {
                     var listitems;
-                    //alert('Hi i am success');
-                    // console.log("I am console");
-                    // console.log(url);
+                   
                     $('#pvtZoner').empty();
                     $('#pvtZoner').append('<option value="0">SELECT ZONE</option>');
                     $.each(json, function (key, data) {
@@ -1689,26 +1687,7 @@
                         })
                     })
                     $('#pvtZoner').append(listitems)
-                    /*console.log(data.length);
-                    for (var i = 0; i < data.length; i++) {
-
-                    console.log(" Thesil : "+ data[i].zone_name);
-                    // var checkBox = "<input type='checkbox' data-price='" + data[i].Price + "' name='" + data[i].Name + "' value='" + data[i].ID + "'/>" + data[i].Name + "<br/>";
-                    // $(checkBox).appendTo('#modifiersDiv');
-                    }*/
-                    //if (json)
-                    //{
-                    //var obj = jQuery.parseJSON(json);
-                    //  console.log(json.teh[0].zone_name);
-                    //alert( obj['teh']['Class']);
-                    //   alert(res.Sess);
-                    //   alert(res.Class);
-                    //   //debugger;
-                    //   Show Entered Value
-                    //   jQuery("div#result").show();
-                    //   jQuery("div#value").html(res.username);
-                    //   jQuery("div#value_pwd").html(res.pwd);
-                    //}
+                 
 
                 },
                 error: function(request, status, error){
@@ -1834,12 +1813,12 @@
                 $("#sub7").append(new Option('COMPUTER SCIENCE',78));
                 //    alert('hello  Sweet Heart ! I love You UMMMMAH :) ') 
             }
-           /* else if (grp_cd == "8")
+            else if (grp_cd == "8")
             {
                 load_Bio_CS_Sub();
-                $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                //$("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
                 //ELECTRICAL WIRING (OPT)
-            }   */
+            }
 
             else if(grp_cd == "2")
             {
@@ -1889,7 +1868,7 @@
                 }
 
 
-                var Gender = $("#gender").val();
+                var Gender = $("input[name=gender]:checked").val();
                 // debugger;
                 //console.log(Religion);
                 if(Gender == "2")

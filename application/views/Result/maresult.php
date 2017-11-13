@@ -81,9 +81,9 @@ return false;
             </div>
             <!--<a href="http://results.bisegrw.com/" target="_blank" style="    margin-left: 829px;margin-top: 5px;float: left;font-size: 25px;font-weight: bold;"> Result Link 2</a>-->
             <a href="http://www.bisegrw.com/" target="_blank" style="margin-left: 46%;;margin-top: 5px;float: left;font-size: 25px;font-weight: bold;"> Result Link 2</a>
-            <div id="page" class="countdown" style="display: none;">
+            <div id="page" class="countdown" >
 
-                <div style="  color: #246785;font-size: 20px;    text-align: center;margin-bottom: 1px;margin-left: 27px;margin-top: 48px;"> Gazette & CD Password: <b style="color: red;font-size: 22px;" >grwbise_11th</b></div>
+                <div style="  color: #246785;font-size: 20px;    text-align: center;margin-bottom: 1px;margin-left: 27px;margin-top: 48px;"> Gazette & CD Password: <b style="color: red;font-size: 22px;" >hssc@bisegrw</b></div>
                 <div style="width: 422px;float: left;">
 
                     <form id="searchForm"  class="searchForm" method="post">
@@ -149,7 +149,7 @@ return false;
                     else if( @$callback['check'] ==2)
                     {
                         //  DebugBreak();
-                        include "ia11presult.php";  
+                        include "ia12presult.php";  
                     }   ?>
 
 
@@ -267,15 +267,15 @@ return false;
               $('#cnthide').hide();
                         $('.headershow').show();
                         $('#page').show();   
-          /*  var datetime = new Date(2016,09,11,3,40,56);  
+            var datetime = new Date(2016,09,11,3,40,56);  
             console.log(datetime)
             //   console.log(new Date(2016,08,26,3,15,56))      
-            var $clock = $('#yEa').countdown(datetime)
+          /*  var $clock = $('#yEa').countdown(datetime)
             .on('update.countdown', function(event) {
 
                 var objthis = $(this)
 
-                $.get("index.php/result/servertime", function(data) {
+                $.get("<?= base_url()?>index.php/result/servertime", function(data) {
                     var times  = data.split(':');
                     //  var dates = datetime[0].split('-');
                     //var times = datetime[1].split(':');
@@ -340,7 +340,7 @@ return false;
                 $('.headershow').show();
                 $('#page').show();
 
-            });                      */
+            });       */
 
 
             $("input").keypress(function(event) {

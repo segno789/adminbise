@@ -1496,7 +1496,7 @@ class BiseCorrection extends CI_Controller {
     
     public function NewEnrolment_EditForm()
     {    
-        DebugBreak();
+        //DebugBreak();
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
@@ -1551,7 +1551,7 @@ class BiseCorrection extends CI_Controller {
     public function Delete_candidate_UPDATE()
     {
 
-       // DebugBreak();
+
         $this->load->helper('url');
         $data = array(
             'isselected' => '8',
@@ -2355,77 +2355,6 @@ class BiseCorrection extends CI_Controller {
         $this->load->view('BiseCorrection/9thCorrection/BatchRelease.php',$user_info_arr);
         $this->load->view('common/footer.php');
     }
-    
-    public function Registration()
-    {
-    
-   // DebugBreak();
-        $this->load->helper('url');
-        $data = array(
-            'isselected' => '0',
-        );
-        $this->load->library('session');
-        $this->load->model('BiseCorrections_model');
-        //  $data1 = array('Inst_Id'=>$Inst_Id);
-        if(!( $this->session->flashdata('BatchList_update'))){
-
-            $error_msg = '';  
-        }
-        else{
-            $error_msg = $this->session->flashdata('BatchList_update');
-        }
-
-        $user_info  =  $this->BiseCorrections_model->Batch_List();
-        $user_info_arr = array('info'=>$user_info,'errors_RB_update'=>$error_msg);
-        $NinthStdData = array('data'=>$this->BiseCorrections_model->get9thObjectionStdData());
-        $Logged_In_Array = $this->session->all_userdata();
-        $userinfo = $Logged_In_Array['logged_in'];
-        $this->load->view('common/header.php',$userinfo);
-        $this->load->view('common/menu.php',$data);
-        $this->load->view('BiseCorrection/Matric/Setting.php',$user_info_arr);
-        $this->load->view('common/footer.php');
-    }
-    
-     public function Reg_9th()
-    {
-    
-        ///DebugBreak();
-        $this->load->helper('url');
-        $this->load->library('encryption');
-        $plain_text = "Hello I am Text";
-        $encText = "9bbfe63ff76f251f674b82949e01962b189624a6aecfdf1d7c26289db0f3c246cd69c220cb3db2acd55269e57cd3c440d64bf1cf78dd842c56d9edb45aef01b86upAY+8hWc1/p8LTt4tmcUKaiRbpt04dQ4kmwUZRD3w=";
-        $this->encryption->create_key(encryption_key);
-        
-        $decText =  $this->encryption->decrypt($encText);
-        
-        //$encText = $this->encryption->encrypt($plain_text);
-        $encText;
-        
-        
-        $data = array(
-            'isselected' => '0',
-        );
-        $this->load->library('session');
-        $this->load->model('BiseCorrections_model');
-        //  $data1 = array('Inst_Id'=>$Inst_Id);
-        if(!( $this->session->flashdata('BatchList_update'))){
-
-            $error_msg = '';  
-        }
-        else{
-            $error_msg = $this->session->flashdata('BatchList_update');
-        }
-
-        $user_info  =  $this->BiseCorrections_model->Batch_List();
-        $user_info_arr = array('info'=>$user_info,'errors_RB_update'=>$error_msg);
-        $NinthStdData = array('data'=>$this->BiseCorrections_model->get9thObjectionStdData());
-        $Logged_In_Array = $this->session->all_userdata();
-        $userinfo = $Logged_In_Array['logged_in'];
-        $this->load->view('common/header.php',$userinfo);
-        $this->load->view('common/menu.php',$data);
-        $this->load->view('BiseCorrection/Matric/Reg_9th.php',$user_info_arr);
-        $this->load->view('common/footer.php');
-    }
     //BatchRestore.php
     public function BatchRestore()
     {
@@ -2454,7 +2383,6 @@ class BiseCorrection extends CI_Controller {
         $this->load->view('BiseCorrection/9thCorrection/BatchRestore.php',$user_info_arr);
         $this->load->view('common/footer.php');
     }
-    
     public function BatchRestoreManual()
     {
         $this->load->helper('url');

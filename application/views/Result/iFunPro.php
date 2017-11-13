@@ -1,12 +1,11 @@
 <?php
 function subRemarks($mVar)
-{     //DebugBreak();
+{
     $mVar = trim($mVar);
-    if ($mVar == "5")
-        return "Absent"; 
-    else if ($mVar == "2")
+    if ($mVar == "2")
         return "Less than Pass Marks";
-       
+    else if ($mVar == "5")
+        return "Absent";
         else
             return "&nbsp;";
 }
@@ -280,86 +279,6 @@ else if($_sub_cd == 99)  $ret_val = "BOOK KEEPING & ACCOUNTANCY";
 return $ret_val ;         
 }
 //------------------------------------------------------------------
-
-  function Get11thSubMarks($_sub_cd)
-    {
-        if($_sub_cd ==1)  $ret_val = "100";
-else if($_sub_cd ==2)  $ret_val = "100";
-else if($_sub_cd ==3)  $ret_val = "100";
-else if($_sub_cd ==4)  $ret_val = "100";
-else if($_sub_cd ==5)  $ret_val = "100";
-else if($_sub_cd ==6)  $ret_val = "100";
-else if($_sub_cd ==7)  $ret_val = "100";
-else if($_sub_cd ==8)  $ret_val = "85";
-else if($_sub_cd ==9)  $ret_val = "100";
-else if($_sub_cd ==10)  $ret_val = "100";
-else if($_sub_cd ==11)  $ret_val = "100";
-else if($_sub_cd ==12)  $ret_val = "85";
-else if($_sub_cd ==13)  $ret_val = "100";
-else if($_sub_cd ==14)  $ret_val = "100";
-else if($_sub_cd ==15)  $ret_val = "100";
-else if($_sub_cd ==16)  $ret_val = "85";
-else if($_sub_cd ==17)  $ret_val = "100";
-else if($_sub_cd ==18)  $ret_val = "85";
-else if($_sub_cd ==19)  $ret_val = "100";
-else if($_sub_cd ==20)  $ret_val = "100";
-else if($_sub_cd ==21)  $ret_val = "85";
-else if($_sub_cd ==22)  $ret_val = "40";
-else if($_sub_cd ==23)  $ret_val = "40";
-else if($_sub_cd ==24)  $ret_val = "100";
-else if($_sub_cd ==26)  $ret_val = "100";
-else if($_sub_cd ==27)  $ret_val = "100";
-else if($_sub_cd ==28)  $ret_val = "100";
-else if($_sub_cd ==29)  $ret_val = "100";
-else if($_sub_cd ==30)  $ret_val = "100";
-else if($_sub_cd ==32)  $ret_val = "100";
-else if($_sub_cd ==33)  $ret_val = "100";
-else if($_sub_cd ==34)  $ret_val = "100";
-else if($_sub_cd ==35)  $ret_val = "100";
-else if($_sub_cd ==36)  $ret_val = "100";
-else if($_sub_cd ==37)  $ret_val = "100";
-else if($_sub_cd ==38)  $ret_val = "100";
-else if($_sub_cd ==39)  $ret_val = "75";
-else if($_sub_cd ==42)  $ret_val = "85";
-else if($_sub_cd ==43)  $ret_val = "100";
-else if($_sub_cd ==44)  $ret_val = "75";
-else if($_sub_cd ==45)  $ret_val = "100";
-else if($_sub_cd ==46)  $ret_val = "85";
-else if($_sub_cd ==47)  $ret_val = "85";
-else if($_sub_cd ==48)  $ret_val = "85";
-else if($_sub_cd ==51)  $ret_val = "50";
-else if($_sub_cd ==52)  $ret_val = "100";
-else if($_sub_cd ==53)  $ret_val = "100";
-else if($_sub_cd ==54)  $ret_val = "100";
-else if($_sub_cd ==55)  $ret_val = "100";
-else if($_sub_cd ==56)  $ret_val = "100";
-else if($_sub_cd ==57)  $ret_val = "100";
-else if($_sub_cd ==58)  $ret_val = "100";
-else if($_sub_cd ==70)  $ret_val = "100";
-else if($_sub_cd ==71)  $ret_val = "75";
-else if($_sub_cd ==72)  $ret_val = "50";
-else if($_sub_cd ==75)  $ret_val = "100";
-else if($_sub_cd ==76)  $ret_val = "100";
-else if($_sub_cd ==79)  $ret_val = "85";
-else if($_sub_cd ==80)  $ret_val = "50";
-else if($_sub_cd ==81)  $ret_val = "100";
-else if($_sub_cd ==82)  $ret_val = "100";
-else if($_sub_cd ==83)  $ret_val = "75";
-else if($_sub_cd ==84)  $ret_val = "100";
-else if($_sub_cd ==85)  $ret_val = "100";
-else if($_sub_cd ==86)  $ret_val = "100";
-else if($_sub_cd ==87)  $ret_val = "100";
-else if($_sub_cd ==88)  $ret_val = "100";
-else if($_sub_cd ==90)  $ret_val = "85";
-else if($_sub_cd ==92)  $ret_val = "50";
-else if($_sub_cd ==93)  $ret_val = "50";
-else if($_sub_cd ==94)  $ret_val = "75";
-else if($_sub_cd ==95)  $ret_val = "75";
-else if($_sub_cd ==97)  $ret_val = "50";
-else if($_sub_cd ==99)  $ret_val = "100";
-   return $ret_val;
-    }
-
 
 function get_grade($percentage) {
     if($percentage >= 80.00) {

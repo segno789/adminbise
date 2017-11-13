@@ -169,35 +169,7 @@ class Admission_9th_pvt extends CI_Controller {
         $userinfo = $Logged_In_Array['logged_in'];
         $userinfo['isselected'] = 2;
 
-        $nxtrnosessyear = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic']);
-
-        //if($nxtrnosessyear !=  -1)
-        if($nxtrnosessyear[0][NextRno_Sess_Year] !="")
-        {
-            $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
-            $this->session->set_flashdata('NewEnrolment_error',"You have already appeared:".$nxtrnosessyear);
-            //  echo '<pre>'; print_r($allinputdata['excep']);exit();
-            redirect('Admission_9th_pvt/NewEnrolment/');
-            return false; 
-        }   
-         $nxtrnosessyear = $this->Admission_9th_reg_model->checknextrno_newAdmission($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic'],$_POST['bay_form']);
-        if($nxtrnosessyear[0][NextRno_Sess_Year] !="")
-        {
-            $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
-            $this->session->set_flashdata('NewEnrolment_error',"You have already appeared:".$nxtrnosessyear);
-            //  echo '<pre>'; print_r($allinputdata['excep']);exit();
-            redirect('Admission_9th_pvt/NewEnrolment/');
-            return false; 
-        } 
-        $nxtrnosessyear = $this->Admission_9th_reg_model->bay_form_fnic($_POST['bay_form'],$_POST['father_cnic']);
-        if($nxtrnosessyear[0][NextRno_Sess_Year] !="")
-        {
-            $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
-            $this->session->set_flashdata('NewEnrolment_error',"You have already appeared:".$nxtrnosessyear);
-            //  echo '<pre>'; print_r($allinputdata['excep']);exit();
-            redirect('Admission_9th_pvt/NewEnrolment/');
-            return false; 
-        }   
+    
 
 
         $formno =  '';//$this->Admission_9th_reg_model->GetFormNoPVT();
@@ -309,7 +281,7 @@ class Admission_9th_pvt extends CI_Controller {
 
         );
         //DebugBreak();
-        $this->frmvalidation('NewEnrolment',$data,0);
+        //$this->frmvalidation('NewEnrolment',$data,0);
         $target_path = PRIVATE_IMAGE_PATH9TH.$_POST['picname'];
         if (!file_exists($target_path))
         {
@@ -2051,9 +2023,10 @@ class Admission_9th_pvt extends CI_Controller {
 
         return 1;
     }
-    function frmvalidation($viewName,$allinputdata,$isupdate)
+    public function frmvalidation()
     {
-        // DebugBreak();
+        
+         $this->load->model('Admission_9th_reg_model');
         $_POST['address']  = str_replace("'", "", $_POST['address'] );
         $subjectslang = array('22','23','36','34','35');
         $subjectshis = array('20','21','19');
@@ -2070,53 +2043,29 @@ class Admission_9th_pvt extends CI_Controller {
         $cntnine = substr_count(@$_POST['bay_form'],"9");
 
 
-        if(@$_POST['dob'] != null || $allinputdata['Dob'] != null)
+        if(@$_POST['dob'] != null )
         {
             $date = new DateTime(@$_POST['dob']);
             $convert_dob = $date->format('Y-m-d');     
         }
 
-        if(@$_POST['cand_name'] == ''  || ($allinputdata['name'] == '' && $isupdate ==1)  )
+        if(@$_POST['cand_name'] == ''   )
         {
             $allinputdata['excep'] = 'Please Enter Your Name';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_9th_pvt/'.$viewName);
-            return;
+          
 
         }
-        //(strpos($a, 'are') !== false)
-        /* if ((strpos(@$_POST['cand_name'], 'MOHAMMAD') !== false)|| (strpos(@$_POST['cand_name'], 'MOHAMAD') !== false) || (strpos(@$_POST['cand_name'], 'MOHD') !== false) || (strpos(@$_POST['cand_name'], 'MUHAMAD') !== false) || (strpos(@$_POST['cand_name'], 'MOOHAMMAD') !== false)|| (strpos(@$_POST['cand_name'], 'MOOHAMAD') !== false))
-        {
-        $allinputdata['excep'] = 'MUHAMMAD Spelling is not Correct in Name';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Registration/'.$viewName);
-        return;
-
-        }
-
-        else*/ if (@$_POST['father_name'] == ''  || ($allinputdata['Fname'] == '' && $isupdate ==1) )
+      else if (@$_POST['father_name'] == ''   )
         {
             $allinputdata['excep'] = 'Please Enter Your Father Name';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_9th_pvt/'.$viewName);
-            return;
+           
 
         }
-        /*  if ((strpos(@$_POST['father_name'], 'MOHAMMAD') !== false)|| (strpos(@$_POST['father_name'], 'MOHAMAD') !== false) || (strpos(@$_POST['father_name'], 'MUHAMAD') !== false) || (strpos(@$_POST['father_name'], 'MOOHAMMAD') !== false)|| (strpos(@$_POST['father_name'], 'MOOHAMAD') !== false))
-        {
-        $allinputdata['excep'] = 'MUHAMMAD Spelling is not Correct in Fathers Name';
-        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-        redirect('Registration/'.$viewName);
-        return;
-
-        }*/
-
-        else if(@$_POST['bay_form'] == ''  || ($allinputdata['BForm'] == '' && $isupdate ==1) )
+       
+        else if(@$_POST['bay_form'] == ''   )
         {
             $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_9th_pvt/'.$viewName);
-            return;
+          
 
 
         }
@@ -2126,259 +2075,147 @@ class Admission_9th_pvt extends CI_Controller {
             )
             {
                 $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
-            /* else if($this->Registration_model->bay_form_comp(@$_POST['bay_form']) == true && $isupdate ==0 )
-            {
-            // DebugBreak();
-            $allinputdata['excep'] = 'This Bay Form is already Feeded.';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_9th_pvt/'.$viewName);
-            return;
+          
 
-
-
-            }*/
-            /* else if(@$_POST['oldbform'] !=  @$_POST['bay_form'] && $isupdate ==1 )
-            {
-            // DebugBreak();
-            if($this->Admission_9th_reg_model->bay_form_comp(@$_POST['bay_form']) == true )
-            {
-            // DebugBreak();
-            $allinputdata['excep'] = 'This Bay Form is already Feeded.';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_9th_pvt/'.$viewName);
-            return;
-            }
-            else if($this->Admission_9th_reg_model->name_fname_dob_fnic_comp(@$_POST['cand_name'],@$_POST['father_name'],@$_POST['father_cnic'],@$_POST['dob']) == true  )
-            {
-            // DebugBreak();
-            $allinputdata['excep'] = 'This Form is already Feeded.';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_9th_pvt/'.$viewName);
-            return;
-            }      
-            } */
-            /*else if($this->Registration_model->bay_form_fnic(@$_POST['bay_form'],@$_POST['father_cnic']) == true && $isupdate ==0 )
-            {
-            // DebugBreak();
-            $allinputdata['excep'] = 'This Form is already Feeded.';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_9th_pvt/'.$viewName);
-            return;
-
-
-
-            }
-            else if($this->Registration_model->bay_form_fnic_dob_comp(@$_POST['bay_form'],@$_POST['father_cnic'],$convert_dob) == true && $isupdate == 0 )
-            {
-            // DebugBreak();
-            $allinputdata['excep'] = 'This Form is already Feeded.';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_9th_pvt/'.$viewName);
-            return;
-
-
-
-            }                */
-
-            else if(@$_POST['father_cnic'] == '' || ($allinputdata['FNIC'] == '' && $isupdate ==1)  )
+            else if(@$_POST['father_cnic'] == '' )
             {
                 $allinputdata['excep'] = 'Please Enter Your Father CNIC';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+               
 
 
             }
             else if((@$_POST['bay_form'] == @$_POST['father_cnic']) || (@$_POST['father_cnic'] == @$_POST['bay_form']) )
             {
                 $allinputdata['excep'] = 'Your Bay Form and FNIC No. are not same';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+               
 
 
             }
-            else if (@$_POST['dob'] == ''  || ($allinputdata['Dob'] == ''   && $isupdate ==1) )
+            else if (@$_POST['dob'] == '' )
             {
                 $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
             else if(@$_POST['mob_number'] == '')
             {
                 $allinputdata['excep'] = 'Please Enter Your Mobile Number';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
             else if(@$_POST['medium'] == 0)
             {
                 $allinputdata['excep'] = 'Please Select Your Medium';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
-            /*else if(@$_POST['Inst_Rno']== '')
-            { 
-            $allinputdata['excep'] = 'Please Enter Your Roll Number';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_9th_pvt/'.$viewName);
-            return;
-
-            }  */
+           
             else if(@$_POST['MarkOfIden']== '')
             {
                 $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
 
-            /* else if((@$_POST['speciality'] != '0')or (@$_POST['speciality'] != '1') or (@$_POST['speciality'] != '2'))
-            {
-            $error['excep'] = 'Please Enter Your Speciality';
-            $this->load->view('Admission_9th_pvt/9th/NewEnrolment.php',$error);
-            }*/
             else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
             {
                 $allinputdata['excep'] = 'Please Select Your medium';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
-
+                
             }
             else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
             {
                 $allinputdata['excep'] = 'Please Select Your Nationality';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+              
 
             }
             else if((@$_POST['gender'] != '1') and (@$_POST['gender'] != '2'))
             {
                 $allinputdata['excep'] = 'Please Select Your Gender';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
             else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
             {
                 $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
             else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
             {
                 $allinputdata['excep'] = 'Please Select Your religion';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
-
+                
             }
             else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
             {
                 $allinputdata['excep'] = 'Please Select Your Residency';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
             else if(@$_POST['address'] =='')
             {
                 $allinputdata['excep'] = 'Please Enter Your Address';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+               
 
             }
             else if(@$_POST['pvtinfo_dist'] ==''  || @$_POST['pvtinfo_dist'] ==0  )
             {
                 $allinputdata['excep'] = 'Please Select Your District First.';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+               
 
             }
             else if(@$_POST['pvtinfo_teh'] =='' || @$_POST['pvtinfo_teh'] ==0)
             {
                 $allinputdata['excep'] = 'Please Select Your Tehsil First.';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
             else if(@$_POST['pvtZone'] =='' || @$_POST['pvtZone'] ==0)
             {
                 $allinputdata['excep'] = 'Please Select Your Zone First.';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+               
 
             }
             else if(@$_POST['std_group'] == 0)
             {
                 $allinputdata['excep'] = 'Please Select Your Study Group';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+               
 
             }
             else if((@$_POST['std_group'] == 1) && ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=8)))
             {
 
                 $allinputdata['excep'] = 'Subjects not according to Group';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+             
 
             }
             else if((@$_POST['std_group'] == 7)&& ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=78)))
             {
 
                 $allinputdata['excep'] = 'Subjects not according to Group';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
             else if((@$_POST['std_group'] == 8)&& ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=43)))
             {
 
                 $allinputdata['excep'] = 'Subjects not according to Group';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+                
 
             }
             else if((@$_POST['std_group'] == 2) && ((@$_POST['sub4']==5) || (@$_POST['sub5']==6)||(@$_POST['sub6']==7)|| (@$_POST['sub7']==43) || (@$_POST['sub7']==8)))
             {
                 $allinputdata['excep'] = 'Subjects not according to Group';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+               
 
             }
 
             else if((@$_POST['std_group'] == 5)&& ((@$_POST['sub4']==5) || (@$_POST['sub5']==6)||(@$_POST['sub6']==7)|| (@$_POST['sub7']==43) || (@$_POST['sub7']==8)))
             {
                 $allinputdata['excep'] = 'Subjects not according to Group';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_9th_pvt/'.$viewName);
-                return;
+               
 
             }
 
@@ -2386,164 +2223,165 @@ class Admission_9th_pvt extends CI_Controller {
                 (@$_POST['sub1'] == @$_POST['sub8']))
                 {
                     $allinputdata['excep'] = 'Please Select Different Subjects';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_9th_pvt/'.$viewName);
-                    return;
+                  
 
                 }
                 else if((@$_POST['sub2'] == @$_POST['sub1']) ||(@$_POST['sub2'] == @$_POST['sub3'])||(@$_POST['sub2'] == @$_POST['sub4'])||(@$_POST['sub2'] == @$_POST['sub5'])||(@$_POST['sub2'] == @$_POST['sub6'])||(@$_POST['sub2'] == @$_POST['sub7'])||(@$_POST['sub2'] == @$_POST['sub7'])
                     )
                     {
                         $allinputdata['excep'] = 'Please Select Different Subjects';
-                        $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                        redirect('Admission_9th_pvt/'.$viewName);
-                        return;
+                        
 
                     }
                     else if((@$_POST['sub3'] == @$_POST['sub1']) ||(@$_POST['sub3'] == @$_POST['sub2'])||(@$_POST['sub3'] == @$_POST['sub4'])||(@$_POST['sub3'] == @$_POST['sub5'])||(@$_POST['sub3'] == @$_POST['sub6'])||(@$_POST['sub3'] == @$_POST['sub7'])||(@$_POST['sub3'] == @$_POST['sub7'])
                         )
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
 
                         }
                         else if((@$_POST['sub4'] == @$_POST['sub1']) ||(@$_POST['sub4'] == @$_POST['sub3'])||(@$_POST['sub4'] == @$_POST['sub2'])||(@$_POST['sub4'] == @$_POST['sub5'])||(@$_POST['sub4'] == @$_POST['sub6'])||(@$_POST['sub4'] == @$_POST['sub7'])||(@$_POST['sub4'] == @$_POST['sub7']))
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
-
+                           
                         }
                         else if((@$_POST['sub5'] == @$_POST['sub1']) ||(@$_POST['sub5'] == @$_POST['sub3'])||(@$_POST['sub5'] == @$_POST['sub4'])||(@$_POST['sub5'] == @$_POST['sub2'])||(@$_POST['sub5'] == @$_POST['sub6'])||(@$_POST['sub5'] == @$_POST['sub7'])||(@$_POST['sub5'] == @$_POST['sub7']))
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
 
                         }
                         else if((@$_POST['sub8'] == @$_POST['sub1']) ||(@$_POST['sub8'] == @$_POST['sub3'])||(@$_POST['sub8'] == @$_POST['sub4'])||(@$_POST['sub8'] == @$_POST['sub5'])||(@$_POST['sub8'] == @$_POST['sub2'])||(@$_POST['sub8'] == @$_POST['sub6'])||(@$_POST['sub8'] == @$_POST['sub7']))
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
-
+                            
                         }
                         else if((@$_POST['sub6'] == @$_POST['sub1']) ||(@$_POST['sub6'] == @$_POST['sub3'])||(@$_POST['sub6'] == @$_POST['sub4'])||(@$_POST['sub6'] == @$_POST['sub5'])||(@$_POST['sub6'] == @$_POST['sub8'])||(@$_POST['sub6'] == @$_POST['sub2'])||(@$_POST['sub6'] == @$_POST['sub7']))
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
 
                         }
                         else if((@$_POST['sub7'] == @$_POST['sub1']) ||(@$_POST['sub7'] == @$_POST['sub3'])||(@$_POST['sub7'] == @$_POST['sub4'])||(@$_POST['sub7'] == @$_POST['sub5'])||(@$_POST['sub7'] == @$_POST['sub6'])||(@$_POST['sub7'] == @$_POST['sub6'])||(@$_POST['sub7'] == @$_POST['sub2']))
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
 
                         }
                         else if (in_array($_POST['sub6'], $subjectslang) && in_array($_POST['sub7'], $subjectslang))
                         {
                             $allinputdata['excep'] = 'Double Language is not Allowed Please choose a different Subject';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
                         }
                         else if (in_array($_POST['sub6'], $subjectshis) && in_array($_POST['sub7'], $subjectshis))
                         {
                             $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
                         }
                         else if(@$_POST['sub6'] == @$_POST['sub7'])
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                            
 
                         }
                         else if(@$_POST['sub7'] == @$_POST['sub6'])
                         {
                             $allinputdata['excep'] = 'Please Select Different Subjects';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
-
+                           
                         }
 
                         else if(@$_POST['sub1'] == 0)
                         {
                             $allinputdata['excep'] = 'Please Select Subject 1';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
 
                         }
                         else if(@$_POST['sub2'] == 0)
                         {
                             $allinputdata['excep'] = 'Please Select Subject 2';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
                         }
                         else if(@$_POST['sub3'] == 0)
                         {
                             $allinputdata['excep'] = 'Please Select Subject 3';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
 
                         }
                         else if(@$_POST['sub4'] == 0)
                         {
                             $allinputdata['excep'] = 'Please Select Subject 4';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
 
                         }
 
                         else if(@$_POST['sub5'] == 0)
                         {
                             $allinputdata['excep'] = 'Please Select Subject 5';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                            
 
                         }
                         else if(@$_POST['sub6'] == 0)
                         {
                             $allinputdata['excep'] = 'Please Select Subject 6';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
 
                         }
                         else if(@$_POST['sub7'] == 0)
                         {
                             $allinputdata['excep'] = 'Please Select Subject 7';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
 
                         }
                         else if(@$_POST['sub8'] == 0)
                         {
                             $allinputdata['excep'] = 'Please Select Subject 8';
-                            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                            redirect('Admission_9th_pvt/'.$viewName);
-                            return;
+                           
 
                         }
+
+           $nxtrnosessyear3 = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic']);
+
+        //if($nxtrnosessyear !=  -1)
+        if($nxtrnosessyear3[0]['NextRno_Sess_Year'] !="")
+        {
+            $nxtrnosessyear = $nxtrnosessyear3[0]['NextRno_Sess_Year'];
+
+        }   
+        if($nxtrnosessyear =='')
+        {
+            $nxtrnosessyear1 = $this->Admission_9th_reg_model->checknextrno_newAdmission($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic'],$_POST['bay_form']);
+            if($nxtrnosessyear1[0]['NextRno_Sess_Year'] !="" )
+            {
+                $nxtrnosessyear = $nxtrnosessyear1[0]['NextRno_Sess_Year'];
+
+            } 
+        }
+        if($nxtrnosessyear =='')
+        {
+            $nxtrnosessyear2 = $this->Admission_9th_reg_model->bay_form_fnic($_POST['bay_form'],$_POST['father_cnic']);
+            if($nxtrnosessyear2[0]['NextRno_Sess_Year'] !="")
+            {
+                $nxtrnosessyear = $nxtrnosessyear2[0]['NextRno_Sess_Year'];
+
+
+            }
+        }
+        if($nxtrnosessyear != '')
+        {
+            $allinputdata['excep'] =  "You have already appeared:".$nxtrnosessyear;
+        }
+
+       
+        
+         if($allinputdata['excep'] == '')
+        {
+            $allinputdata['excep'] =  'Success';
+        }
+
+        echo json_encode($allinputdata);
+        
+        exit();
+                        
     }  
     public function EditPicForms()
     {

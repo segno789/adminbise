@@ -427,7 +427,7 @@
                     complete: function() { $('.mPageloader').hide();},
                     success: function(json) {
                         var listitems='';
-                        
+
                         $.each(json.center, function (key, data) {
 
                             console.log(data);
@@ -909,6 +909,18 @@
             $('#father_cnic').focus();  
             return status; 
         }
+
+
+        else if(FNic == bFormNo)
+        {
+            $('#ErrMsg').show(); 
+            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+            // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
+            alertify.error("Bay Form and Father's CNIC cannot be the same") 
+            $('#bay_form').focus();  
+            return status; 
+        }
+
         /*else if(FNic == "00000-0000000-0" )
         {
         $('#ErrMsg').show(); 

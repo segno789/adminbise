@@ -287,11 +287,7 @@
                 alertify.error("Please write Valid Form No.");
                 return false;    
             }
-            else if(dob == "")
-            {
-                alertify.error("Please write Date of Birth.");
-                return false;        
-            }
+          
             else
             {
                 alertify.log("Please wait while your form is downloading....")    
@@ -307,9 +303,7 @@
             if(formno == ""){
                 return false;
             }
-            if(dob == ""){
-                return false;
-            }
+            
             window.location.href='<?php  echo base_url(); ?>Admission_9th_pvt/checkFormNo_then_download/'+formno+'/'+dob;  
         }
         function downloadform(){
@@ -1112,9 +1106,7 @@
 
         return false;
     })
-    
-    
-      $("#btndel9Form").click(function(){
+       $("#btndel9Form").click(function(){
         var formno = $("#delformid").val();
         var btval = $("#btndel9Form").val();
 
@@ -1219,7 +1211,6 @@
 
         return false;
     })
-    
 </script>
 </body>
 </html>

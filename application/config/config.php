@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url'] ='http://localhost:86/adminbise/'; // 'http://192.168.0.53:8083/adminbise';  
+$config['base_url'] ='http://localhost:8083/adminbise/'; // 'http://192.168.0.53:8083/adminbise';  
 
 /*
 |--------------------------------------------------------------------------

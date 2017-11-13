@@ -118,7 +118,7 @@
                     echo  "<option value='0' selected='selected'>None</option> 
                     <option value='1'>Deaf & Dumb</option>
                     <option value='2'>Board Employee</option>;
-                    <option value='3'>Blind</option>";
+                    <option value='3'>Disable</option>";
                     ?>
                 </select>
             </div>
@@ -386,14 +386,14 @@
                         {
                             echo "<option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>"; 
                         }
-                        if($sub7 == 43 || $sub8 == 43)
+                       /* if($sub7 == 43 || $sub8 == 43)
                         {
                             echo "<option value='8'  selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
                         }
                         else
                         {
                             echo "<option value='8'  >SCIENCE  WITH ELECTRICAL WIRING</option>";
-                        }
+                        }   */
 
                         if($grp == 2)
                         {
@@ -440,7 +440,7 @@
                         {
                             echo "<option value='1' >SCIENCE WITH BIOLOGY</option>";                                                                                  
                             echo "<option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>";
-                            echo "<option value='8' >SCIENCE  WITH ELECTRICAL WIRING</option>";
+                            //echo "<option value='8' >SCIENCE  WITH ELECTRICAL WIRING</option>";
                             echo "<option value='2'>GENERAL</option>";
                             echo "<option value='5'>DEAF AND DUMB</option>";  
                         }
@@ -486,7 +486,7 @@
                         }
                         if($grp == 1 && $sub7 == 43)
                         {
-                            echo"<option value='8' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
+                            //echo"<option value='8' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
                             echo "<option value='2'>GENERAL</option>"; 
                             echo "<option value='1' >SCIENCE WITH BIOLOGY</option>";  
                             echo "<option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>";
@@ -564,8 +564,8 @@
                             echo"<option value='7' disabled='disabled' selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>";
 
 
-                        if($grp == 8)
-                            echo"<option value='8' disabled='disabled' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
+                        /*if($grp == 8)
+                            echo"<option value='8' disabled='disabled' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";*/
                     }
                     if($exam_type == 16 && $cattype == 1)
                     {
@@ -3441,8 +3441,7 @@
                 data: $("#myform").serialize() ,
                 datatype : 'html',
                 cache:false,
-                async: false,
-
+                
                 success: function(data)
                 {                    
                     var obj = JSON.parse (data);
@@ -3455,8 +3454,7 @@
                             data: $("#myform").serialize() ,
                             datatype : 'html',
                             cache:false,
-                            async: false,
-
+                            
                             beforeSend: function() {  $('.mPageloader').show(); },
                             complete: function() { $('.mPageloader').hide();},
 

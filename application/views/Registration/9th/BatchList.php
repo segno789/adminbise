@@ -64,12 +64,12 @@
                                     <td><button type="button" class="btn btn-info" value="'.$vals['Batch_ID'].'" onclick="ReturnForm('.$vals['Batch_ID'].')">Return Form</button>
                                      <button type="button" class="btn btn-info" value="'.$vals['Batch_ID'].'" onclick="ChallanForm_Reg9th_Regular('.$vals['Batch_ID'].')">Download Challan Form</button>
                                     <button type="button" class="btn btn-info" value="'.$vals['Batch_ID'].'" onclick="RevenueForm('.$vals['Batch_ID'].')">Revenue Form</button>
+                                    <button type="button" class="btn btn-info" value="'.$vals['Batch_ID'].'" onclick="ForwardingLetter('.$vals['Batch_ID'].')">Forwarding Letter</button>
                                    ';
-                                    if($vals['flag']==0){
+                                    /*if($vals['flag']==0){
                                      echo '<button type="button" class="btn btn-danger" value="'.$vals['Batch_ID'].'" onclick="ReleaseForm('.$vals['Batch_ID'].')">Release Batch</button>';   
-                                    }
-                                     echo '
-                                    </td>';
+                                    }*/
+                                     echo '</td>';
                                     endforeach;
                                     
                                     //DebugBreak();

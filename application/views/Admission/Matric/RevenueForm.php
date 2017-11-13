@@ -43,18 +43,18 @@
         <td colspan="8" align="center"><h2 style="margin:0;padding:0;">BOARD OF INTERMEDIATE AND SECONDARY EDUCATION, GUJRANWALA</h2></td>
     </tr>
     <tr>
-        <td colspan="8"><div style="font-size:16px;font-weight:bold;text-align:center;">REVENUE FORM SHOWING DETAILS OF SSC Examination 
-        <?php if(Session ==1)
-        {
-        echo "Annual";
-        }
-        if(Session == 2)
-        {
-        echo "Supplementary";
-        } ?>  <?= CURRENT_SESS1?>  </br>
+        <td colspan="8"><div style="font-size:16px;font-weight:bold;text-align:center;">REVENUE FORM SHOWING DETAILS OF SSC 
+                <?php if(Session ==1)
+                {
+                    echo "ANNUAL";
+                }
+                if(Session == 2)
+                {
+                    echo "SUPPLEMENTARY";
+                } ?> EXAMMINATION  <?= CURRENT_SESS1?></br>
 
-          <img style="margin-left: 605px;height: 32px;" src="<?php  echo base_url().'/assets/img/M4.jpg'; ?>" />
-                    </div> 
+                <img style="margin-left: 605px;height: 32px;" src="<?php  echo base_url().'/assets/img/M4.jpg'; ?>" />
+            </div> 
         </td>
     </tr>
     <tr>
@@ -62,41 +62,49 @@
     </tr>
     <tr>
         <td colspan="8" style="font-size:14px;margin-bottom: 8px;"><strong>Institute Name:</strong> <b> <?php echo  $inst_Name;?> </b>
-        
-      
+
+
         </td>
     </tr>
     <tr>
-        <td colspan="8" style="font-size:12px;"><img style="margin-left: 605px;height: 26px;     width: 200px;" src="<?php  echo BARCODE_PATH1.$barcode; ?>" /></td>
+        <td colspan="8" style="font-size:12px;"><img style="margin-left: 605px;height: 26px;     width: 200px;" src="<?php  echo base_url().BARCODE_PATH.$barcode; ?>" /></td>
     </tr>
     <tr>
         <td colspan="8" align="center">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table2">
+            <table width="100%" border="1" cellspacing="0" cellpadding="0" class="table2">
                 <tr>
-                    <td style="width:150px;"><strong>Total No. Of Candidates:</strong></td>
-                    <td><?php  echo $data['batch_info'][0]["COUNT"];?></td>
-                    <td><strong>Challan No:</strong> <?php //echo $data["Challan_No"];?></td>
+                    <td style="width:25%;"><strong>Total No. Of Candidates:</strong></td>
+                    <td style="width:15%;"><?php  echo $data['batch_info'][0]["COUNT"];?></td>
+                    <td style="width:15%;"><strong>Batch ID:</strong> </td>
+                    <td style="width:50%;"><?php echo $data['batch_info'][0]["Batch_ID"];?></td>
                 </tr>
                 <tr>
-                    <td><strong>Amount Of Enrolment Fee:</strong></td>
+                    <td><strong>Amount Of Certification Fee:</strong></td>
+                    <td><?php  echo $data['batch_info'][0]["TotalCertFee"];?></td>                    
+                    <td><strong>Challan No:</strong></td>
+                    <td><?php echo $data['batch_info'][0]["Challan_No"];?></td>
+                </tr>
+                <tr>
+                    <td><strong>Amount Of Admission Fee:</strong></td>
                     <td><?php echo  $data['batch_info'][0]["Total_RegistrationFee"];?></td>
-                    <td><strong>Deposit Date:</strong> ____/____/______</td>
+                    <td><strong>Deposit Date:</strong> </td>
+                    <td>____/____/____________</td>
                 </tr>
                 <tr>
                     <td><strong>Amount Of Processing Fee:</strong></td>
-                    <td><strong><?php echo  $data['batch_info'][0]["Total_ProcessingFee"];?></strong></td>
-                    <td><strong>HBL Branch Name:</strong> ________________________</td>
+                    <td><?php echo  $data['batch_info'][0]["Total_ProcessingFee"];?></td>
+                    <td><strong>HBL Branch Name:</strong> </td>
+                    <td>________________________</td>
                 </tr>
 
                 <tr>
                     <td><strong>Amount Of Late Enrolment Fee:</strong></td>
-                    <td><strong><?php echo  $data['batch_info'][0]["Total_LateRegistrationFee"];?></strong></td>
-                    <td>&nbsp;</td>
+                    <td colspan="3"><?php echo  $data['batch_info'][0]["Total_LateRegistrationFee"];?></td>
                 </tr>
                 <tr>
                     <td><strong>Total Amount:</strong></td>
-                    <td><strong><?php echo  $data['batch_info'][0]["Amount"];?></strong></td>
-                    <td>&nbsp;</td>
+                    <td colspan="3"><strong><?php echo  $data['batch_info'][0]["Amount"];?></strong></td>
+                    
                 </tr>
             </table>
 

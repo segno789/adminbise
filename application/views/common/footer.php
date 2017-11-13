@@ -27,7 +27,7 @@
         });
 
     });
-   
+
     function drawChart3() {
         jQuery.ajax({
             type: "POST",
