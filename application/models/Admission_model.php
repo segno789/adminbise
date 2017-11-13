@@ -70,6 +70,21 @@ class Admission_model extends CI_Model
         }
     }
 
+
+    public function getEmpCd_Model($employeeCode){
+        
+        $query = $this->db->query("select Name from MiscDb..tblemployee where emp_cd = $employeeCode and isActive = 1");
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            return $query->result_array();
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public function checknextrno($rno,$IYear,$Sess,$class)
     {
         $query = $this->db->query("admission_online..NextAppearanceSSC $rno,$class,$IYear,$Sess,'0','0','','',1");
@@ -90,7 +105,7 @@ class Admission_model extends CI_Model
             return  -1;
         }
     }
-    
+
     public function checkalready($name,$fnic,$dob)
     {
         $query = $this->db->query("exec admission_online..NextAppearanceSSC 0,0,0,0,'$name','$dob','$fnic','',3");
@@ -114,7 +129,7 @@ class Admission_model extends CI_Model
             }
         }
     }
-    
+
     public function Brd_Name($brd_cd)
     {
         $brd_name = $this->db->get_where("matric..tblboard", array('Brd_cd'=>$brd_cd));

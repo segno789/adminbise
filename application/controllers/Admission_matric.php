@@ -82,6 +82,9 @@ class Admission_matric extends CI_Controller {
         $feestructure[]=$result[0]['Total_LateRegistrationFee']; 
         $displayfeetitle[] =  'Total Late Admission Fee'; 
 
+        $feestructure[]=$result[0]['COUNT']; 
+        $displayfeetitle[] =  'Total Candidate(s)'; 
+
         $mysess = "";
         if(Session==1)
         {
@@ -5276,7 +5279,7 @@ class Admission_matric extends CI_Controller {
 
         }
     }
-    
+
     function base64_to_jpeg($base64_string, $output_file) {
         $ifp = fopen($output_file, "wb"); 
 

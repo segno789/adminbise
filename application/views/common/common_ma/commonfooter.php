@@ -44,6 +44,9 @@
             "cache": false
         });
 
+        
+        
+        
         $("#bay_form,#father_cnic").mask("99999-9999999-9",{placeholder:"_"});
         $("#dob,#dateofadmission").mask("99-99-9999",{placeholder:"_"});
         $("#mob_number").mask("9999-9999999",{placeholder:"_"});

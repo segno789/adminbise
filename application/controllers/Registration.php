@@ -122,13 +122,13 @@ class Registration extends CI_Controller {
             'sub8'=>@$_POST['sub8']
         );
         //DebugBreak();
-        if($isfeeding != 1)
+        /*if($isfeeding != 1)
         {
          $allinputdata['excep'] = 'REGISTRATION CLOSED';
          $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
          redirect('Registration/NewEnrolment/');
          return;
-        } 
+        }  */
         
         
         /* $target_path = './assets/uploads/'.$Inst_Id.'/';

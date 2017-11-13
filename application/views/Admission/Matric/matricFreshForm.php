@@ -37,13 +37,13 @@
                 <label class="control-label" for="cand_name" >
                     Candidate Name:
                 </label>        
-                <input class="text-uppercase form-control"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>"  <?php if(@$data['name']!= "") echo "readonly='readonly'";  ?>  >
+                <input class="text-uppercase form-control"  type="text" id="cand_name"  name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>"  <?php if(@$data['name']!= "") echo "readonly='readonly'";  ?>  >
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="father_name">
                     Father's Name :
                 </label>        
-                <input class="text-uppercase form-control" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo @$data['Fname']; ?>" <?php if(@$data['Fname']!= "") echo "readonly='readonly'";  ?> > 
+                <input class="text-uppercase form-control" id="father_name" name="father_name"  type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo @$data['Fname']; ?>" <?php if(@$data['Fname']!= "") echo "readonly='readonly'";  ?> > 
             </div>
         </div>
     </div>
@@ -105,7 +105,7 @@
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="MarkOfIden"> Mark of Identification :</label>
-                <input class="text-uppercase form-control" type="text" id="MarkOfIden" style="text-transform: uppercase;" name="MarkOfIden" value="<?php echo  @$data['markOfIden']; ?>" required="required" maxlength="60" >
+                <input class="text-uppercase form-control" type="text" id="MarkOfIden"  name="MarkOfIden" value="<?php echo  @$data['markOfIden']; ?>" required="required" maxlength="60" >
             </div>
         </div>
     </div>
@@ -173,6 +173,21 @@
             </div>
         </div>
     </div>
+
+    <div class="hidden" id="boardEmployeeDiv">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-8">
+                    <label class="control-label" for="empBrdCd" >
+                        Enter Board Employee Code:
+                    </label>        
+                    <input class="text-uppercase form-control" type="text" id="empBrdCd" name="empBrdCd" placeholder="Board Employee Code" maxlength="4" value="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
@@ -380,7 +395,7 @@
                             echo "<option value='1' selected='selected'>SCIENCE WITH BIOLOGY</option>
 
                             <option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>
-                            
+
                             <option value='2'>HUMANTIES</option>
                             <option value='5'>DEAF AND DUMB</option>
                             <option value='4'>AAMA GROUP</option>
@@ -393,7 +408,7 @@
                             echo " 
                             <option value='1' >SCIENCE WITH BIOLOGY</option>
                             <option value='7'  selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>
-                            
+
                             <option value='2'>HUMANTIES</option>
                             <option value='5'>DEAF AND DUMB</option>
                             <option value='4'>AAMA GROUP</option>
@@ -713,6 +728,9 @@
         var $img = $("#previewImg");
         var src = $img.attr("src");
         var selected_group_conversion ;
+        var empBrdCd = $('#empBrdCd').val();
+        var speciality = $('#speciality').val();
+
 
         var fuData = document.getElementById('image');
         var FileUploadPath = fuData.value;
@@ -807,6 +825,14 @@
             return status;  
         }
 
+        else if(speciality == 2 && empBrdCd.trim() != fName.trim()){
+            alertify.error("Please Enter Valid Employee Code") 
+            $("#empBrdCd").val('');
+            $('#empBrdCd').prop('readonly', false);
+            $('#empBrdCd').focus();   
+            return status;  
+        }
+                
         else if(gend==undefined || gend == 0)
         {
             alertify.error("Please Select Your Gender First!")

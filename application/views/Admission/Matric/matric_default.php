@@ -91,6 +91,11 @@ else if(Session == '2')
         </div>
     </div>
 </form>
+
+<hr class="colorgraph">
+<label class="control-label">In case of any problem regarding Admissions, please send us email on</label>
+<a href="mailto:complaint4bisegrw@gmail.com" class="control-label">complaint4bisegrw@gmail.com</a>
+
 <hr class="colorgraph">
 <div class="form-group">    
     <div class="row">
@@ -116,7 +121,4 @@ else if(Session == '2')
             </div>
         </div>
     </div>
-    <hr class="colorgraph">
-    <label class="control-label">In case of any problem regarding Admissions, please send us email on</label>
-    <a href="mailto:complaint4bisegrw@gmail.com" class="control-label">complaint4bisegrw@gmail.com</a>
 </form>

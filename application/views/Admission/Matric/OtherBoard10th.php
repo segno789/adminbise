@@ -147,6 +147,20 @@
             </div>
         </div>
     </div>
+
+    <div class="hidden" id="boardEmployeeDiv">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-8">
+                    <label class="control-label" for="empBrdCd" >
+                        Enter Board Employee Code:
+                    </label>        
+                    <input class="text-uppercase form-control" type="text" id="empBrdCd" name="empBrdCd" placeholder="Board Employee Code" maxlength="4" value="">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
@@ -833,6 +847,9 @@
         var src = $img.attr("src");
         var selected_group_conversion ;
 
+        var empBrdCd = $('#empBrdCd').val();
+        var speciality = $('#speciality').val();
+
         var fuData = document.getElementById('image');
         var FileUploadPath = fuData.value;
         if (FileUploadPath == '') {
@@ -923,6 +940,14 @@
         {
             alertify.error("Please Select Nationality") 
             $('#nationality').focus();   
+            return status;  
+        }
+
+        else if(speciality == 2 && empBrdCd.trim() != fName.trim()){
+            alertify.error("Please Enter Valid Employee Code") 
+            $("#empBrdCd").val('');
+            $('#empBrdCd').prop('readonly', false);
+            $('#empBrdCd').focus();   
             return status;  
         }
 

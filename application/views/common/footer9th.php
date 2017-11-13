@@ -1670,7 +1670,7 @@
                 complete: function() { $('.mPageloader').hide();},
                 success: function(json) {
                     var listitems;
-                   
+
                     $('#pvtZoner').empty();
                     $('#pvtZoner').append('<option value="0">SELECT ZONE</option>');
                     $.each(json, function (key, data) {
@@ -1687,7 +1687,7 @@
                         })
                     })
                     $('#pvtZoner').append(listitems)
-                 
+
 
                 },
                 error: function(request, status, error){
@@ -1868,7 +1868,7 @@
                 }
 
 
-                var Gender = $("input[name=gender]:checked").val();
+                var Gender = $("#gender").val();
                 // debugger;
                 //console.log(Religion);
                 if(Gender == "2")
@@ -1986,9 +1986,9 @@
         }
     });
 
-    var is_muslim    = $('input:radio[name="religion"]:checked').val();  
-    var is_pakistani = $('input:radio[name="nationality"]:checked').val(); 
-    var gender = $('input:radio[name="gender"]:checked').val(); 
+    var is_muslim    = $("#religion").val();  
+    var is_pakistani = $("#nationality").val(); 
+    var gender = $("#gender").val();
     var id           = $('#std_group').val();
 
     $('input[type=radio][name=batch_opt]').change(function() {
@@ -2033,7 +2033,7 @@
         }
 
     })
-    
+
 
 </script>
 

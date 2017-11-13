@@ -57,7 +57,6 @@ class Admission extends CI_Controller
 
         $this->load->view('common/commonheader.php');
 
-        // DebugBreak();
         $isActive = $this->isActiveAdm();
         if($isActive == false)
         {
@@ -83,6 +82,27 @@ class Admission extends CI_Controller
 
         }
         $this->load->view('common/homepagefooter.php');
+    }
+
+
+    function getEmpCode(){
+        
+        $employeeName ='';
+        $this->load->model('Admission_model');
+        $employeeName=$this->Admission_model->getEmpCd_Model($_POST['empBrdCd']);
+        
+        if($employeeName){
+            $msg['excep'] =  'Success'; 
+            $msg['employeeName'] =  $employeeName;
+        }
+
+        else{
+            $msg['excep'] =  ''; 
+            $msg['employeeName'] =  ''; 
+        }
+
+        echo json_encode($msg);
+        exit();
     }
 
     function sendVerCode()
@@ -1538,14 +1558,13 @@ class Admission extends CI_Controller
             return; 
         }
 
-        if($data['isSpecFee']>0 && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th) ))
+
+
+
+        if($data['isSpecFee']>0 && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th)))
         {
-            /*$regfee =  1000;
-            if($data['Spec'] >  0)
-            {*/
             $regfee = 0; 
             $data['regFee'] = $regfee;
-            //}
 
             if(@$data['isFresh'] == 1 || @$data['isOtherbrd'] == 1){
                 $data['certFee'] = 550;
@@ -1554,7 +1573,21 @@ class Admission extends CI_Controller
             $data['AdmFee'] = $finalFee;
             $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee']+$data['certFee'];
             $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmTotalFee'=> $data['AdmTotalFee']);
+
         }
+
+        else if(($data['Spec'] == 1 || $data['Spec'] == 3)  && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th))){
+
+            $finalFee = 0;
+            $data['regFee'] = 0;
+            $processFee = 0;
+            $Total_fine =0 ;
+            $data['certFee'] = 0;
+            $data['AdmFee'] = $finalFee;
+            $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee']+$data['certFee']+$finalFee;
+            $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>0,'AdmFine'=>0,'AdmTotalFee'=>0);
+        }
+
         else
         {
             if(@$data['isFresh'] == 1 || @$data['isOtherbrd'] == 1){
@@ -1564,7 +1597,7 @@ class Admission extends CI_Controller
             $data['AdmFee'] = $finalFee;
             $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee']+$data['certFee']+$finalFee;
             $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']);
-        }
+        } 
 
         $info = $this->Admission_model->Update_AdmissionFeePvt($AllStdFee);
         if (!$info) 
@@ -2648,8 +2681,9 @@ class Admission extends CI_Controller
 
             if($Speciality > 0 && ($preSpec != 0 && $oldClassForSpec != 10))
             {
-                $AdmFeeCatWise = 0; 
-            }
+                $AdmFeeCatWise = 0;  
+            }  
+
             else if ($Speciality > 0 && $cat09 ==2 )
             {
                 $AdmFeeCatWise = $AdmFee[0]['PVT_Amount'];
@@ -2706,8 +2740,10 @@ class Admission extends CI_Controller
             $cerfee =   0; 
         }
 
-        $fine = $this->GetFeeWithdue( $AdmFeeCatWise);
 
+
+
+        $fine = $this->GetFeeWithdue( $AdmFeeCatWise);
         $TotalAdmFee = $AdmFee[0]['Processing_Fee'] +$AdmFeeCatWise +$fine + $regfee+$cerfee ;
 
 
@@ -2830,6 +2866,16 @@ class Admission extends CI_Controller
                 redirect('Admission/matric_otherboard');
                 return;
             }
+        }
+
+        if(($Speciality == 1 || $Speciality == 3) && (strtotime(date("d-m-Y")) <= strtotime(SingleDateFee9th))){
+
+            $data['AdmProcessFee'] = 0; 
+            $data['certFee'] = 0; 
+            $data['AdmFee'] = 0; 
+            $data['AdmFine'] = 0; 
+            $data['regFee'] = 0; 
+            $data['certFee'] = 0; 
         }
 
         $logedIn = $this->Admission_model->Insert_NewEnorlement($data);    
