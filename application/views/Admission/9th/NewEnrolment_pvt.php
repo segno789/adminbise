@@ -180,13 +180,13 @@
                     Locality : 
                 </label>        
                 <select name="UrbanRural" class="form-control text-uppercase" id="UrbanRural"> 
-                   
-                  
-                        <option value='0' selected='selected'>None</option>
-                        <option value='1' >URBAN</option> 
-                        <option value='2'>RURAL</option>";
-                   
-                   
+
+
+                    <option value='0' selected='selected'>None</option>
+                    <option value='1' >URBAN</option> 
+                    <option value='2'>RURAL</option>";
+
+
                 </select>
             </div>
             <div class="col-md-4">
@@ -226,12 +226,12 @@
                     Religion : 
                 </label>        
                 <select name="religion" class="form-control text-uppercase" id="religion"> 
-                   
-                   
-                        <option value='0' selected='selected'>None</option>
-                        <option value='1' >MUSLIM</option> 
-                        <option value='2'>NON MUSLIM</option>";
-                    
+
+
+                    <option value='0' selected='selected'>None</option>
+                    <option value='1' >MUSLIM</option> 
+                    <option value='2'>NON MUSLIM</option>";
+
                 </select>
             </div>
             <div class="col-md-4">
@@ -324,7 +324,6 @@
                     <option value="0">SELECT GROUP</option>
                     <option value="1">SCIENCE WITH BIOLOGY</option>
                     <option value="7">SCIENCE  WITH COMPUTER SCIENCE</option>
-                   <!-- <option value="8">SCIENCE  WITH ELECTRICAL WIRING</option> -->
                     <option value="2">GENERAL</option>
                     <option value="5">DEAF AND DUMB</option>
                 </select>                                            
@@ -334,30 +333,73 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
-                <label class="control-label" for="std_group">
-                    <b>Choose Subjects(Elective Subjects are Enabled Only)</b> 
-                </label>
-                <select id="sub1" class="form-control" name="sub1"><option value="1">Urdu</option></select> 
-                <select id="sub2"  name="sub2" class="form-control">
-                    <option value="2">English</option></select>
-                <select id="sub3" class="form-control" name="sub3"><option value="3">Islamyat Compulsory</option></select> 
-                <select id="sub8"  name="sub8" class="form-control">
-                    <option value="4">Pakistan Studies</option></select>
-                <select id="sub4" class="form-control" name="sub4"></select> 
-                <select id="sub5"  name="sub5" class="form-control">
-                </select>
-                <select id="sub6" class="form-control" name="sub6"></select> 
-                <select id="sub7"  name="sub7" class="form-control">
-                </select>                                                                   
+                <label class="control-label">
+                    Choose Subjects(Elective Subjects are Enabled Only)
+                </label>        
+                <select id="sub1" class="form-control text-uppercase" name="sub1"><option value="1">Urdu</option></select> 
             </div>
         </div>
     </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <select id="sub2"  name="sub2" class="form-control text-uppercase">
+                    <option value="2">English</option></select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <select id="sub3" class="form-control text-uppercase" name="sub3"><option value="3">Islamyat Compulsory</option></select> 
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <select id="sub8"  name="sub8" class="form-control text-uppercase">
+                    <option value="4">Pakistan Studies</option></select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <select id="sub4" class="form-control text-uppercase" name="sub4"></select> 
+            </div>
+        </div>
+    </div>    
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <select id="sub5"  name="sub5" class="form-control text-uppercase"></select> 
+            </div>
+        </div>
+    </div> 
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
 
+                <select id="sub6"  name="sub6" class="form-control text-uppercase">
+                </select> 
+            </div>
+        </div>
+    </div> 
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+
+                <select id="sub7"  name="sub7" class="form-control text-uppercase">
+                </select> 
+            </div>
+        </div>
+    </div> 
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
                 <label class="checkbox-inline">
-                    <input type="checkbox" class="checkboxtext" id="terms" name="terms" value="yes">I agree with the <a href="https://www.bisegrw.edu.pk/ssc/assets/pdfs/Instructions.jpg">Terms and Conditions </a> of Board of Intermediate &amp; Secondary Education, Gujranwala  
+                    <input type="checkbox" class="checkboxtext" id="terms" name="terms" value="yes">I agree with the <a href="https://www.bisegrw.edu.pk/ssc/assets/img/Instructions.jpg" target="_blank">Terms and Conditions </a> of Board of Intermediate &amp; Secondary Education, Gujranwala  
                 </label>
             </div>
         </div>
@@ -365,28 +407,36 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-3">
-               
-                 <button type="submit" name="save" class="btn btn-primary btn-block" onclick="return checks();"> 
-                Save Form
-            </button>
+
+                <button type="submit" name="save" class="btn btn-primary btn-block" onclick="return checks();"> 
+                    Save Form
+                </button>
             </div>
             <div class="col-md-2">
-                 <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg" download="instructions.jpg" class="btn btn-info btn-block">Download Instruction</a>
-                 
+                <a href="<?php echo base_url(); ?>assets/img/Instructions.jpg" download="instructions.jpg" class="btn btn-info btn-block">Download Instruction</a>
+
             </div>
             <div class="col-md-3">
                 <input type="button" class="btn btn-danger btn-block" value="Cancel" id="btnCancel" name="btnCancel" onclick="return CancelAlertpvt9th();">
             </div>
         </div>
     </div>
-   
-
-    <div class="clearfix">
-    </div>
 </form>
 <script src="<?php echo base_url(); ?>assets/js_matric/jquery-1.8.3.js"></script>
 <script type="text/javascript">
- function CancelAlertpvt9th()
+
+    $(window).load(function()
+        {
+            $.fancybox("#instruction");
+
+            $('#address').each(function(){
+                $(this).val($(this).val().trim());
+            });
+
+    });
+
+
+    function CancelAlertpvt9th()
     {
         var msg = "Are You Sure You want to Cancel this Form ?"
         alertify.confirm(msg, function (e) {
@@ -416,38 +466,38 @@
                 datatype : 'html',
                 cache:false,
                 async: false,
-                  beforeSend: function() {  $('.mPageloader').show(); },
-                    complete: function() { $('.mPageloader').hide();},
+                beforeSend: function() {  $('.mPageloader').show(); },
+                complete: function() { $('.mPageloader').hide();},
 
                 success: function(data)
                 {                 
-               
-                   
+
+
                     var obj = JSON.parse (data);
                     if(obj.excep == 'Success')
                     {
-                       $("#myform").submit();
-                         $("button[type='submit']").removeAttr("disabled");
+                        $("#myform").submit();
+                        $("button[type='submit']").removeAttr("disabled");
                         return false;
                     }
                     else
                     {
                         alertify.error(obj.excep);
-                         $("button[type='submit']").removeAttr("disabled");
+                        $("button[type='submit']").removeAttr("disabled");
                         return false;     
 
                     }
                 },
-                 error: function(request, status, error){
-                        alertify.error(request.responseText);
-                    }
+                error: function(request, status, error){
+                    alertify.error(request.responseText);
+                }
             });
 
-             
-            
-            
-            
-             
+
+
+
+
+
             return false;
         } 
     }
