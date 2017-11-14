@@ -943,7 +943,8 @@
             return status;  
         }
 
-        else if(speciality == 2 && empBrdCd.trim() != fName.trim()){
+        else if(speciality == 2 && empBrdCd.trim() != fName.trim())
+        {
             alertify.error("Please Enter Valid Employee Code") 
             $("#empBrdCd").val('');
             $('#empBrdCd').prop('readonly', false);

@@ -146,6 +146,21 @@
             </div>
         </div>
     </div>
+
+
+    <div class="hidden" id="boardEmployeeDiv">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-8">
+                    <label class="control-label" for="empBrdCd" >
+                        Enter Board Employee Code:
+                    </label>        
+                    <input class="text-uppercase form-control" type="text" id="empBrdCd" name="empBrdCd" placeholder="Board Employee Code" maxlength="4" value="">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
@@ -386,13 +401,13 @@
                         {
                             echo "<option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>"; 
                         }
-                       /* if($sub7 == 43 || $sub8 == 43)
+                        /* if($sub7 == 43 || $sub8 == 43)
                         {
-                            echo "<option value='8'  selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
+                        echo "<option value='8'  selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
                         }
                         else
                         {
-                            echo "<option value='8'  >SCIENCE  WITH ELECTRICAL WIRING</option>";
+                        echo "<option value='8'  >SCIENCE  WITH ELECTRICAL WIRING</option>";
                         }   */
 
                         if($grp == 2)
@@ -565,7 +580,7 @@
 
 
                         /*if($grp == 8)
-                            echo"<option value='8' disabled='disabled' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";*/
+                        echo"<option value='8' disabled='disabled' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";*/
                     }
                     if($exam_type == 16 && $cattype == 1)
                     {
@@ -3441,7 +3456,7 @@
                 data: $("#myform").serialize() ,
                 datatype : 'html',
                 cache:false,
-                
+
                 success: function(data)
                 {                    
                     var obj = JSON.parse (data);
@@ -3454,7 +3469,7 @@
                             data: $("#myform").serialize() ,
                             datatype : 'html',
                             cache:false,
-                            
+
                             beforeSend: function() {  $('.mPageloader').show(); },
                             complete: function() { $('.mPageloader').hide();},
 
