@@ -721,7 +721,7 @@
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
                 <label class="checkbox-inline">
-                    <input type="checkbox" class="checkboxtext" id="terms" name="terms" value="yes">I agree with the <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg">Terms and Conditions </a> of Board of Intermediate & Secondary Education, Gujranwala  
+                    <input type="checkbox" class="checkboxtext" id="terms" name="terms" value="yes">I agree with the <a href="<?php echo base_url(); ?>assets/img/Instructions.jpg" target="_blank">Terms and Conditions </a> of Board of Intermediate & Secondary Education, Gujranwala  
                 </label>
             </div>
         </div>
@@ -732,7 +732,7 @@
                 <input type="submit" value="Save Form" id="btnsubmitUpdateEnrol" name="btnsubmitUpdateEnrol" class="btn btn-primary btn-block" onclick="return checksOtherBoard10th()">
             </div>
             <div class="col-md-2">
-                <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg" download="instructions" class="btn btn-info btn-block">Download Instruction</a>
+                <a href="<?php echo base_url(); ?>assets/img/Instructions.jpg" download="instructions.jpg" class="btn btn-info btn-block">Download Instruction</a>
             </div>
             <div class="col-md-3">
                 <input type="button" class="btn btn-danger btn-block" value="Cancel" id="btnCancel" name="btnCancel" onclick="return gotodefaultpage();">

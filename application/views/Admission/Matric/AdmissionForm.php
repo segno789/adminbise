@@ -921,7 +921,7 @@
                 <input type="submit" value="Save Form" id="btnsubmitUpdateEnrol" name="btnsubmitUpdateEnrol" class="btn btn-primary btn-block" onclick="return checks()">
             </div>
             <div class="col-md-2">
-                <a href="<?php echo base_url(); ?>assets/pdfs/Instructions.jpg" download="instructions" class="btn btn-info btn-block">Download Instruction</a>
+                <a href="<?php echo base_url(); ?>assets/img/Instructions.jpg" download="instructions.jpg" class="btn btn-info btn-block">Download Instruction</a>
             </div>
             <div class="col-md-3">
                 <input type="button" class="btn btn-danger btn-block" value="Cancel" id="btnCancel" name="btnCancel" onclick="return CancelAlert();" >
