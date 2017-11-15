@@ -108,7 +108,7 @@ class Admission_model extends CI_Model
 
     public function checkalready($name,$fnic,$dob)
     {
-        $query = $this->db->query("exec admission_online..NextAppearanceSSC 0,0,0,0,'$name','$dob','$fnic','',3");
+        $query = $this->db->query("exec admission_online..NextAppearanceSSC 0,0,0,0,'$name','$dob','$fnic','',2");
         $rowcount = $query->num_rows();
 
         if($rowcount > 0)
@@ -117,16 +117,7 @@ class Admission_model extends CI_Model
         }
         else
         {
-            $query = $this->db->query("exec admission_online..NextAppearanceSSC 0,0,0,0,'$name','$dob','$fnic','',2");
-            $rowcount = $query->num_rows();
-
-            if($rowcount > 0)
-            {
-                return $query->result_array();
-            }
-            else{
-                return false;
-            }
+            return false;
         }
     }
 

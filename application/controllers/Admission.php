@@ -2709,6 +2709,18 @@ class Admission extends CI_Controller
 
         }
 
+        //DebugBreak();
+
+        $oldsess = @$_POST['oldsess'];
+        if($oldsess == 'Annual')
+        {
+            $oldsess =  1;    
+        }
+        else if($oldsess == 'Supplementary')
+        {
+            $oldsess =  2;    
+        } 
+
         if(@$_POST['isFresh']>0)
         {
             if((@$_POST['isNotFresh'] ==0) )
@@ -2752,17 +2764,6 @@ class Admission extends CI_Controller
 
         $fine = $this->GetFeeWithdue( $AdmFeeCatWise);
         $TotalAdmFee = $AdmFee[0]['Processing_Fee'] +$AdmFeeCatWise +$fine + $regfee+$cerfee ;
-
-
-        $oldsess = @$_POST['oldsess'];
-        if($oldsess == 'Annual')
-        {
-            $oldsess =  1;    
-        }
-        else if($oldsess == 'Supplementary')
-        {
-            $oldsess =  2;    
-        }
 
 
         $addre =  str_replace("'", "", $this->input->post('address'));
