@@ -38,7 +38,7 @@ class Admission extends CI_Controller
     $this->output->set_header("Pragma: no-cache");
     }*/
     public function index()
-    {
+    {               
         $data = array(
             'isselected' => '3',
         );
@@ -86,11 +86,11 @@ class Admission extends CI_Controller
 
 
     function getEmpCode(){
-        
+
         $employeeName ='';
         $this->load->model('Admission_model');
         $employeeName=$this->Admission_model->getEmpCd_Model($_POST['empBrdCd']);
-        
+
         if($employeeName){
             $msg['excep'] =  'Success'; 
             $msg['employeeName'] =  $employeeName;
@@ -153,7 +153,7 @@ class Admission extends CI_Controller
     private function sendcode($data)
     {
         $pno = '92'.str_replace("-","",substr($data['MobNo'], 1)); 
-        $pno = '923007465790'; 
+        // $pno = '923007465790'; 
 
 
         $sms1 ="Dear ".$data['name'].",".urldecode("%0A").'Your Verification Code is this:'.$data['verificationCode'];
@@ -280,12 +280,16 @@ class Admission extends CI_Controller
         }
         else
         {*/
+
         $retfee = $this->feecalculate($data);
         $data['AdmFee'] = $retfee[0]['AdmFee'];
         $data['AdmTotalFee'] = $retfee[0]['AdmTotalFee'];
+        $data['certFee'] = $retfee[0]['certFee'];
+        // @$data['certFee'] = $retfee[0]['certFee'];
         $lastdate = $this->GetDueDate();
         // }
-
+        $data = $this->Admission_model->get_formno_data($formno);
+        $data = $data[0];
 
 
         $this->load->library('pdf_rotate');
@@ -302,6 +306,7 @@ class Admission extends CI_Controller
         $pdf->SetFont('Arial','U',12);
         $pdf->SetXY(1.2,0.2);
         $pdf->Cell(0, 0.2, "BOARD OF INTERMEDIATE AND SECONDARY EDUCATION, GUJRANWALA", 0.25, "C");
+        $pdf->Image("assets/img/logo2.png",.60,0.3, 0.50,0.50, "PNG");
         $pdf->Image("assets/img/ExamCenter.jpg",4.9,2.85+$Y, 2.78,0.15, "jpg");        
         $pdf->Image("assets/img/10th.png",7.30,0.25, 0.30,0.30, "PNG");    
 
@@ -1112,7 +1117,13 @@ class Admission extends CI_Controller
         $pdf->SetFont('Arial','b',$FontSize);
         $pdf->Cell( 0.5,0.5,"Manager/Cashier:___________________________ ",0,'L');
 
-        $pdf->Image('assets/img/BankCopy.jpg',0.25,7.65, 4.8,0.25, "jpeg");   
+        if($data['Spec'] == 1 || $data['Spec'] == 3){
+            $pdf->Image('assets/img/Disablecandidates.jpg',0.25,7.65, 4.8,0.25, "jpeg");       
+        }
+        else{
+            $pdf->Image('assets/img/BankCopy.jpg',0.25,7.65, 4.8,0.25, "jpeg");   
+        }
+
 
         $pdf->Image('assets/img/cutter.jpg',0.2,7.98, 8.6,0.09, "jpeg");       
 
@@ -1572,7 +1583,7 @@ class Admission extends CI_Controller
 
             $data['AdmFee'] = $finalFee;
             $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee']+$data['certFee'];
-            $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmTotalFee'=> $data['AdmTotalFee']);
+            $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee'],'certFee'=>$data['certFee'],'regFee'=>$data['regFee']);
 
         }
 
@@ -1596,7 +1607,7 @@ class Admission extends CI_Controller
 
             $data['AdmFee'] = $finalFee;
             $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee']+$data['certFee']+$finalFee;
-            $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']);
+            $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee'],'certFee'=>$data['certFee'],'regFee'=>$data['regFee']);
         } 
 
         $info = $this->Admission_model->Update_AdmissionFeePvt($AllStdFee);
@@ -2227,16 +2238,12 @@ class Admission extends CI_Controller
             }
             else if($specialcode != '' || $exam_type == 17 || $exam_type == 16 || $exam_type == 18 || $nxtrnosessyear != '' || ($grp_cd ==4 && $status == 1))
             {
-                $data[0]['dob'] = $dob;
-                $data[0]['oldRno'] = $mrollno;
-                $data[0]['oldClass'] = $oldClass;
-                $data[0]['oldYear'] = $year;
-                $data[0]['oldSess'] = $session;
-                $data[0]['oldBrd_cd'] = $board;
-
+                $error_msg.= 'You can not proceed due to  '.$data[0]['Spl_Name'].' Condition.';            
+                $data['error'] = $error_msg;
                 $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/getinfo.php', $data[0]);
+                $this->load->view('Admission/Matric/getinfo.php', $data);
                 $this->load->view('common/footer.php');    
+                return false;    
             }
             else
             {  
@@ -2317,7 +2324,7 @@ class Admission extends CI_Controller
 
         //DebugBreak();
 
-        if(@$_POST['isFresh']==1)                            
+        if(@$_POST['isFresh']==1)
         {
             $nxtrnosessyear = $this->Admission_model->checkalready(@$_POST['cand_name'],$_POST['father_cnic'],$_POST['dob']);
             $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
@@ -2731,7 +2738,7 @@ class Admission extends CI_Controller
         }
 
 
-        if(($examtype == 1 || $examtype == 2  || $examtype == 3 || @$_POST['oldexam_type'] == 3 || @$_POST['oldexam_type'] == 1) && Session ==  1)
+        if(($examtype == 1 || ( $examtype == 2 && @$_POST['oldclass'] == 9) || $examtype == 3 || @$_POST['oldexam_type'] == 3 || @$_POST['oldexam_type'] == 1) && Session ==  1)
         {
             $cerfee =   550;  
         } 
@@ -3047,6 +3054,29 @@ class Admission extends CI_Controller
 
         $allinputdata['excep'] == '';
 
+        $cntzero = substr_count(@$_POST['bay_form'],"0");
+        $cntone = substr_count(@$_POST['bay_form'],"1");
+        $cnttwo = substr_count(@$_POST['bay_form'],"2");
+        $cntthr = substr_count(@$_POST['bay_form'],"3");
+        $cntfour = substr_count(@$_POST['bay_form'],"4");
+        $cntfive = substr_count(@$_POST['bay_form'],"5");
+        $cntsix = substr_count(@$_POST['bay_form'],"6");
+        $cntseven = substr_count(@$_POST['bay_form'],"7");
+        $cnteight = substr_count(@$_POST['bay_form'],"8");
+        $cntnine = substr_count(@$_POST['bay_form'],"9");
+
+        $cnt_fnic_zero = substr_count(@$_POST['father_cnic'],"0");
+        $cnt_fnic_one = substr_count(@$_POST['father_cnic'],"1");
+        $cnt_fnic_two = substr_count(@$_POST['father_cnic'],"2");
+        $cnt_fnic_thr = substr_count(@$_POST['father_cnic'],"3");
+        $cnt_fnic_four = substr_count(@$_POST['father_cnic'],"4");
+        $cnt_fnic_five = substr_count(@$_POST['father_cnic'],"5");
+        $cnt_fnic_six = substr_count(@$_POST['father_cnic'],"6");
+        $cnt_fnic_seven = substr_count(@$_POST['father_cnic'],"7");
+        $cnt_fnic_eight = substr_count(@$_POST['father_cnic'],"8");
+        $cnt_fnic_nine = substr_count(@$_POST['father_cnic'],"9");
+
+
         $_POST['address']  = str_replace("'", "", $_POST['address'] );
 
         if(@$_POST['dob'] != null)
@@ -3059,9 +3089,20 @@ class Admission extends CI_Controller
         {
             $allinputdata['excep'] = 'Please Enter Your Name';
         }
+
+        else if(strlen($_POST['cand_name'])<3)  
+        {
+            $allinputdata['excep'] = 'Please Enter Your Correct Name';
+        }
+
         else if (@$_POST['father_name'] == '')
         {
             $allinputdata['excep'] = 'Please Enter Your Father Name';
+        }
+
+        else if (strlen($_POST['father_name'])<3) 
+        {
+            $allinputdata['excep'] = 'Please Enter Your Correct Father Name';
         }
 
         else if(@$_POST['bay_form'] == '' || @$_POST['bay_form'] == '00000-0000000-0')
@@ -3069,184 +3110,211 @@ class Admission extends CI_Controller
             $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
         }
 
-        else if(@$_POST['father_cnic'] == '' || @$_POST['father_cnic'] == '00000-0000000-0' )
-        {
-            $allinputdata['excep'] = 'Please Enter Your Father CNIC';
-        }
-
-        else if (@$_POST['dob'] == '' )
-        {
-            $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
-        }
-        else if(@$_POST['mob_number'] == '')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Mobile Number';
-        }
-        else if(@$_POST['medium'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Medium';
-        }
-
-        else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
-        {
-            $allinputdata['excep'] = 'Please Select Your medium';
-        }
-
-        else if(@$_POST['preResult'] == '')
-        {
-            $allinputdata['excep'] = 'Please Select Your Previous Result';
-        }
-
-        else if(@$_POST['MarkOfIden']== '')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
-        }
-
-        else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
-        {
-            $allinputdata['excep'] = 'Please Select Your Nationality';
-        }
-
-        else if((@$_POST['gend'] != '1' && @$_POST['isotherbrd'] != '1' ) and (@$_POST['gend'] != '2' &&  @$_POST['isotherbrd'] != '1'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Gender';
-        }
-
-        else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your religion';
-        }
-
-        else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
-        }
-
-        else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Residency';
-        }
-
-        else if(@$_POST['address'] =='')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Address';
-        }
-
-        else if(@$_POST['oldrno'] =='')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Old Roll No';
-        }
-
-        else if(@$_POST['oldboardid'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Old Board';
-        }
-
-        else if(@$_POST['pvtinfo_dist'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your District';
-        }
-
-        else if(@$_POST['pvtinfo_teh'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Tehsil';
-        }
-
-        else if(@$_POST['pvtZone'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Zone';
-        }
-
-        else if(@$_POST['std_group'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Study Group';
-        }
-
-        else if((@$_POST['sub7p2'] ==20) && (@$_POST['sub8p2']==21))
-        {
-            $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-
-        }
-        else if((@$_POST['sub8p2'] ==20) && (@$_POST['sub7p2']==21))
-        {
-            $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-
-        }
-
-        else if(@$_POST['exam_type'] == 1)
-        {
-            if(@$_POST['sub1p2'] ==0 && @$_POST['sub2p2'] ==0 && @$_POST['sub3p2'] ==0 && @$_POST['sub4p2'] ==0 && @$_POST['sub5p2'] ==0 && @$_POST['sub6p2'] ==0 && @$_POST['sub7p2'] ==0 && @$_POST['sub8p2'] ==0)
+        else if( (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
+            || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
+            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7)
+            )
             {
-                $allinputdata['excep'] = 'Please Select Part-II Subjects ';
-
-            }
-        }
-        else if(@$_POST['exam_type'] == 2 &&  (@$allinputdata['grp_cd'] != 4))
-        { //DebugBreak();
-            if(@$_POST['sub1p2'] == 0)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 1';
+                $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
             }
 
-            else if(@$_POST['sub2p2'] == 0)
+            else if(@$_POST['father_cnic'] == '' || @$_POST['father_cnic'] == '00000-0000000-0' )
             {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 2';
+                $allinputdata['excep'] = 'Please Enter Your Father CNIC';
             }
 
-            else if(@$_POST['sub3p2'] == 0)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 3';
-            }
 
-            else if(@$_POST['sub4p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 4';
-            }
+            else if( (@$_POST['father_cnic'] == '00000-0000000-0') || (@$_POST['father_cnic'] == '11111-1111111-1') || (@$_POST['father_cnic'] == '22222-2222222-2') || (@$_POST['father_cnic'] == '33333-3333333-3') || (@$_POST['father_cnic'] == '44444-4444444-4')
+                || (@$_POST['father_cnic'] == '55555-5555555-5') || (@$_POST['father_cnic'] == '66666-6666666-6') || (@$_POST['father_cnic'] == '77777-7777777-7') || (@$_POST['father_cnic'] == '88888-8888888-8') || (@$_POST['father_cnic'] == '99999-9999999-9') ||
+                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7)
+                )
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Correct Father CNIC No.';
+                }
 
-            else if(@$_POST['sub5p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 5';
-            }
+                else if (@$_POST['dob'] == '' )
+                {
+                    $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
+                }
+                else if(@$_POST['mob_number'] == '')
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Mobile Number';
+                }
+                else if(@$_POST['medium'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Medium';
+                }
 
-            else if(@$_POST['sub6p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 6';
-            }
+                else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
+                {
+                    $allinputdata['excep'] = 'Please Select Your medium';
+                }
 
-            else if(@$_POST['sub7p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 7';
-            }
+                else if(@$_POST['preResult'] == '')
+                {
+                    $allinputdata['excep'] = 'Please Select Your Previous Result';
+                }
 
-            else if(@$_POST['sub8p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 8';
+                else if(@$_POST['MarkOfIden']== '')
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
+                }
+
+                else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
+                {
+                    $allinputdata['excep'] = 'Please Select Your Nationality';
+                }
+
+                else if((@$_POST['gend'] != '1' && @$_POST['isotherbrd'] != '1' ) and (@$_POST['gend'] != '2' &&  @$_POST['isotherbrd'] != '1'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your Gender';
+                }
+
+                else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your religion';
+                }
+
+                else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
+                }
+
+                else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your Residency';
+                }
+
+                else if(@$_POST['address'] =='')
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Address';
+                }
+
+                else if(@$_POST['oldrno'] =='')
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Old Roll No';
+                }
+
+                else if(@$_POST['oldboardid'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Old Board';
+                }
+
+                else if(@$_POST['pvtinfo_dist'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your District';
+                }
+
+                else if(@$_POST['pvtinfo_teh'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Tehsil';
+                }
+
+                else if(@$_POST['pvtZone'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Zone';
+                }
+
+                else if(@$_POST['std_group'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Study Group';
+                }
+
+                else if(@$_POST['sub6p2'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select PART-II Subjects';
+                }
+
+                else if(@$_POST['sub7p2'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select PART-II Subjects';
+                }
+
+                else if((@$_POST['sub7p2'] ==20) && (@$_POST['sub8p2']==21))
+                {
+                    $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
+
+                }
+                else if((@$_POST['sub8p2'] ==20) && (@$_POST['sub7p2']==21))
+                {
+                    $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
+
+                }
+
+                else if(@$_POST['exam_type'] == 1)
+                {
+                    if(@$_POST['sub1p2'] ==0 && @$_POST['sub2p2'] ==0 && @$_POST['sub3p2'] ==0 && @$_POST['sub4p2'] ==0 && @$_POST['sub5p2'] ==0 && @$_POST['sub6p2'] ==0 && @$_POST['sub7p2'] ==0 && @$_POST['sub8p2'] ==0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subjects ';
+
+                    }
+                }
+                else if(@$_POST['exam_type'] == 2 &&  (@$allinputdata['grp_cd'] != 4))
+                { //DebugBreak();
+                    if(@$_POST['sub1p2'] == 0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 1';
+                    }
+
+                    else if(@$_POST['sub2p2'] == 0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 2';
+                    }
+
+                    else if(@$_POST['sub3p2'] == 0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 3';
+                    }
+
+                    else if(@$_POST['sub4p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 4';
+                    }
+
+                    else if(@$_POST['sub5p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 5';
+                    }
+
+                    else if(@$_POST['sub6p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 6';
+                    }
+
+                    else if(@$_POST['sub7p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 7';
+                    }
+
+                    else if(@$_POST['sub8p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 8';
 
 
-            }
-            else if((@$_POST['sub6'] == 19 || @$_POST['sub6p2'] == 19) && (@$_POST['sub7'] == 20 || @$_POST['sub7p2'] == 20) ||  (@$_POST['sub6'] == 20 || @$_POST['sub6p2'] == 20) && (@$_POST['sub7'] == 19 || @$_POST['sub7p2'] == 19))
+                    }
+                    else if((@$_POST['sub6'] == 19 || @$_POST['sub6p2'] == 19) && (@$_POST['sub7'] == 20 || @$_POST['sub7p2'] == 20) ||  (@$_POST['sub6'] == 20 || @$_POST['sub6p2'] == 20) && (@$_POST['sub7'] == 19 || @$_POST['sub7p2'] == 19))
 
-            {
-                $allinputdata['excep'] = 'Please Select One Subject from Advanced Islamic Studies / Islamic History';
+                    {
+                        $allinputdata['excep'] = 'Please Select One Subject from Advanced Islamic Studies / Islamic History';
 
 
-            }
+                    }
 
-        }
-        else if((@$_POST['exam_type']==16 && @$_POST['category']==2) || @$_POST['exam_type'] == 15)
-        {
-            if( (@$_POST['sub5'] == 0 && @$_POST['sub5p2'] == 0) && (@$_POST['sub6'] == 0 && @$_POST['sub6p2'] == 0) && (@$_POST['sub7'] == 0 && @$_POST['sub7p2'] == 0)  )
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 6';
-            }
-        }
+                }
+                else if((@$_POST['exam_type']==16 && @$_POST['category']==2) || @$_POST['exam_type'] == 15)
+                {
+                    if( (@$_POST['sub5'] == 0 && @$_POST['sub5p2'] == 0) && (@$_POST['sub6'] == 0 && @$_POST['sub6p2'] == 0) && (@$_POST['sub7'] == 0 && @$_POST['sub7p2'] == 0)  )
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 6';
+                    }
+                }
 
-        else if(@$_POST['terms'] != "yes")
-        {
-            $allinputdata['excep'] = 'Please Check Terms and Conditions';
-        }
+                else if(@$_POST['terms'] != "yes")
+                {
+                    $allinputdata['excep'] = 'Please Check Terms and Conditions';
+                }
 
-        if($allinputdata['excep'] == '')
+                if($allinputdata['excep'] == '')
         {
             $allinputdata['excep'] =  'Success';
         }
@@ -3262,6 +3330,29 @@ class Admission extends CI_Controller
 
         $allinputdata['excep'] == '';
 
+
+        $cntzero = substr_count(@$_POST['bay_form'],"0");
+        $cntone = substr_count(@$_POST['bay_form'],"1");
+        $cnttwo = substr_count(@$_POST['bay_form'],"2");
+        $cntthr = substr_count(@$_POST['bay_form'],"3");
+        $cntfour = substr_count(@$_POST['bay_form'],"4");
+        $cntfive = substr_count(@$_POST['bay_form'],"5");
+        $cntsix = substr_count(@$_POST['bay_form'],"6");
+        $cntseven = substr_count(@$_POST['bay_form'],"7");
+        $cnteight = substr_count(@$_POST['bay_form'],"8");
+        $cntnine = substr_count(@$_POST['bay_form'],"9");
+
+        $cnt_fnic_zero = substr_count(@$_POST['father_cnic'],"0");
+        $cnt_fnic_one = substr_count(@$_POST['father_cnic'],"1");
+        $cnt_fnic_two = substr_count(@$_POST['father_cnic'],"2");
+        $cnt_fnic_thr = substr_count(@$_POST['father_cnic'],"3");
+        $cnt_fnic_four = substr_count(@$_POST['father_cnic'],"4");
+        $cnt_fnic_five = substr_count(@$_POST['father_cnic'],"5");
+        $cnt_fnic_six = substr_count(@$_POST['father_cnic'],"6");
+        $cnt_fnic_seven = substr_count(@$_POST['father_cnic'],"7");
+        $cnt_fnic_eight = substr_count(@$_POST['father_cnic'],"8");
+        $cnt_fnic_nine = substr_count(@$_POST['father_cnic'],"9");
+
         $_POST['address']  = str_replace("'", "", $_POST['address'] );
 
         if(@$_POST['dob'] != null)
@@ -3274,9 +3365,20 @@ class Admission extends CI_Controller
         {
             $allinputdata['excep'] = 'Please Enter Your Name';
         }
+
+        else if(strlen($_POST['cand_name'])<3)  
+        {
+            $allinputdata['excep'] = 'Please Enter Your Correct Name';
+        }
+
         else if (@$_POST['father_name'] == '')
         {
             $allinputdata['excep'] = 'Please Enter Your Father Name';
+        }
+
+        else if (strlen($_POST['father_name'])<3) 
+        {
+            $allinputdata['excep'] = 'Please Enter Your Correct Father Name';
         }
 
         else if(@$_POST['bay_form'] == '' || @$_POST['bay_form'] == '00000-0000000-0')
@@ -3284,169 +3386,190 @@ class Admission extends CI_Controller
             $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
         }
 
-        else if(@$_POST['father_cnic'] == '' || @$_POST['father_cnic'] == '00000-0000000-0' )
-        {
-            $allinputdata['excep'] = 'Please Enter Your Father CNIC';
-        }
-
-        else if (@$_POST['dob'] == '' )
-        {
-            $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
-        }
-        else if(@$_POST['mob_number'] == '')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Mobile Number';
-        }
-        else if(@$_POST['medium'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Medium';
-        }
-
-        else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
-        {
-            $allinputdata['excep'] = 'Please Select Your medium';
-        }
-
-        else if(@$_POST['MarkOfIden']== '')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
-        }
-
-        else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
-        {
-            $allinputdata['excep'] = 'Please Select Your Nationality';
-        }
-
-        else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Residency';
-        }
-
-
-
-        else if((@$_POST['gend'] != '1' && @$_POST['isotherbrd'] != '1' ) and (@$_POST['gend'] != '2' &&  @$_POST['isotherbrd'] != '1'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Gender';
-        }
-
-        else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your religion';
-        }
-
-        else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
-        }
-
-        else if(@$_POST['address'] =='')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Address';
-        }
-
-        else if(@$_POST['pvtinfo_dist'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your District';
-        }
-
-        else if(@$_POST['pvtinfo_teh'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Tehsil';
-        }
-
-        else if(@$_POST['pvtZone'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Zone';
-        }
-
-        else if(@$_POST['std_group'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Study Group';
-        }
-
-        else if((@$_POST['sub7p2'] ==20) && (@$_POST['sub8p2']==21))
-        {
-            $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-
-        }
-        else if((@$_POST['sub8p2'] ==20) && (@$_POST['sub7p2']==21))
-        {
-            $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-
-        }
-
-        else if(@$_POST['exam_type'] == 1)
-        {
-            if(@$_POST['sub1p2'] ==0 && @$_POST['sub2p2'] ==0 && @$_POST['sub3p2'] ==0 && @$_POST['sub4p2'] ==0 && @$_POST['sub5p2'] ==0 && @$_POST['sub6p2'] ==0 && @$_POST['sub7p2'] ==0 && @$_POST['sub8p2'] ==0)
+        else if( (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
+            || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
+            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7)
+            )
             {
-                $allinputdata['excep'] = 'Please Select Part-II Subjects ';
-
-            }
-        }
-        else if(@$_POST['exam_type'] == 2 &&  (@$allinputdata['grp_cd'] != 4))
-        { 
-            if(@$_POST['sub1p2'] == 0)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 1';
+                $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
             }
 
-            else if(@$_POST['sub2p2'] == 0)
+            else if(@$_POST['father_cnic'] == '' || @$_POST['father_cnic'] == '00000-0000000-0' )
             {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 2';
+                $allinputdata['excep'] = 'Please Enter Your Father CNIC';
             }
 
-            else if(@$_POST['sub3p2'] == 0)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 3';
-            }
+            else if( (@$_POST['father_cnic'] == '00000-0000000-0') || (@$_POST['father_cnic'] == '11111-1111111-1') || (@$_POST['father_cnic'] == '22222-2222222-2') || (@$_POST['father_cnic'] == '33333-3333333-3') || (@$_POST['father_cnic'] == '44444-4444444-4')
+                || (@$_POST['father_cnic'] == '55555-5555555-5') || (@$_POST['father_cnic'] == '66666-6666666-6') || (@$_POST['father_cnic'] == '77777-7777777-7') || (@$_POST['father_cnic'] == '88888-8888888-8') || (@$_POST['father_cnic'] == '99999-9999999-9') ||
+                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7)
+                )
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Correct Father CNIC No.';
+                }
 
-            else if(@$_POST['sub4p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 4';
-            }
+                else if (@$_POST['dob'] == '' )
+                {
+                    $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
+                }
+                else if(@$_POST['mob_number'] == '')
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Mobile Number';
+                }
+                else if(@$_POST['medium'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Medium';
+                }
 
-            else if(@$_POST['sub5p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 5';
-            }
+                else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
+                {
+                    $allinputdata['excep'] = 'Please Select Your medium';
+                }
 
-            else if(@$_POST['sub6p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 6';
-            }
+                else if(@$_POST['MarkOfIden']== '')
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
+                }
 
-            else if(@$_POST['sub7p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 7';
-            }
+                else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
+                {
+                    $allinputdata['excep'] = 'Please Select Your Nationality';
+                }
 
-            else if(@$_POST['sub8p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 8';
+                else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your Residency';
+                }
 
 
-            }
-            else if((@$_POST['sub6'] == 19 || @$_POST['sub6p2'] == 19) && (@$_POST['sub7'] == 20 || @$_POST['sub7p2'] == 20) ||  (@$_POST['sub6'] == 20 || @$_POST['sub6p2'] == 20) && (@$_POST['sub7'] == 19 || @$_POST['sub7p2'] == 19))
 
-            {
-                $allinputdata['excep'] = 'Please Select One Subject from Advanced Islamic Studies / Islamic History';
-            }
+                else if((@$_POST['gend'] != '1' && @$_POST['isotherbrd'] != '1' ) and (@$_POST['gend'] != '2' &&  @$_POST['isotherbrd'] != '1'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your Gender';
+                }
 
-        }
-        else if((@$_POST['exam_type']==16 && @$_POST['category']==2) || @$_POST['exam_type'] == 15)
-        {
-            if( (@$_POST['sub5'] == 0 && @$_POST['sub5p2'] == 0) && (@$_POST['sub6'] == 0 && @$_POST['sub6p2'] == 0) && (@$_POST['sub7'] == 0 && @$_POST['sub7p2'] == 0)  )
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 6';
-            }
-        }
+                else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your religion';
+                }
 
-        else if(@$_POST['terms'] != "yes")
-        {
-            $allinputdata['excep'] = 'Please Check Terms and Conditions';
-        }
+                else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
+                }
 
-        if($allinputdata['excep'] == '')
+                else if(@$_POST['address'] =='')
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Address';
+                }
+
+                else if(@$_POST['pvtinfo_dist'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your District';
+                }
+
+                else if(@$_POST['pvtinfo_teh'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Tehsil';
+                }
+
+                else if(@$_POST['pvtZone'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Zone';
+                }
+
+                else if(@$_POST['std_group'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Study Group';
+                }
+
+                else if((@$_POST['sub7p2'] ==20) && (@$_POST['sub8p2']==21))
+                {
+                    $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
+
+                }
+                else if((@$_POST['sub8p2'] ==20) && (@$_POST['sub7p2']==21))
+                {
+                    $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
+
+                }
+
+                else if(@$_POST['exam_type'] == 1)
+                {
+                    if(@$_POST['sub1p2'] ==0 && @$_POST['sub2p2'] ==0 && @$_POST['sub3p2'] ==0 && @$_POST['sub4p2'] ==0 && @$_POST['sub5p2'] ==0 && @$_POST['sub6p2'] ==0 && @$_POST['sub7p2'] ==0 && @$_POST['sub8p2'] ==0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subjects ';
+
+                    }
+                }
+                else if(@$_POST['exam_type'] == 2 &&  (@$allinputdata['grp_cd'] != 4))
+                { 
+                    if(@$_POST['sub1p2'] == 0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 1';
+                    }
+
+                    else if(@$_POST['sub2p2'] == 0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 2';
+                    }
+
+                    else if(@$_POST['sub3p2'] == 0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 3';
+                    }
+
+                    else if(@$_POST['sub4p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 4';
+                    }
+
+                    else if(@$_POST['sub5p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 5';
+                    }
+
+                    else if(@$_POST['sub6p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 6';
+                    }
+
+                    else if(@$_POST['sub7p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 7';
+                    }
+
+                    else if(@$_POST['sub8p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 8';
+
+
+                    }
+                    else if((@$_POST['sub6'] == 19 || @$_POST['sub6p2'] == 19) && (@$_POST['sub7'] == 20 || @$_POST['sub7p2'] == 20) ||  (@$_POST['sub6'] == 20 || @$_POST['sub6p2'] == 20) && (@$_POST['sub7'] == 19 || @$_POST['sub7p2'] == 19))
+
+                    {
+                        $allinputdata['excep'] = 'Please Select One Subject from Advanced Islamic Studies / Islamic History';
+                    }
+
+                }
+                else if((@$_POST['exam_type']==16 && @$_POST['category']==2) || @$_POST['exam_type'] == 15)
+                {
+                    if( (@$_POST['sub5'] == 0 && @$_POST['sub5p2'] == 0) && (@$_POST['sub6'] == 0 && @$_POST['sub6p2'] == 0) && (@$_POST['sub7'] == 0 && @$_POST['sub7p2'] == 0)  )
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 6';
+                    }
+                }
+
+                else if(@$_POST['terms'] != "yes")
+                {
+                    $allinputdata['excep'] = 'Please Check Terms and Conditions';
+                }
+
+                else if(@$_POST['terms'] != "yes")
+                {
+                    $allinputdata['excep'] = 'Please Check Terms and Conditions';
+                }
+
+                if($allinputdata['excep'] == '')
         {
             $allinputdata['excep'] =  'Success';
         }
@@ -3459,6 +3582,28 @@ class Admission extends CI_Controller
     {
         $allinputdata['excep'] == '';
 
+        $cntzero = substr_count(@$_POST['bay_form'],"0");
+        $cntone = substr_count(@$_POST['bay_form'],"1");
+        $cnttwo = substr_count(@$_POST['bay_form'],"2");
+        $cntthr = substr_count(@$_POST['bay_form'],"3");
+        $cntfour = substr_count(@$_POST['bay_form'],"4");
+        $cntfive = substr_count(@$_POST['bay_form'],"5");
+        $cntsix = substr_count(@$_POST['bay_form'],"6");
+        $cntseven = substr_count(@$_POST['bay_form'],"7");
+        $cnteight = substr_count(@$_POST['bay_form'],"8");
+        $cntnine = substr_count(@$_POST['bay_form'],"9");
+
+        $cnt_fnic_zero = substr_count(@$_POST['father_cnic'],"0");
+        $cnt_fnic_one = substr_count(@$_POST['father_cnic'],"1");
+        $cnt_fnic_two = substr_count(@$_POST['father_cnic'],"2");
+        $cnt_fnic_thr = substr_count(@$_POST['father_cnic'],"3");
+        $cnt_fnic_four = substr_count(@$_POST['father_cnic'],"4");
+        $cnt_fnic_five = substr_count(@$_POST['father_cnic'],"5");
+        $cnt_fnic_six = substr_count(@$_POST['father_cnic'],"6");
+        $cnt_fnic_seven = substr_count(@$_POST['father_cnic'],"7");
+        $cnt_fnic_eight = substr_count(@$_POST['father_cnic'],"8");
+        $cnt_fnic_nine = substr_count(@$_POST['father_cnic'],"9");
+
         $_POST['address']  = str_replace("'", "", $_POST['address'] );
 
         if(@$_POST['dob'] != null)
@@ -3481,166 +3626,183 @@ class Admission extends CI_Controller
             $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
         }
 
-        else if(@$_POST['father_cnic'] == '' || @$_POST['father_cnic'] == '00000-0000000-0' )
-        {
-            $allinputdata['excep'] = 'Please Enter Your Father CNIC';
-        }
 
-        else if (@$_POST['dob'] == '' )
-        {
-            $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
-        }
-        else if(@$_POST['mob_number'] == '')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Mobile Number';
-        }
-        else if(@$_POST['medium'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Medium';
-        }
-
-        else if(@$_POST['MarkOfIden']== '')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
-        }
-
-        else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
-        {
-            $allinputdata['excep'] = 'Please Select Your medium';
-        }
-        else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
-        {
-            $allinputdata['excep'] = 'Please Select Your Nationality';
-        }
-        else if((@$_POST['gend'] != '1' && @$_POST['isotherbrd'] != '1' ) and (@$_POST['gend'] != '2' &&  @$_POST['isotherbrd'] != '1'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Gender';
-        }
-
-        else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
-        }
-        else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your religion';
-        }
-        else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Residency';
-        }
-
-        else if(@$_POST['address'] =='')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Address';
-        }
-
-        else if(@$_POST['pvtinfo_dist'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your District';
-        }
-
-        else if(@$_POST['pvtinfo_teh'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Tehsil';
-        }
-
-        else if(@$_POST['pvtZone'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Zone';
-        }
-
-        else if(@$_POST['std_group'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Study Group';
-        }
-
-        else if((@$_POST['sub7p2'] ==20) && (@$_POST['sub8p2']==21))
-        {
-            $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-
-        }
-        else if((@$_POST['sub8p2'] ==20) && (@$_POST['sub7p2']==21))
-        {
-            $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-
-        }
-
-        else if(@$_POST['exam_type'] == 1)
-        {
-            if(@$_POST['sub1p2'] ==0 && @$_POST['sub2p2'] ==0 && @$_POST['sub3p2'] ==0 && @$_POST['sub4p2'] ==0 && @$_POST['sub5p2'] ==0 && @$_POST['sub6p2'] ==0 && @$_POST['sub7p2'] ==0 && @$_POST['sub8p2'] ==0)
+        else if( (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
+            || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
+            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7)
+            )
             {
-                $allinputdata['excep'] = 'Please Select Part-II Subjects ';
-
-            }
-        }
-        else if(@$_POST['exam_type'] == 2 &&  (@$allinputdata['grp_cd'] != 4))
-        { //DebugBreak();
-            if(@$_POST['sub1p2'] == 0)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 1';
-
-
-            }
-            else if(@$_POST['sub2p2'] == 0)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 2';
-
-            }
-            else if(@$_POST['sub3p2'] == 0)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 3';
-
-
-            }
-            else if(@$_POST['sub4p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 4';
-
-
-            }
-            else if(@$_POST['sub5p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 5';
-
-
-            }
-            else if(@$_POST['sub6p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 6';
-
-
-            }
-            else if(@$_POST['sub7p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 7';
-
-
-            }
-            else if(@$_POST['sub8p2'] == 0 && @$_POST['std_group'] != 4)
-            {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 8';
-
-
-            }
-            else if((@$_POST['sub6'] == 19 || @$_POST['sub6p2'] == 19) && (@$_POST['sub7'] == 20 || @$_POST['sub7p2'] == 20) ||  (@$_POST['sub6'] == 20 || @$_POST['sub6p2'] == 20) && (@$_POST['sub7'] == 19 || @$_POST['sub7p2'] == 19))
-
-            {
-                $allinputdata['excep'] = 'Please Select One Subject from Advanced Islamic Studies / Islamic History';
-
-
+                $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
             }
 
-        }
-        else if((@$_POST['exam_type']==16 && @$_POST['category']==2) || @$_POST['exam_type'] == 15)
-        {
-            if( (@$_POST['sub5'] == 0 && @$_POST['sub5p2'] == 0) && (@$_POST['sub6'] == 0 && @$_POST['sub6p2'] == 0) && (@$_POST['sub7'] == 0 && @$_POST['sub7p2'] == 0)  )
+            else if(@$_POST['father_cnic'] == '' || @$_POST['father_cnic'] == '00000-0000000-0' )
             {
-                $allinputdata['excep'] = 'Please Select Part-II Subject 6';
+                $allinputdata['excep'] = 'Please Enter Your Father CNIC';
             }
-        }
 
-        if($allinputdata['excep'] == '')
+            else if( (@$_POST['father_cnic'] == '00000-0000000-0') || (@$_POST['father_cnic'] == '11111-1111111-1') || (@$_POST['father_cnic'] == '22222-2222222-2') || (@$_POST['father_cnic'] == '33333-3333333-3') || (@$_POST['father_cnic'] == '44444-4444444-4')
+                || (@$_POST['father_cnic'] == '55555-5555555-5') || (@$_POST['father_cnic'] == '66666-6666666-6') || (@$_POST['father_cnic'] == '77777-7777777-7') || (@$_POST['father_cnic'] == '88888-8888888-8') || (@$_POST['father_cnic'] == '99999-9999999-9') ||
+                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7)
+                )
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Correct Father CNIC No.';
+                }
+
+                else if (@$_POST['dob'] == '' )
+                {
+                    $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
+                }
+                else if(@$_POST['mob_number'] == '')
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Mobile Number';
+                }
+                else if(@$_POST['medium'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Medium';
+                }
+
+                else if(@$_POST['MarkOfIden']== '')
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
+                }
+
+                else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
+                {
+                    $allinputdata['excep'] = 'Please Select Your medium';
+                }
+                else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
+                {
+                    $allinputdata['excep'] = 'Please Select Your Nationality';
+                }
+                else if((@$_POST['gend'] != '1' && @$_POST['isotherbrd'] != '1' ) and (@$_POST['gend'] != '2' &&  @$_POST['isotherbrd'] != '1'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your Gender';
+                }
+
+                else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
+                }
+                else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your religion';
+                }
+                else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
+                {
+                    $allinputdata['excep'] = 'Please Select Your Residency';
+                }
+
+                else if(@$_POST['address'] =='')
+                {
+                    $allinputdata['excep'] = 'Please Enter Your Address';
+                }
+
+                else if(@$_POST['pvtinfo_dist'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your District';
+                }
+
+                else if(@$_POST['pvtinfo_teh'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Tehsil';
+                }
+
+                else if(@$_POST['pvtZone'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Zone';
+                }
+
+                else if(@$_POST['std_group'] == 0)
+                {
+                    $allinputdata['excep'] = 'Please Select Your Study Group';
+                }
+
+                else if((@$_POST['sub7p2'] ==20) && (@$_POST['sub8p2']==21))
+                {
+                    $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
+
+                }
+                else if((@$_POST['sub8p2'] ==20) && (@$_POST['sub7p2']==21))
+                {
+                    $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
+
+                }
+
+                else if(@$_POST['exam_type'] == 1)
+                {
+                    if(@$_POST['sub1p2'] ==0 && @$_POST['sub2p2'] ==0 && @$_POST['sub3p2'] ==0 && @$_POST['sub4p2'] ==0 && @$_POST['sub5p2'] ==0 && @$_POST['sub6p2'] ==0 && @$_POST['sub7p2'] ==0 && @$_POST['sub8p2'] ==0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subjects ';
+
+                    }
+                }
+                else if(@$_POST['exam_type'] == 2 &&  (@$allinputdata['grp_cd'] != 4))
+                { //DebugBreak();
+                    if(@$_POST['sub1p2'] == 0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 1';
+
+
+                    }
+                    else if(@$_POST['sub2p2'] == 0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 2';
+
+                    }
+                    else if(@$_POST['sub3p2'] == 0)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 3';
+
+
+                    }
+                    else if(@$_POST['sub4p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 4';
+
+
+                    }
+                    else if(@$_POST['sub5p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 5';
+
+
+                    }
+                    else if(@$_POST['sub6p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 6';
+
+
+                    }
+                    else if(@$_POST['sub7p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 7';
+
+
+                    }
+                    else if(@$_POST['sub8p2'] == 0 && @$_POST['std_group'] != 4)
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 8';
+
+
+                    }
+                    else if((@$_POST['sub6'] == 19 || @$_POST['sub6p2'] == 19) && (@$_POST['sub7'] == 20 || @$_POST['sub7p2'] == 20) ||  (@$_POST['sub6'] == 20 || @$_POST['sub6p2'] == 20) && (@$_POST['sub7'] == 19 || @$_POST['sub7p2'] == 19))
+
+                    {
+                        $allinputdata['excep'] = 'Please Select One Subject from Advanced Islamic Studies / Islamic History';
+
+
+                    }
+
+                }
+                else if((@$_POST['exam_type']==16 && @$_POST['category']==2) || @$_POST['exam_type'] == 15)
+                {
+                    if( (@$_POST['sub5'] == 0 && @$_POST['sub5p2'] == 0) && (@$_POST['sub6'] == 0 && @$_POST['sub6p2'] == 0) && (@$_POST['sub7'] == 0 && @$_POST['sub7p2'] == 0)  )
+                    {
+                        $allinputdata['excep'] = 'Please Select Part-II Subject 6';
+                    }
+                }
+
+                if($allinputdata['excep'] == '')
         {
             $allinputdata['excep'] =  'Success';
         }

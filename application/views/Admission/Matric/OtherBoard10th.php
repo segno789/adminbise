@@ -37,13 +37,13 @@
                 <label class="control-label" for="cand_name" >
                     Candidate Name:
                 </label>        
-                <input class="text-uppercase form-control"  type="text" id="cand_name" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>" >
+                <input class="text-uppercase form-control"  type="text" id="cand_name" name="cand_name" placeholder="Candidate Name" maxlength="60" value="<?php echo @$data['name'] ?>" >
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="father_name">
                     Father's Name :
                 </label>        
-                <input class="text-uppercase form-control" id="father_name" name="father_name" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo  @$data['Fname']; ?>" > 
+                <input class="text-uppercase form-control" id="father_name" name="father_name"  type="text" placeholder="Father's Name" maxlength="60"  value="<?php echo  @$data['Fname']; ?>" > 
             </div>
         </div>
     </div>
@@ -106,7 +106,7 @@
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="preResult">Previous Result:</label>
-                <input type="text" class="text-uppercase form-control" name="preResult" required="required" id="preResult" value="<?php echo  @$data['preResult'] ; ?>" placeholder="i.e 350 or E,U">
+                <input type="text" class="text-uppercase form-control" name="preResult" required="required" maxlength="4" id="preResult" value="<?php echo  @$data['preResult'] ; ?>" placeholder="i.e 350 or E,U">
             </div>
         </div>
     </div>
@@ -114,7 +114,7 @@
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
                 <label class="control-label" for="MarkOfIden">Mark of Identification :</label>
-                <input class="text-uppercase form-control" type="text" id="MarkOfIden" style="text-transform: uppercase;" name="MarkOfIden" value="<?php echo  @$data['markOfIden']; ?>" required="required" maxlength="60" >
+                <input class="text-uppercase form-control" type="text" id="MarkOfIden"  name="MarkOfIden" value="<?php echo  @$data['markOfIden']; ?>" required="required" maxlength="60" >
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="speciality">Speciality:</label> 
@@ -326,7 +326,7 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-4"><label class="control-label">Roll No :</label>
-                <input class="text-uppercase form-control" type="text" id="oldrno" name="oldrno" value="<?php echo @$data['rno']; ?>" required="required" maxlength="6">
+                <input class="text-uppercase form-control" type="text" id="oldrno" name="oldrno" value="<?php echo @$data['rno']; ?>" required="required" maxlength="10">
             </div>
             <div class="col-md-4">
                 <label class="control-label">Year:</label> 
@@ -443,7 +443,7 @@
         'HEALTH & PHYSICAL EDUCATION' => '40',
         'CALIGRAPHY' => '41',
         'LOCAL (COMMUNITY) CRAFTS' => '42',
-        'ELECTRICAL WIRING' => '43',
+        //'ELECTRICAL WIRING' => '43',
         'RADIO ELECTRONICS' => '44',
         'COMMERCE' => '45',
         'AGRICULTURE' => '46',
@@ -842,11 +842,12 @@
         var oldrno = $('#oldrno').val();
         var oldboardid = $('#oldboardid').val();
         var gend = $('#gend').val();
+        var sub6p2 = $('#sub6p2').val();
+        var sub7p2 = $('#sub7p2').val();
         var status = 0;
         var $img = $("#previewImg");
         var src = $img.attr("src");
         var selected_group_conversion ;
-
         var empBrdCd = $('#empBrdCd').val();
         var speciality = $('#speciality').val();
 
@@ -875,12 +876,27 @@
             $('#cand_name').focus(); 
             return status;
         }
+
+        else if (name.trim().length < 3 )
+        {
+            alertify.error("Please Enter your correct Name ") 
+            $('#cand_name').focus(); 
+            return status;
+        }
+
         else if(fName == "" || fName == undefined)
         {
             alertify.error("Please Enter your Father's Name  ") 
             $('#father_name').focus(); 
             return status;
         }   
+
+        else if (fName.trim().length < 3 )
+        {
+            alertify.error("Please Enter your correct Father's Name") 
+            $('#father_name').focus(); 
+            return status;
+        }
 
         else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
         {
@@ -1021,6 +1037,22 @@
             $("#std_group").focus();
             return status;  
         }
+
+
+        else if(sub6p2 == '' || sub6p2 == 0)
+        {
+            alertify.error('Please Select all the PART-II Subjects '); 
+            $("#sub6p2").focus();
+            return status;  
+        }
+
+        else if(sub7p2 == '' || sub7p2 == 0)
+        {
+            alertify.error('Please Select all the PART-II Subjects '); 
+            $("#sub7p2").focus();
+            return status;  
+        }
+
 
         else if($("#terms").is(":not(:checked)"))
         {
@@ -1220,7 +1252,7 @@
             40:'HEALTH & PHYSICAL EDUCATION',
             41:'CALIGRAPHY',
             42:'LOCAL (COMMUNITY) CRAFTS',
-            43:'ELECTRICAL WIRING',
+            //43:'ELECTRICAL WIRING',
             44:'RADIO ELECTRONICS',
             45:'COMMERCE',
             46:'AGRICULTURE',
@@ -2008,7 +2040,7 @@
             {
                 ClearALLDropDowns();
                 load_Bio_CS_Sub();
-                $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                //$("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
                 if(sub7ap1==0)
                 {
                     $("#sub7").append('<option selected="selected" value="0">NONE</option>');
@@ -2016,7 +2048,7 @@
                 else{
                     $('#sub7').append( new Option("NONE",0) );
                 } 
-                $("#sub7p2").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                //$("#sub7p2").append(new Option('ELECTRICAL WIRING (OPT)',43));
                 //ELECTRICAL WIRING (OPT)
             } 
             else if(sel_group=="4")

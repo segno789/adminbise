@@ -457,7 +457,8 @@
         }
         else
         {
-            $("button[type='submit']").html('Please wait ...').attr('disabled','disabled'); 
+            $("button[type='submit']").html('Please wait...').attr('disabled','disabled'); 
+            $('.mPageloader').show();
             $.ajax({
 
                 type: "POST",
@@ -467,7 +468,7 @@
                 cache:false,
                 async: false,
                 beforeSend: function() {  $('.mPageloader').show(); },
-                complete: function() { $('.mPageloader').hide();},
+                //  complete: function() { $('.mPageloader').hide();},
 
                 success: function(data)
                 {                 
@@ -477,19 +478,21 @@
                     if(obj.excep == 'Success')
                     {
                         $("#myform").submit();
-                        $("button[type='submit']").removeAttr("disabled");
                         return false;
                     }
                     else
                     {
                         alertify.error(obj.excep);
-                        $("button[type='submit']").removeAttr("disabled");
+                        $('.mPageloader').hide();
+                        $("button[type='submit']").html('Save Form').removeAttr("disabled");
                         return false;     
 
                     }
+                    //  
                 },
                 error: function(request, status, error){
                     alertify.error(request.responseText);
+                    $('.mPageloader').hide();
                 }
             });
 
@@ -548,12 +551,27 @@
             $('#cand_name').focus(); 
             return status;
         }
+
+        else if (name.trim().length < 3 )
+        {
+            alertify.error("Please Enter correct valid Name ") 
+            $('#cand_name').focus(); 
+            return status;
+        }
+
         else if(fName == "" || fName == undefined){
             alertify.error("Please Enter your  Father's Name.");
 
             $('#father_name').focus(); 
             return status;
         }   
+
+        else if (fName.trim().length < 3 )
+        {
+            alertify.error("Please Enter correct Father's Name") 
+            $('#father_name').focus(); 
+            return status;
+        }
 
         else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
         {

@@ -125,7 +125,7 @@ class Admission_9th_pvt extends CI_Controller {
     private function sendcode($data)
     {
         $pno = '92'.str_replace("-","",substr($data['MobNo'], 1)); 
-        $pno = '923007465790'; 
+        //$pno = '923007465790'; 
 
 
         $sms1 ="Dear ".$data['name'].",".urldecode("%0A").'Your Verification Code is this:'.$data['verificationCode'];
@@ -1567,7 +1567,15 @@ class Admission_9th_pvt extends CI_Controller {
         $pdf->Cell( 0.5,0.5,$feeInWords,0,'L');
         //'Rs.'.$formfee.'+'.$Prosfee.'+'.$cert_fee.'+'. $RegFee. '/-' $fee
 
-        $pdf->Image("assets/img/BankCopy.jpg",0.25,8.09, 7.6,0.18, "jpeg");   
+        if($data['Spec'] == 1 || $data['Spec'] == 3){
+            $pdf->Image('assets/img/Disablecandidates.jpg',0.25,8.09, 7.6,0.25, "jpeg");       
+        }
+        else
+        {
+            $pdf->Image("assets/img/BankCopy.jpg",0.25,8.09, 7.6,0.18, "jpeg");   
+
+        }
+
 
         $pdf->SetXY(2.4, 8.39+$Y);
         $pdf->SetFont('Arial','b',8);
@@ -1927,6 +1935,10 @@ class Admission_9th_pvt extends CI_Controller {
                 $regfee = 0; 
                 $finalFee = 0;
             }
+            if($data['Spec'] == 1 OR $data['Spec'] == 3)
+            {
+                $processFee = 0;
+            }
             $data['AdmFee'] = $finalFee;
             $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee'];
             $AllStdFee = array('formNo'=>$data['formNo'],'regFee'=>0,'AdmProcessFee'=>$processFee,'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']);
@@ -2053,294 +2065,298 @@ class Admission_9th_pvt extends CI_Controller {
         if(@$_POST['cand_name'] == ''   )
         {
             $allinputdata['excep'] = 'Please Enter Your Name';
+        } 
 
-
+        else if(strlen($_POST['cand_name'])<3)  
+        {
+            $allinputdata['excep'] = 'Please Enter Your Name';
         }
+
         else if (@$_POST['father_name'] == ''   )
         {
             $allinputdata['excep'] = 'Please Enter Your Father Name';
+        }   
 
 
+        else if (strlen($_POST['father_name'])<3) 
+        {
+            $allinputdata['excep'] = 'Please Enter Your Father Name';
         }
 
         else if(@$_POST['bay_form'] == ''   )
         {
             $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
-
-
-
         }
+
         else if( (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
-        || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
-        (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7)
-        )
-        {
-            $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
+            || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
+            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7)
+            )
+            {
+                $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
+            }
 
 
-        }
+            else if(@$_POST['father_cnic'] == '' )
+            {
+                $allinputdata['excep'] = 'Please Enter Your Father CNIC';
 
 
-        else if(@$_POST['father_cnic'] == '' )
-        {
-            $allinputdata['excep'] = 'Please Enter Your Father CNIC';
 
+            }
+            else if((@$_POST['bay_form'] == @$_POST['father_cnic']) || (@$_POST['father_cnic'] == @$_POST['bay_form']) )
+            {
+                $allinputdata['excep'] = 'Your Bay Form and FNIC No. are not same';
 
 
-        }
-        else if((@$_POST['bay_form'] == @$_POST['father_cnic']) || (@$_POST['father_cnic'] == @$_POST['bay_form']) )
-        {
-            $allinputdata['excep'] = 'Your Bay Form and FNIC No. are not same';
 
+            }
+            else if (@$_POST['dob'] == '' )
+            {
+                $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
 
 
-        }
-        else if (@$_POST['dob'] == '' )
-        {
-            $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
+            }
+            else if(@$_POST['mob_number'] == '')
+            {
+                $allinputdata['excep'] = 'Please Enter Your Mobile Number';
 
 
-        }
-        else if(@$_POST['mob_number'] == '')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Mobile Number';
+            }
+            else if(@$_POST['medium'] == 0)
+            {
+                $allinputdata['excep'] = 'Please Select Your Medium';
 
 
-        }
-        else if(@$_POST['medium'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Medium';
+            }
 
+            else if(@$_POST['MarkOfIden']== '')
+            {
+                $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
 
-        }
 
-        else if(@$_POST['MarkOfIden']== '')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
+            }
 
+            else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
+            {
+                $allinputdata['excep'] = 'Please Select Your medium';
 
-        }
+            }
+            else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
+            {
+                $allinputdata['excep'] = 'Please Select Your Nationality';
 
-        else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
-        {
-            $allinputdata['excep'] = 'Please Select Your medium';
 
-        }
-        else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
-        {
-            $allinputdata['excep'] = 'Please Select Your Nationality';
+            }
+            else if((@$_POST['gender'] != '1') and (@$_POST['gender'] != '2'))
+            {
+                $allinputdata['excep'] = 'Please Select Your Gender';
 
 
-        }
-        else if((@$_POST['gender'] != '1') and (@$_POST['gender'] != '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Gender';
+            }
+            else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
+            {
+                $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
 
 
-        }
-        else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
+            }
+            else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
+            {
+                $allinputdata['excep'] = 'Please Select Your religion';
 
+            }
+            else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
+            {
+                $allinputdata['excep'] = 'Please Select Your Residency';
 
-        }
-        else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your religion';
 
-        }
-        else if((@$_POST['UrbanRural'] != '1') and (@$_POST['UrbanRural'] != '2'))
-        {
-            $allinputdata['excep'] = 'Please Select Your Residency';
+            }
+            else if(@$_POST['address'] =='')
+            {
+                $allinputdata['excep'] = 'Please Enter Your Address';
 
 
-        }
-        else if(@$_POST['address'] =='')
-        {
-            $allinputdata['excep'] = 'Please Enter Your Address';
+            }
+            else if(@$_POST['pvtinfo_dist'] ==''  || @$_POST['pvtinfo_dist'] ==0  )
+            {
+                $allinputdata['excep'] = 'Please Select Your District First.';
 
 
-        }
-        else if(@$_POST['pvtinfo_dist'] ==''  || @$_POST['pvtinfo_dist'] ==0  )
-        {
-            $allinputdata['excep'] = 'Please Select Your District First.';
+            }
+            else if(@$_POST['pvtinfo_teh'] =='' || @$_POST['pvtinfo_teh'] ==0)
+            {
+                $allinputdata['excep'] = 'Please Select Your Tehsil First.';
 
 
-        }
-        else if(@$_POST['pvtinfo_teh'] =='' || @$_POST['pvtinfo_teh'] ==0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Tehsil First.';
+            }
+            else if(@$_POST['pvtZone'] =='' || @$_POST['pvtZone'] ==0)
+            {
+                $allinputdata['excep'] = 'Please Select Your Zone First.';
 
 
-        }
-        else if(@$_POST['pvtZone'] =='' || @$_POST['pvtZone'] ==0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Zone First.';
+            }
+            else if(@$_POST['std_group'] == 0)
+            {
+                $allinputdata['excep'] = 'Please Select Your Study Group';
 
 
-        }
-        else if(@$_POST['std_group'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Your Study Group';
+            }
+            else if((@$_POST['std_group'] == 1) && ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=8)))
+            {
 
+                $allinputdata['excep'] = 'Subjects not according to Group';
 
-        }
-        else if((@$_POST['std_group'] == 1) && ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=8)))
-        {
 
-            $allinputdata['excep'] = 'Subjects not according to Group';
+            }
+            else if((@$_POST['std_group'] == 7)&& ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=78)))
+            {
 
+                $allinputdata['excep'] = 'Subjects not according to Group';
 
-        }
-        else if((@$_POST['std_group'] == 7)&& ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=78)))
-        {
 
-            $allinputdata['excep'] = 'Subjects not according to Group';
+            }
+            else if((@$_POST['std_group'] == 8)&& ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=43)))
+            {
 
+                $allinputdata['excep'] = 'Subjects not according to Group';
 
-        }
-        else if((@$_POST['std_group'] == 8)&& ((@$_POST['sub4']!=5) || (@$_POST['sub5']!=6)||(@$_POST['sub6']!=7)|| (@$_POST['sub7']!=43)))
-        {
 
-            $allinputdata['excep'] = 'Subjects not according to Group';
+            }
+            else if((@$_POST['std_group'] == 2) && ((@$_POST['sub4']==5) || (@$_POST['sub5']==6)||(@$_POST['sub6']==7)|| (@$_POST['sub7']==43) || (@$_POST['sub7']==8)))
+            {
+                $allinputdata['excep'] = 'Subjects not according to Group';
 
 
-        }
-        else if((@$_POST['std_group'] == 2) && ((@$_POST['sub4']==5) || (@$_POST['sub5']==6)||(@$_POST['sub6']==7)|| (@$_POST['sub7']==43) || (@$_POST['sub7']==8)))
-        {
-            $allinputdata['excep'] = 'Subjects not according to Group';
+            }
 
+            else if((@$_POST['std_group'] == 5)&& ((@$_POST['sub4']==5) || (@$_POST['sub5']==6)||(@$_POST['sub6']==7)|| (@$_POST['sub7']==43) || (@$_POST['sub7']==8)))
+            {
+                $allinputdata['excep'] = 'Subjects not according to Group';
 
-        }
 
-        else if((@$_POST['std_group'] == 5)&& ((@$_POST['sub4']==5) || (@$_POST['sub5']==6)||(@$_POST['sub6']==7)|| (@$_POST['sub7']==43) || (@$_POST['sub7']==8)))
-        {
-            $allinputdata['excep'] = 'Subjects not according to Group';
+            }
 
+            else if((@$_POST['sub1'] == @$_POST['sub2']) ||(@$_POST['sub1'] == @$_POST['sub3'])||(@$_POST['sub1'] == @$_POST['sub4'])||(@$_POST['sub1'] == @$_POST['sub5'])||(@$_POST['sub1'] == @$_POST['sub6'])||(@$_POST['sub1'] == @$_POST['sub7'])||
+                (@$_POST['sub1'] == @$_POST['sub8']))
+                {
+                    $allinputdata['excep'] = 'Please Select Different Subjects';
 
-        }
 
-        else if((@$_POST['sub1'] == @$_POST['sub2']) ||(@$_POST['sub1'] == @$_POST['sub3'])||(@$_POST['sub1'] == @$_POST['sub4'])||(@$_POST['sub1'] == @$_POST['sub5'])||(@$_POST['sub1'] == @$_POST['sub6'])||(@$_POST['sub1'] == @$_POST['sub7'])||
-        (@$_POST['sub1'] == @$_POST['sub8']))
-        {
-            $allinputdata['excep'] = 'Please Select Different Subjects';
+                }
+                else if((@$_POST['sub2'] == @$_POST['sub1']) ||(@$_POST['sub2'] == @$_POST['sub3'])||(@$_POST['sub2'] == @$_POST['sub4'])||(@$_POST['sub2'] == @$_POST['sub5'])||(@$_POST['sub2'] == @$_POST['sub6'])||(@$_POST['sub2'] == @$_POST['sub7'])||(@$_POST['sub2'] == @$_POST['sub7'])
+                    )
+                    {
+                        $allinputdata['excep'] = 'Please Select Different Subjects';
 
 
-        }
-        else if((@$_POST['sub2'] == @$_POST['sub1']) ||(@$_POST['sub2'] == @$_POST['sub3'])||(@$_POST['sub2'] == @$_POST['sub4'])||(@$_POST['sub2'] == @$_POST['sub5'])||(@$_POST['sub2'] == @$_POST['sub6'])||(@$_POST['sub2'] == @$_POST['sub7'])||(@$_POST['sub2'] == @$_POST['sub7'])
-        )
-        {
-            $allinputdata['excep'] = 'Please Select Different Subjects';
+                    }
+                    else if((@$_POST['sub3'] == @$_POST['sub1']) ||(@$_POST['sub3'] == @$_POST['sub2'])||(@$_POST['sub3'] == @$_POST['sub4'])||(@$_POST['sub3'] == @$_POST['sub5'])||(@$_POST['sub3'] == @$_POST['sub6'])||(@$_POST['sub3'] == @$_POST['sub7'])||(@$_POST['sub3'] == @$_POST['sub7'])
+                        )
+                        {
+                            $allinputdata['excep'] = 'Please Select Different Subjects';
 
 
-        }
-        else if((@$_POST['sub3'] == @$_POST['sub1']) ||(@$_POST['sub3'] == @$_POST['sub2'])||(@$_POST['sub3'] == @$_POST['sub4'])||(@$_POST['sub3'] == @$_POST['sub5'])||(@$_POST['sub3'] == @$_POST['sub6'])||(@$_POST['sub3'] == @$_POST['sub7'])||(@$_POST['sub3'] == @$_POST['sub7'])
-        )
-        {
-            $allinputdata['excep'] = 'Please Select Different Subjects';
+                        }
+                        else if((@$_POST['sub4'] == @$_POST['sub1']) ||(@$_POST['sub4'] == @$_POST['sub3'])||(@$_POST['sub4'] == @$_POST['sub2'])||(@$_POST['sub4'] == @$_POST['sub5'])||(@$_POST['sub4'] == @$_POST['sub6'])||(@$_POST['sub4'] == @$_POST['sub7'])||(@$_POST['sub4'] == @$_POST['sub7']))
+                        {
+                            $allinputdata['excep'] = 'Please Select Different Subjects';
 
+                        }
+                        else if((@$_POST['sub5'] == @$_POST['sub1']) ||(@$_POST['sub5'] == @$_POST['sub3'])||(@$_POST['sub5'] == @$_POST['sub4'])||(@$_POST['sub5'] == @$_POST['sub2'])||(@$_POST['sub5'] == @$_POST['sub6'])||(@$_POST['sub5'] == @$_POST['sub7'])||(@$_POST['sub5'] == @$_POST['sub7']))
+                        {
+                            $allinputdata['excep'] = 'Please Select Different Subjects';
 
-        }
-        else if((@$_POST['sub4'] == @$_POST['sub1']) ||(@$_POST['sub4'] == @$_POST['sub3'])||(@$_POST['sub4'] == @$_POST['sub2'])||(@$_POST['sub4'] == @$_POST['sub5'])||(@$_POST['sub4'] == @$_POST['sub6'])||(@$_POST['sub4'] == @$_POST['sub7'])||(@$_POST['sub4'] == @$_POST['sub7']))
-        {
-            $allinputdata['excep'] = 'Please Select Different Subjects';
 
-        }
-        else if((@$_POST['sub5'] == @$_POST['sub1']) ||(@$_POST['sub5'] == @$_POST['sub3'])||(@$_POST['sub5'] == @$_POST['sub4'])||(@$_POST['sub5'] == @$_POST['sub2'])||(@$_POST['sub5'] == @$_POST['sub6'])||(@$_POST['sub5'] == @$_POST['sub7'])||(@$_POST['sub5'] == @$_POST['sub7']))
-        {
-            $allinputdata['excep'] = 'Please Select Different Subjects';
+                        }
+                        else if((@$_POST['sub8'] == @$_POST['sub1']) ||(@$_POST['sub8'] == @$_POST['sub3'])||(@$_POST['sub8'] == @$_POST['sub4'])||(@$_POST['sub8'] == @$_POST['sub5'])||(@$_POST['sub8'] == @$_POST['sub2'])||(@$_POST['sub8'] == @$_POST['sub6'])||(@$_POST['sub8'] == @$_POST['sub7']))
+                        {
+                            $allinputdata['excep'] = 'Please Select Different Subjects';
 
+                        }
+                        else if((@$_POST['sub6'] == @$_POST['sub1']) ||(@$_POST['sub6'] == @$_POST['sub3'])||(@$_POST['sub6'] == @$_POST['sub4'])||(@$_POST['sub6'] == @$_POST['sub5'])||(@$_POST['sub6'] == @$_POST['sub8'])||(@$_POST['sub6'] == @$_POST['sub2'])||(@$_POST['sub6'] == @$_POST['sub7']))
+                        {
+                            $allinputdata['excep'] = 'Please Select Different Subjects';
 
-        }
-        else if((@$_POST['sub8'] == @$_POST['sub1']) ||(@$_POST['sub8'] == @$_POST['sub3'])||(@$_POST['sub8'] == @$_POST['sub4'])||(@$_POST['sub8'] == @$_POST['sub5'])||(@$_POST['sub8'] == @$_POST['sub2'])||(@$_POST['sub8'] == @$_POST['sub6'])||(@$_POST['sub8'] == @$_POST['sub7']))
-        {
-            $allinputdata['excep'] = 'Please Select Different Subjects';
 
-        }
-        else if((@$_POST['sub6'] == @$_POST['sub1']) ||(@$_POST['sub6'] == @$_POST['sub3'])||(@$_POST['sub6'] == @$_POST['sub4'])||(@$_POST['sub6'] == @$_POST['sub5'])||(@$_POST['sub6'] == @$_POST['sub8'])||(@$_POST['sub6'] == @$_POST['sub2'])||(@$_POST['sub6'] == @$_POST['sub7']))
-        {
-            $allinputdata['excep'] = 'Please Select Different Subjects';
+                        }
+                        else if((@$_POST['sub7'] == @$_POST['sub1']) ||(@$_POST['sub7'] == @$_POST['sub3'])||(@$_POST['sub7'] == @$_POST['sub4'])||(@$_POST['sub7'] == @$_POST['sub5'])||(@$_POST['sub7'] == @$_POST['sub6'])||(@$_POST['sub7'] == @$_POST['sub6'])||(@$_POST['sub7'] == @$_POST['sub2']))
+                        {
+                            $allinputdata['excep'] = 'Please Select Different Subjects';
 
 
-        }
-        else if((@$_POST['sub7'] == @$_POST['sub1']) ||(@$_POST['sub7'] == @$_POST['sub3'])||(@$_POST['sub7'] == @$_POST['sub4'])||(@$_POST['sub7'] == @$_POST['sub5'])||(@$_POST['sub7'] == @$_POST['sub6'])||(@$_POST['sub7'] == @$_POST['sub6'])||(@$_POST['sub7'] == @$_POST['sub2']))
-        {
-            $allinputdata['excep'] = 'Please Select Different Subjects';
+                        }
+                        else if (in_array($_POST['sub6'], $subjectslang) && in_array($_POST['sub7'], $subjectslang))
+                        {
+                            $allinputdata['excep'] = 'Double Language is not Allowed Please choose a different Subject';
 
+                        }
+                        else if (in_array($_POST['sub6'], $subjectshis) && in_array($_POST['sub7'], $subjectshis))
+                        {
+                            $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
 
-        }
-        else if (in_array($_POST['sub6'], $subjectslang) && in_array($_POST['sub7'], $subjectslang))
-        {
-            $allinputdata['excep'] = 'Double Language is not Allowed Please choose a different Subject';
+                        }
+                        else if(@$_POST['sub6'] == @$_POST['sub7'])
+                        {
+                            $allinputdata['excep'] = 'Please Select Different Subjects';
 
-        }
-        else if (in_array($_POST['sub6'], $subjectshis) && in_array($_POST['sub7'], $subjectshis))
-        {
-            $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
 
-        }
-        else if(@$_POST['sub6'] == @$_POST['sub7'])
-        {
-            $allinputdata['excep'] = 'Please Select Different Subjects';
+                        }
+                        else if(@$_POST['sub7'] == @$_POST['sub6'])
+                        {
+                            $allinputdata['excep'] = 'Please Select Different Subjects';
 
+                        }
 
-        }
-        else if(@$_POST['sub7'] == @$_POST['sub6'])
-        {
-            $allinputdata['excep'] = 'Please Select Different Subjects';
+                        else if(@$_POST['sub1'] == 0)
+                        {
+                            $allinputdata['excep'] = 'Please Select Subject 1';
 
-        }
 
-        else if(@$_POST['sub1'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Subject 1';
+                        }
+                        else if(@$_POST['sub2'] == 0)
+                        {
+                            $allinputdata['excep'] = 'Please Select Subject 2';
 
+                        }
+                        else if(@$_POST['sub3'] == 0)
+                        {
+                            $allinputdata['excep'] = 'Please Select Subject 3';
 
-        }
-        else if(@$_POST['sub2'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Subject 2';
 
-        }
-        else if(@$_POST['sub3'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Subject 3';
+                        }
+                        else if(@$_POST['sub4'] == 0)
+                        {
+                            $allinputdata['excep'] = 'Please Select Subject 4';
 
 
-        }
-        else if(@$_POST['sub4'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Subject 4';
+                        }
 
+                        else if(@$_POST['sub5'] == 0)
+                        {
+                            $allinputdata['excep'] = 'Please Select Subject 5';
 
-        }
 
-        else if(@$_POST['sub5'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Subject 5';
+                        }
+                        else if(@$_POST['sub6'] == 0)
+                        {
+                            $allinputdata['excep'] = 'Please Select Subject 6';
 
 
-        }
-        else if(@$_POST['sub6'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Subject 6';
+                        }
+                        else if(@$_POST['sub7'] == 0)
+                        {
+                            $allinputdata['excep'] = 'Please Select Subject 7';
 
 
-        }
-        else if(@$_POST['sub7'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Subject 7';
+                        }
+                        else if(@$_POST['sub8'] == 0)
+                        {
+                            $allinputdata['excep'] = 'Please Select Subject 8';
 
 
-        }
-        else if(@$_POST['sub8'] == 0)
-        {
-            $allinputdata['excep'] = 'Please Select Subject 8';
+                        }
 
-
-        }
-
-        $nxtrnosessyear3 = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic']);
+                        $nxtrnosessyear3 = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic']);
 
         //if($nxtrnosessyear !=  -1)
         if($nxtrnosessyear3[0]['NextRno_Sess_Year'] !="")

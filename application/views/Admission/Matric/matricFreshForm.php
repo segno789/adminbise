@@ -393,13 +393,10 @@
                         if($grp == 1 && ($sub7 == 8 || $sub8 == 8))
                         {
                             echo "<option value='1' selected='selected'>SCIENCE WITH BIOLOGY</option>
-
                             <option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>
-
                             <option value='2'>HUMANTIES</option>
                             <option value='5'>DEAF AND DUMB</option>
                             <option value='4'>AAMA GROUP</option>
-                            <option value='9'>ADIB/ALIM GROUP </option>
                             ";  
                         }
 
@@ -408,11 +405,9 @@
                             echo " 
                             <option value='1' >SCIENCE WITH BIOLOGY</option>
                             <option value='7'  selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>
-
                             <option value='2'>HUMANTIES</option>
                             <option value='5'>DEAF AND DUMB</option>
                             <option value='4'>AAMA GROUP</option>
-                            <option value='9'>ADIB/ALIM GROUP </option>
                             ";
                         }
 
@@ -423,7 +418,6 @@
                             <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
                             <option value='5'>DEAF AND DUMB</option>
                             <option value='4'>AAMA GROUP</option>
-                            <option value='9'>ADIB/ALIM GROUP </option>
                             ";  
                         }
 
@@ -434,7 +428,6 @@
                             <option value='1' >SCIENCE WITH BIOLOGY</option>
                             <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
                             <option value='4'>AAMA GROUP</option>
-                            <option value='9'>ADIB/ALIM GROUP </option>
                             ";  
                         }
 
@@ -445,7 +438,6 @@
                             <option value='2' >HUMANTIES</option>
                             <option value='1' >SCIENCE WITH BIOLOGY</option>
                             <option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>
-                            <option value='9'>ADIB/ALIM GROUP </option>
                             ";
                         }
                     }
@@ -457,7 +449,7 @@
                         <option value='2' >GENERAL</option>
                         <option value='5'>DEAF AND DUMB</option>
                         <option value='4'>AAMA GROUP</option>
-                        <option value='9'>ADIB/ALIM GROUP </option>";
+                        ";
                     }
                     ?>
                 </select>                                            
@@ -581,6 +573,7 @@
     </div>
 
     <div class="hidden">
+
         <input class="hidden" type="text" id="oldrno" name="oldrno" value="<?php echo  $data['RNo']; ?>">
         <input type="hidden" value="<?=  @$data['grp_cd']?>" name="pergrp">
         <input type="hidden" value="1" name="oldboardid">
@@ -732,6 +725,14 @@
         var speciality = $('#speciality').val();
 
 
+        var sub5 = $('#sub5').val();
+        var sub6 = $('#sub6').val();
+        var sub7 = $('#sub7').val();
+
+        var sub5p2 = $('#sub5p2').val();
+        var sub6p2 = $('#sub6p2').val();
+        var sub7p2 = $('#sub7p2').val();
+
         var fuData = document.getElementById('image');
         var FileUploadPath = fuData.value;
         if (FileUploadPath == '') {
@@ -757,12 +758,27 @@
             $('#cand_name').focus(); 
             return status;
         }
+
+        else if (name.trim().length < 3 )
+        {
+            alertify.error("Please Enter your valid Name ") 
+            $('#cand_name').focus(); 
+            return status;
+        }
+
         else if(fName == "" || fName == undefined)
         {
             alertify.error("Please Enter your Father's Name  ") 
             $('#father_name').focus(); 
             return status;
         }   
+
+        else if (fName.trim().length < 3 )
+        {
+            alertify.error("Please Enter your valid Father's Name") 
+            $('#father_name').focus(); 
+            return status;
+        }
 
         else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
         {
@@ -903,6 +919,48 @@
             return status;  
         }
 
+        else if(sub5 == '' || sub5 == 0 || sub5 == undefined)
+        {
+            alertify.error('Please Select all the PART-I Subjects '); 
+            $("#sub5").focus();
+            return status;  
+        }
+
+        else if(sub6 == '' || sub6 == 0 || sub6 == undefined)
+        {
+            alertify.error('Please Select all the PART-I Subjects '); 
+            $("#sub6").focus();
+            return status;  
+        }
+
+        else if(sub7 == '' || sub7 == 0 || sub7 == undefined)
+        {
+            alertify.error('Please Select all the PART-I Subjects '); 
+            $("#sub7").focus();
+            return status;  
+        }
+
+        else if(sub5p2 == '' || sub5p2 == 0 || sub5p2 == undefined)
+        {
+            alertify.error('Please Select all the PART-II Subjects '); 
+            $("#sub5p2").focus();
+            return status;  
+        }
+
+        else if(sub6p2 == '' || sub6p2 == 0 || sub6p2 == undefined)
+        {
+            alertify.error('Please Select all the PART-II Subjects '); 
+            $("#sub6p2").focus();
+            return status;  
+        }
+
+        else if(sub7p2 == '' || sub7p2 == 0 || sub7p2 == undefined)
+        {
+            alertify.error('Please Select all the PART-II Subjects '); 
+            $("#sub7p2").focus();
+            return status;  
+        }
+
         else if($("#terms").is(":not(:checked)"))
         {
             alertify.error("Please Accept Terms and Conditions First!")
@@ -975,7 +1033,7 @@
             40: 'HEALTH & PHYSICAL EDUCATION',
             78: 'COMPUTER SCIENCE',
             15 : 'GEOMETRICAL & TECHNICAL DRAWING',
-            43 : 'ELECTRICAL WIRING',
+            //43 : 'ELECTRICAL WIRING',
             48 : 'WOOD WORK (FURNITURE MAKING)',
             90 : 'COMPUTER HARDWARE',
             89 : 'FISH FARMING',
@@ -1004,7 +1062,7 @@
             40: 'HEALTH & PHYSICAL EDUCATION',
             78: 'COMPUTER SCIENCE',
             15 : 'GEOMETRICAL & TECHNICAL DRAWING',
-            43 : 'ELECTRICAL WIRING',
+            //43 : 'ELECTRICAL WIRING',
             48 : 'WOOD WORK (FURNITURE MAKING)',
             90 : 'COMPUTER HARDWARE',
             83 : 'POULTRY FARMING',
@@ -1098,7 +1156,7 @@
             40:'HEALTH & PHYSICAL EDUCATION',
             41:'CALIGRAPHY',
             42:'LOCAL (COMMUNITY) CRAFTS',
-            43:'ELECTRICAL WIRING',
+            //43:'ELECTRICAL WIRING',
             44:'RADIO ELECTRONICS',
             45:'COMMERCE',
             46:'AGRICULTURE',
@@ -1614,6 +1672,8 @@
             $("#sub8").val(sub8);
         })
 
+
+
         function Empty_All_Dropdowns(){
             $('#sub1').empty();$('#sub1p2').empty();
             $('#sub2').empty();$('#sub2p2').empty();
@@ -1628,6 +1688,7 @@
         function ClearALLDropDowns() {
 
             Empty_All_Dropdowns();
+            showallsub();
 
             $("#sub1").append('<option value="0">NONE</option>');
             $("#sub1p2").append('<option value="0">NONE</option>');
@@ -1703,9 +1764,9 @@
             {
                 ClearALLDropDowns();
                 load_Bio_CS_Sub();
-                $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                //$("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
 
-                $("#sub7p2").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                //$("#sub7p2").append(new Option('ELECTRICAL WIRING (OPT)',43));
 
             }
             else if(sel_group=="4")

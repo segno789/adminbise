@@ -2599,7 +2599,7 @@ class Admission_matric extends CI_Controller {
         }
         else if($Condition == "5")
         {
-            $start_formno = $this->uri->segment(3);
+            $start_formno = $this->uri->segment(3);                         
             $end_formno = $this->uri->segment(5);
             $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'start_formno'=>$start_formno,'end_formno'=>$end_formno,'Batch_Id'=>-1);
             $result = array('data'=>$this->Admission_matric_model->Print_Form_Formnowise($fetch_data),'inst_Name'=>$user['inst_Name']);

@@ -72,7 +72,7 @@ class Admission_model extends CI_Model
 
 
     public function getEmpCd_Model($employeeCode){
-        
+
         $query = $this->db->query("select Name from MiscDb..tblemployee where emp_cd = $employeeCode and isActive = 1");
         $rowcount = $query->num_rows();
         if($rowcount > 0)
@@ -379,12 +379,11 @@ class Admission_model extends CI_Model
         //DebugBreak();
         $tehcd = $data['tehCode'];
         $gend = $data['gend'];
-        $ses_s = Session;
+
         $iyear = Year+1;
-        //$query = $this->db->get_where('matric_new..tblZones', array('mYear' => 2017,'Class' => 10,'Sess'=>1, 'teh_cd' => $tehcd));
-        // //DebugBreak();
+
         $sess = Session;
-        $iyear = Year;
+
         $where = " mYear = $iyear  AND class = 10 AND  sess = $sess and Flag= 1 AND teh_cd =  $tehcd  AND  (Gender = $gend OR Gender = 3) ";      
         $query = $this->db->query("SELECT * FROM matric_new..tblZones WHERE $where");
         if (!$query) 
@@ -414,14 +413,7 @@ class Admission_model extends CI_Model
         $iyear = Year+1;
         $where = " mYear = $iyear  AND class = 10 AND  sess = $sess AND Zone_cd =  $zone  AND  (cent_Gen = $gend OR cent_Gen = 3) ";      
         $query = $this->db->query("SELECT * FROM matric_new..tblcentre WHERE $where");
-        if (!$query) 
-        {
-            // if query returns null
-            $errNo   = $this->db->error();
-            return;
-        }
-        //$query = $this->db->get_where('matric_new..tblcentre', array('mYear' => 2016,'class' => 10,'sess'=>2, 'Zone_cd' => $zone, 'cent_Gen' => $gend)); 
-        //DebugBreak();
+
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {

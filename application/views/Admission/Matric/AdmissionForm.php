@@ -2,7 +2,6 @@
 <form method="post" enctype="multipart/form-data" name="myform" id="myform">
 
     <?php 
-
     $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION); 
     @$image_path_selected = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents(@$data[0]['picpath']));
     ?>
@@ -146,7 +145,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="hidden" id="boardEmployeeDiv">
         <div class="form-group">
@@ -682,7 +680,7 @@
                         'HEALTH & PHYSICAL EDUCATION' => '40',
                         'CALIGRAPHY' => '41',
                         'LOCAL (COMMUNITY) CRAFTS' => '42',
-                        'ELECTRICAL WIRING' => '43',
+                        //'ELECTRICAL WIRING' => '43',
                         'RADIO ELECTRONICS' => '44',
                         'COMMERCE' => '45',
                         'AGRICULTURE' => '46',
@@ -898,7 +896,19 @@
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <label class="checkbox-inline">
+                    <input type="checkbox" class="checkboxtext" id="terms" name="terms" value="yes">I agree with the <a href="<?php echo base_url(); ?>assets/img/Instructions.jpg" target="_blank">Terms and Conditions </a> of Board of Intermediate & Secondary Education, Gujranwala  
+                </label>
+            </div>
+        </div>
+    </div>
+
     <div class="hidden">
+        <input type="hidden" class="hidden" name="preSpec" id="preSpec" value="<?php echo @$data[0]['Spec'] ?>">
         <input type="hidden" class="hidden" name="category" id="category" value="<?php  echo @$cattype ?>">
         <input type="hidden" class="hidden" value="<?=  $data[0]['grp_cd']?>" name="pergrp" id="pergrp">
         <input type="hidden" class="hidden" id="oldClass" name="oldClass"  value="<?php echo $data[0]['class'];?>"/>     
@@ -918,7 +928,7 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-offset-2 col-md-3">
-                <input type="submit" value="Save Form" id="btnsubmitUpdateEnrol" name="btnsubmitUpdateEnrol" class="btn btn-primary btn-block" onclick="return checks()">
+                <input type="submit" value="Save Form" id="btnsubmitUpdateEnrol" name="btnsubmitUpdateEnrol" class="btn btn-primary btn-block" onclick="return checks_Matric()">
             </div>
             <div class="col-md-2">
                 <a href="<?php echo base_url(); ?>assets/img/Instructions.jpg" download="instructions.jpg" class="btn btn-info btn-block">Download Instruction</a>
@@ -1023,7 +1033,7 @@
             40: 'HEALTH & PHYSICAL EDUCATION',
             78: 'COMPUTER SCIENCE',
             15 : 'GEOMETRICAL & TECHNICAL DRAWING',
-            43 : 'ELECTRICAL WIRING',
+            //43 : 'ELECTRICAL WIRING',
             48 : 'WOOD WORK (FURNITURE MAKING)',
             90 : 'COMPUTER HARDWARE',
             89 : 'FISH FARMING',
@@ -1052,7 +1062,7 @@
             40: 'HEALTH & PHYSICAL EDUCATION',
             78: 'COMPUTER SCIENCE',
             15 : 'GEOMETRICAL & TECHNICAL DRAWING',
-            43 : 'ELECTRICAL WIRING',
+            //43 : 'ELECTRICAL WIRING',
             48 : 'WOOD WORK (FURNITURE MAKING)',
             90 : 'COMPUTER HARDWARE',
             83 : 'POULTRY FARMING',
@@ -1154,7 +1164,7 @@
             40:'HEALTH & PHYSICAL EDUCATION',
             41:'CALIGRAPHY',
             42:'LOCAL (COMMUNITY) CRAFTS',
-            43:'ELECTRICAL WIRING',
+            //43:'ELECTRICAL WIRING',
             44:'RADIO ELECTRONICS',
             45:'COMMERCE',
             46:'AGRICULTURE',
@@ -1399,9 +1409,21 @@
             // $("#sub8").empty();
             //  $("#sub8p2").empty();
         }
-
+        function showallsub(){
+            $('#sub4').show();
+            $('#sub4p2').show();
+            $('#sub5').show();
+            $('#sub5p2').show();
+            $('#sub6').show();
+            $('#sub6p2').show();
+            $('#sub7').show();
+            $('#sub7p2').show();
+            $('#sub3').show();
+            $('#sub3p2').show();
+        }
 
         function Empty_All_Dropdowns(){
+            showallsub();
             $('#sub1').empty();$('#sub1p2').empty();
             $('#sub2').empty();$('#sub2p2').empty();
             $('#sub3').empty();$('#sub3p2').empty();
@@ -3274,7 +3296,9 @@
         })
         $('#std_group').change(function(){
 
-            debugger;
+            //debugger;
+
+            ClearALLDropDowns();
 
             var sel_group = $('#std_group').val();
             var old_exam =  $('#oldexam_type').val();
@@ -3352,8 +3376,8 @@
             else if (sel_group == "8")
             {
                 load_Bio_CS_Sub();
-                $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
-                $("#sub7p2").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                //$("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                //$("#sub7p2").append(new Option('ELECTRICAL WIRING (OPT)',43));
                 //ELECTRICAL WIRING (OPT)
             }
             else if(sel_group == "2")
@@ -3437,7 +3461,7 @@
         })
 
     })
-    function checks(){
+    function checks_Matric(){
 
         var status  =  check_NewEnrol_validation_matric();
         if(status == 0)
@@ -3479,7 +3503,7 @@
                                 if(obj.error ==  1)
                                 {
                                     window.location.href ='<?php echo base_url(); ?>Admission/formdownloaded/'+obj.formno
-                                    alertify.error('Your Application is Submit Successfully');
+                                    alertify.success('Your Application is Submit Successfully');
                                     return true;
                                 } 
 

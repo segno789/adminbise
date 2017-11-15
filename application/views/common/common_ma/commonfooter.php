@@ -1077,6 +1077,15 @@
             $("#std_group").focus();
             return status;  
         }
+
+
+        else if($("#terms").is(":not(:checked)"))
+        {
+            alertify.error("Please Accept Terms and Conditions First!")
+            $('input[name="terms"]').focus(); 
+            return status;
+        }
+
         else if ((sub6p1 == 19 || sub6p2 == 19) && (sub7p1 == 20 || sub7p2== 20))
         {
             $('#ErrMsg').show(); 
@@ -1323,6 +1332,14 @@
                 alertify.error('Please Select your Study Group '); 
                 $("#std_group").focus();
                 return status;  */
+            }
+
+
+            else if($("#terms").is(":not(:checked)"))
+            {
+                alertify.error("Please Accept Terms and Conditions First!")
+                $('input[name="terms"]').focus(); 
+                return status;
             }
 
             status = 1;

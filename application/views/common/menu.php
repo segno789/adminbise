@@ -19,12 +19,12 @@
                             9th Registration
                         </a>
                     </li>
-                      <li>
+                    <!--  <li>
                     <a href="<?php echo base_url(); ?>NinthCorrection/EditForms" class="<?php if($isselected == '7') {echo 'selected';}?>" >
                     <div class="fs1" aria-hidden="true" data-icon="&#xe0c4;"></div>
                     9th Correction
                     </a>
-                    </li>
+                    </li>-->
                     <?php } 
                 if($appconfig['isadmP1'] == 1){?>
                     <li>

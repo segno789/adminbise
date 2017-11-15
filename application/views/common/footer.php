@@ -1,14 +1,21 @@
 
-<div id="footer" class="footer">
-    &nbsp; &copy; 2017 BISE Gujranwala, All Rights Reserved. 
+<div class="container-fluid ">
+    <div style="text-align: center; background:#3187bf; color: white;  margin-bottom: 5px; height: 40px;">
+        &copy; 2017 BISE Gujranwala, All Rights Reserved. 
+    </div>
 </div>
 
 </div>
+
+
 
 <script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.maskedinput.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
+
+<script src="<?php echo base_url(); ?>assets/js/highcharts.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/exporting.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/alertify.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.pack.js"></script>    
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/source/jquery.fancybox.js"></script>    
@@ -25,7 +32,8 @@
             "sPaginationType": "full_numbers",
             "cache": false
         });
-
+        drawChart3();
+        $('.mPageloader').hide();
     });
 
     function drawChart3() {

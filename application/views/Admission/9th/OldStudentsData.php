@@ -214,7 +214,7 @@
                                                         {
                                                             // DebugBreak();
                                                             echo '<td class="alert alert-danger" style="background-color:red">
-                                                            <strong>Admission Can not proceed due to </strong>'.$vals["spl_cd_exp"].'
+                                                            <strong>Admission Can not proceed due to </strong>'.$vals["spl_cd_exp"].' Please contact to Online Registration Branch at B.I.S.E. Gujranwala.'.'
                                                             </td><td></td> </tr>';
                                                         }
                                                         else
