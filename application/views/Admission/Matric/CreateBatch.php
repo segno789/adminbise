@@ -14,11 +14,17 @@
                     <h4 class="title">
                         Create Batch:
                     </h4>
+                   <!-- <p align="center" class="blink_text">this is msg</p>-->
                 </div>
                 <hr>
                 <div class="control-group" style="text-align: center;">
-              <!-- <img src="<?=base_url()?>/assets/img/note_for_batch.jpg" align="middle" style="height: 69px;" alt="">-->
+                    <!--<img src="<?=base_url()?>/assets/img/note_for_batch.jpg" align="middle" style="height: 69px;" alt="">-->
                 </div> 
+
+                <div style="width: 750px;" class="pull-right" id="instruction">
+                    <img src="<?php echo base_url(); ?>assets/img/Instructions.jpg" class="img-responsive" alt="instructions.jpg">
+                </div>
+
                 <div class="control-group">
                     <label class="control-label span1">
                         Select Option:
@@ -218,10 +224,10 @@
                             <div class='controls controls-row'>
                             <select id='std_groups' name='std_group'>
                             ";
-                           //   //DebugBreak();
+                            //   //DebugBreak();
 
-                            
-                           // @$msg_status;
+
+                            // @$msg_status;
                             @$subgroups =  split(',',@$grp_cd);
                             echo "<option value='0' >SELECT GROUP</option>";
                             for($i =0 ; $i<count($subgroups); $i++)
@@ -337,7 +343,7 @@
                                             <th style="width:10%" class="hidden-phone">
                                                 Selected Subjects
                                             </th>
-                                          
+
                                             <?php
                                             if($spl_cd ==FALSE || $spl_cd =="3" )
                                             {
@@ -428,5 +434,13 @@
         </div>
     </div>
 </div>
+<script src="<?php echo base_url(); ?>assets/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
+    $(window).load(function(){
+        $.fancybox("#instruction");
+
+        $('#address').each(function(){
+            $(this).val($(this).val().trim());
+        });
+    });
 </script>

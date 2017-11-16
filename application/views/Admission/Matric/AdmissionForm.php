@@ -399,14 +399,14 @@
                         {
                             echo "<option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>"; 
                         }
-                        /* if($sub7 == 43 || $sub8 == 43)
+                        if($sub7 == 43 || $sub8 == 43)
                         {
                         echo "<option value='8'  selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
                         }
                         else
                         {
                         echo "<option value='8'  >SCIENCE  WITH ELECTRICAL WIRING</option>";
-                        }   */
+                        }
 
                         if($grp == 2)
                         {
@@ -453,7 +453,7 @@
                         {
                             echo "<option value='1' >SCIENCE WITH BIOLOGY</option>";                                                                                  
                             echo "<option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>";
-                            //echo "<option value='8' >SCIENCE  WITH ELECTRICAL WIRING</option>";
+                            echo "<option value='8'  selected='selected' >SCIENCE  WITH ELECTRICAL WIRING</option>";
                             echo "<option value='2'>GENERAL</option>";
                             echo "<option value='5'>DEAF AND DUMB</option>";  
                         }
@@ -499,7 +499,7 @@
                         }
                         if($grp == 1 && $sub7 == 43)
                         {
-                            //echo"<option value='8' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
+                            echo"<option value='8' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
                             echo "<option value='2'>GENERAL</option>"; 
                             echo "<option value='1' >SCIENCE WITH BIOLOGY</option>";  
                             echo "<option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>";
@@ -577,8 +577,8 @@
                             echo"<option value='7' disabled='disabled' selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>";
 
 
-                        /*if($grp == 8)
-                        echo"<option value='8' disabled='disabled' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";*/
+                        if($grp == 8)
+                        echo"<option value='8' disabled='disabled' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
                     }
                     if($exam_type == 16 && $cattype == 1)
                     {
@@ -680,7 +680,7 @@
                         'HEALTH & PHYSICAL EDUCATION' => '40',
                         'CALIGRAPHY' => '41',
                         'LOCAL (COMMUNITY) CRAFTS' => '42',
-                        //'ELECTRICAL WIRING' => '43',
+                        'ELECTRICAL WIRING' => '43',
                         'RADIO ELECTRONICS' => '44',
                         'COMMERCE' => '45',
                         'AGRICULTURE' => '46',
@@ -733,7 +733,12 @@
                         'COMPUTER SCIENCES_DFD' => '93',
                         'HEALTH & PHYSICAL EDUCATION_DFD' => '94'
                     );
-                    $result =  array_search($data[0]['sub4'],$subarray);
+                    $result =  array_search($data[0]['sub4'],$subarray); 
+                    
+                    if($sub7 != 43){
+                        unset($subarray["ELECTRICAL WIRING"]);    
+                    }
+                          
                     ?>
                 </select>
             </div>
@@ -3376,8 +3381,8 @@
             else if (sel_group == "8")
             {
                 load_Bio_CS_Sub();
-                //$("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
-                //$("#sub7p2").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                $("#sub7p2").append(new Option('ELECTRICAL WIRING (OPT)',43));
                 //ELECTRICAL WIRING (OPT)
             }
             else if(sel_group == "2")
@@ -3399,6 +3404,20 @@
                     $("#sub7").append(new Option(text,val));
                     $("#sub7p2").append(new Option(text,val));
                 });
+
+                if(Gender == "2")
+                {
+                    $("#sub6").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                    $("#sub6p2").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                    $("#sub7").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                    $("#sub7p2").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                }
+                else
+                {
+                    dropdownElement.find('sub8[value=13]').remove();
+                    dropdownElement.find('sub8p2[value=13]').remove();
+                }
+
                 var Elecgrp ="<?php echo @$grp_cd; ?>";
                 var isgovt ="<?php echo @$isgovt; ?>";
                 var b = ['8'];
@@ -3419,19 +3438,6 @@
                         $("#sub6 option[value='43']").remove();
                         $("#sub6p2 option[value='43']").remove();
                     }  
-                }
-
-                if(Gender == "2")
-                {
-                    $("#sub6").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
-                    $("#sub6p2").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
-                    $("#sub7").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
-                    $("#sub7p2").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
-                }
-                else
-                {
-                    dropdownElement.find('sub8[value=13]').remove();
-                    dropdownElement.find('sub8p2[value=13]').remove();
                 }
             }
             else if(sel_group == "5")

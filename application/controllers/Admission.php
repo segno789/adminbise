@@ -1880,377 +1880,218 @@ class Admission extends CI_Controller
 
     public function Pre_Matric_data()
     {
-        //DebugBreak();
-
         $this->load->library('session');
         $this->load->model('Admission_model');
 
-        /*$isActive = $this->isActiveAdm();
-        if($isActive == false)
+        $error_msg = '';   
+        if( empty($_POST["dob"]) || empty($_POST["oldRno"]) )
         {
-        $error = "There is an error occured Please try again later";
-        $mydata = array('error'=>$error);
-        }
-        else
-        {
-        $ann = $isActive[0]['isadmP2'];
-        $supp = $isActive[0]['isadmP2S'];
-        $mydata = array('error'=>$error);
-        $this->load->view('common/commonheader.php');
-        if($ann==1 || $supp == 1)
-        {
-        $this->load->view('Admission/Matric/matric_default.php',$mydata);
-        }
-        else
-        {
-        $mydata = array('error'=>$error);
-        $this->load->view('Admission/Matric/Admission_closed.php',$mydata);
-        }
-        $this->load->view('common/homepagefooter.php'); 
-        return;
-        }*/
+            $error_msg.= 'No Data Against Your Information.';            
+            $data['error'] = $error_msg;
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/getinfo.php', $data);
+            $this->load->view('common/footer.php');    
+            return;
+        }     
 
-        $error = $this->session->flashdata('NewEnrolment_error');
-        if($error) 
-        {
+        $dob     = $_POST["dob"];
+        $mrollno = $_POST["oldRno"];
+        $oldClass= $_POST["oldClass"];
+        $year    = $_POST["oldYear"];
+        $session = $_POST["oldSess"];
+        $board   = $_POST["oldBrd_cd"];
+        @$cattype   = $_POST["CatType"]; 
 
-            $data[0] = $this->session->flashdata('NewEnrolment_error'); 
-            $dob     = $data[0]["Dob"];
-            $mrollno = $data[0]["rno"];
-            $oldClass= $data[0]["class"];
-            $year    = $data[0]["Iyear"];
-            $session = $data[0]["sess"];
-            $board   = $data[0]["Brd_cd"];
-            @$cattype= $data[0]["CatType"];   
 
-            $error_msg = $data[0]["excep"];
+        $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board,'SearchType'=>1);
+        $CheckDuplicateForm_Model = $this->Admission_model->CheckDuplicateForm_Model($data);
 
-            if($year >=(YEAR-1))
-            {
-                $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board);
-                $data = $this->Admission_model->Pre_Matric_data($data);
-                if (!$data) 
-                {
-                    $errNo   = $this->db->error();
-                    $data['msg'] = "Error(".$errNo['code'].") ";
-                    $data['errno'] = "503-4";
-                    $this->load->view('common/commonheader.php');
-                    $this->load->view('errors/cli/error_custom.php',$data);
-                    $this->load->view('common/homepagefooter.php');
-                    return;
-                }
-            }
-
-            $brd_name=$this->Admission_model->Brd_Name($board);
-            if (!$brd_name) 
-            {
-                $errNo   = $this->db->error();
-                $data['msg'] = "Error(".$errNo['code'].") ";
-                $data['errno'] = "507";
-                $this->load->view('common/commonheader.php');
-                $this->load->view('errors/cli/error_custom.php',$data);
-                $this->load->view('common/homepagefooter.php');
-                return;
-            }
-            $data[0]['brd_name']=$brd_name[0]['Brd_Abr'] ;
-            $data[0]['excep']=$error_msg;
-
-            if(!$data){
-                $error_msg.= 'No Any Student Found Against Your Criteria';            
-                $data['error'] = $error_msg;
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/getinfo.php', $data);
-                $this->load->view('common/footer.php');    
-                return;
-            }
-            if($year < (YEAR-1))
-            {
-                if(@$data[0]['status'] == 1)
-                {
-                    $error_msg.= 'You can not appear.';            
-                    $data['error'] = $error_msg;
-                    $this->load->view('common/commonheader.php');        
-                    $this->load->view('Admission/Matric/getinfo.php', $data);
-                    $this->load->view('common/footer.php');    
-                    return false;
-                }
-                else
-                {
-                    $data[0]['sess'] =    $session;
-                    $data[0]['class'] =    $oldClass;
-                    $data[0]['status']=2;
-                    $this->load->view('common/commonheader.php');
-                    $this->load->view('Admission/Matric/matricFreshForm.php', array('data'=>$data[0]));
-                    $this->load->view('common/common_ma/Otherboard10thfooter.php');
-                    return;  
-                }
-
-            }
-            $exam_type = $data[0]['exam_type'];
-            $specialcode = $data[0]['spl_cd'];
-            $specialcase = $data[0]['result2'];
-            $nxtrnosessyear = $data[0]['NextRno_Sess_Year'];
-            $pic =  explode('Pictures$',@$data[0]['picpath']);
-            $picpath = DIRPATH.'\\'.@$pic[1];
-
-            $isexit = is_file($picpath);
-            /* if(!$isexit)
-            {
-            $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'Your Picture is missing.</span>';            
+        if($CheckDuplicateForm_Model){
+            $error_msg.= 'Admission already submitted as '.$CheckDuplicateForm_Model[0]['regpvt'].' <br>Form No: '.$CheckDuplicateForm_Model[0]['formNo'].'<br>Name: '.$CheckDuplicateForm_Model[0]['name'].'<br>Father Name: '.$CheckDuplicateForm_Model[0]['Fname'].'<br><br> Note: In case of any query related this admission form, Please contact to MATRIC BRANCH BISEGRW (055-3892634)';            
             $data['error'] = $error_msg;
             $this->load->view('common/commonheader.php');        
             $this->load->view('Admission/Matric/getinfo.php', $data);
             $this->load->view('common/footer.php');    
             return false;
-
-            }
-            else
-            {
-            $type = pathinfo($picpath, PATHINFO_EXTENSION);
-            $data[0]['picpath'] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($picpath));
-
-            }     */
-
-            if(($exam_type == 16 || $exam_type == 15) && ($cattype == 1 || $cattype == 2)){
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data, 'cattype'=>$cattype));
-                $this->load->view('common/common_ma/commonfooter.php'); 
-            }
-
-            else if($specialcode != '' || $exam_type == 17 || $exam_type == 16 || $exam_type == 18 || $nxtrnosessyear != '')
-            {
-                $data[0]['dob'] = $dob;
-                $data[0]['oldRno'] = $mrollno;
-                $data[0]['oldClass'] = $oldClass;
-                $data[0]['oldYear'] = $year;
-                $data[0]['oldSess'] = $session;
-                $data[0]['oldBrd_cd'] = $board;
-
-
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/getinfo.php', $data[0]);
-                $this->load->view('common/footer.php');    
-            }
-            else
-            {  
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data));
-                $this->load->view('common/common_ma/commonfooter.php');
-            }
         }
 
+        if($board != 1 && ($oldClass == 9 || $oldClass == 10)){
+            redirect('admission/matric_otherboard', $data);
+            return;
+        }
+
+        $data = $this->Admission_model->Pre_Matric_data($data);
+
+        if(@$_POST['confirmProceed'] == "Confirm to Proceed"){
+
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data));
+            $this->load->view('common/common_ma/commonfooter.php');
+            return;
+        }
+
+
+        if($data[0]['class'] == "9" && $data[0]['regPvt'] == "1" && $data[0]['Iyear'] == Year){
+            $error_msg.= 'WARNING!!!! You are REGULAR candidate </br> If you will submit admission as PRIVATE candidate then you will not be able to submit admission as REGULAR candidate';            
+            $data['error'] = $error_msg;
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/getinfo.php', $data);
+            $this->load->view('common/footer.php');    
+            return;
+        }
+
+
+        $error_msg = '';
+
+        if(!$data){
+            $error_msg.= 'No Any Student Found Against Your Criteria';            
+            $data['error'] = $error_msg;
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/getinfo.php', $data);
+            $this->load->view('common/footer.php');    
+            return;
+        }
+
+        $brd_name=$this->Admission_model->Brd_Name($board); 
+        if (!$brd_name) 
+        {
+
+            $errNo   = $this->db->error();
+            $data['msg'] = "Error(".$errNo['code'].") ";
+            $data['errno'] = "507";
+            $this->load->view('common/commonheader.php');
+            $this->load->view('errors/cli/error_custom.php',$data);
+            $this->load->view('common/homepagefooter.php');
+            return;
+        }
+        $data[0]['brd_name']=@$brd_name[0]['Brd_Abr'] ;
+        $exam_type = @$data[0]['exam_type'];
+        $specialcode = @$data[0]['spl_cd'];
+        $specialcase = @$data[0]['result2'];
+        $status = @$data[0]['status'];
+        $grp_cd = @$data[0]['grp_cd'];
+        $specialcase = @$data[0]['result2'];
+        $nxtrnosessyear = @$data[0]['NextRno_Sess_Year'];
+
+
+        if($nxtrnosessyear != "")
+        {
+            $parts = explode(",", $nxtrnosessyear);
+            $nxtrno = $parts[0];
+            $nxtsess = $parts[1];
+            $nxtyear = $parts[2];
+            $nxtsess = ($nxtsess == '1') ? 'Annual' : 'Supplementary';
+            $error_msg.= 'You have already appeared in matric ' . $nxtsess.', '.$nxtyear.' against Roll No = '.$nxtrno.'';            
+            $data['error'] = $error_msg;
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/getinfo.php', $data);
+            $this->load->view('common/footer.php');    
+            return false; 
+        }  
+
+        if($year < (YEAR-1))
+        {
+            $nxtrnosessyear = $this->Admission_model->checknextrno($data[0]['RNo'],$data[0]['iyear'],$session,$oldClass);
+            if (!$nxtrnosessyear) 
+            {
+                $errNo   = $this->db->error();
+                $data['msg'] = "Error(".$errNo['code'].") ";
+                $data['errno'] = "505";
+                $this->load->view('common/commonheader.php');
+                $this->load->view('errors/cli/error_custom.php',$data);
+                $this->load->view('common/homepagefooter.php');
+                return;
+            }
+
+            if($nxtrnosessyear[0]['NextRno_Sess_Year']!=NULL)
+            {
+                $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
+                $parts = explode(",", $nxtrnosessyear);
+                $nxtrno = $parts[0];
+                $nxtsess = $parts[1];
+                $nxtyear = $parts[2];
+                $error_msg.= 'You have already appeared in matric ' . $nxtsess.', '.$nxtyear.' against Roll No = '.$nxtrno.'';            
+                $data['error'] = $error_msg;
+                $this->load->view('common/commonheader.php');        
+                $this->load->view('Admission/Matric/getinfo.php', $data);
+                $this->load->view('common/footer.php');    
+                return false; 
+            }  
+
+
+            else  if($data[0]['status'] == 1 && $data[0]['Class'] == 10)
+            {
+                @$sessOld = ($data[0]['sess'] == 1 ? 'Annual' : 'Supplementary');
+
+                $error_msg.= 'You have already passed in matric '.$sessOld.', '.$data[0]['iyear'].' against Roll No : '.$data[0]['RNo'].'';            
+                $data['error'] = $error_msg;
+                $this->load->view('common/commonheader.php');        
+                $this->load->view('Admission/Matric/getinfo.php', $data);
+                $this->load->view('common/footer.php');    
+                return false;
+            }
+
+            else if($data[0]['Spl_Name'] !="")
+            {
+                $error_msg.= 'You can not appear due to  '.$data[0]['Spl_Name'].' Condition.';            
+                $data['error'] = $error_msg;
+                $this->load->view('common/commonheader.php');        
+                $this->load->view('Admission/Matric/getinfo.php', $data);
+                $this->load->view('common/footer.php');    
+                return false;
+            }
+            else
+            {
+                $data[0]['name'] = $data[0]['Name'] ;
+                $data[0]['BForm'] = $data[0]['bFormNo'] ;
+                $data[0]['Dob'] = $data[0]['dob'] ;
+                $data[0]['Iyear'] = $data[0]['iyear'] ;
+                $data[0]['rno'] = $data[0]['RNo'] ;
+                $data[0]['sess'] =    $session;
+                $data[0]['class'] =    $oldClass;
+                $data[0]['isNotFresh'] =    1;
+                $this->load->view('common/commonheader.php');
+                $this->load->view('Admission/Matric/matricFreshForm.php', array('data'=>$data[0]));
+                $this->load->view('common/common_ma/Otherboard10thfooter.php');
+                return false;  
+            }
+
+        }
+
+        $pic =  explode('Pictures$',@$data[0]['picpath']);
+        $picpath = DIRPATH.'\\'.@$pic[1];
+        $data[0]['picpath_'] = @$pic[1];
+        $isexit = is_file($picpath);
+
+
+        if($exam_type == 19){
+
+            $error_msg.= 'Admission can not be proceeded, Candidate appeared in HSSC Exam.';            
+            $data['error'] = $error_msg;
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/getinfo.php', $data);
+            $this->load->view('common/footer.php');    
+            return false;
+        }
+        else if($exam_type == 16 && ($cattype == 1 || $cattype == 2)){
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data, 'cattype'=>$cattype));
+            $this->load->view('common/common_ma/commonfooter.php'); 
+        }
+        else if($specialcode != '' || $exam_type == 17 || $exam_type == 16 || $exam_type == 18 || $nxtrnosessyear != '' || ($grp_cd ==4 && $status == 1))
+        {
+            $error_msg.= 'You can not proceed due to  '.$data[0]['Spl_Name'].' Condition.';            
+            $data['error'] = $error_msg;
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/getinfo.php', $data);
+            $this->load->view('common/footer.php');    
+            return false;    
+        }
         else
         {  
-            $error_msg = '';   
-            if( empty($_POST["dob"]) || empty($_POST["oldRno"]) )
-            {
-                $error_msg.= 'No Data Against Your Information.';            
-                $data['error'] = $error_msg;
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/getinfo.php', $data);
-                $this->load->view('common/footer.php');    
-                return;
-            }     
-
-            $dob     = $_POST["dob"];
-            $mrollno = $_POST["oldRno"];
-            $oldClass= $_POST["oldClass"];
-            $year    = $_POST["oldYear"];
-            $session = $_POST["oldSess"];
-            $board   = $_POST["oldBrd_cd"];
-            @$cattype   = $_POST["CatType"]; 
-
-
-            $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board,'SearchType'=>1);
-            $CheckDuplicateForm_Model = $this->Admission_model->CheckDuplicateForm_Model($data);
-
-            if($CheckDuplicateForm_Model){
-                $error_msg.= 'Admission already submitted as '.$CheckDuplicateForm_Model[0]['regpvt'].' <br>Form No: '.$CheckDuplicateForm_Model[0]['formNo'].'<br>Name: '.$CheckDuplicateForm_Model[0]['name'].'<br>Father Name: '.$CheckDuplicateForm_Model[0]['Fname'].'<br><br> Note: In case of any query related this admission form, Please contact to MATRIC BRANCH BISEGRW (055-3892634)';            
-                $data['error'] = $error_msg;
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/getinfo.php', $data);
-                $this->load->view('common/footer.php');    
-                return false;
-            }
-
-            if($board != 1 && ($oldClass == 9 || $oldClass == 10)){
-                redirect('admission/matric_otherboard', $data);
-                return;
-            }
-
-            $data = $this->Admission_model->Pre_Matric_data($data);
-
-            if(@$_POST['confirmProceed'] == "Confirm to Proceed"){
-
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data));
-                $this->load->view('common/common_ma/commonfooter.php');
-                return;
-            }
-
-
-            if($data[0]['class'] == "9" && $data[0]['regPvt'] == "1" && $data[0]['Iyear'] == Year){
-                $error_msg.= 'WARNING!!!! You are REGULAR candidate </br> If you will submit admission as PRIVATE candidate then you will not be able to submit admission as REGULAR candidate';            
-                $data['error'] = $error_msg;
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/getinfo.php', $data);
-                $this->load->view('common/footer.php');    
-                return;
-            }
-
-
-            $error_msg = '';
-
-            if(!$data){
-                $error_msg.= 'No Any Student Found Against Your Criteria';            
-                $data['error'] = $error_msg;
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/getinfo.php', $data);
-                $this->load->view('common/footer.php');    
-                return;
-            }
-
-            $brd_name=$this->Admission_model->Brd_Name($board); 
-            if (!$brd_name) 
-            {
-
-                $errNo   = $this->db->error();
-                $data['msg'] = "Error(".$errNo['code'].") ";
-                $data['errno'] = "507";
-                $this->load->view('common/commonheader.php');
-                $this->load->view('errors/cli/error_custom.php',$data);
-                $this->load->view('common/homepagefooter.php');
-                return;
-            }
-            $data[0]['brd_name']=@$brd_name[0]['Brd_Abr'] ;
-            $exam_type = @$data[0]['exam_type'];
-            $specialcode = @$data[0]['spl_cd'];
-            $specialcase = @$data[0]['result2'];
-            $status = @$data[0]['status'];
-            $grp_cd = @$data[0]['grp_cd'];
-            $specialcase = @$data[0]['result2'];
-            $nxtrnosessyear = @$data[0]['NextRno_Sess_Year'];
-
-            if($year < (YEAR-1))
-            {
-                $nxtrnosessyear = $this->Admission_model->checknextrno($data[0]['RNo'],$data[0]['iyear'],$session,$oldClass);
-                if (!$nxtrnosessyear) 
-                {
-                    $errNo   = $this->db->error();
-                    $data['msg'] = "Error(".$errNo['code'].") ";
-                    $data['errno'] = "505";
-                    $this->load->view('common/commonheader.php');
-                    $this->load->view('errors/cli/error_custom.php',$data);
-                    $this->load->view('common/homepagefooter.php');
-                    return;
-                }
-
-                if($nxtrnosessyear[0]['NextRno_Sess_Year']!=NULL)
-                {
-                    //DebugBreak();
-
-                    $nxtrnosessyear = $nxtrnosessyear[0]['NextRno_Sess_Year'];
-                    $parts = explode(",", $nxtrnosessyear);
-                    $nxtrno = $parts[0];
-                    $nxtsess = $parts[1];
-                    $nxtyear = $parts[2];
-                    $error_msg.= 'You have already appeared in matric ' . $nxtsess.', '.$nxtyear.' against Roll No = '.$nxtrno.'';            
-                    $data['error'] = $error_msg;
-                    $this->load->view('common/commonheader.php');        
-                    $this->load->view('Admission/Matric/getinfo.php', $data);
-                    $this->load->view('common/footer.php');    
-                    return false; 
-                }        
-
-                else  if($data[0]['status'] == 1 && $data[0]['Class'] == 10)
-                {
-                    @$sessOld = ($data[0]['sess'] == 1 ? 'Annual' : 'Supplementary');
-
-                    $error_msg.= 'You have already passed in matric '.$sessOld.', '.$data[0]['iyear'].' against Roll No : '.$data[0]['RNo'].'';            
-                    $data['error'] = $error_msg;
-                    $this->load->view('common/commonheader.php');        
-                    $this->load->view('Admission/Matric/getinfo.php', $data);
-                    $this->load->view('common/footer.php');    
-                    return false;
-                }
-
-                else if($data[0]['Spl_Name'] !="")
-                {
-                    $error_msg.= 'You can not appear due to  '.$data[0]['Spl_Name'].' Condition.';            
-                    $data['error'] = $error_msg;
-                    $this->load->view('common/commonheader.php');        
-                    $this->load->view('Admission/Matric/getinfo.php', $data);
-                    $this->load->view('common/footer.php');    
-                    return false;
-                }
-                else
-                {
-                    $data[0]['name'] = $data[0]['Name'] ;
-                    $data[0]['BForm'] = $data[0]['bFormNo'] ;
-                    $data[0]['Dob'] = $data[0]['dob'] ;
-                    $data[0]['Iyear'] = $data[0]['iyear'] ;
-                    $data[0]['rno'] = $data[0]['RNo'] ;
-                    $data[0]['sess'] =    $session;
-                    $data[0]['class'] =    $oldClass;
-                    $data[0]['isNotFresh'] =    1;
-                    $this->load->view('common/commonheader.php');
-                    $this->load->view('Admission/Matric/matricFreshForm.php', array('data'=>$data[0]));
-                    $this->load->view('common/common_ma/Otherboard10thfooter.php');
-                    return false;  
-                }
-
-            }
-
-            $pic =  explode('Pictures$',@$data[0]['picpath']);
-            $picpath = DIRPATH.'\\'.@$pic[1];
-            $data[0]['picpath_'] = @$pic[1];
-            $isexit = is_file($picpath);
-            /* if(!$isexit)
-            {
-            $error_msg.= '<span style="font-size: 16pt; color:red;">' . 'Your Picture is missing.</span>';            
-            $data['error'] = $error_msg;
             $this->load->view('common/commonheader.php');        
-            $this->load->view('Admission/Matric/getinfo.php', $data);
-            $this->load->view('common/footer.php');    
-            return false;
-
-            }
-            else
-            {
-            $type = pathinfo($picpath, PATHINFO_EXTENSION);
-            $data[0]['picpath'] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($picpath));
-
-            }   */
-
-            if($exam_type == 19){
-
-                $error_msg.= 'Admission can not be proceeded, Candidate appeared in HSSC Exam.';            
-                $data['error'] = $error_msg;
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/getinfo.php', $data);
-                $this->load->view('common/footer.php');    
-                return false;
-            }
-            else if($exam_type == 16 && ($cattype == 1 || $cattype == 2)){
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data, 'cattype'=>$cattype));
-                $this->load->view('common/common_ma/commonfooter.php'); 
-            }
-            else if($specialcode != '' || $exam_type == 17 || $exam_type == 16 || $exam_type == 18 || $nxtrnosessyear != '' || ($grp_cd ==4 && $status == 1))
-            {
-                $error_msg.= 'You can not proceed due to  '.$data[0]['Spl_Name'].' Condition.';            
-                $data['error'] = $error_msg;
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/getinfo.php', $data);
-                $this->load->view('common/footer.php');    
-                return false;    
-            }
-            else
-            {  
-                $this->load->view('common/commonheader.php');        
-                $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data));
-                $this->load->view('common/common_ma/commonfooter.php');
-            }
+            $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data));
+            $this->load->view('common/common_ma/commonfooter.php');
         }
     }
     public function practicalsubjects($_sub_cd)
@@ -2709,18 +2550,6 @@ class Admission extends CI_Controller
 
         }
 
-        //DebugBreak();
-
-        $oldsess = @$_POST['oldsess'];
-        if($oldsess == 'Annual')
-        {
-            $oldsess =  1;    
-        }
-        else if($oldsess == 'Supplementary')
-        {
-            $oldsess =  2;    
-        } 
-
         if(@$_POST['isFresh']>0)
         {
             if((@$_POST['isNotFresh'] ==0) )
@@ -2743,6 +2572,16 @@ class Admission extends CI_Controller
         }
 
 
+        $oldsess = @$_POST['oldsess'];
+        if($oldsess == 'Annual')
+        {
+            $oldsess =  1;    
+        }
+        else if($oldsess == 'Supplementary')
+        {
+            $oldsess =  2;    
+        }
+
         if(@$_POST['isFresh']>0 && $Speciality > 0)
         {
             $regfee =   0;
@@ -2764,7 +2603,6 @@ class Admission extends CI_Controller
 
         $fine = $this->GetFeeWithdue( $AdmFeeCatWise);
         $TotalAdmFee = $AdmFee[0]['Processing_Fee'] +$AdmFeeCatWise +$fine + $regfee+$cerfee ;
-
 
         $addre =  str_replace("'", "", $this->input->post('address'));
         $MarkOfIden =  str_replace("'", "", $this->input->post('MarkOfIden'));
