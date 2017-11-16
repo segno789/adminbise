@@ -904,162 +904,182 @@
             $('#bay_form').focus();  
             return status; 
         }
-        else if(FNic == "" || FNic.length == undefined )
-        {
-            alertify.error("Please Enter your Father's CNIC") 
-            $('#father_cnic').focus();  
-            return status; 
-        }
-        else if(FNic == bFormNo  )
-        {
-            alertify.error("B-form Number and Father CNIC cannot be same.") 
-            $('#bay_form').focus();   
-            return status; 
-        }
 
-        else if(dob == "" || dob == undefined)
-        {
-            alertify.error("Please Enter your Date of Birth.") 
-            $('#dob').focus();   
-            return status;  
-        }
+        else if(bFormNo == "00000-0000000-0" || bFormNo == "11111-1111111-1" || bFormNo == "22222-2222222-2" ||  bFormNo == "33333-3333333-3" ||
+            bFormNo == "44444-4444444-4" || bFormNo == "55555-5555555-5" || bFormNo == "66666-6666666-6" ||  bFormNo == "77777-7777777-7" ||
+            bFormNo == "88888-8888888-8" || bFormNo == "99999-9999999-9" )
+            {
+                alertify.error("Please Enter your valid bay-Form") 
+                $('#bay_form').focus();  
+                return status; 
+            }
 
-        else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
-        {
-            alertify.error("Please Enter your Mobile No.") 
-            $('#mob_number').focus();   
-            return status;  
-        }
+            else if(FNic == "" || FNic.length == undefined )
+            {
+                alertify.error("Please Enter your Father's CNIC") 
+                $('#father_cnic').focus();  
+                return status; 
+            }
 
-        else if(medium == "" || medium == 0 || medium == undefined)
-        {
-            alertify.error("Please Select Medium.") 
-            $('#medium').focus();   
-            return status;  
-        }
+            else if(FNic == "00000-0000000-0" || FNic == "11111-1111111-1" || FNic == "22222-2222222-2" ||  FNic == "33333-3333333-3" ||
+                FNic == "44444-4444444-4" || FNic == "55555-5555555-5" || FNic == "66666-6666666-6" ||  FNic == "77777-7777777-7" ||
+                FNic == "88888-8888888-8" || FNic == "99999-9999999-9" )
+                {
+                    alertify.error("Please Enter your valid Father CNIC") 
+                    $('#father_cnic').focus();  
+                    return status; 
+                }
 
-        else if(preResult=="")
-        {
-            alertify.error("Please Write Your Previous Result First!")
-            $('#preResult').focus(); 
-            return status;
-        }
+                else if(FNic == bFormNo  )
+                {
+                    alertify.error("B-form Number and Father CNIC cannot be same.") 
+                    $('#bay_form').focus();   
+                    return status; 
+                }
 
-        else if(MarkOfIdent == "" || MarkOfIdent == undefined)
-        {
-            alertify.error("Please Enter your Mark of Indentification") 
-            $('#MarkOfIden').focus();   
-            return status;  
-        }
+                else if(dob == "" || dob == undefined)
+                {
+                    alertify.error("Please Enter your Date of Birth.") 
+                    $('#dob').focus();   
+                    return status;  
+                }
 
-        else if(nationality == "" || nationality == 0 || nationality == undefined)
-        {
-            alertify.error("Please Select Nationality") 
-            $('#nationality').focus();   
-            return status;  
-        }
+                else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
+                {
+                    alertify.error("Please Enter your Mobile No.") 
+                    $('#mob_number').focus();   
+                    return status;  
+                }
 
-        else if(speciality == 2 && empBrdCd.trim() != fName.trim())
-        {
-            alertify.error("Please Enter Valid Employee Code") 
-            $("#empBrdCd").val('');
-            $('#empBrdCd').prop('readonly', false);
-            $('#empBrdCd').focus();   
-            return status;  
-        }
+                else if(medium == "" || medium == 0 || medium == undefined)
+                {
+                    alertify.error("Please Select Medium.") 
+                    $('#medium').focus();   
+                    return status;  
+                }
 
-        else if(gend==undefined || gend == 0)
-        {
-            alertify.error("Please Select Your Gender First!")
-            $('#gend').focus(); 
-            return status;
-        }
+                else if(preResult=="")
+                {
+                    alertify.error("Please Write Your Previous Result First!")
+                    $('#preResult').focus(); 
+                    return status;
+                }
 
-        else if(religion == undefined || religion == 0)
-        {
-            alertify.error("Please Select Your Religion First!")
-            $('#religion').focus();
-            return status;
-        }
+                else if(MarkOfIdent == "" || MarkOfIdent == undefined)
+                {
+                    alertify.error("Please Enter your Mark of Indentification") 
+                    $('#MarkOfIden').focus();   
+                    return status;  
+                }
 
-        else if(UrbanRural == undefined || UrbanRural == 0)
-        {
-            alertify.error("Please Select Your Locilaty First!")
-            $('#UrbanRural').focus();
-            return status;
-        }
+                else if(nationality == "" || nationality == 0 || nationality == undefined)
+                {
+                    alertify.error("Please Select Nationality") 
+                    $('#nationality').focus();   
+                    return status;  
+                }
 
-        else if(address == "" || address == 0 || address.length ==undefined )
-        {
-            alertify.error("Please Enter your Address")
-            $('#address').focus(); 
-            return status;    
-        }
+                else if(speciality == 2 && empBrdCd.trim() != fName.trim())
+                {
+                    alertify.error("Please Enter Valid Employee Code") 
+                    $("#empBrdCd").val('');
+                    $('#empBrdCd').prop('readonly', false);
+                    $('#empBrdCd').focus();   
+                    return status;  
+                }
 
-        else if(oldrno=="")
-        {
-            alertify.error("Please Enter Your Old Rno First!")
-            $('#oldrno').focus(); 
-            return status;
-        }
+                else if(gend==undefined || gend == 0)
+                {
+                    alertify.error("Please Select Your Gender First!")
+                    $('#gend').focus(); 
+                    return status;
+                }
 
-        else if(oldboardid==0)
-        {
-            alertify.error("Please Select Your Board First!")
-            $('#oldboardid').focus(); 
-            return status;
-        }
+                else if(religion == undefined || religion == 0)
+                {
+                    alertify.error("Please Select Your Religion First!")
+                    $('#religion').focus();
+                    return status;
+                }
 
-        else  if (dist_cd < 1) 
-        {
-            alertify.error('Please select District '); 
-            $("#pvtinfo_dist").focus();
-            return status;  
-        }
+                else if(UrbanRural == undefined || UrbanRural == 0)
+                {
+                    alertify.error("Please Select Your Locilaty First!")
+                    $('#UrbanRural').focus();
+                    return status;
+                }
 
-        else if (teh_cd < 1) 
-        {
-            alertify.error('Please select Tehsil');                          
-            $("#pvtinfo_teh").focus();
-            return status;  
-        }
+                else if(address == "" || address == 0 || address.length ==undefined )
+                {
+                    alertify.error("Please Enter your Address")
+                    $('#address').focus(); 
+                    return status;    
+                }
 
-        else if (zone_cd < 1) 
-        {
-            alertify.error('Please select Zone. ');                          
-            $("#pvtZone").focus();
-            return status;  
-        }
+                else if(oldrno=="")
+                {
+                    alertify.error("Please Enter Your Old Rno First!")
+                    $('#oldrno').focus(); 
+                    return status;
+                }
 
-        else if (grp_cd == 0) 
-        {
-            alertify.error('Please Select your Study Group '); 
-            $("#std_group").focus();
-            return status;  
-        }
+                else if(oldboardid==0)
+                {
+                    alertify.error("Please Select Your Board First!")
+                    $('#oldboardid').focus(); 
+                    return status;
+                }
+
+                else  if (dist_cd < 1) 
+                {
+                    alertify.error('Please select District '); 
+                    $("#pvtinfo_dist").focus();
+                    return status;  
+                }
+
+                else if (teh_cd < 1) 
+                {
+                    alertify.error('Please select Tehsil');                          
+                    $("#pvtinfo_teh").focus();
+                    return status;  
+                }
+
+                else if (zone_cd < 1) 
+                {
+                    alertify.error('Please select Zone. ');                          
+                    $("#pvtZone").focus();
+                    return status;  
+                }
+
+                else if (grp_cd == 0) 
+                {
+                    alertify.error('Please Select your Study Group '); 
+                    $("#std_group").focus();
+                    return status;  
+                }
 
 
-        else if(sub6p2 == '' || sub6p2 == 0)
-        {
-            alertify.error('Please Select all the PART-II Subjects '); 
-            $("#sub6p2").focus();
-            return status;  
-        }
+                else if(sub6p2 == '' || sub6p2 == 0)
+                {
+                    alertify.error('Please Select all the PART-II Subjects '); 
+                    $("#sub6p2").focus();
+                    return status;  
+                }
 
-        else if(sub7p2 == '' || sub7p2 == 0)
-        {
-            alertify.error('Please Select all the PART-II Subjects '); 
-            $("#sub7p2").focus();
-            return status;  
-        }
+                else if(sub7p2 == '' || sub7p2 == 0)
+                {
+                    alertify.error('Please Select all the PART-II Subjects '); 
+                    $("#sub7p2").focus();
+                    return status;  
+                }
 
 
-        else if($("#terms").is(":not(:checked)"))
-        {
-            alertify.error("Please Accept Terms and Conditions First!")
-            $('input[name="terms"]').focus(); 
-            return status;
-        }
+                else if($("#terms").is(":not(:checked)"))
+                {
+                    alertify.error("Please Accept Terms and Conditions First!")
+                    $('input[name="terms"]').focus(); 
+                    return status;
+                }
 
         status = 1;
         return status;
