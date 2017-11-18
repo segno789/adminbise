@@ -1879,12 +1879,14 @@ class Admission extends CI_Controller
     }
 
     public function Pre_Matric_data()
+
     {
         $this->load->library('session');
         $this->load->model('Admission_model');
 
-        $error_msg = '';   
-        if( empty($_POST["dob"]) || empty($_POST["oldRno"]) )
+        $error_msg = '';
+
+        if(empty($_POST["dob"]) || empty($_POST["oldRno"]) )
         {
             $error_msg.= 'No Data Against Your Information.';            
             $data['error'] = $error_msg;
@@ -1906,7 +1908,8 @@ class Admission extends CI_Controller
         $data = array('dob'=>$dob,'mrno'=>$mrollno,'class'=>$oldClass,'year'=>$year,'session'=>$session,'board'=>$board,'SearchType'=>1);
         $CheckDuplicateForm_Model = $this->Admission_model->CheckDuplicateForm_Model($data);
 
-        if($CheckDuplicateForm_Model){
+        if($CheckDuplicateForm_Model)
+        {
             $error_msg.= 'Admission already submitted as '.$CheckDuplicateForm_Model[0]['regpvt'].' <br>Form No: '.$CheckDuplicateForm_Model[0]['formNo'].'<br>Name: '.$CheckDuplicateForm_Model[0]['name'].'<br>Father Name: '.$CheckDuplicateForm_Model[0]['Fname'].'<br><br> Note: In case of any query related this admission form, Please contact to MATRIC BRANCH BISEGRW (055-3892634)';            
             $data['error'] = $error_msg;
             $this->load->view('common/commonheader.php');        
@@ -1922,28 +1925,8 @@ class Admission extends CI_Controller
 
         $data = $this->Admission_model->Pre_Matric_data($data);
 
-        if(@$_POST['confirmProceed'] == "Confirm to Proceed"){
-
-            $this->load->view('common/commonheader.php');        
-            $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data));
-            $this->load->view('common/common_ma/commonfooter.php');
-            return;
-        }
-
-
-        if($data[0]['class'] == "9" && $data[0]['regPvt'] == "1" && $data[0]['Iyear'] == Year){
-            $error_msg.= 'WARNING!!!! You are REGULAR candidate </br> If you will submit admission as PRIVATE candidate then you will not be able to submit admission as REGULAR candidate';            
-            $data['error'] = $error_msg;
-            $this->load->view('common/commonheader.php');        
-            $this->load->view('Admission/Matric/getinfo.php', $data);
-            $this->load->view('common/footer.php');    
-            return;
-        }
-
-
-        $error_msg = '';
-
-        if(!$data){
+        if(!$data)
+        {
             $error_msg.= 'No Any Student Found Against Your Criteria';            
             $data['error'] = $error_msg;
             $this->load->view('common/commonheader.php');        
@@ -1952,18 +1935,6 @@ class Admission extends CI_Controller
             return;
         }
 
-        $brd_name=$this->Admission_model->Brd_Name($board); 
-        if (!$brd_name) 
-        {
-
-            $errNo   = $this->db->error();
-            $data['msg'] = "Error(".$errNo['code'].") ";
-            $data['errno'] = "507";
-            $this->load->view('common/commonheader.php');
-            $this->load->view('errors/cli/error_custom.php',$data);
-            $this->load->view('common/homepagefooter.php');
-            return;
-        }
         $data[0]['brd_name']=@$brd_name[0]['Brd_Abr'] ;
         $exam_type = @$data[0]['exam_type'];
         $specialcode = @$data[0]['spl_cd'];
@@ -1972,7 +1943,6 @@ class Admission extends CI_Controller
         $grp_cd = @$data[0]['grp_cd'];
         $specialcase = @$data[0]['result2'];
         $nxtrnosessyear = @$data[0]['NextRno_Sess_Year'];
-
 
         if($nxtrnosessyear != "")
         {
@@ -1987,7 +1957,49 @@ class Admission extends CI_Controller
             $this->load->view('Admission/Matric/getinfo.php', $data);
             $this->load->view('common/footer.php');    
             return false; 
-        }  
+        } 
+
+
+        if($specialcode != '')
+        {
+            $error_msg.= 'You can not proceed due to  '.$data[0]['Spl_Name'].' Condition.';            
+            $data['error'] = $error_msg;
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/getinfo.php', $data);
+            $this->load->view('common/footer.php');    
+            return false;  
+        }
+
+        if(@$_POST['confirmProceed'] == "Confirm to Proceed")
+        {
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data));
+            $this->load->view('common/common_ma/commonfooter.php');
+            return;
+        }
+
+        if($data[0]['class'] == "9" && $data[0]['regPvt'] == "1" && $data[0]['Iyear'] == Year)
+        {
+            $error_msg.= 'WARNING!!!! You are REGULAR candidate </br> If you will submit admission as PRIVATE candidate then you will not be able to submit admission as REGULAR candidate';            
+            $data['error'] = $error_msg;
+            $this->load->view('common/commonheader.php');        
+            $this->load->view('Admission/Matric/getinfo.php', $data);
+            $this->load->view('common/footer.php');    
+            return;
+        }
+
+        $brd_name=$this->Admission_model->Brd_Name($board); 
+
+        if (!$brd_name) 
+        {
+            $errNo   = $this->db->error();
+            $data['msg'] = "Error(".$errNo['code'].") ";
+            $data['errno'] = "507";
+            $this->load->view('common/commonheader.php');
+            $this->load->view('errors/cli/error_custom.php',$data);
+            $this->load->view('common/homepagefooter.php');
+            return;
+        }
 
         if($year < (YEAR-1))
         {
@@ -2018,11 +2030,9 @@ class Admission extends CI_Controller
                 return false; 
             }  
 
-
-            else  if($data[0]['status'] == 1 && $data[0]['Class'] == 10)
+            else if($data[0]['status'] == 1 && $data[0]['Class'] == 10)
             {
                 @$sessOld = ($data[0]['sess'] == 1 ? 'Annual' : 'Supplementary');
-
                 $error_msg.= 'You have already passed in matric '.$sessOld.', '.$data[0]['iyear'].' against Roll No : '.$data[0]['RNo'].'';            
                 $data['error'] = $error_msg;
                 $this->load->view('common/commonheader.php');        
@@ -2040,6 +2050,7 @@ class Admission extends CI_Controller
                 $this->load->view('common/footer.php');    
                 return false;
             }
+
             else
             {
                 $data[0]['name'] = $data[0]['Name'] ;
@@ -2064,8 +2075,8 @@ class Admission extends CI_Controller
         $isexit = is_file($picpath);
 
 
-        if($exam_type == 19){
-
+        if($exam_type == 19)
+        {
             $error_msg.= 'Admission can not be proceeded, Candidate appeared in HSSC Exam.';            
             $data['error'] = $error_msg;
             $this->load->view('common/commonheader.php');        
@@ -2073,20 +2084,28 @@ class Admission extends CI_Controller
             $this->load->view('common/footer.php');    
             return false;
         }
-        else if($exam_type == 16 && ($cattype == 1 || $cattype == 2)){
+
+        else if($exam_type == 16 && ($cattype == 1 || $cattype == 2))
+        {
             $this->load->view('common/commonheader.php');        
             $this->load->view('Admission/Matric/AdmissionForm.php',  array('data'=>$data, 'cattype'=>$cattype));
             $this->load->view('common/common_ma/commonfooter.php'); 
         }
-        else if($specialcode != '' || $exam_type == 17 || $exam_type == 16 || $exam_type == 18 || $nxtrnosessyear != '' || ($grp_cd ==4 && $status == 1))
+
+        else if($exam_type == 17 || $exam_type == 16 || $exam_type == 18 || ($grp_cd ==4 && $status == 1))
         {
-            $error_msg.= 'You can not proceed due to  '.$data[0]['Spl_Name'].' Condition.';            
-            $data['error'] = $error_msg;
+            $data[0]['dob'] = $dob;
+            $data[0]['oldRno'] = $mrollno;
+            $data[0]['oldClass'] = $oldClass;
+            $data[0]['oldYear'] = $year;
+            $data[0]['oldSess'] = $session;
+            $data[0]['oldBrd_cd'] = $board;
+
             $this->load->view('common/commonheader.php');        
-            $this->load->view('Admission/Matric/getinfo.php', $data);
+            $this->load->view('Admission/Matric/getinfo.php', $data[0]);
             $this->load->view('common/footer.php');    
-            return false;    
         }
+
         else
         {  
             $this->load->view('common/commonheader.php');        
@@ -2094,6 +2113,7 @@ class Admission extends CI_Controller
             $this->load->view('common/common_ma/commonfooter.php');
         }
     }
+
     public function practicalsubjects($_sub_cd)
     {        
         if($_sub_cd == 6)  $ret_val = "1";
@@ -2916,6 +2936,21 @@ class Admission extends CI_Controller
         $cnt_fnic_nine = substr_count(@$_POST['father_cnic'],"9");
 
 
+        $bay_form = @$_POST['bay_form'];
+        $bay_form = explode(' ',trim($bay_form));
+        $bay_form = $bay_form[0][0]; 
+
+        $father_cnic = @$_POST['father_cnic'];
+        $father_cnic = explode(' ',trim($father_cnic));
+        $father_cnic = $father_cnic[0][0]; 
+
+
+        $chkcellNo = $_POST['mob_number'];
+        $chkcellNo = explode(' ',trim($chkcellNo));
+        $cellNoFirstNo = $chkcellNo[0][0];
+        $cellNoSecNo = $chkcellNo[0][1];
+        $chkcellNo =  $cellNoFirstNo.$cellNoSecNo;
+
         $_POST['address']  = str_replace("'", "", $_POST['address'] );
 
         if(@$_POST['dob'] != null)
@@ -2949,9 +2984,11 @@ class Admission extends CI_Controller
             $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
         }
 
-        else if( (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
+        else if(
+            (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
             || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
-            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7)
+            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7) ||
+            ($bay_form == "0")
             )
             {
                 $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
@@ -2965,7 +3002,8 @@ class Admission extends CI_Controller
 
             else if( (@$_POST['father_cnic'] == '00000-0000000-0') || (@$_POST['father_cnic'] == '11111-1111111-1') || (@$_POST['father_cnic'] == '22222-2222222-2') || (@$_POST['father_cnic'] == '33333-3333333-3') || (@$_POST['father_cnic'] == '44444-4444444-4')
                 || (@$_POST['father_cnic'] == '55555-5555555-5') || (@$_POST['father_cnic'] == '66666-6666666-6') || (@$_POST['father_cnic'] == '77777-7777777-7') || (@$_POST['father_cnic'] == '88888-8888888-8') || (@$_POST['father_cnic'] == '99999-9999999-9') ||
-                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7)
+                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7) ||
+                ($father_cnic == "0")
                 )
                 {
                     $allinputdata['excep'] = 'Please Enter Your Correct Father CNIC No.';
@@ -2978,6 +3016,10 @@ class Admission extends CI_Controller
                 else if(@$_POST['mob_number'] == '')
                 {
                     $allinputdata['excep'] = 'Please Enter Your Mobile Number';
+                }
+                else if($chkcellNo != '03')
+                {
+                    $allinputdata['excep'] = 'Please Enter Valid Mobile Number Use Start from 03 ';
                 }
                 else if(@$_POST['medium'] == 0)
                 {
@@ -3192,6 +3234,22 @@ class Admission extends CI_Controller
         $cnt_fnic_eight = substr_count(@$_POST['father_cnic'],"8");
         $cnt_fnic_nine = substr_count(@$_POST['father_cnic'],"9");
 
+
+        $bay_form = @$_POST['bay_form'];
+        $bay_form = explode(' ',trim($bay_form));
+        $bay_form = $bay_form[0][0]; 
+
+        $father_cnic = @$_POST['father_cnic'];
+        $father_cnic = explode(' ',trim($father_cnic));
+        $father_cnic = $father_cnic[0][0]; 
+
+
+        $chkcellNo = $_POST['mob_number'];
+        $chkcellNo = explode(' ',trim($chkcellNo));
+        $cellNoFirstNo = $chkcellNo[0][0];
+        $cellNoSecNo = $chkcellNo[0][1];
+        $chkcellNo =  $cellNoFirstNo.$cellNoSecNo;
+
         $_POST['address']  = str_replace("'", "", $_POST['address'] );
 
         if(@$_POST['dob'] != null)
@@ -3225,9 +3283,11 @@ class Admission extends CI_Controller
             $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
         }
 
-        else if( (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
+        else if(
+            (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
             || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
-            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7)
+            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7) ||
+            ($bay_form == "0")
             )
             {
                 $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
@@ -3240,7 +3300,8 @@ class Admission extends CI_Controller
 
             else if( (@$_POST['father_cnic'] == '00000-0000000-0') || (@$_POST['father_cnic'] == '11111-1111111-1') || (@$_POST['father_cnic'] == '22222-2222222-2') || (@$_POST['father_cnic'] == '33333-3333333-3') || (@$_POST['father_cnic'] == '44444-4444444-4')
                 || (@$_POST['father_cnic'] == '55555-5555555-5') || (@$_POST['father_cnic'] == '66666-6666666-6') || (@$_POST['father_cnic'] == '77777-7777777-7') || (@$_POST['father_cnic'] == '88888-8888888-8') || (@$_POST['father_cnic'] == '99999-9999999-9') ||
-                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7)
+                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7) ||
+                ($father_cnic == "0")
                 )
                 {
                     $allinputdata['excep'] = 'Please Enter Your Correct Father CNIC No.';
@@ -3253,6 +3314,10 @@ class Admission extends CI_Controller
                 else if(@$_POST['mob_number'] == '')
                 {
                     $allinputdata['excep'] = 'Please Enter Your Mobile Number';
+                }
+                else if($chkcellNo != '03')
+                {
+                    $allinputdata['excep'] = 'Please Enter Valid Mobile Number Use Start from 03 ';
                 }
                 else if(@$_POST['medium'] == 0)
                 {
@@ -3443,6 +3508,23 @@ class Admission extends CI_Controller
         $cnt_fnic_eight = substr_count(@$_POST['father_cnic'],"8");
         $cnt_fnic_nine = substr_count(@$_POST['father_cnic'],"9");
 
+
+
+        $bay_form = @$_POST['bay_form'];
+        $bay_form = explode(' ',trim($bay_form));
+        $bay_form = $bay_form[0][0]; 
+
+        $father_cnic = @$_POST['father_cnic'];
+        $father_cnic = explode(' ',trim($father_cnic));
+        $father_cnic = $father_cnic[0][0]; 
+
+
+        $chkcellNo = $_POST['mob_number'];
+        $chkcellNo = explode(' ',trim($chkcellNo));
+        $cellNoFirstNo = $chkcellNo[0][0];
+        $cellNoSecNo = $chkcellNo[0][1];
+        $chkcellNo =  $cellNoFirstNo.$cellNoSecNo;
+
         $_POST['address']  = str_replace("'", "", $_POST['address'] );
 
         if(@$_POST['dob'] != null)
@@ -3466,9 +3548,11 @@ class Admission extends CI_Controller
         }
 
 
-        else if( (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
+        else if(
+            (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
             || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
-            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7)
+            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7) ||
+            ($bay_form == "0")
             )
             {
                 $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
@@ -3481,7 +3565,8 @@ class Admission extends CI_Controller
 
             else if( (@$_POST['father_cnic'] == '00000-0000000-0') || (@$_POST['father_cnic'] == '11111-1111111-1') || (@$_POST['father_cnic'] == '22222-2222222-2') || (@$_POST['father_cnic'] == '33333-3333333-3') || (@$_POST['father_cnic'] == '44444-4444444-4')
                 || (@$_POST['father_cnic'] == '55555-5555555-5') || (@$_POST['father_cnic'] == '66666-6666666-6') || (@$_POST['father_cnic'] == '77777-7777777-7') || (@$_POST['father_cnic'] == '88888-8888888-8') || (@$_POST['father_cnic'] == '99999-9999999-9') ||
-                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7)
+                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7) ||
+                ($father_cnic == "0")
                 )
                 {
                     $allinputdata['excep'] = 'Please Enter Your Correct Father CNIC No.';
@@ -3494,6 +3579,10 @@ class Admission extends CI_Controller
                 else if(@$_POST['mob_number'] == '')
                 {
                     $allinputdata['excep'] = 'Please Enter Your Mobile Number';
+                }
+                else if($chkcellNo != '03')
+                {
+                    $allinputdata['excep'] = 'Please Enter Valid Mobile Number Use Start from 03 ';
                 }
                 else if(@$_POST['medium'] == 0)
                 {

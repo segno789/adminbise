@@ -3162,9 +3162,10 @@ class Admission_9th_reg extends CI_Controller {
 
         // Newly Affiliated Admission Fee   Deals Private and Govt. institutes 
         $lastdate  = date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])) ;
-        $duedate =date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])); 
         if($user_info['info'][0]['feedingDate'] != null && (date('Y-m-d')<=$lastdate) )
         {
+                    $duedate =date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])); 
+
             $Total_fine = 0;
             if($user_info['info'][0]['IsGovernment'] == 2)
             {
@@ -3779,7 +3780,7 @@ class Admission_9th_reg extends CI_Controller {
         {
             $data_challanNo = $data['data']['stdinfo'][0]->challanno;
         }
-        $challanDueDate;
+      //  $challanDueDate;
 
         $feestructure[]    =  $mydata_final['sum_procFee'];    
         $displayfeetitle[] =  'Total Processing Fee';    
