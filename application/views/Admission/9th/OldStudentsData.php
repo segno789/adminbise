@@ -164,7 +164,7 @@
                                                         $n++;
                                                         $formno = !empty($vals["formNo"])?$vals["formNo"]:"N/A";
                                                         $grp_name = $vals["grp_cd"];
-                                                        $sub7 = $vals["sub8"];
+                                                        $sub7 = $vals["sub7"];
                                                         if($grp_name==1 && $sub7==78)
                                                         {
                                                             $grp_name = 7;

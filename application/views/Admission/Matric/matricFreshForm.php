@@ -940,42 +940,42 @@
                     return status;  
                 }
 
-                else if(sub5 == '' || sub5 == 0 || sub5 == undefined)
+                else if((sub5 == '' || sub5 == 0 || sub5 == undefined) && (grp_cd != 4))
                 {
                     alertify.error('Please Select all the PART-I Subjects '); 
                     $("#sub5").focus();
                     return status;  
                 }
 
-                else if(sub6 == '' || sub6 == 0 || sub6 == undefined)
+                else if((sub6 == '' || sub6 == 0 || sub6 == undefined) && (grp_cd != 4))
                 {
                     alertify.error('Please Select all the PART-I Subjects '); 
                     $("#sub6").focus();
                     return status;  
                 }
 
-                else if(sub7 == '' || sub7 == 0 || sub7 == undefined)
+                else if((sub7 == '' || sub7 == 0 || sub7 == undefined) && (grp_cd != 4))
                 {
                     alertify.error('Please Select all the PART-I Subjects '); 
                     $("#sub7").focus();
                     return status;  
                 }
 
-                else if(sub5p2 == '' || sub5p2 == 0 || sub5p2 == undefined)
+                else if((sub5p2 == '' || sub5p2 == 0 || sub5p2 == undefined) && (grp_cd != 4))
                 {
                     alertify.error('Please Select all the PART-II Subjects '); 
                     $("#sub5p2").focus();
                     return status;  
                 }
 
-                else if(sub6p2 == '' || sub6p2 == 0 || sub6p2 == undefined)
+                else if((sub6p2 == '' || sub6p2 == 0 || sub6p2 == undefined) && (grp_cd != 4))
                 {
                     alertify.error('Please Select all the PART-II Subjects '); 
                     $("#sub6p2").focus();
                     return status;  
                 }
 
-                else if(sub7p2 == '' || sub7p2 == 0 || sub7p2 == undefined)
+                else if((sub7p2 == '' || sub7p2 == 0 || sub7p2 == undefined) && (grp_cd != 4))
                 {
                     alertify.error('Please Select all the PART-II Subjects '); 
                     $("#sub7p2").focus();

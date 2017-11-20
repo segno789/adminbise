@@ -72,7 +72,7 @@ return false;
             "cache": false
         });
         <?php if(@$data['isNotFresh']==0){ ?>  
-            $("#dob").datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, maxDate: new Date(2003, 7,1),yearRange: '1970:2003'}).val();
+            $("#dob").datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, maxDate: new Date(2004, 7,1),yearRange: '1970:2004'}).val();
             <?php } ?>
         $("#bay_form,#father_cnic").mask("99999-9999999-9",{placeholder:"_"});
         $("#dateofadmission").mask("99-99-9999",{placeholder:"_"});
