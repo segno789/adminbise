@@ -15,10 +15,10 @@
                         Create Batch:
                     </h4>
                 </div>
-                <hr>
-                <div class="control-group" style="text-align: center;">
-              <!-- <img src="<?=base_url()?>/assets/img/note_for_batch.jpg" align="middle" style="height: 69px;" alt="">-->
-                </div> 
+
+                <div style="width: 600px;" class="pull-right" id="instruction">
+                    <img src="<?php echo base_url(); ?>assets/img/batchNotice1.gif" class="img-responsive" alt="BatchInstructions.gif">
+                </div>
                 <div class="control-group">
                     <label class="control-label span1">
                         Select Option:
@@ -218,10 +218,10 @@
                             <div class='controls controls-row'>
                             <select id='std_groups' name='std_group'>
                             ";
-                           //   //DebugBreak();
+                            //   //DebugBreak();
 
-                            
-                           // @$msg_status;
+
+                            // @$msg_status;
                             @$subgroups =  split(',',@$grp_cd);
                             echo "<option value='0' >SELECT GROUP</option>";
                             for($i =0 ; $i<count($subgroups); $i++)
@@ -308,7 +308,9 @@
                         }
                         ?>
 
-
+                        <div class="control-group" style="text-align: center;">
+                            <img class="blink_text img-responsive" src="<?=base_url()?>/assets/img/BatchNotice.jpg" align="middle" alt="batchNotice.jpg">
+                        </div>
 
                         <div id="dt_example" class="example_alt_pagination">
                             <form method="POST" id="frmchk" action="<?=base_url()?>/index.php/Admission_9th_reg/Make_Batch_Formwise">
@@ -336,7 +338,7 @@
                                             <th style="width:10%" class="hidden-phone">
                                                 Selected Subjects
                                             </th>
-                                          
+
                                             <?php
                                             if($spl_cd ==FALSE || $spl_cd =="3" )
                                             {
@@ -375,7 +377,7 @@
                                                 default:
                                                 $grp_name = "No Group Selected.";
                                                 }*/
-                                                $grp_name = $vals["RegGrp"];
+                                                $grp_name = $vals["grp_cd"];
                                                 switch ($grp_name) {
                                                     case '1':
                                                         $grp_name = 'SCIENCE WITH BIOLOGY';
@@ -428,5 +430,22 @@
         </div>
     </div>
 </div>
+<script src="<?php echo base_url(); ?>assets/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
+
+    $(window).load(function(){
+        $("#instruction").fancybox({
+            closeClick  : false, // prevents closing when clicking INSIDE fancybox 
+            openEffect  : 'none',
+            closeEffect : 'none',
+            helpers   : { 
+                overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
+            }
+        }).trigger("click");
+
+
+        $('#address').each(function(){
+            $(this).val($(this).val().trim());
+        });
+    });
 </script>

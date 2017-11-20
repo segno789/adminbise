@@ -1,6 +1,6 @@
 
 <div class="container-fluid ">
-    <div style="text-align: center; background:#3187bf; color: white;  margin-bottom: 5px; height: 40px;">
+    <div style="text-align: center; background:#003a6a; color: white;  margin-bottom: 5px; height: 40px;">
         &copy; 2017 BISE Gujranwala, All Rights Reserved. 
     </div>
 </div>

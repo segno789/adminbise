@@ -59,7 +59,7 @@
                                     foreach($data as $key=>$vals):
                                     $n++;
                                     $formno = !empty($vals["formNo"])?$vals["formNo"]:"N/A";
-                                    $grp_name = $vals["RegGrp"];
+                                    $grp_name = $vals["grp_cd"];
                                     switch ($grp_name) {
                                         case '1':
                                             $grp_name = 'SCIENCE WITH BIOLOGY';

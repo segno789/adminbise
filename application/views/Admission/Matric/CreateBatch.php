@@ -14,17 +14,11 @@
                     <h4 class="title">
                         Create Batch:
                     </h4>
-                   <!-- <p align="center" class="blink_text">this is msg</p>-->
-                </div>
-                <hr>
-                <div class="control-group" style="text-align: center;">
-                    <!--<img src="<?=base_url()?>/assets/img/note_for_batch.jpg" align="middle" style="height: 69px;" alt="">-->
-                </div> 
-
-                <div style="width: 750px;" class="pull-right" id="instruction">
-                    <img src="<?php echo base_url(); ?>assets/img/Instructions.jpg" class="img-responsive" alt="instructions.jpg">
                 </div>
 
+                <div style="width: 600px;" class="pull-right" id="instruction">
+                    <img src="<?php echo base_url(); ?>assets/img/batchNotice1.gif" class="img-responsive" alt="BatchInstructions.gif">
+                </div>
                 <div class="control-group">
                     <label class="control-label span1">
                         Select Option:
@@ -314,6 +308,9 @@
                         }
                         ?>
 
+                        <div class="control-group" style="text-align: center;">
+                            <img class="blink_text img-responsive" src="<?=base_url()?>/assets/img/BatchNotice.jpg" align="middle" alt="batchNotice.jpg">
+                        </div>
 
 
                         <div id="dt_example" class="example_alt_pagination">
@@ -436,8 +433,17 @@
 </div>
 <script src="<?php echo base_url(); ?>assets/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
+
     $(window).load(function(){
-        $.fancybox("#instruction");
+        $("#instruction").fancybox({
+            closeClick  : false, // prevents closing when clicking INSIDE fancybox 
+            openEffect  : 'none',
+            closeEffect : 'none',
+            helpers   : { 
+                overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
+            }
+        }).trigger("click");
+
 
         $('#address').each(function(){
             $(this).val($(this).val().trim());
