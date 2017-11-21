@@ -926,28 +926,23 @@ class Admission_matric extends CI_Controller {
             'AdmTotalFee'=>$TotalAdmFee
         );
 
-        $this->frmvalidation('NewEnrolment_EditForm_matric',$data,0);
         $data['isupdate']=2;
         $logedIn = $this->Admission_matric_model->Insert_NewEnorlement($data);
 
-        if( !isset($logedIn))
+        $info =  '';
+
+        if(isset($logedIn))
         {  
-            $allinputdata = "";
-            $data['excep'] = 'success';
-            $this->session->set_flashdata('NewEnrolment_error',$data);
-            redirect('Admission_matric/EditForms');
-            return;
+            $info['error'] = "1";
         }
         else
         {     
-            $allinputdata = "";
-            $data['excep'] = 'An error has occoured. Please try again later. ';
-            $this->session->set_flashdata('NewEnrolment_error',$data);
-            redirect('Admission_matric/StudentsData');
-            return;
-            echo 'Data NOT Saved Successfully !';
+            $info['error'] = "Data NOT Saved Successfully !";
         } 
-        $this->load->view('common/footer.php');
+
+        echo  json_encode($info);
+        exit();
+
     }
     public function NewEnrolment_INSERT_matric()
     {
@@ -1191,37 +1186,26 @@ class Admission_matric extends CI_Controller {
             'AdmTotalFee'=>$TotalAdmFee,
             'pic'=>@$_POST['pic']
 
-
-
-
-
-
         );
 
-
-        $this->frmvalidation('NewEnrolment_NewForm_matric/'.$_POST['OldRno'],$data,0);
         $data['isupdate']=1;
         $logedIn = $this->Admission_matric_model->Insert_NewEnorlement($data);
 
-        if( !isset($logedIn))
+        $info =  '';
+
+        if(isset($logedIn))
         {  
-            $allinputdata = "";
-            $allinputdata['excep'] = 'success';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_matric/EditForms');
-            return;
+            $info['error'] = "1";
         }
         else
         {     
-            $allinputdata = "";
-            $allinputdata['excep'] = 'An error has occoured. Please try again later. ';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_matric/StudentsData');
-            return;
-            echo 'Data NOT Saved Successfully !';
+            $info['error'] = "Data NOT Saved Successfully !";
         } 
-        $this->load->view('common/footer.php');
+
+        echo  json_encode($info);
+        exit();
     }
+
     public function NewEnrolment_NewForm_matric()
     {    
 
@@ -4992,8 +4976,12 @@ class Admission_matric extends CI_Controller {
 
         return 1;
     }
-    function frmvalidation($viewName,$allinputdata,$isupdate)
+
+    function frmvalidation()
     {
+
+        $allinputdata['excep'] == '';
+
         $_POST['address']  = str_replace("'", "", $_POST['address'] );
 
         $cntzero = substr_count(@$_POST['bay_form'],"0");
@@ -5044,44 +5032,27 @@ class Admission_matric extends CI_Controller {
         if(@$_POST['cand_name'] == '' )
         {
             $allinputdata['excep'] = 'Please Enter Your Name';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_matric/'.$viewName);
-            return;
-
         }
 
         else if(strlen($_POST['cand_name'])<3)  
         {
             $allinputdata['excep'] = 'Please Enter Your Correct Name';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_matric/'.$viewName);
-            return;
         }
 
 
         else if (@$_POST['father_name'] == '')
         {
             $allinputdata['excep'] = 'Please Enter Your Father Name';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_matric/'.$viewName);
-            return;
         }
 
         else if (strlen($_POST['father_name'])<3) 
         {
             $allinputdata['excep'] = 'Please Enter Your Correct Father Name';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_matric/'.$viewName);
-            return;
         }
 
         else if(@$_POST['bay_form'] == '' )
         {
             $allinputdata['excep'] = 'Please Enter Your Bay Form No.';
-            $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-            redirect('Admission_matric/'.$viewName);
-            $this->$viewName($allinputdata['formNo']);
-            return;
         }
 
         else if(
@@ -5092,18 +5063,11 @@ class Admission_matric extends CI_Controller {
             )
             {
                 $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_matric/'.$viewName);
-                $this->$viewName($allinputdata['formNo']);
-                return;
             }
 
             else if(@$_POST['father_cnic'] == '' )
             {
                 $allinputdata['excep'] = 'Please Enter Your Father CNIC';
-                $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                redirect('Admission_matric/'.$viewName);
-                return;
             }
 
             else if( (@$_POST['father_cnic'] == '00000-0000000-0') || (@$_POST['father_cnic'] == '11111-1111111-1') || (@$_POST['father_cnic'] == '22222-2222222-2') || (@$_POST['father_cnic'] == '33333-3333333-3') || (@$_POST['father_cnic'] == '44444-4444444-4')
@@ -5113,257 +5077,169 @@ class Admission_matric extends CI_Controller {
                 )
                 {
                     $allinputdata['excep'] = 'Please Enter Your Correct Father CNIC No.';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    $this->$viewName($allinputdata['formNo']);
-                    return;
                 }
 
                 else if (@$_POST['dob_hidden'] == '' )
                 {
                     $allinputdata['excep'] = 'Please Enter Your  Date of Birth';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['mob_number'] == '')
                 {
                     $allinputdata['excep'] = 'Please Enter Your Mobile Number';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
                 }
 
                 else if($chkcellNo != '03')
                 {
                     $allinputdata['excep'] = 'Please Enter Valid Mobile Number Use Start from 03 ';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
                 }
 
                 else if(@$_POST['medium'] == 0)
                 {
                     $allinputdata['excep'] = 'Please Select Your Medium';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
 
                 }
+
                 else if(@$_POST['Inst_Rno']== '')
                 { 
                     $allinputdata['excep'] = 'Please Enter Your Roll Number';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
+                } 
 
+                else if(@$_POST['SchGrade']== '')
+                { 
+                    $allinputdata['excep'] = 'Please Enter School Grade';
                 }
+
                 else if(@$_POST['MarkOfIden']== '')
                 {
                     $allinputdata['excep'] = 'Please Enter Your Mark of Identification';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
 
                 else if((@$_POST['medium'] != '1') and (@$_POST['medium'] != '2') )
                 {
                     $allinputdata['excep'] = 'Please Select Your medium';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
                 else if((@$_POST['nationality'] != '1') and (@$_POST['nationality'] != '2') )
                 {
                     $allinputdata['excep'] = 'Please Select Your Nationality';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if((@$_POST['gender'] != '1') and (@$_POST['gender'] != '2'))
                 {
                     $allinputdata['excep'] = 'Please Select Your Gender';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if((@$_POST['hafiz']!= '1') and (@$_POST['hafiz']!= '2'))
                 {
                     $allinputdata['excep'] = 'Please Select Your Hafiz-e-Quran option';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if((@$_POST['religion'] != '1') and (@$_POST['religion'] != '2'))
                 {
                     $allinputdata['excep'] = 'Please Select Your religion';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
 
                 else if(@$_POST['address'] =='')
                 {
                     $allinputdata['excep'] = 'Please Enter Your Address';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['std_group_hidden'] == 0)
                 {
                     $allinputdata['excep'] = 'Please Select Your Study Group';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if((@$_POST['std_group_hidden'] == 1) && ((@$_POST['sub5p2']!=6) || (@$_POST['sub6p2']!=7)||(@$_POST['sub7p2']!=8)))
                 {
-
                     $allinputdata['excep'] = 'Subjects not according to Group';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if((@$_POST['std_group_hidden'] == 7)&& ((@$_POST['sub5p2']!=6) || (@$_POST['sub6p2']!=7)||(@$_POST['sub7p2']!=78)))
                 {
-
                     $allinputdata['excep'] = 'Subjects not according to Group';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if((@$_POST['std_group_hidden'] == 8)&& ((@$_POST['sub5p2']!=6) || (@$_POST['sub6p2']!=7)||(@$_POST['sub7p2']!=43)))
                 {
-
                     $allinputdata['excep'] = 'Subjects not according to Group';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
                 else if((@$_POST['std_group_hidden'] == 2) && ((@$_POST['sub5p2']==6) || (@$_POST['sub6p2']==7) || (@$_POST['sub7p2']==8)))
                 {
                     $allinputdata['excep'] = 'Subjects not according to Group';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if((@$_POST['std_group_hidden'] == 5)&& ((@$_POST['sub5p2']==6) || (@$_POST['sub6p2']==7)|| (@$_POST['sub7p2']==43) || (@$_POST['sub7p2']==8)))
                 {
                     $allinputdata['excep'] = 'Subjects not according to Group';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
 
                 else if((@$_POST['sub7p2'] ==20) && (@$_POST['sub8p2']==21))
                 {
                     $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if((@$_POST['sub8p2'] ==20) && (@$_POST['sub7p2']==21))
                 {
                     $allinputdata['excep'] = 'Double History is not Allowed Please choose a different Subject';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['sub6p2'] == @$_POST['sub8p2'])
                 {
                     $allinputdata['excep'] = 'Please Select Different Subjects';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['sub7p2'] == @$_POST['sub8p2'])
                 {
                     $allinputdata['excep'] = 'Please Select Different Subjects';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['sub1p2'] == 0)
                 {
                     $allinputdata['excep'] = 'Please Select Part-II Subject 1';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['sub2p2'] == 0)
                 {
                     $allinputdata['excep'] = 'Please Select Part-II Subject 2';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
                 }
+
                 else if(@$_POST['sub3p2'] == 0)
                 {
                     $allinputdata['excep'] = 'Please Select Part-II Subject 3';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['sub4p2'] == 0)
                 {
                     $allinputdata['excep'] = 'Please Select Part-II Subject 4';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['sub5p2'] == 0)
                 {
                     $allinputdata['excep'] = 'Please Select Part-II Subject 5';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['sub6p2'] == 0)
                 {
                     $allinputdata['excep'] = 'Please Select Part-II Subject 6';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['sub7p2'] == 0)
                 {
                     $allinputdata['excep'] = 'Please Select Part-II Subject 7';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
                 else if(@$_POST['sub8p2'] == 0)
                 {
                     $allinputdata['excep'] = 'Please Select Part-II Subject 8';
-                    $this->session->set_flashdata('NewEnrolment_error',$allinputdata);
-                    redirect('Admission_matric/'.$viewName);
-                    return;
-
                 }
+
+
+                if($allinputdata['excep'] == '')
+        {
+            $allinputdata['excep'] =  'Success';
+        }
+
+        echo json_encode($allinputdata);
     }
 
     function base64_to_jpeg($base64_string, $output_file) {

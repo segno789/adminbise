@@ -401,11 +401,11 @@
                         }
                         if($sub7 == 43 || $sub8 == 43)
                         {
-                        echo "<option value='8'  selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
+                            echo "<option value='8'  selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
                         }
                         else
                         {
-                        echo "<option value='8'  >SCIENCE  WITH ELECTRICAL WIRING</option>";
+                            echo "<option value='8'  >SCIENCE  WITH ELECTRICAL WIRING</option>";
                         }
 
                         if($grp == 2)
@@ -578,7 +578,7 @@
 
 
                         if($grp == 8)
-                        echo"<option value='8' disabled='disabled' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
+                            echo"<option value='8' disabled='disabled' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
                     }
                     if($exam_type == 16 && $cattype == 1)
                     {
@@ -734,11 +734,11 @@
                         'HEALTH & PHYSICAL EDUCATION_DFD' => '94'
                     );
                     $result =  array_search($data[0]['sub4'],$subarray); 
-                    
+
                     if($sub7 != 43){
                         unset($subarray["ELECTRICAL WIRING"]);    
                     }
-                          
+
                     ?>
                 </select>
             </div>
@@ -3528,7 +3528,6 @@
                             }
                         });
 
-                        $('#btnsubmitUpdateEnrol').removeAttr("disabled");
                         return false;
 
                     }
@@ -3542,7 +3541,6 @@
                 }
             });
 
-            $('#btnsubmitUpdateEnrol').removeAttr("disabled");
             return false;   
 
         }

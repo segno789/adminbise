@@ -926,24 +926,24 @@
             $img.addClass("highlight");
             // or
             $img.css("border", "3px solid yellow");
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             // $('#ErrMsg').html("<b>Please Enter your  Name </b>");    
             alertify.error("Please upload your Picture First.")
             $img.focus(); 
             return status;
         }
         else if(name == "" ||  name == undefined){
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             // $('#ErrMsg').html("<b>Please Enter your  Name </b>");    
             alertify.error("Please Enter your  Name")
             $('#cand_name').focus(); 
             return status;
         }
         else if(fName == "" || fName == undefined){
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             // $('#ErrMsg').html("<b>Please Enter your Father's Name  </b>");   
             alertify.error("Please Enter your Father's Name  ") 
             $('#father_name').focus(); 
@@ -952,8 +952,8 @@
 
         else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             // $('#ErrMsg').html("<b>Please Enter your bay-Form</b>"); 
             alertify.error("Please Enter your bay-Form") 
             $('#bay_form').focus();  
@@ -961,8 +961,8 @@
         }
         /* else if(bFormNo == "00000-0000000-0")
         {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
         // $('#ErrMsg').html("<b>Please Enter your bay-Form</b>"); 
         alertify.error("Please Enter correct bay-Form ") 
         $('#bay_form').focus();  
@@ -971,8 +971,8 @@
 
         else if(FNic == "" || FNic.length == undefined )
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
             alertify.error("Please Enter your Father's CNIC") 
             $('#father_cnic').focus();  
@@ -982,8 +982,8 @@
 
         else if(FNic == bFormNo)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
             alertify.error("Bay Form and Father's CNIC cannot be the same") 
             $('#bay_form').focus();  
@@ -992,8 +992,8 @@
 
         /*else if(FNic == "00000-0000000-0" )
         {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
         // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
         alertify.error("Please Enter your Father's CNIC") 
         $('#father_cnic').focus();  
@@ -1003,8 +1003,8 @@
 
         else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             // $('#ErrMsg').html("<b>Please Enter your Mobile No.</b>"); 
             alertify.error("Please Enter your Mobile No.") 
             $('#mob_number').focus();   
@@ -1012,8 +1012,8 @@
         }
         else if(mobNo == "0000-0000000")
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             // $('#ErrMsg').html("<b>Please Enter your Mobile No.</b>"); 
             alertify.error("Please Enter correct Mobile No.") 
             $('#mob_number').focus();   
@@ -1021,8 +1021,8 @@
         }
         else if(MarkOfIdent == "" || MarkOfIdent == 0 || MarkOfIdent == undefined)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             //$('#ErrMsg').html("<b>Please Enter your Mark of Indentification</b>"); 
             alertify.error("Please Enter your Mark of Indentification") 
             $('#MarkOfIden').focus();   
@@ -1040,8 +1040,8 @@
 
         else if(address == "" || address == 0 || address.length ==undefined )
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             $('#ErrMsg').html("<b>Please Enter your Address</b>"); 
             alertify.error("Please Enter your Address")
             $('#address').focus(); 
@@ -1071,8 +1071,8 @@
         }
         else if (grp_cd == 0) 
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
             alertify.error('Please Select your Study Group '); 
             $("#std_group").focus();
             return status;  
@@ -1088,7 +1088,7 @@
 
         else if ((sub6p1 == 19 || sub6p2 == 19) && (sub7p1 == 20 || sub7p2== 20))
         {
-            $('#ErrMsg').show(); 
+
             alertify.error('Please select One Subject from ADVANCED ISLAMIC STUDIES / ISLAMIC HISTORY / MUSLIM HISTORY ');                   
             $("#sub6").focus();
             return status;  
@@ -1098,16 +1098,16 @@
         {
             if ((sub6p1 == 0 || sub6p2 == 0) )
             {
-                $('#ErrMsg').show(); 
-                $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                 alertify.error('Please Select Optionl Subject First! '); 
                 $("#sub6").focus();
                 return status;
             }
             if((sub7p1 == 0 || sub7p2== 0)) 
             {
-                $('#ErrMsg').show(); 
-                $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                 alertify.error('Please Select Optionl Subject First! '); 
                 $("#sub7").focus();
                 return status;
@@ -1126,7 +1126,7 @@
 
             if(ddlMarksImproveoptions == 0)
             {
-                $('#ErrMsg').show(); 
+
                 alertify.error('Please select Subject ');                   
                 $("#ddlMarksImproveoptions").focus();
                 return status;  
@@ -1135,23 +1135,23 @@
             {
                 if (sub6p1 == 0 )
                 {
-                    $('#ErrMsg').show(); 
+
                     alertify.error('Please select Subject ');                   
                     $("#sub6").focus();
                     return status;  
                 }  
                 else   if (sub7p1 == 0)
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject ');
                     $("#sub7").focus();
                     return status;  
                 }
                 else if (sub8p1 == 0 )
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject '); 
                     $("#sub8").focus();
                     return status;  
@@ -1161,24 +1161,24 @@
             {
                 if (sub6p2 == 0)
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject ');                          
                     $("#sub6p2").focus();
                     return status;  
                 }
                 else   if (sub7p2 == 0)
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject ');
                     $("#sub7p2").focus();
                     return status;  
                 }
                 else if (sub8p2== 0 )
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject '); 
                     $("#sub8p2").focus();
                     return status;  
@@ -1188,7 +1188,7 @@
             {
                 if (sub6p1 == 0 )
                 {
-                    $('#ErrMsg').show(); 
+
                     alertify.error('Please select Subject ');                   
                     $("#sub6").focus();
                     return status;  
@@ -1196,8 +1196,8 @@
 
                 else if (sub6p2 == 0)
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject ');                          
                     $("#sub6p2").focus();
                     return status;  
@@ -1205,32 +1205,32 @@
 
                 else   if (sub7p1 == 0)
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject ');
                     $("#sub7").focus();
                     return status;  
                 }
                 else   if (sub7p2 == 0)
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject ');
                     $("#sub7p2").focus();
                     return status;  
                 }
                 else if (sub8p1 == 0 )
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject '); 
                     $("#sub8").focus();
                     return status;  
                 }
                 else if (sub8p2== 0 )
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject '); 
                     $("#sub8p2").focus();
                     return status;  
@@ -1243,8 +1243,8 @@
                 var cattype = "<?php echo @$cattype ?>";
                 if($("#ddlMarksImproveoptions").val()==0)
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please Select Category First'); 
                     $("#ddlMarksImproveoptions").focus();
                     return status; 
@@ -1253,7 +1253,7 @@
                 {
                     if ((sub5p1 == 0 && sub5p2== 0) && (sub6p1 == 0 && sub6p2 == 0) && (sub7p1 == 0 && sub7p2 == 0) )
                     {
-                        $('#ErrMsg').show(); 
+
                         alertify.error('Please select Subject ');                   
                         $("#sub5").focus();
                         return status;  
@@ -1263,14 +1263,14 @@
                 {
                     if ((sub5p1 == 0 && sub5p2== 0) && (sub6p1 == 0 && sub6p2 == 0) && (sub7p1 == 0 && sub7p2 == 0) )
                     {
-                        $('#ErrMsg').show(); 
+
                         alertify.error('Please select Subject ');                   
                         $("#sub5").focus();
                         return status;  
                     }
                     /* if (sub6p1 == 0 )
                     {
-                    $('#ErrMsg').show(); 
+
                     alertify.error('Please select Subject ');                   
                     $("#sub6").focus();
                     return status;  
@@ -1278,8 +1278,8 @@
 
                     else if (sub6p2 == 0)
                     {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject ');                          
                     $("#sub6p2").focus();
                     return status;  
@@ -1287,32 +1287,32 @@
 
                     else   if (sub7p1 == 0)
                     {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject ');
                     $("#sub7").focus();
                     return status;  
                     }
                     else   if (sub7p2 == 0)
                     {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject ');
                     $("#sub7p2").focus();
                     return status;  
                     }
                     else if (sub8p1 == 0 )
                     {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject '); 
                     $("#sub8").focus();
                     return status;  
                     }
                     else if (sub8p2== 0 )
                     {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please select Subject '); 
                     $("#sub8p2").focus();
                     return status;  
@@ -1320,15 +1320,15 @@
                 }
                 if($("#ddlMarksImproveoptions").val()==4 && ((sub1p1 == 0 && sub1p2== 0) && (sub2p1 == 0 && sub2p2 == 0) && (sub3p1 == 0 && sub3p2 == 0)) && (sub4p1 == 0 && sub4p2 == 0) && (sub5p1 == 0 && sub5p2== 0) && (sub6p1 == 0 && sub6p2 == 0) && (sub7p1 == 0 && sub7p2 == 0)&& (sub8p1 == 0 && sub8p2 == 0))
                 {
-                    $('#ErrMsg').show(); 
-                    $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                     alertify.error('Please Select some subjects'); 
                     $("#sub1").focus();
                     return status; 
                 }
                 status = 1;
-                /* $('#ErrMsg').show(); 
-                $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+                /*  
+
                 alertify.error('Please Select your Study Group '); 
                 $("#std_group").focus();
                 return status;  */
@@ -1350,8 +1350,8 @@
             var cattype = "<?php echo @$cattype ?>";
             if($("#ddlMarksImproveoptions").val()==0)
             {
-                $('#ErrMsg').show(); 
-                $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                 alertify.error('Please Select Category First'); 
                 $("#ddlMarksImproveoptions").focus();
                 return status; 
@@ -1360,7 +1360,7 @@
             {
                 if ((sub5p1 == 0 && sub5p2== 0) && (sub6p1 == 0 && sub6p2 == 0) && (sub7p1 == 0 && sub7p2 == 0) )
                 {
-                    $('#ErrMsg').show(); 
+
                     alertify.error('Please select Subject ');                   
                     $("#sub5").focus();
                     return status;  
@@ -1370,7 +1370,7 @@
             {
                 if ((sub5p1 == 0 && sub5p2== 0) && (sub6p1 == 0 && sub6p2 == 0) && (sub7p1 == 0 && sub7p2 == 0) )
                 {
-                    $('#ErrMsg').show(); 
+
                     alertify.error('Please select Subject ');                   
                     $("#sub5").focus();
                     return status;  
@@ -1379,8 +1379,8 @@
             }
             if($("#ddlMarksImproveoptions").val()==4 && ((sub1p1 == 0 && sub1p2== 0) && (sub2p1 == 0 && sub2p2 == 0) && (sub3p1 == 0 && sub3p2 == 0)) && (sub4p1 == 0 && sub4p2 == 0) && (sub5p1 == 0 && sub5p2== 0) && (sub6p1 == 0 && sub6p2 == 0) && (sub7p1 == 0 && sub7p2 == 0))
             {
-                $('#ErrMsg').show(); 
-                $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
+
+
                 alertify.error('Please Select some subjects'); 
                 $("#sub1").focus();
                 return status; 
@@ -1395,260 +1395,8 @@
 
         return status;
     }
-    function  check_NewEnrol_validation_regular_matric()
-    {
-
-        var name =  $('#cand_name').val();
-        var dist_cd= $('#pvtinfo_dist option:selected').val();
-        var teh_cd= $('#pvtinfo_teh').val();
-        var zone_cd= $('#pvtZone').val();
-        var pp_cent= $('#pp_cent').val();           
-        var sub6p1 = $('#sub6').val();
-        var sub6p2 = $('#sub6p2').val();           
-        var sub7p1 = $('#sub7').val();
-        var sub7p2 = $('#sub7p2').val();  
-        var sub8p1 = $('#sub8').val();                      
-        var sub8p2 = $('#sub8p2').val();                      
-        var ex_type = $('#exam_type').val();
-        var mobNo = $('#mob_number').val();
-        var bFormNo = $('#bay_form').val();
-        var grp_cd = $('#std_group').val();
-        var brd_cd = $('#brd_cd').val();
-        var fName = $('#father_name').val();
-        var FNic = $('#father_cnic').val();
-        var dob = $('#dob').val();
-        var address = $('#address').val();
-        var image = $('#image').val();
-        var MarkOfIdent = $('#MarkOfIden').val();
-        var Inst_Rno = $('#Inst_Rno').val();
-        var status = 0;
-        var $img = $("#previewImg");
-        var src = $img.attr("src");
-        var grppre = $("#grppre").val();
-        var selected_group_conversion ;
-        var exam_type = $("#exam_type").val();
-        if(grp_cd==1 || grp_cd == 5 || grp_cd ==7 || grp_cd ==8 )
-        {
-            selected_group_conversion =1;
-        }
-        else
-        {
-            selected_group_conversion =grp_cd;
-        }
-        //  alert($("#pvtinfo_dist").find('option:selected').val())
-
-        if(src == '') {
-            $img.addClass("highlight");
-            // or
-            $img.css("border", "3px solid yellow");
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your  Name </b>");    
-            alertify.error("Please upload your Picture First.")
-            $img.focus(); 
-            return status;
-        }
-        else if(name == "" ||  name == undefined){
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your  Name </b>");    
-            alertify.error("Please Enter your  Name")
-            $('#cand_name').focus(); 
-            return status;
-        }
-        else if(fName == "" || fName == undefined){
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your Father's Name  </b>");   
-            alertify.error("Please Enter your Father's Name  ") 
-            $('#father_name').focus(); 
-            return status;
-        }   
-
-        else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your bay-Form</b>"); 
-            alertify.error("Please Enter your bay-Form") 
-            $('#bay_form').focus();  
-            return status; 
-        }
-        else if(FNic == "" || FNic.length == undefined )
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
-            alertify.error("Please Enter your Father's CNIC") 
-            $('#father_cnic').focus();  
-            return status; 
-        }
-
-
-
-        else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your Mobile No.</b>"); 
-            alertify.error("Please Enter your Mobile No.") 
-            $('#mob_number').focus();   
-            return status;  
-        }
-
-        else if(MarkOfIdent == "" || MarkOfIdent == 0 || MarkOfIdent == undefined)
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            //$('#ErrMsg').html("<b>Please Enter your Mark of Indentification</b>"); 
-            alertify.error("Please Enter your Mark of Indentification") 
-            $('#MarkOfIden').focus();   
-            return status;  
-        }
-        else if(address == "" || address == 0 || address.length ==undefined )
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Address</b>"); 
-            alertify.error("Please Enter your Address")
-            $('#address').focus(); 
-            return status;    
-        }
-
-        else  if (dist_cd < 1) 
-        {
-            alertify.error('Please select District '); 
-            $("#pvtinfo_dist").focus();
-            return status;  
-        }
-
-        else if (teh_cd < 1) {
-
-            alertify.error('Please select Tehsil');                          
-            $("#pvtinfo_teh").focus();
-            return status;  
-        }
-        else if (zone_cd < 1) 
-        {
-
-            alertify.error('Please select Zone. ');                          
-            $("#pvtZone").focus();
-            return status;  
-        }
-
-        else if (grp_cd == 0) 
-        {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            alertify.error('Please Select your Study Group '); 
-            $("#std_group").focus();
-            return status;  
-        }
-        /*   else if (selected_group_conversion != grppre || exam_type == 2) 
-        {
-        if (sub6p1 == 0 )
-        {
-        $('#ErrMsg').show(); 
-        alertify.error('Please select Subject ');                   
-        $("#sub6").focus();
-        return status;  
-        }
-
-        else if (sub6p2 == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');                          
-        $("#sub6p2").focus();
-        return status;  
-        }
-
-        else   if (sub7p1 == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');
-        $("#sub7").focus();
-        return status;  
-        }
-        else   if (sub7p2 == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');
-        $("#sub7p2").focus();
-        return status;  
-        }
-        else if (sub8p1 == 0 )
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject '); 
-        $("#sub8").focus();
-        return status;  
-        }
-        else if (sub8p2== 0 )
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject '); 
-        $("#sub8p2").focus();
-        return status;  
-        }
-        /* $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please Select your Study Group '); 
-        $("#std_group").focus();
-        return status;  */
-        /* }*/
-
-
-
-        /*      else if ($("#sub3p2").find('option:selected').val() == 0) 
-        {
-        alertify.error('Please select your Study Group ');                  
-        $("#sub3p2").focus();
-        return status;  
-        }
-        else if ($("#sub5p2").find('option:selected').val() == 0 )
-        {
-        $('#ErrMsg').show(); 
-        alertify.error('Please select Subject ');                   
-        $("#sub5p2").focus();
-        return status;  
-        }
-
-        else if ($("#sub6p2").find('option:selected').val() == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');                          
-        $("#sub6p2").focus();
-        return status;  
-        }
-
-        else   if ($("#sub7p2").find('option:selected').val() == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');
-        $("#sub7p2").focus();
-        return status;  
-        }
-
-        else if ($("#sub8p2").find('option:selected').val() == 0 )
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject '); 
-        $("#sub8p2").focus();
-        return status;  
-        }*/
-
-        status = 1;
-        return status;
-    }
-
+    
+    
     function gotodefaultpage(){
         var msg = "Are you sure you want to cancel ?";
         alertify.confirm(msg, function (e) {

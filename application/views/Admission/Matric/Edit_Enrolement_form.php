@@ -12,30 +12,17 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                         <div class="title">
                             Admission form<a id="redgForm" data-original-title=""></a>
                         </div>
-
                     </div>
                     <div class="widget-body">
-
-                        <form class="form-horizontal no-margin" action="<?php  echo base_url(); ?>Admission_matric/NewEnrolment_update_matric" method="post" enctype="multipart/form-data" id="updfrm">
-
+                        <form method="post" enctype="multipart/form-data" name="newfrom" id="newfrom">
                             <div class="control-group">
                                 <h4 class="span4">Personal Information :</h4>
                                 <div class="controls controls-row">
                                     <input type="hidden" class="span2 hidden" id="isReAdm" name="isReAdm" value="0">
-
                                     <label class="control-label span2" >
-
                                     </label> 
-
                                     <img id="previewImg" style="width:130px; height: 130px;" class="span2" src="<?php  echo $image_path_selected;?>" alt="Candidate Image">
                                     <input type="hidden" value="<?php echo $image_path_selected;?>" name="pic">
-                                </div>
-                            </div>
-                            <div class="control-group">
-
-                                <label id="ErrMsg" class="control-label span2" style=" text-align: left;"><?php ?></label>
-                                <div class="controls controls-row">
-
                                 </div>
                             </div>
                             <div class="control-group">
@@ -55,32 +42,32 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                                     Bay Form No :
                                 </label>
                                 <div class="controls controls-row">
-                                    <input class="span3" type="text" id="bay_form" name="bay_form" placeholder="Bay Form No." value="<?php echo  $data['0']['BForm']; ?>" required="required" <?php if( $data['0']['isBForm'] ==1) echo "readonly='readonly'";  ?>>
+                                    <?php
+                                    $bformLen = strlen($data['0']['BForm']);
+                                    $fnicLen = strlen($data['0']['FNIC']);
+                                    ?>
+                                    <input class="span3" type="text" id="bay_form" name="bay_form" value="<?php echo  $data['0']['BForm']; ?>" required="required" <?php if ($bformLen == 15) { echo "readonly='readonly'"; }  ?> >
                                     <label class="control-label span2" for="father_cnic">
                                         Father's CNIC :
                                     </label> 
-                                    <input class="span3" id="father_cnic" name="father_cnic" type="text" placeholder="34101-1111111-1" value="<?php echo  $data['0']['FNIC']; ?>" <?php if($data['0']['isFNIC']==1) echo "readonly='readonly'";  ?> required="required">
+                                    <input class="span3" id="father_cnic" name="father_cnic" type="text" value="<?php echo  $data['0']['FNIC']; ?>" <?php if ($fnicLen == 15)  { echo "readonly='readonly'"; } ?> required="required">
                                 </div>
                             </div>
-
                             <div class="control-group">
                                 <label class="control-label span1" >
                                     Date of Birth:(dd-mm-yyyy)
                                 </label>
-
+                                <?php
+                                $source = $data['0']['Dob'];
+                                $date = new DateTime($source);
+                                $trim =  trim($date->format('d-m-Y')," "); 
+                                ?>
                                 <div class="controls controls-row">
-                                    <input class="span3" type="text" id="dob" name="dob" style="text-align: left;" placeholder="DOB" value="
-                                        <?php
-                                        $source = $data['0']['Dob'];
-                                        $date = new DateTime($source);
-                                        $trim =  trim($date->format('d-m-Y')," "); 
-                                        echo $trim;
-                                        ?>" required="required" readonly="readonly" disabled="disabled"  >
-
+                                    <input class="span3" type="text" id="dob" name="dob" style="text-align: left;" placeholder="DOB" value="<?php echo $trim; ?>" required="required" readonly="readonly" disabled="disabled"  >
                                     <label class="control-label span2" >
                                         Mobile Number :
                                     </label> 
-                                    <input class="span3" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value=<?php  echo  $data['0']['MobNo']; ?> required="required">
+                                    <input class="span3" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value="<?php  echo  $data['0']['MobNo']; ?>" required="required">
                                 </div>
                             </div>
                             <div class="control-group">
@@ -120,7 +107,7 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                                     <select id="speciality"  class="span3" name="speciality">
                                         <?php 
                                         $spec = $data['0']['Spec'] ;
-                                        
+
                                         if($spec == 0)
                                         {
                                             echo  "<option value='0' selected='selected'>None</option>  <option value='1'>Deaf &amp; Dumb</option> <option value='2'>Board Employee</option>";
@@ -180,7 +167,6 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                                 </label>
                                 <div class="controls controls-row">
                                     <?php
-                                    // //DebugBreak();
                                     if($isReAdm == 1)
                                     {
                                         echo " <label class='radio inline span1'><input type='radio' id='hafiz1' value='1'  name='hafiz'> No</label>
@@ -188,10 +174,8 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                                     }
                                     else
                                     {
-                                       
                                         echo " <label class='radio inline span1'><input type='radio' id='hafiz1' value='1' checked='checked' name='hafiz'> No</label>
                                         <label class='radio inline span1'><input type='radio' id='hafiz2' value='2' name='hafiz'> Yes</label>";
-                                       
                                     }    
                                     ?>
 
@@ -211,7 +195,6 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                                         </label><label class='radio inline span1'><input type='radio' id='religion1' class='rel_class' value='2' checked='checked' name='religion'> Non Muslim</label>" ;
                                     }
                                     ?>
-
                                 </div>
                             </div>
                             <div class="control-group">
@@ -253,9 +236,9 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                                 <div class="controls controls-row">
                                     <select id="std_group" class="dropdown span6"  name="std_group" disabled="disabled">
                                         <?php
-                                 
+
                                         $grp = $data[0]['grp_cd'];
-                                    
+
                                         $sub7 = $data[0]["sub7"];
                                         if($grp==1 && $sub7==78)
                                         {
@@ -271,7 +254,7 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                                         echo "<option value='0' >SELECT GROUP</option>";
                                         if($isReAdm == 1 )
                                         {
-                                            echo "<option value='1' >SCIENCE WITH BIOLOGY</option>
+                                            echo "<option value='1'>SCIENCE WITH BIOLOGY</option>
                                             <option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>
                                             <option value='8' >SCIENCE  WITH ELECTRICAL WIRING</option>
                                             <option value='2'>GENERAL</option>
@@ -340,7 +323,6 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                                                     {
                                                         echo "<option value='5'>DEAF AND DUMB</option>";  
                                                     }
-
                                                 }
                                             } 
                                         }
@@ -443,17 +425,14 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                                         );
                                         $result =  array_search($data[0]['sub4'],$subarray);
                                         ?>
-
                                     </select>                                            
 
                                 </div>
                             </div>
-
                             <div class="control-group">
                                 <label class="control-label span12" style="width: 366px; font-weight: bold;" >
                                     Choose Subjects(Elective Subjects are Enabled Only)   
                                 </label> 
-
                             </div>
                             <div class="control-group">
                                 <div class="control row controls-row">
@@ -639,37 +618,236 @@ $type = pathinfo(@$data[0]['PicPath'], PATHINFO_EXTENSION);
                                 <input type="hidden"   value="<?php  echo  $data['0']['sub6']; ?>"  name="sub6_hidden">
                                 <input type="hidden"   value="<?php  echo  $data['0']['sub7']; ?>"  name="sub7_hidden">
                                 <input type="hidden"   value="<?php  echo  $data['0']['sub8']; ?>"  name="sub8_hidden">
-                                <button type="submit" onclick="return checks()" name="btnsubmitUpdateEnrol" class="btn btn-large btn-info offset2">
-                                    Update Form
-                                </button>
+                                <input type="submit" value="Update Form" id="btnsubmitUpdateEnrol" name="btnsubmitUpdateEnrol" class="btn btn-large btn-info offset2" onclick="return checksRegularMatric()">
                                 <input type="button" class="btn btn-large btn-danger" value="Cancel" id="btnCancel" name="btnCancel" onclick="return CancelAlert();" >
                                 <div class="clearfix">
                                 </div>
                             </div>
-
-
                         </form>
                         <script type="text/javascript">
 
+                            function  check_NewEnrol_validation_regular_matric()
+                            {
+                                var name =  $('#cand_name').val();
+                                var dist_cd= $('#pvtinfo_dist option:selected').val();
+                                var teh_cd= $('#pvtinfo_teh').val();
+                                var zone_cd= $('#pvtZone').val();
+                                var pp_cent= $('#pp_cent').val();           
+                                var sub6p1 = $('#sub6').val();
+                                var sub6p2 = $('#sub6p2').val();           
+                                var sub7p1 = $('#sub7').val();
+                                var sub7p2 = $('#sub7p2').val();  
+                                var sub8p1 = $('#sub8').val();                      
+                                var sub8p2 = $('#sub8p2').val();                      
+                                var ex_type = $('#exam_type').val();
+                                var mobNo = $('#mob_number').val();
+                                var bFormNo = $('#bay_form').val();
+                                var grp_cd = $('#std_group').val();
+                                var Inst_grd = $('#Inst_grd').val();
+                                var brd_cd = $('#brd_cd').val();
+                                var fName = $('#father_name').val();
+                                var FNic = $('#father_cnic').val();
+                                var dob = $('#dob').val();
+                                var address = $('#address').val();
+                                var image = $('#image').val();
+                                var MarkOfIdent = $('#MarkOfIden').val();
+                                var Inst_Rno = $('#Inst_Rno').val();
+                                var status = 0;
+                                var $img = $("#previewImg");
+                                var src = $img.attr("src");
+                                var grppre = $("#grppre").val();
+                                var selected_group_conversion ;
+                                var exam_type = $("#exam_type").val();
 
-
-                            function checks(){
-
-                                var status  =  check_NewEnrol_validation_regular();
-                                if(status == 0)
+                                if(grp_cd==1 || grp_cd == 5 || grp_cd ==7 || grp_cd ==8 )
                                 {
-
-                                    return false;    
+                                    selected_group_conversion =1;
                                 }
                                 else
                                 {
-                                    $("button[type='submit']").html('Please wait ...').attr('disabled','disabled'); 
-                                    $("#updfrm").submit();
-                                    return true;
-                                } 
+                                    selected_group_conversion =grp_cd;
+                                }
+
+                                if(name == "" ||  name == undefined)
+                                {
+                                    alertify.error("Please Enter your  Name")
+                                    $('#cand_name').focus(); 
+                                    return status;
+                                }
+
+                                else if(fName == "" || fName == undefined)
+                                {
+                                    alertify.error("Please Enter your Father's Name  ") 
+                                    $('#father_name').focus(); 
+                                    return status;
+                                }   
+
+                                else if(bFormNo == "" || bFormNo.length != 15 )
+                                {
+                                    alertify.error("Please Enter your bay-Form") 
+                                    $('#bay_form').focus();  
+                                    return status; 
+                                }
+                                else if(FNic == "" || FNic.length != 15 )
+                                {
+                                    alertify.error("Please Enter your Father's CNIC") 
+                                    $('#father_cnic').focus();  
+                                    return status; 
+                                }
+
+                                else if(mobNo == "" || mobNo == 0 || mobNo == undefined || mobNo == "0000-0000000")
+                                {                                                                
+                                    alertify.error("Please Enter your Mobile No.") 
+                                    $('#mob_number').focus();   
+                                    return status;  
+                                }
+
+                                else if(Inst_Rno == "" || Inst_Rno == 0 || Inst_Rno == undefined)
+                                {                                                                
+                                    alertify.error("Please Enter Institute Roll No") 
+                                    $('#Inst_Rno').focus();   
+                                    return status;  
+                                }
+
+                                else if(Inst_grd == "" || Inst_grd == 0 || Inst_grd == undefined)
+                                {                                                                
+                                    alertify.error("Please Enter Institute Grade") 
+                                    $('#Inst_grd').focus();   
+                                    return status;  
+                                }
 
 
+                                else if(MarkOfIdent == "" || MarkOfIdent == 0 || MarkOfIdent == undefined)
+                                {                                                                            
+                                    alertify.error("Please Enter your Mark of Indentification") 
+                                    $('#MarkOfIden').focus();   
+                                    return status;  
+                                }
+                                else if(address == "" || address == 0 || address.length ==undefined )
+                                {
+                                    alertify.error("Please Enter your Address")
+                                    $('#address').focus(); 
+                                    return status;    
+                                }
+
+                                else  if (dist_cd < 1) 
+                                {
+                                    alertify.error('Please select District '); 
+                                    $("#pvtinfo_dist").focus();
+                                    return status;  
+                                }
+
+                                else if (teh_cd < 1) {
+
+                                    alertify.error('Please select Tehsil');                          
+                                    $("#pvtinfo_teh").focus();
+                                    return status;  
+                                }
+                                else if (zone_cd < 1) 
+                                {
+
+                                    alertify.error('Please select Zone. ');                          
+                                    $("#pvtZone").focus();
+                                    return status;  
+                                }
+
+                                else if (grp_cd == 0) 
+                                {
+                                    alertify.error('Please Select your Study Group '); 
+                                    $("#std_group").focus();
+                                    return status;  
+                                }
+
+                                status = 1;
+                                return status;
                             }
+
+
+                            function checksRegularMatric()
+                            {   
+                                $('#btnsubmitUpdateEnrol').attr("disabled", "disabled");
+                                var status  =  check_NewEnrol_validation_regular_matric();
+
+                                if(status == 0)
+                                {
+                                    $('#btnsubmitUpdateEnrol').removeAttr("disabled");
+                                    return false;    
+                                }
+
+                                else
+                                {
+                                    $('#btnsubmitUpdateEnrol').attr("disabled", "disabled");
+
+                                    $.ajax({
+
+                                        type: "POST",
+                                        url: "<?php  echo site_url('Admission_matric/frmvalidation'); ?>",
+                                        data: $("#newfrom").serialize() ,
+                                        datatype : 'html',
+                                        cache:false,
+
+                                        beforeSend: function() {  $('.mPageloader').show(); },
+                                        complete: function() { $('.mPageloader').hide();},
+
+                                        success: function(data)
+                                        {                    
+                                            var obj = JSON.parse (data);
+                                            if(obj.excep == 'Success')
+                                            {
+                                                $.ajax({
+
+                                                    type: "POST",
+                                                    url: "<?php echo base_url(); ?>" + "Admission_matric/NewEnrolment_update_matric/",
+                                                    data: $("#newfrom").serialize() ,
+                                                    datatype : 'html',
+                                                    cache:false,
+
+                                                    beforeSend: function() {  $('.mPageloader').show(); },
+                                                    complete: function() { $('.mPageloader').hide();},
+
+                                                    success: function(data){
+
+                                                        var obj = JSON.parse(data);
+                                                        if(obj.error ==  "1")
+                                                        {
+                                                            window.location.href ='<?php echo base_url(); ?>Admission_matric/EditForms'
+                                                            alertify.success("Data Updated Successfully");
+                                                            return true;
+                                                        } 
+
+                                                        else
+                                                        {
+                                                            alertify.error(obj.error);
+                                                            $('#btnsubmitUpdateEnrol').removeAttr("disabled");
+                                                            return false; 
+
+                                                        }
+                                                    },
+
+                                                    error: function(request, status, error){
+                                                        alertify.error(request.responseText);
+                                                        $('#btnsubmitUpdateEnrol').removeAttr("disabled");
+                                                    }
+                                                });
+
+                                                return false;
+
+                                            }
+                                            else
+                                            {
+                                                alertify.error(obj.excep);
+                                                $('#btnsubmitUpdateEnrol').removeAttr("disabled");
+                                                return false;     
+
+                                            }
+                                        }
+                                    });
+
+                                    return false;   
+
+                                } 
+                            }
+
                             function CancelAlert()
                             {
                                 var msg = "Are You Sure You want to Cancel this Form ?"
