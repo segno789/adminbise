@@ -24,7 +24,7 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     <input type="hidden" class="span2 hidden" id="isReAdm" name="isReAdm" value="0">
                                     <label class="control-label span2" >
                                     </label> 
-                                    
+
                                     <img id="previewImg" src="<?php  echo $image_path_selected;?>" style="width:130px; height: 130px;" class="span2" alt="Candidate Image">
                                     <input type="hidden" value="<?php echo $path;?>" name="pic">
                                 </div>
@@ -68,20 +68,17 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 <label class="control-label span1" >
                                     Date of Birth:(dd-mm-yyyy)
                                 </label>
-
+                                <?php
+                                $source = $data['0']['Dob'];
+                                $date = new DateTime($source);
+                                $trim =  trim($date->format('d-m-Y')," "); 
+                                ?>
                                 <div class="controls controls-row">
-                                    <input class="span3" type="text" id="dob" name="dob" style="text-align: left;" placeholder="DOB" value="
-                                        <?php
-                                        $source = $data['0']['Dob'];
-                                        $date = new DateTime($source);
-                                        $trim =  trim($date->format('d-m-Y')," "); 
-                                        echo $trim;
-                                        ?>" required="required" readonly="readonly" disabled="disabled"  >
-
+                                    <input class="span3" type="text" id="dob" name="dob" style="text-align: left;" placeholder="DOB" value="<?php echo $trim; ?>" required="required" readonly="readonly" disabled="disabled">
                                     <label class="control-label span2" >
                                         Mobile Number :
                                     </label> 
-                                    <input class="span3" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value=<?php  echo  $data['0']['MobNo']; ?> required="required">
+                                    <input class="span3" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value="<?php  echo  $data['0']['MobNo']; ?>" required="required">
                                 </div>
                             </div>
                             <div class="control-group">
@@ -90,9 +87,9 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 </label>
                                 <div class="controls controls-row">
                                     <select id="medium" class="dropdown span3" name="medium">
-                                        <?php // //DebugBreak();
+                                        <?php 
                                         $med = $data['0']['med'] ;
-                                        // $med = 2; 
+
                                         if($med == 1)
                                         {
                                             echo  "<option value='1' selected='selected'>Urdu</option> <option value='1'>English</option>";
@@ -120,9 +117,9 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                         Speciality:
                                     </label> 
                                     <select id="speciality"  class="span3" name="speciality">
-                                        <?php // //DebugBreak();
+                                        <?php 
                                         $spec = $data['0']['Spec'] ;
-                                        // $med = 2; 
+
                                         if($spec == 0)
                                         {
                                             echo  "<option value='0' selected='selected'>None</option>  <option value='1'>Deaf &amp; Dumb</option> <option value='2'>Board Employee</option>";
@@ -134,10 +131,7 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                         else if($spec == 2){
                                             echo  "<option value='0' >None</option>  <option value='1' >Deaf &amp; Dumb</option> <option value='2' selected='selected'>Board Employee</option>";                                           
                                         }
-                                        ?>
-
-
-
+                                        ?>           
                                     </select>
                                 </div>
                             </div>
@@ -185,7 +179,7 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 </label>
                                 <div class="controls controls-row">
                                     <?php
-                                    // //DebugBreak();
+
                                     if($isReAdm == 1)
                                     {
                                         echo " <label class='radio inline span1'><input type='radio' id='hafiz1' value='1'  name='hafiz'> No</label>
@@ -193,20 +187,10 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     }
                                     else
                                     {
-                                        // $hafiz = $data[0]['Ishafiz'];
-                                        //if ($hafiz == 1)
-                                        //{
                                         echo " <label class='radio inline span1'><input type='radio' id='hafiz1' value='1' checked='checked' name='hafiz'> No</label>
                                         <label class='radio inline span1'><input type='radio' id='hafiz2' value='2' name='hafiz'> Yes</label>";
-                                        //}
-                                        /*else if(!isset($hafiz))
-                                        {
-                                        echo " <label class='radio inline span1'><input type='radio' id='hafiz1' value='1'  name='hafiz'> No</label>
-                                        <label class='radio inline span1'><input type='radio' id='hafiz2' value='2' checked='checked' name='hafiz'> Yes</label>";
-                                        }*/
                                     }    
                                     ?>
-
                                     <label class="control-label span3" >
                                         Religion :
                                     </label> 
@@ -223,7 +207,6 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                         </label><label class='radio inline span1'><input type='radio' id='religion1' class='rel_class' value='2' checked='checked' name='religion'> Non Muslim</label>" ;
                                     }
                                     ?>
-
                                 </div>
                             </div>
 
@@ -266,9 +249,7 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 <div class="controls controls-row">
                                     <select id="std_group" class="dropdown span6"  name="std_group" disabled="disabled">
                                         <?php
-                                        // DebugBreak();
                                         $grp = $data[0]['grp_cd'];
-                                        //  $grp_name = $vals["grp_cd"];
                                         $sub7 = $data[0]["sub7"];
                                         if($grp==1 && $sub7==78)
                                         {
@@ -300,7 +281,6 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                         {
                                             for($i =0 ; $i<count($subgroups); $i++)
                                             {
-
                                                 if($subgroups[$i] == 1)
                                                 {
                                                     if($grp == 1)
@@ -461,17 +441,13 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                         );
                                         $result =  array_search($data[0]['sub4'],$subarray);
                                         ?>
-
                                     </select>                                            
-
                                 </div>
                             </div>
-
                             <div class="control-group">
                                 <label class="control-label span12" style="width: 366px; font-weight: bold;" >
                                     Choose Subjects(Elective Subjects are Enabled Only)   
                                 </label> 
-
                             </div>
                             <div class="control-group">
                                 <div class="control row controls-row">
@@ -492,7 +468,11 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                                 echo array_search($data[0]['sub1'],$subarray);
                                             ?></option>
                                             <?php } ?>
-                                        <option value="0"  <?php if($data[0]['sub1pf1']==1) echo "selected='selected'"; ?> >NONE</option>
+                                        <?php if($data[0]['sub1st1']==1) {?>
+                                            <option value="0" <?php   if($data[0]['sub1pf1']==1) echo 'selected' ?> >NONE</option>
+                                            <?php
+                                        }
+                                        ?>
                                     </select> 
 
                                     <select id="sub1p2" class="span3 dropdown" name="sub1p2">
@@ -503,36 +483,39 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 </div>
                                 <div class="control row controls-row">
                                     <label class="control-label span1" >
-
                                     </label>
-                                    <select id="sub2"  name="sub2" class="span3 dropdown">
+                                    <select id="sub2" class="span3 dropdown" name="sub2">
                                         <?php if($data[0]['sub2pf1']==2){ ?>
-                                            <option value="<?php echo $data[0]['sub2'];?>"><?php
+                                            <option value="<?php  echo $data[0]['sub2'];?>"><?php
                                                 echo array_search($data[0]['sub2'],$subarray);
                                             ?></option>
                                             <?php } ?>
-                                        <option value="0"  <?php if($data[0]['sub2pf1']==1) echo "selected='selected'"; ?> >NONE</option>
-                                    </select>
+                                        <?php if($data[0]['sub2st1']==1) {?>
+                                            <option value="0" <?php  if($data[0]['sub2pf1']==1) echo 'selected' ?> >NONE</option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select> 
                                     <select id="sub2p2" class="span3 dropdown" name="sub2p2">
                                         <option value="<?php echo $data[0]['sub2'];?>"><?php
                                             echo array_search($data[0]['sub2'],$subarray);
                                         ?></option>
                                     </select> 
                                 </div>
-
-
-
                                 <div class="control row controls-row">
                                     <label class="control-label span1" >
-
                                     </label>
                                     <select id="sub3" class="span3 dropdown" name="sub3">
                                         <?php if($data[0]['sub3pf1']==2){ ?>
-                                            <option value="<?php echo $data[0]['sub3'];?>"><?php
+                                            <option value="<?php  echo $data[0]['sub3'];?>"><?php
                                                 echo array_search($data[0]['sub3'],$subarray);
                                             ?></option>
                                             <?php } ?>
-                                        <option value="0"  <?php if($data[0]['sub3pf1']==1) echo "selected='selected'"; ?> >NONE</option>
+                                        <?php if($data[0]['sub3st1']==1) {?>
+                                            <option value="0" <?php if($data[0]['sub3pf1']==1) echo 'selected' ?> >NONE</option>
+                                            <?php
+                                        }
+                                        ?>
                                     </select> 
                                     <select id="sub3p2" class="span3 dropdown" name="sub3p2">
                                         <option value="<?php echo $data[0]['sub3'];?>"><?php
@@ -544,34 +527,39 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     <label class="control-label span1" >
 
                                     </label>
-                                    <select id="sub4"  name="sub4" class="span3 dropdown">
+                                    <select id="sub4" class="span3 dropdown" name="sub4">
                                         <?php if($data[0]['sub4pf1']==2){ ?>
-                                            <option value="<?php echo $data[0]['sub4'];?>"><?php
+                                            <option value="<?php  echo $data[0]['sub4'];?>"><?php
                                                 echo array_search($data[0]['sub4'],$subarray);
                                             ?></option>
                                             <?php } ?>
-                                        <option value="0"  <?php if($data[0]['sub4pf1']==1) echo "selected='selected'"; ?> >NONE</option>
-                                    </select>
+                                        <?php if($data[0]['sub4st1']==1) {?>
+                                            <option value="0" <?php   if($data[0]['sub4pf1']==1) echo 'selected' ?> >NONE</option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select> 
                                     <select id="sub4p2" class="span3 dropdown" name="sub4p2">
                                         <option value="<?php echo $data[0]['sub4'];?>"><?php
                                             echo array_search($data[0]['sub4'],$subarray);
                                         ?></option>
                                     </select> 
                                 </div>
-
                                 <div class="control row controls-row">
                                     <label class="control-label span1" >
 
                                     </label>
-                                    <select id="sub5" class="span3 dropdown" name="sub5" selected="selected">
+                                    <select id="sub5" class="span3 dropdown" name="sub5">
                                         <?php if($data[0]['sub5pf1']==2){ ?>
-                                            <option value="<?php echo $data[0]['sub5'];?>"><?php
+                                            <option value="<?php  echo $data[0]['sub5'];?>"><?php
                                                 echo array_search($data[0]['sub5'],$subarray);
                                             ?></option>
                                             <?php } ?>
-                                        <option value="0"  <?php if($data[0]['sub5pf1']==1) echo "selected='selected'"; ?> >NONE</option>
-
-
+                                        <?php if($data[0]['sub5st1']==1) {?>
+                                            <option value="0" <?php if($data[0]['sub5pf1']==1) echo 'selected' ?> >NONE</option>
+                                            <?php
+                                        }
+                                        ?>
                                     </select> 
                                     <select id="sub5p2" class="span3 dropdown" name="sub5p2" selected="selected">
                                         <option value="<?php echo $data[0]['sub5'];?>"><?php
@@ -583,14 +571,18 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     <label class="control-label span1" >
 
                                     </label>
-                                    <select id="sub6"  name="sub6" class="span3 dropdown" selected="selected">
+                                    <select id="sub6" class="span3 dropdown" name="sub6">
                                         <?php if($data[0]['sub6pf1']==2){ ?>
-                                            <option value="<?php echo $data[0]['sub6'];?>"><?php
+                                            <option value="<?php  echo $data[0]['sub6'];?>"><?php
                                                 echo array_search($data[0]['sub6'],$subarray);
                                             ?></option>
                                             <?php } ?>
-                                        <option value="0"  <?php if($data[0]['sub6pf1']==1) echo "selected='selected'"; ?> >NONE</option>
-                                    </select>
+                                        <?php if($data[0]['sub6st1']==1) {?>
+                                            <option value="0" <?php   if($data[0]['sub6pf1']==1) echo 'selected' ?> >NONE</option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select> 
                                     <select id="sub6p2"  name="sub6p2" class="span3 dropdown" selected="selected">
                                         <option value="<?php echo $data[0]['sub6'];?>"><?php
                                             echo array_search($data[0]['sub6'],$subarray);
@@ -601,13 +593,17 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     <label class="control-label span1" >
 
                                     </label>
-                                    <select id="sub7" class="span3 dropdown" name="sub7" selected="selected">
+                                    <select id="sub7" class="span3 dropdown" name="sub7">
                                         <?php if($data[0]['sub7pf1']==2){ ?>
-                                            <option value="<?php echo $data[0]['sub7'];?>"><?php
+                                            <option value="<?php  echo $data[0]['sub7'];?>"><?php
                                                 echo array_search($data[0]['sub7'],$subarray);
                                             ?></option>
                                             <?php } ?>
-                                        <option value="0"  <?php if($data[0]['sub7pf1']==1) echo "selected='selected'"; ?> >NONE</option>
+                                        <?php if($data[0]['sub7st1']==1) {?>
+                                            <option value="0" <?php   if($data[0]['sub7pf1']==1) echo 'selected' ?> >NONE</option>
+                                            <?php
+                                        }
+                                        ?>
                                     </select> 
                                     <select id="sub7p2" class="span3 dropdown" name="sub7p2" selected="selected">
 
@@ -620,14 +616,18 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     <label class="control-label span1" >
 
                                     </label>
-                                    <select id="sub8"  name="sub8" class="span3 dropdown">
+                                    <select id="sub8" class="span3 dropdown" name="sub8">
                                         <?php if($data[0]['sub8pf1']==2){ ?>
-                                            <option value="<?php echo $data[0]['sub8'];?>"><?php
+                                            <option value="<?php  echo $data[0]['sub8'];?>"><?php
                                                 echo array_search($data[0]['sub8'],$subarray);
                                             ?></option>
                                             <?php } ?>
-                                        <option value="0"  <?php if($data[0]['sub8pf1']==1) echo "selected='selected'"; ?> >NONE</option>
-                                    </select>
+                                        <?php if($data[0]['sub8st1']==1) {?>
+                                            <option value="0" <?php   if($data[0]['sub8pf1']==1) echo 'selected' ?> >NONE</option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select> 
                                     <select id="sub8p2"  name="sub8p2" class="span3 dropdown">
                                         <option value="<?php echo $data[0]['sub8'];?>"><?php
                                             echo array_search($data[0]['sub8'],$subarray);
@@ -639,8 +639,7 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                             <div class="form-actions no-margin">
                                 <input type="hidden"   value="<?php  echo  $data[0]['formNo']; ?>"  name="formNo">
                                 <input type="hidden"   value="<?php  echo  $isReAdm; ?>"  name="IsReAdm">
-                                <input type="hidden"   value="<?php  echo $data[0]['rno']; ?>"  name="OldRno"> <!--$data[0]['rno']; -->
-
+                                <input type="hidden"   value="<?php  echo $data[0]['rno']; ?>"  name="OldRno"> 
                                 <input type="hidden"   value="<?php echo   $data[0]['Iyear'];  ?>"  name="Oldyear">
                                 <input type="hidden"   value="<?php echo   $data[0]['sess'];  ?>"  name="Oldsess">
                                 <input type="hidden"   value="<?php echo   $data[0]['Brd_cd'];  ?>"  name="Oldbrd">
@@ -663,14 +662,9 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 <input type="button" class="btn btn-large btn-danger" value="Cancel" id="btnCancel" name="btnCancel" onclick="return CancelAlert();" >
                                 <div class="clearfix">
                                 </div>
-                            </div>
-
-
+                            </div>                                                                             
                         </form>
                         <script type="text/javascript">
-
-
-
                             function checks(){
 
                                 var status  =  check_NewEnrol_validation_regular_matric();
@@ -685,8 +679,6 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     $("#newfrom").submit();
                                     return true;
                                 } 
-
-
                             }
                             function CancelAlert()
                             {
@@ -731,9 +723,7 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName);
                             } 
                         </script>
-
                     </div>  
-
                 </div>
             </div>
         </div>
