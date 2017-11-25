@@ -45,12 +45,20 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     <?php
                                     $bformLen = strlen($data['0']['BForm']);
                                     $fnicLen = strlen($data['0']['FNIC']);
+
+                                    $bay_form = @$_POST['bay_form'];
+                                    $bay_form = explode(' ',trim($bay_form));
+                                    $bay_form = $bay_form[0][0];
+
+                                    $FNIC = @$data['0']['FNIC'];
+                                    $FNIC = explode(' ',trim($FNIC));
+                                    $FNIC = $FNIC[0][0];
                                     ?>
-                                    <input class="span3" type="text" id="bay_form" name="bay_form" value="<?php echo  $data['0']['BForm']; ?>" required="required" <?php if ($bformLen == 15) { echo "readonly='readonly'"; }  ?> >
+                                    <input class="span3" type="text" id="bay_form" name="bay_form" value="<?php echo  $data['0']['BForm']; ?>" required="required" <?php if ($bformLen == 15 && $bay_form != '0') { echo "readonly='readonly'"; }  ?> >
                                     <label class="control-label span2" for="father_cnic">
                                         Father's CNIC :
                                     </label> 
-                                    <input class="span3" id="father_cnic" name="father_cnic" type="text" value="<?php echo  $data['0']['FNIC']; ?>" <?php if ($fnicLen == 15)  { echo "readonly='readonly'"; } ?> required="required">
+                                    <input class="span3" id="father_cnic" name="father_cnic" type="text" value="<?php echo  $data['0']['FNIC']; ?>" <?php if ($fnicLen == 15 && $FNIC != '0')  { echo "readonly='readonly'"; } ?> required="required">
                                 </div>
                             </div>
 
