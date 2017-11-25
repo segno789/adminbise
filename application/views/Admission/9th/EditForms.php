@@ -8,7 +8,7 @@
                         <div class="title">
                             Edit Forms 9th Admission<a data-original-title="" id="notifications">s</a>
                         </div>
-                        
+
                     </div>
                     <div class="widget-body">
                         <h4>
@@ -41,7 +41,7 @@
                                             Selected Subjects
                                         </th>
                                         <!-- <th style="width:4%" class="hidden-phone">
-                                            Picture
+                                        Picture
                                         </th> -->
                                         <!-- <th scope="col" align="center"><a href="javascript:void(0);" style="color:red;" class="check">Check All</a></th>    -->
                                         <th style="width:18%" class="hidden-phone" >
@@ -51,58 +51,65 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                   // DebugBreak();
+                                    // DebugBreak();
                                     if($data != false)
                                     {
-                                    $n=0;  
-                                    $grp_name='';                             
-                                    foreach($data as $key=>$vals):
-                                    $n++;
-                                    $formno = !empty($vals["formNo"])?$vals["formNo"]:"N/A";
-                                    $grp_name = $vals["grp_cd"];
-                                    switch ($grp_name) {
-                                        case '1':
-                                            $grp_name = 'SCIENCE WITH BIOLOGY';
-                                            break;
-                                        case '7':
-                                            $grp_name = 'SCIENCE  WITH COMPUTER SCIENCE';
-                                            break;
-                                        case '8':
-                                            $grp_name = 'SCIENCE  WITH ELECTRICAL WIRING';
-                                            break;
-                                        case '2':
-                                            $grp_name = 'GENERAL';
-                                            break;
-                                        case '5':
-                                            $grp_name = 'DEAF AND DUMB';
-                                            break;
-                                        default:
-                                            $grp_name = "No Group Selected.";
-                                    }
-  $picpath =  DIRPATH9th.'/'.$Inst_Id.'/'.$vals["PicPath"];
-                                                       // echo $picpath;
-                                                        $type = pathinfo($picpath, PATHINFO_EXTENSION);
-                                                        $vals["PicPath"] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($picpath));
-                                    echo '<tr  >
-                                    <td>'.$n.'</td>
-                                    <td>'.$formno.'</td>
-                                    <td>'.$vals["name"].'</td>
-                                    <td>'.$vals["Fname"].'</td>
-                                    <td>'.date("d-m-Y", strtotime($vals["Dob"])).'</td>
-                                    <td>'.$grp_name.'</td>
-                                    <td>'.$vals["sub1_abr"].','.$vals["sub2_abr"].','.$vals["sub3_abr"].','.$vals["sub4_abr"].','.$vals["sub5_abr"].','.$vals["sub6_abr"].','.$vals["sub7_abr"].','.$vals["sub8_abr"].'</td>                                   
-                                     ';
-                                      /*<td><img id="previewImg" style="width:40px; height: 40px;" src="'.$vals['PicPath'].'" alt="Candidate Image"></td><td align="center"><input style="    width: 24px;
-    height: 24px;" type="checkbox" name="chk[]" value="'.$formno.'" /></td> */
-                                    echo'<td>
-                                    <button type="button" class="btn btn-info" value="'.$formno.'" onclick="NewForm('.$formno.')">Form Detail</button>
-                                    <button type="button" class="btn btn-danger" value="'.$formno.'" onclick="DeleteForm('.$formno.')">Delete Form</button>
-                                    </td>
-                                    </tr>';
-                                    endforeach;
+                                        $n=0;  
+                                        $grp_name='';                             
+                                        foreach($data as $key=>$vals):
+                                            $n++;
+                                            $formno = !empty($vals["formNo"])?$vals["formNo"]:"N/A";
+                                            $grp_name = $vals["grp_cd"];
+                                            $sub7 = $vals["sub7"];
+                                            if($grp_name==1 && $sub7 == 8)
+                                            {
+                                                $grp_name = 'SCIENCE WITH BIOLOGY';    
+                                            }
+                                            else if($grp_name==1 && $sub7 == 78)
+                                            {
+                                                $grp_name = 'SCIENCE  WITH COMPUTER SCIENCE';    
+                                            }
+                                            else if($grp_name==1 && $sub7 == 43)
+                                            {
+                                                $grp_name = 'SCIENCE  WITH ELECTRICAL WIRING';   
+                                            }
+                                            else if($grp_name==2)
+                                            {
+                                                $grp_name = 'GENERAL';   
+                                            }
+                                            else if($grp_name==5)
+                                            {
+                                                $grp_name = 'DEAF AND DUMB';  
+                                            }
+                                            else
+                                            {
+                                                $grp_name = 'No Group Selected.';  
+                                            }
+
+                                            $picpath =  DIRPATH9th.'/'.$Inst_Id.'/'.$vals["PicPath"];
+                                            // echo $picpath;
+                                            $type = pathinfo($picpath, PATHINFO_EXTENSION);
+                                            $vals["PicPath"] = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($picpath));
+                                            echo '<tr  >
+                                            <td>'.$n.'</td>
+                                            <td>'.$formno.'</td>
+                                            <td>'.$vals["name"].'</td>
+                                            <td>'.$vals["Fname"].'</td>
+                                            <td>'.date("d-m-Y", strtotime($vals["Dob"])).'</td>
+                                            <td>'.$grp_name.'</td>
+                                            <td>'.$vals["sub1_abr"].','.$vals["sub2_abr"].','.$vals["sub3_abr"].','.$vals["sub4_abr"].','.$vals["sub5_abr"].','.$vals["sub6_abr"].','.$vals["sub7_abr"].','.$vals["sub8_abr"].'</td>                                   
+                                            ';
+                                            /*<td><img id="previewImg" style="width:40px; height: 40px;" src="'.$vals['PicPath'].'" alt="Candidate Image"></td><td align="center"><input style="    width: 24px;
+                                            height: 24px;" type="checkbox" name="chk[]" value="'.$formno.'" /></td> */
+                                            echo'<td>
+                                            <button type="button" class="btn btn-info" value="'.$formno.'" onclick="NewForm('.$formno.')">Form Detail</button>
+                                            <button type="button" class="btn btn-danger" value="'.$formno.'" onclick="DeleteForm('.$formno.')">Delete Form</button>
+                                            </td>
+                                            </tr>';
+                                            endforeach;
                                     }
                                     ?>
- </tbody>
+                                </tbody>
                             </table>
                             <div class="clearfix"></div>
                         </div>

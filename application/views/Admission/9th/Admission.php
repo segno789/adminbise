@@ -113,8 +113,8 @@
                             <!--    ( <a href="#" class="guidlines">Read Instruction's Guide</a>  ) -->
                             <br/>
                             <!--<a href="http://www.bisegrw.com/download/online/registration/Training_Manual_9th_Registration_Central_Software_Urdu.pdf" target="_blank" class="guidlines blink_text" style="font-size: 18px;">Download 9th Registration Training Manual. </a> <br/>-->
-                             <a href="<?=base_url()?>Admission_9th_reg/forwarding_pdf/" target="_blank" class="guidlines blink_text" style="font-size: 18px;">Download Farwarding letter. </a> <br/>
-                <a href="<?php echo base_url(); ?>Admission_9th_reg/financeReoprt" target="_blank" class="guidlines blink_text" style="font-size: 18px;">Download Finance Farwarding letter. </a> <br/>
+                             <a href="<?=base_url()?>Admission_9th_reg/forwarding_pdf/" target="_blank" class="guidlines blink_text" style="font-size: 18px;">Download Forwarding  letter. </a> <br/>
+                <a href="<?php echo base_url(); ?>Admission_9th_reg/financeReoprt" target="_blank" class="guidlines blink_text" style="font-size: 18px;">Download Finance Forwarding letter. </a> <br/>
                              <!--<a href="<?=base_url()?>Admission_9th_reg/ChallanForm_Adm9hth_Regular/9" target="_blank"  class="guidlines blink_text" style="font-size: 18px;">Download Challan Form. </a> --><br/><br /><br />
                             <strong>NOTE:</strong> <br/>
                             1. Please upload photo of student carefully and with good quality as this picture will be used in his/her matriculation Roll Number Slip/Result Card/certificate.<br /> 

@@ -31,7 +31,7 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 </label>
                                 <div class="controls controls-row">
                                     <input class="span3"  type="text" id="cand_name" readonly="readonly" style="text-transform: uppercase;" name="cand_name" placeholder="Candidate Name" maxlength="60"  value="<?php  echo  $data['0']['name']; ?>" <?php if($isReAdm==1) echo "readonly='readonly'";  ?>  >
-                                    <label class="control-label span2" for="lblfather_name">
+                                    <label class="control-label span2" for="father_name">
                                         Father's Name :
                                     </label> 
                                     <input class="span3" id="father_name" name="father_name" readonly="readonly" style="text-transform: uppercase;" type="text" placeholder="Father's Name" maxlength="60" value="<?php echo  $data['0']['Fname']; ?>" <?php if($isReAdm==1) echo "readonly='readonly'";  ?> required="required">
@@ -125,6 +125,19 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="hidden" id="boardEmployeeDiv">
+                                <div class="control-group">
+                                    <label class="control-label span4"></label>
+                                    <div class="controls controls-row">
+                                        <label class="control-label span2" >
+                                            Employee Code:
+                                        </label> 
+                                        <input class="span3" type="text" id="empBrdCd" name="empBrdCd" placeholder="Enter Board Employee Code" maxlength="4" value="">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="control-group">
                                 <label class="control-label span1" >
                                     Nationality :
@@ -686,6 +699,9 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 var selected_group_conversion ;
                                 var exam_type = $("#exam_type").val();
 
+                                var empBrdCd = $('#empBrdCd').val();
+                                var speciality = $('#speciality').val();
+
                                 if(grp_cd==1 || grp_cd == 5 || grp_cd ==7 || grp_cd ==8 )
                                 {
                                     selected_group_conversion =1;
@@ -750,6 +766,26 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     $('#MarkOfIden').focus();   
                                     return status;  
                                 }
+
+
+                                else if(speciality == 2 && empBrdCd.trim() == "")
+                                {
+                                    alertify.error("Please Enter Employee Code") 
+                                    $("#empBrdCd").val('');
+                                    $('#empBrdCd').prop('readonly', false);
+                                    $('#empBrdCd').focus();   
+                                    return status;  
+                                }
+
+                                else if(speciality == 2 && empBrdCd.trim() != fName.trim())
+                                {
+                                    alertify.error("Please Enter Valid Employee Code") 
+                                    $("#empBrdCd").val('');
+                                    $('#empBrdCd').prop('readonly', false);
+                                    $('#empBrdCd').focus();   
+                                    return status;  
+                                }
+
                                 else if(address == "" || address == 0 || address.length ==undefined )
                                 {
                                     alertify.error("Please Enter your Address")

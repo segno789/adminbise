@@ -41,6 +41,27 @@ class Admission_matric extends CI_Controller {
             $this->load->view('common/footer.php');
         }
     }
+
+    function getEmpCode(){
+
+        $employeeName ='';
+        $this->load->model('Admission_matric_model');
+        $employeeName=$this->Admission_matric_model->getEmpCd_Model($_POST['empBrdCd']);
+
+        if($employeeName){
+            $msg['excep'] =  'Success'; 
+            $msg['employeeName'] =  $employeeName;
+        }
+
+        else{
+            $msg['excep'] =  ''; 
+            $msg['employeeName'] =  ''; 
+        }
+
+        echo json_encode($msg);
+        exit();
+    }
+
     function updatezone()
     {
         $this->load->library('session');
@@ -963,6 +984,33 @@ class Admission_matric extends CI_Controller {
             $this->load->view('login/login.php');
         }
 
+        $practical_Sub = array(
+            'PHY'=>'6',
+            'CHM'=>'7',
+            'BIO'=>'8',
+            'ART&MD'=>'18',
+            'F&N'=>'27',
+            'AHE'=>'28',
+            'C&T'=>'30',
+            'HPD'=>'40',
+            'EW'=>'43',
+            'COM'=>'45',
+            'AGR'=>'46',
+            'WW(FM)'=>'48',
+            'CM'=>'68',
+            'DRAW'=>'69',
+            'EMB'=>'70',
+            'TAIL'=>'72',
+            'TYPE'=>'73',
+            'CSC'=>'78',
+            'WW(BM)'=>'79',
+            'POUL'=>'83',
+            'R/AC'=>'88',
+            'F/FRM'=>'89',
+            'CHW'=>'90',
+            'CSC/D'=>'93',
+            'HPD/D'=>'94'
+        );
         $formno = $formno = $this->Admission_matric_model->GetFormNo($Inst_Id);
         $allinputdata = array('cand_name'=>@$_POST['cand_name'],'father_name'=>@$_POST['father_name'],
             'bay_form'=>@$_POST['bay_form'],'father_cnic'=>@$_POST['father_cnic'],
@@ -1082,17 +1130,10 @@ class Admission_matric extends CI_Controller {
             if(@$_POST['std_group_hidden']==2 || @$_POST['std_group_hidden']==5)
             {
 
-                if(IsPractical(@$_POST['sub5']))
+                if(array_search(@$_POST['sub5'],$practical_Sub) || array_search(@$_POST['sub6'],$practical_Sub) || array_search(@$_POST['sub7'],$practical_Sub) ||
+                    array_search(@$_POST['sub5p2'],$practical_Sub) || array_search(@$_POST['sub6p2'],$practical_Sub) || array_search(@$_POST['sub7p2'],$practical_Sub))
                 {
-                    $ispract = 1;
-                }
-                if(IsPractical(@$_POST['sub6']))
-                {
-                    $ispract = 1;
-                }
-                if(IsPractical(@$_POST['sub7']))
-                {
-                    $ispract = 1;
+                    $ispract =1;
                 }
 
             }
@@ -5058,7 +5099,7 @@ class Admission_matric extends CI_Controller {
         else if(
             (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
             || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
-            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >7 || $cntone >7 || $cnttwo >7 || $cntfour >7 || $cntthr >7 || $cntfive >7 || $cntsix >7 || $cntseven >7 || $cnteight >7 || $cntnine >7) ||
+            (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >10 || $cntone >10 || $cnttwo >10 || $cntfour >10 || $cntthr >10 || $cntfive >10 || $cntsix >10 || $cntseven >10 || $cnteight >10 || $cntnine >10) ||
             ($bay_form == "0")
             )
             {
@@ -5072,7 +5113,7 @@ class Admission_matric extends CI_Controller {
 
             else if( (@$_POST['father_cnic'] == '00000-0000000-0') || (@$_POST['father_cnic'] == '11111-1111111-1') || (@$_POST['father_cnic'] == '22222-2222222-2') || (@$_POST['father_cnic'] == '33333-3333333-3') || (@$_POST['father_cnic'] == '44444-4444444-4')
                 || (@$_POST['father_cnic'] == '55555-5555555-5') || (@$_POST['father_cnic'] == '66666-6666666-6') || (@$_POST['father_cnic'] == '77777-7777777-7') || (@$_POST['father_cnic'] == '88888-8888888-8') || (@$_POST['father_cnic'] == '99999-9999999-9') ||
-                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7) ||
+                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >10 || $cnt_fnic_one >10 || $cnt_fnic_two >10 || $cnt_fnic_four >10 || $cnt_fnic_thr >10 || $cnt_fnic_five >10 || $cnt_fnic_six >10 || $cnt_fnic_seven >10 || $cnt_fnic_eight >10 || $cnt_fnic_nine >10) ||
                 ($father_cnic == "0") && (@$_POST['father_cnic'] != "04034-2100005-1")
                 )
                 {

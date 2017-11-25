@@ -218,10 +218,7 @@
                             <div class='controls controls-row'>
                             <select id='std_groups' name='std_group'>
                             ";
-                            //   //DebugBreak();
-
-
-                            // @$msg_status;
+                            
                             @$subgroups =  split(',',@$grp_cd);
                             echo "<option value='0' >SELECT GROUP</option>";
                             for($i =0 ; $i<count($subgroups); $i++)
@@ -353,9 +350,7 @@
                                     <tbody>
 
                                         <?php
-                                        //  //DebugBreak();
 
-                                        //$msg_status;
                                         if($data != false)
                                         {
                                             $n=0;  
@@ -363,39 +358,31 @@
                                             foreach($data as $key=>$vals):
                                                 $n++;
                                                 $formno = !empty($vals["formNo"])?$vals["formNo"]:"N/A";
-                                                /*     $grp_name = $vals["grp_cd"];
-                                                switch ($grp_name) {
-                                                case '1':
-                                                $grp_name = 'Science';
-                                                break;
-                                                case '2':
-                                                $grp_name = 'GENERAL';
-                                                break;
-                                                case '5':
-                                                $grp_name = 'Deaf and Dumb';
-                                                break;
-                                                default:
-                                                $grp_name = "No Group Selected.";
-                                                }*/
                                                 $grp_name = $vals["grp_cd"];
-                                                switch ($grp_name) {
-                                                    case '1':
-                                                        $grp_name = 'SCIENCE WITH BIOLOGY';
-                                                        break;
-                                                    case '7':
-                                                        $grp_name = 'SCIENCE  WITH COMPUTER SCIENCE';
-                                                        break;
-                                                    case '8':
-                                                        $grp_name = 'SCIENCE  WITH ELECTRICAL WIRING';
-                                                        break;
-                                                    case '2':
-                                                        $grp_name = 'GENERAL';
-                                                        break;
-                                                    case '5':
-                                                        $grp_name = 'Deaf and Dumb';
-                                                        break;
-                                                    default:
-                                                        $grp_name = "No Group Selected.";
+                                                $sub7 = $vals["sub7"];
+                                                if($grp_name==1 && $sub7 == 8)
+                                                {
+                                                    $grp_name = 'SCIENCE WITH BIOLOGY';    
+                                                }
+                                                else if($grp_name==1 && $sub7 == 78)
+                                                {
+                                                    $grp_name = 'SCIENCE  WITH COMPUTER SCIENCE';    
+                                                }
+                                                else if($grp_name==1 && $sub7 == 43)
+                                                {
+                                                    $grp_name = 'SCIENCE  WITH ELECTRICAL WIRING';   
+                                                }
+                                                else if($grp_name==2)
+                                                {
+                                                    $grp_name = 'GENERAL';   
+                                                }
+                                                else if($grp_name==5)
+                                                {
+                                                    $grp_name = 'DEAF AND DUMB';  
+                                                }
+                                                else
+                                                {
+                                                    $grp_name = 'No Group Selected.';  
                                                 }
 
                                                 echo '<tr  >

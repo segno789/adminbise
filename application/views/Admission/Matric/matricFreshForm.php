@@ -71,7 +71,7 @@
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="mob_number">Mobile Number:</label>
-                <input class="text-uppercase form-control" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value="<?php echo  @$data['MobNo']; ?> " required="required">
+                <input class="text-uppercase form-control" id="mob_number" name="mob_number" type="text" value="" required="required">
             </div>
         </div>
     </div>
@@ -577,6 +577,7 @@
         <input class="hidden" type="text" id="oldrno" name="oldrno" value="<?php echo  $data['RNo']; ?>">
         <input type="hidden" value="<?=  @$data['grp_cd']?>" name="pergrp">
         <input type="hidden" value="1" name="oldboardid">
+        <input type="hidden" class="span3" id="oldclass" name="oldclass"  value="<?php  echo @$data['class']; ?>"/>     
         <input type="hidden" class="span3" id="oldClass" name="oldClass"  value="<?php  echo @$data['class']; ?>"/>     
         <input type="hidden" name="oldsess" id ="oldsess" value="<?php echo @$data['sess'] == 1 ? "Annual" :"Supplementary";  ?>" > 
         <input type="hidden" name="oldyear" id ="oldyear" value="<?php echo @$data['Iyear']; ?>" >
@@ -618,14 +619,17 @@
     }
 
     function checks_fresh_10th(){
+
+        $('#btnsubmitUpdateEnrol').attr("disabled", "disabled");
         var status  =  check_NewEnrol_validation_fresh();
         if(status == 0)
         {
+            $('#btnsubmitUpdateEnrol').removeAttr("disabled");
             return false;    
         }
         else
         {
-            //debugger;
+            $('#btnsubmitUpdateEnrol').attr("disabled", "disabled");
             $.ajax({
 
                 type: "POST",
@@ -633,6 +637,9 @@
                 data: $("#myform").serialize() ,
                 datatype : 'html',
                 cache:false,
+
+                beforeSend: function() {  $('.mPageloader').show(); },
+                complete: function() { $('.mPageloader').hide();},
 
                 success: function(data)
                 {                    
@@ -660,7 +667,8 @@
                                     return true;
                                 }   
                                 else
-                                {
+                                {      
+                                    $('#btnsubmitUpdateEnrol').removeAttr("disabled");
                                     alertify.error(obj.error);
                                     return false; 
                                 }
@@ -669,6 +677,7 @@
                             error: function(request, status, error){
 
                                 alertify.error(request.responseText);
+                                $('#btnsubmitUpdateEnrol').removeAttr("disabled");
                             }
                         });
 
@@ -677,6 +686,7 @@
                     else
                     {
                         alertify.error(obj.excep);
+                        $('#btnsubmitUpdateEnrol').removeAttr("disabled");
                         return false;     
                     }
                 }
@@ -830,6 +840,13 @@
                 else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
                 {
                     alertify.error("Please Enter your Mobile No.") 
+                    $('#mob_number').focus();   
+                    return status;  
+                }
+
+                else if(mobNo == "0000-0000000")
+                {
+                    alertify.error("Please Enter correct Mobile No.") 
                     $('#mob_number').focus();   
                     return status;  
                 }

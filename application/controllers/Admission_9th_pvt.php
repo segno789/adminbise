@@ -2530,29 +2530,56 @@ class Admission_9th_pvt extends CI_Controller {
         redirect('Admission_9th_reg/EditPicForms/');
         return;
     }
-    public function deleteExtarfiles($dirPath)
+   public function deleteExtarfiles()
     {
-        //DebugBreak();
+
+       //  DebugBreak();
+        $clsfolder = $this->uri->segment(3);
+        
+        
+        if($clsfolder == 10)
+        {
+            $folder = '\\annual';
+        }
+        else
+        {
+            $folder = '';
+        }
+        
+        
+        $dirPath = 'C:\inetpub\vhosts\bisegrw.edu.pk\Share Images\uploads\SSC\admission\2018\\'.$clsfolder.'th'.$folder.'\private';
+        $copypath = 'C:\inetpub\vhosts\bisegrw.edu.pk\Share Images\uploads\SSC\admission\2018\\'.$clsfolder.'th'.$folder.'\private_temp';
         if (is_dir($dirPath)) {
             $objects = scandir($dirPath);
+            $i = 0;
             foreach ($objects as $object) {
                 if ($object != "." && $object !="..") {
+
                     if (filetype($dirPath . DIRECTORY_SEPARATOR . $object) == "dir") {
                         $this->deleteExtarfiles($dirPath . DIRECTORY_SEPARATOR . $object);
                     } else {
-                        $filepath = $dirPath . DIRECTORY_SEPARATOR . $object;
-                        $filepath = explode('.',$filepath);
-                        if(strtolower(@$filepath[1])!= 'jpg')
-                        {
-                            unlink($dirPath . DIRECTORY_SEPARATOR . $object); 
-                        }
 
+
+                        $filepath = $dirPath . DIRECTORY_SEPARATOR . $object;
+                        $copydir = $copypath . DIRECTORY_SEPARATOR . $object;
+                        $subtem =  substr($object,0,4);
+                        if($subtem ==  'temp')
+                        {
+
+                           // $fcrttime =  date('d-m-Y',filemtime($filepath));
+                           // $crttime  = date('d-m-Y'); 
+                          //  if($fcrttime <$crttime)
+                          //  {
+                                $i+=1;
+                                copy($filepath,$copydir);
+                                unlink($dirPath . DIRECTORY_SEPARATOR . $object); 
+                                echo $i.') File Moved '.$copydir.'</br>';   
+                          //  }
+                        }
                     }
                 }
             }
             reset($objects);
-            //rmdir(@$dirPath);
-            //rmdir(@$dirPath);
         }
     }
 

@@ -34,6 +34,22 @@ class Admission_matric_model extends CI_Model
             return  0;
         }
     }
+
+
+    public function getEmpCd_Model($employeeCode){
+
+        $query = $this->db->query("select Name from MiscDb..tblemployee where emp_cd = $employeeCode and isActive = 1");
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            return $query->result_array();
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public function forwarding_pdf_final($fetch_data)
     {
         $Inst_cd = $fetch_data['Inst_cd'];

@@ -20,10 +20,7 @@
                                         </div>
                                     </a>
                                 </div>
-                               
                                 <?php 
-
-                                //  DebugBreak();
                                 if($appconfig['isreg'] == 1) {?>
                                     <div class="metro-nav-block nav-block-orange">
 
@@ -38,7 +35,7 @@
                                     <?php } 
 
                                 if($appconfig['isadmP1'] == 1) {?>
-                                    <div class="metro-nav-block nav-block-blue">
+                                    <div class="metro-nav-block nav-block-orange">
 
                                         <a  href="<?=base_url();?>Admission_9th_reg" >
                                             <div class="fs1" aria-hidden="true" data-icon="&#xe0b8;"></div>
@@ -50,7 +47,7 @@
                                     <?php }?>
 
                                 <?php if($appconfig['isadmP2'] == 1) {?>
-                                    <div class="metro-nav-block nav-block-green">
+                                    <div class="metro-nav-block nav-block-yellow">
 
                                         <a  href="<?=base_url();?>Admission_matric" >
                                             <div class="fs1" aria-hidden="true" data-icon="&#xe0b8;"></div>

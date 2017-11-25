@@ -920,31 +920,16 @@
         {
             selected_group_conversion =grp_cd;
         }
-        //  alert($("#pvtinfo_dist").find('option:selected').val())
-        //debugger;
-        if(src == '') {
-            $img.addClass("highlight");
-            // or
-            $img.css("border", "3px solid yellow");
 
-
-            // $('#ErrMsg').html("<b>Please Enter your  Name </b>");    
-            alertify.error("Please upload your Picture First.")
-            $img.focus(); 
-            return status;
-        }
-        else if(name == "" ||  name == undefined){
-
-
-            // $('#ErrMsg').html("<b>Please Enter your  Name </b>");    
+        if(name == "" ||  name == undefined)
+        {
             alertify.error("Please Enter your  Name")
             $('#cand_name').focus(); 
             return status;
         }
-        else if(fName == "" || fName == undefined){
 
-
-            // $('#ErrMsg').html("<b>Please Enter your Father's Name  </b>");   
+        else if(fName == "" || fName == undefined)
+        {
             alertify.error("Please Enter your Father's Name  ") 
             $('#father_name').focus(); 
             return status;
@@ -952,28 +937,14 @@
 
         else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
         {
-
-
-            // $('#ErrMsg').html("<b>Please Enter your bay-Form</b>"); 
             alertify.error("Please Enter your bay-Form") 
             $('#bay_form').focus();  
             return status; 
         }
-        /* else if(bFormNo == "00000-0000000-0")
-        {
 
-
-        // $('#ErrMsg').html("<b>Please Enter your bay-Form</b>"); 
-        alertify.error("Please Enter correct bay-Form ") 
-        $('#bay_form').focus();  
-        return status; 
-        }*/
 
         else if(FNic == "" || FNic.length == undefined )
         {
-
-
-            // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
             alertify.error("Please Enter your Father's CNIC") 
             $('#father_cnic').focus();  
             return status; 
@@ -982,48 +953,25 @@
 
         else if(FNic == bFormNo)
         {
-
-
-            // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
             alertify.error("Bay Form and Father's CNIC cannot be the same") 
             $('#bay_form').focus();  
             return status; 
         }
 
-        /*else if(FNic == "00000-0000000-0" )
-        {
-
-
-        // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
-        alertify.error("Please Enter your Father's CNIC") 
-        $('#father_cnic').focus();  
-        return status; 
-        }                                  */
-
-
         else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
         {
-
-
-            // $('#ErrMsg').html("<b>Please Enter your Mobile No.</b>"); 
             alertify.error("Please Enter your Mobile No.") 
             $('#mob_number').focus();   
             return status;  
         }
         else if(mobNo == "0000-0000000")
         {
-
-
-            // $('#ErrMsg').html("<b>Please Enter your Mobile No.</b>"); 
             alertify.error("Please Enter correct Mobile No.") 
             $('#mob_number').focus();   
             return status;  
         }
         else if(MarkOfIdent == "" || MarkOfIdent == 0 || MarkOfIdent == undefined)
         {
-
-
-            //$('#ErrMsg').html("<b>Please Enter your Mark of Indentification</b>"); 
             alertify.error("Please Enter your Mark of Indentification") 
             $('#MarkOfIden').focus();   
             return status;  
@@ -1094,7 +1042,7 @@
             return status;  
         }
 
-        else if((exam_type ==2 &&  selected_group_conversion==2 && grppre == 2)|| (exam_type < 7 &&  selected_group_conversion != grppre ))
+        else if((exam_type ==2 &&  selected_group_conversion==2 && grppre == 2)|| (exam_type < 7 &&  selected_group_conversion != grppre && grppre != 5))
         {
             if ((sub6p1 == 0 || sub6p2 == 0) )
             {
@@ -1395,8 +1343,8 @@
 
         return status;
     }
-    
-    
+
+
     function gotodefaultpage(){
         var msg = "Are you sure you want to cancel ?";
         alertify.confirm(msg, function (e) {

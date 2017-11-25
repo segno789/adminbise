@@ -1569,9 +1569,6 @@ class Admission extends CI_Controller
             return; 
         }
 
-
-
-
         if($data['isSpecFee']>0 && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th)))
         {
             $regfee = 0; 
@@ -1587,8 +1584,8 @@ class Admission extends CI_Controller
 
         }
 
-        else if(($data['Spec'] == 1 || $data['Spec'] == 3)  && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th))){
-
+        else if(($data['Spec'] == 1 || $data['Spec'] == 3)  && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th)))
+        {
             $finalFee = 0;
             $data['regFee'] = 0;
             $processFee = 0;
@@ -1599,9 +1596,32 @@ class Admission extends CI_Controller
             $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>0,'AdmFine'=>0,'AdmTotalFee'=>0);
         }
 
+        else if(($data['Spec'] == 2 && ($data['YearOfLastAp'] == Year || $data['YearOfLastAp'] == Year -1) && $data['oldRno'] < 400000 && $data['SessOfLastAp'] == 1)  && (strtotime(date('Y-m-d')) <= strtotime(SingleDateFee9th)))
+        {
+            if($data['cat09'] == 2 && $data['cat10'] == 1 && $data['isFresh'] == 0){
+                $finalFee = $admfee;    
+            }
+
+            else if($data['cat09'] == 0 && $data['cat10'] == 1 && $data['isFresh'] == 0){
+                $finalFee = 0;    
+            }
+
+            else if($data['cat09'] == 1 && $data['cat10'] == 1 && $data['isFresh'] == 1){
+                $finalFee = 0;    
+            }
+
+            else{
+                $finalFee =  $finalFee;
+            }
+
+
+            $data['AdmTotalFee'] = $processFee+$Total_fine+$data['regFee']+$data['certFee']+$finalFee;
+            $AllStdFee = array('formNo'=>$data['formNo'],'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee'],'certFee'=>$data['certFee'],'regFee'=>$data['regFee']);
+        }
+
         else
         {
-            if(@$data['isFresh'] == 1 || @$data['isOtherbrd'] == 1){
+            if((@$data['isFresh'] == 1 && @$data['YearOfLastAp'] < 2012) || (@$data['isOtherbrd'] == 1)){
                 $data['certFee'] = 550;
             }
 

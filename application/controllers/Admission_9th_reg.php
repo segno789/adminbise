@@ -727,7 +727,7 @@ class Admission_9th_reg extends CI_Controller {
         $code     = '222020';     // barcode (CP852 encoding for Polish and other Central European languages)
         $type     = 'code128';
         $black    = '000000'; // color in hex
-        $data['iyear'] = Year;
+        $data['iyear'] = Year + 1;
         $data['sess'] = Session;
 
         $Barcode = $temp;

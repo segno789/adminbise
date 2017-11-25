@@ -79,7 +79,7 @@
             </div>
             <div class="col-md-4">
                 <label class="control-label" for="mob_number">Mobile Number:</label>
-                <input class="text-uppercase form-control" id="mob_number" name="mob_number" type="text" placeholder="0300-123456789" value="<?php echo  $data['0']['MobNo']; ?> " required="required">
+                <input class="text-uppercase form-control" id="mob_number" name="mob_number" type="text" value="" required="required">
             </div>
         </div>
     </div>
@@ -3469,9 +3469,11 @@
     })
     function checks_Matric(){
 
+        $('#btnsubmitUpdateEnrol').attr("disabled", "disabled");
         var status  =  check_NewEnrol_validation_matric();
         if(status == 0)
         {
+            $('#btnsubmitUpdateEnrol').removeAttr("disabled");
             return false;    
         }
         else
@@ -3486,6 +3488,9 @@
                 data: $("#myform").serialize() ,
                 datatype : 'html',
                 cache:false,
+
+                beforeSend: function() {  $('.mPageloader').show(); },
+                complete: function() { $('.mPageloader').hide();},
 
                 success: function(data)
                 {                    
@@ -3528,6 +3533,7 @@
                             }
                         });
 
+
                         return false;
 
                     }
@@ -3540,6 +3546,7 @@
                     }
                 }
             });
+
 
             return false;   
 
