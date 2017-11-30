@@ -786,7 +786,7 @@
                                 if(obj.error ==  1)
                                 {
                                     window.location.href ='<?php echo base_url(); ?>Admission/formdownloaded/'+obj.formno
-                                    alertify.error('Your Application is Submit Successfully');
+                                    alertify.success('Your Application is Submit Successfully');
                                     return true;
                                 }   
                                 else

@@ -659,22 +659,53 @@
                 //  alert("Transfer Thai Gayo");
             }
 
-        })
+            else{
+                $("#create_batch").attr("disabled","disabled"); 
+            }
 
-    })
+        });
+
+    });
+
     var valArray = [];
     var $valuesContainer = $('#CheckedFormno');
     var $batchformSelectedid = $("#CheckedFormno_createBatch");
     //var $countContainer = $('.selectCount');
 
     $(document).on('change',"input:checkbox", function () {
-        debugger;
+
         var value = $(this).val();
 
         if(this.checked) {
             valArray.push(value);    // record the value of the checkbox to valArray
         } else {
             valArray.pop(value);    // remove the recorded value of the checkbox
+        }
+
+        if(valArray.length>0)
+        {
+            $('#create_batch2').removeAttr("disabled").css('left', function(){ return $(this).offset().left; })
+            .animate({"left":"0px"}, "slow");
+            $('#create_batch').attr("disabled","disabled").css('left', function(){ return $(this).offset().left; })
+            .animate({"left":"0px"}, "slow");
+
+        }
+        else
+        {
+            $('#create_batch2').attr("disabled", "disabled").css('left', function(){ return $(this).offset().left; })
+            .animate({"left":"0px"}, "slow");
+            if($("#std_groups").val() > 0)
+            {
+                $('#create_batch').removeAttr("disabled").css('left', function(){ return $(this).offset().left; })
+                .animate({"left":"0px"}, "slow");                                                     
+            }
+            else
+            {
+                $('#create_batch').attr("disabled","disabled").css('left', function(){ return $(this).offset().left; })
+                .animate({"left":"0px"}, "slow");
+            }
+
+            //console.log("none state");
         }
 
     });

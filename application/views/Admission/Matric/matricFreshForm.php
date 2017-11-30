@@ -276,21 +276,21 @@
                     if($rel == 1)
                     {
                         echo"
-                        <option value='0'>None</option>
+                        <option value='0'>NONE</option>
                         <option value='1' selected='selected'>MUSLIM</option> 
                         <option value='2'>NON MUSLIM</option>";
                     }
                     else if ($rel == 2)
                     {
                         echo"
-                        <option value='0'>None</option>
+                        <option value='0'>NONE</option>
                         <option value='1'>MUSLIM</option> 
                         <option value='2' selected='selected'>NON MUSLIM</option>";
                     }
                     else{
                         echo"
-                        <option value='0' selected='selected'>None</option>
-                        <option value='1' selected='selected'>MUSLIM</option> 
+                        <option value='0' selected='selected'>NONE</option>
+                        <option value='1'>MUSLIM</option> 
                         <option value='2'>NON MUSLIM</option>";
                     }
                     ?>
@@ -663,7 +663,7 @@
                                 if(obj.error ==  1)
                                 {
                                     window.location.href ='<?php echo base_url(); ?>Admission/formdownloaded/'+obj.formno
-                                    alertify.error('Your Application is Submit Successfully');
+                                    alertify.success('Your Application is Submit Successfully');
                                     return true;
                                 }   
                                 else
@@ -1874,19 +1874,29 @@
 
                 if(rel == 1)
                 {
-                    $.each(sub3_Muslim,function(val,text){
-                        $("#sub3").empty();
-                        $("#sub3").append(new Option(text,val));
-                    });
+                    $("#sub3").empty(); 
+                    $("#sub3p2").empty();
+                    $("#sub3").prepend("<option  selected='selected' value='3'> ISLAMIYAT (COMPULSORY) </option>");
+                    $("#sub3p2").prepend("<option  selected='selected' value='3'> ISLAMIYAT (COMPULSORY) </option>");
                 }
-                else if(rel == 2)
-                {        $("#sub3").empty();
-                    $.each(sub3_Non_Muslim,function(val,text){
-                        $("#sub3").append(new Option(text,val));
 
-                    });
-                    $('#sub3 option:eq(1)').prop('selected', true)
+                else if(rel == 2)
+                {                           
+                    $("#sub3").empty(); 
+                    $("#sub3p2").empty();
+                    $("#sub3").prepend("<option selected='selected' value='51'> ETHICS </option>");
+                    $("#sub3").prepend("<option  value='3'> ISLAMIYAT (COMPULSORY) </option>");
+                    $("#sub3p2").prepend("<option selected='selected' value='51'> ETHICS </option>");
+                    $("#sub3p2").prepend("<option  value='3'> ISLAMIYAT (COMPULSORY) </option>");
                 }    
+
+                else
+                {
+                    $("#sub3").empty(); 
+                    $("#sub3p2").empty();
+                    $("#sub3").prepend("<option selected='selected' value='0'> NONE </option>"); 
+                    $("#sub3p2").prepend("<option selected='selected' value='0'> NONE </option>"); 
+                }   
 
                 var Elecgrp ="<?php echo @$grp_cd; ?>";
                 var isgovt ="<?php echo @$isgovt; ?>";
@@ -2180,20 +2190,30 @@
             // PART II Subjects ....... 
         }
 
-        $('#religion').change(function()
+        $('#religion').change(function(){
+            if($(this).val() == 1 && $('#std_group').val() != 0) {
+                $("#sub3").empty(); 
+                $("#sub3p2").empty();
+                $("#sub3").prepend('<option selected="selected" value="3"> ISLAMIYAT (COMPULSORY) </option>');
+                $("#sub3p2").prepend('<option selected="selected" value="3"> ISLAMIYAT (COMPULSORY) </option>');
+            }
+            else if($(this).val() == 2 && $('#std_group').val() != 0) {
+                $("#sub3").empty(); 
+                $("#sub3p2").empty();
+                $("#sub3").prepend("<option selected='selected' value='51'> ETHICS </option>");
+                $("#sub3").prepend("<option  value='3'> ISLAMIYAT (COMPULSORY) </option>");
+                $("#sub3p2").prepend("<option selected='selected' value='51'> ETHICS </option>");
+                $("#sub3p2").prepend("<option  value='3'> ISLAMIYAT (COMPULSORY) </option>");
+            }
+            else
             {
-                if($(this).val() == 1) {
-
-                    $("#sub3").empty(); 
-                    $("#sub3").prepend('<option selected="selected" value="3"> ISLAMIYAT (COMPULSORY) </option>');
-                }
-                else
-                {
-                    $("#sub3").empty(); 
-                    $("#sub3").prepend("<option selected='selected' value='51'> ETHICS </option>");
-                    $("#sub3").prepend("<option  value='3'> ISLAMIYAT (COMPULSORY) </option>");
-                }
+                $("#sub3").empty(); 
+                $("#sub3p2").empty();
+                $("#sub3").prepend("<option  value='0'> NONE </option>");
+                $("#sub3p2").prepend("<option value='0'> NONE </option>");
+            }
         });
+
         $('#gend').change(function()
             {
                 var std_grp =  $("#std_group").val();

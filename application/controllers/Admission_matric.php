@@ -28,7 +28,7 @@ class Admission_matric extends CI_Controller {
         if($Inst_Id == $inst_cd)
         {
             $this->load->view('Admission/Matric/errorPage.php',$userinfo);
-            $this->load->view('common/footer.php'); 
+            $this->load->view('common/footer.php');      
         }
 
         else{
@@ -602,8 +602,16 @@ class Admission_matric extends CI_Controller {
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $userinfo = $Logged_In_Array['logged_in'];
-
         $this->load->model('Admission_matric_model');
+
+        $inst_cd = 151087;
+        if($userinfo['Inst_Id'] == $inst_cd)
+        {
+            $this->load->view('common/header.php',$userinfo);
+            $this->load->view('Admission/Matric/errorPage.php',$userinfo);
+            $this->load->view('common/footer.php');     
+            return; 
+        }
 
         $myarr = array('Inst_Id'=>$userinfo['Inst_Id'],'gender'=>$userinfo['gender']);
         $data = array(
@@ -5100,7 +5108,7 @@ class Admission_matric extends CI_Controller {
             (@$_POST['bay_form'] == '00000-0000000-0') || (@$_POST['bay_form'] == '11111-1111111-1') || (@$_POST['bay_form'] == '22222-2222222-2') || (@$_POST['bay_form'] == '33333-3333333-3') || (@$_POST['bay_form'] == '44444-4444444-4')
             || (@$_POST['bay_form'] == '55555-5555555-5') || (@$_POST['bay_form'] == '66666-6666666-6') || (@$_POST['bay_form'] == '77777-7777777-7') || (@$_POST['bay_form'] == '88888-8888888-8') || (@$_POST['bay_form'] == '99999-9999999-9') ||
             (@$_POST['bay_form'] == '00000-1111111-0') || (@$_POST['bay_form'] == '00000-1111111-1') || (@$_POST['bay_form'] == '00000-0000000-1' || $cntzero >10 || $cntone >10 || $cnttwo >10 || $cntfour >10 || $cntthr >10 || $cntfive >10 || $cntsix >10 || $cntseven >10 || $cnteight >10 || $cntnine >10) ||
-            ($bay_form == "0")
+            ($bay_form == "0") && (@$_POST['bay_form'] != "00810-7154807-1")
             )
             {
                 $allinputdata['excep'] = 'Please Enter Your Correct Bay Form No.';
@@ -5114,7 +5122,7 @@ class Admission_matric extends CI_Controller {
             else if( (@$_POST['father_cnic'] == '00000-0000000-0') || (@$_POST['father_cnic'] == '11111-1111111-1') || (@$_POST['father_cnic'] == '22222-2222222-2') || (@$_POST['father_cnic'] == '33333-3333333-3') || (@$_POST['father_cnic'] == '44444-4444444-4')
                 || (@$_POST['father_cnic'] == '55555-5555555-5') || (@$_POST['father_cnic'] == '66666-6666666-6') || (@$_POST['father_cnic'] == '77777-7777777-7') || (@$_POST['father_cnic'] == '88888-8888888-8') || (@$_POST['father_cnic'] == '99999-9999999-9') ||
                 (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >10 || $cnt_fnic_one >10 || $cnt_fnic_two >10 || $cnt_fnic_four >10 || $cnt_fnic_thr >10 || $cnt_fnic_five >10 || $cnt_fnic_six >10 || $cnt_fnic_seven >10 || $cnt_fnic_eight >10 || $cnt_fnic_nine >10) ||
-                ($father_cnic == "0") && (@$_POST['father_cnic'] != "04034-2100005-1")
+                ($father_cnic == "0") && (@$_POST['father_cnic'] != "04034-2100005-1" && @$_POST['father_cnic'] != "00810-5105020-1")
                 )
                 {
                     $allinputdata['excep'] = 'Please Enter Your Correct Father CNIC No.';

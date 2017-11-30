@@ -26,7 +26,7 @@
                     <div class="controls controls-row">
                         <label class="radio inline span1">
                         <?php
-                        ////DebugBreak();
+                       //DebugBreak();
                         //echo $spl_cd;
                         if(@$spl_cd == "1")
                         {
@@ -49,13 +49,13 @@
                             if($data == FALSE)
                             {
                                 echo " <div class='controls controls-row'>
-                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();' >  </div>
+                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();'  >  </div>
                                 </div>";
                             }
                             else
                             {
                                 echo " <div class='controls controls-row'>
-                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();' >  </div>
+                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();'  >  </div>
                                 </div>";
                             }
                         }
@@ -80,14 +80,17 @@
                             if($data == FALSE)
                             {
                                 echo " <div class='controls controls-row'>
-                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();' >  </div>
+                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();'   >  </div>
                                 </div>";
                             }
                             else
                             {
+                           
                                 echo " <div class='controls controls-row'>
-                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();' >  </div>
+                                <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();'  >  </div>
                                 </div>";
+                            
+                            
                             }
 
 
@@ -190,14 +193,25 @@
                             <div class='control-group'>
                             <div class='controls controls-row'>";
                             if($data == false){
-                                echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();' >
-                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  disabled='disabled' makebatch_formnowise();'  > </div>
+                             
+                                echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();'  >
+                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  disabled='disabled' makebatch_formnowise();' disabled='disabled'> </div>
                                 </div>";
                             }
                             else {
+                            if($grp_selected > 0)
+                                {
                                 echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();' >
-                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  makebatch_formnowise();'  > </div>
-                                </div>";
+                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  makebatch_formnowise();' disabled='disabled'> </div>
+                                </div>"; 
+                                }
+                                else
+                                {
+                                echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();' disabled='disabled'>
+                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  makebatch_formnowise();' disabled='disabled'> </div>
+                                </div>"; 
+                                }
+                               
                             }
                         }
                         else if(@$spl_cd == FALSE){
@@ -218,7 +232,7 @@
                             <div class='controls controls-row'>
                             <select id='std_groups' name='std_group'>
                             ";
-                            
+
                             @$subgroups =  split(',',@$grp_cd);
                             echo "<option value='0' >SELECT GROUP</option>";
                             for($i =0 ; $i<count($subgroups); $i++)
@@ -288,15 +302,33 @@
                             </div>
                             <div class='control-group'>
                             <div class='controls controls-row'>";
+                             
                             if($data == false){
-                                echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();' >
-                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  disabled='disabled' makebatch_formnowise();'  > </div>
-                                </div>";
+                           
+                              
+                                    echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' disabled='disabled' onclick='return  makebatch_groupwise();'   >
+                                    <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' disabled='disabled' onclick='return makebatch_formnowise();'  > </div>
+                                    </div>";
+                              
+
                             }
                             else {
-                                echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();' >
-                                <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  makebatch_formnowise();'  > </div>
-                                </div>";
+                                    //DebugBreak();
+                                    if($grp_selected==False || $grp_selected ==0)
+                                    {
+                                    echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();' disabled='disabled'  >
+                                    <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  makebatch_formnowise();'  disabled='disabled' > </div>
+                                    </div>";
+                                    }
+                                    else
+                                    {
+                                    echo " <input type='submit' id='create_batch' name='create_batch' class='btn btn-large btn-info' value='Create Batch of Complete Group' onclick='return  makebatch_groupwise();'   >
+                                    <input type='submit' id='create_batch2' name='create_batch2' class='btn btn-large btn-info' value='Create Batch Of Selected Forms' onclick='return  makebatch_formnowise();'  disabled='disabled' > </div>
+                                    </div>";
+                                    }
+                                    
+                                
+
                             }
 
 

@@ -112,7 +112,7 @@
                             <!--    ( <a href="#" class="guidlines">Read Instruction's Guide</a>  ) -->
                             <br/> <br /><br />
                               <a href="<?php echo base_url(); ?>Admission_matric/forwarding_pdf" target="_blank" class="guidlines blink_text" style="font-size: 18px;">Download Forwarding letter. </a> <br/>
-                           <a href="<?php echo base_url(); ?>Admission_matric/financeReoprt" target="_blank" class="guidlines blink_text" style="font-size: 18px;">Download Finance Farwarding letter. </a> <br/>
+                           <a href="<?php echo base_url(); ?>Admission_matric/financeReoprt" target="_blank" class="guidlines blink_text" style="font-size: 18px;">Download Finance Forwarding letter. </a> <br/>
                           
                             <!-- <a href="<?php echo base_url(); ?>/assets/img//Image_error.pdf" class="guidlines blink_text" target="_blank" style="font-size: 18px;">Instruction for Error occured due to Image uploading. </a>-->
                             <br /><br />

@@ -2,7 +2,7 @@
 
 class Admission_9th_reg_model extends CI_Model 
 {
- public function __construct()    
+    public function __construct()    
     {
 
         $this->load->database(); 
@@ -280,16 +280,16 @@ class Admission_9th_reg_model extends CI_Model
         $AdmFee = $data['fee']['AdmFee'];
         $AdmFine = $data['fee']['AdmFine'];  */
         $AdmTotalFee = $data['fee']['AdmTotalFee']+$data['fee']['regFee']+$data['fee']['AdmFine'];
-        
-        
-   // DebugBreak();
-   
+
+
+        // DebugBreak();
+
         //'formNo'=>$data['formNo'],'regFee'=>0,'AdmProcessFee'=>$processFee,'AdmFee'=>$finalFee,'AdmFine'=>$Total_fine,'AdmTotalFee'=>$data['AdmTotalFee']
         //$Dob = date('Y-m-d', strtotime($Dob)); 
         $query = $this->db->query("Registration..MA_P1_PVT_Adm_sp_insert '$formno',9,$Year,1,'$name','$fname','$BForm','$FNIC','$Dob'
-        ,'$CellNo',$medium,'".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1
-        ,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,0,0,0,0,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$dist,$teh,$zone
-        ,$AdmTotalFee,'$pic'");
+            ,'$CellNo',$medium,'".$MarkOfIden."',$Speciality,$nat,$sex,$rel,'".$addr."',$grp_cd,$sub1,$sub1ap1,$sub2,$sub2ap1,$sub3,$sub3ap1,$sub4,$sub4ap1
+            ,$sub5,$sub5ap1,$sub6,$sub6ap1,$sub7,$sub7ap1,$sub8,$sub8ap1,1,0,0,0,0,$IsHafiz,$Inst_cd,$UrbanRural,$RegGrp,$dist,$teh,$zone
+            ,$AdmTotalFee,'$pic'");
         //$query = $this->db->insert('msadmissions2015', $data);//,'Fname' => $father_name,'BForm'=>$bay_form,'FNIC'=>$father_cnic,'Dob'=>$dob,'CellNo'=>$mob_number));
 
         return $query->result_array();
@@ -372,8 +372,8 @@ class Admission_9th_reg_model extends CI_Model
         if(@$_POST['isformwise']==1)
         {
             $forms_id =array(explode(',',$_POST["CheckedFormno"]));
-           // $myc = count($_POST["CheckedFormno"]);
-           
+            // $myc = count($_POST["CheckedFormno"]);
+
             $myc = count($forms_id[0]);
             for ($i = 0; $i < count($forms_id[0]); $i++) 
             {
@@ -455,7 +455,7 @@ class Admission_9th_reg_model extends CI_Model
         $this->db->update_batch(tblreg9th,$Alldata['data'],'formNo');
         return true;
     }
-   
+
     public function Update_AdmissionFeePvt($data)
     {
         //();
@@ -707,6 +707,7 @@ class Admission_9th_reg_model extends CI_Model
         $RegGrp = $User_info_data['RegGrp'];
         $spl_cd = $User_info_data['spl_case'];
 
+        $sub7 = $User_info_data['sub7'];
         // $forms_id = $User_info_data['forms_id'];
         $query = $this->db->get_where('Admission_online..tblinstitutes_all',  array('Inst_cd' => $Inst_cd));
         $rowcount = $query->num_rows();
@@ -715,10 +716,18 @@ class Admission_9th_reg_model extends CI_Model
 
             if($spl_cd == "0")
             {
-                $q1         = $this->db->query("select * from ".tblreg9th."  where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and (spl_cd is null or spl_cd = 0) and grp_cd = ".$RegGrp);    
+                if($RegGrp==1 || $RegGrp == 7 || $RegGrp == 8)
+                {
+                    $q1 = $this->db->query("select * from ".tblreg9th."  where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and (spl_cd is null or spl_cd = 0) and grp_cd = ".$RegGrp." and sub7=".$sub7);    
+                }
+                else
+                {
+                    $q1  = $this->db->query("select * from ".tblreg9th."  where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and (spl_cd is null or spl_cd = 0) and grp_cd = ".$RegGrp);    
+                }
+
             }
             else{
-                $q1         = $this->db->query("select * from ".tblreg9th." where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and (spl_cd is null or spl_cd = 0) and Spec = ".$spl_cd);
+                $q1 = $this->db->query("select * from ".tblreg9th." where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and (spl_cd is null or spl_cd = 0) and Spec = ".$spl_cd);
             }
 
             $result_1 ;
@@ -730,7 +739,7 @@ class Admission_9th_reg_model extends CI_Model
             else{
                 return false;
             }
-             $q2         = $this->getrulefee_new();
+            $q2         = $this->getrulefee_new();
             $resultarr = array("info"=>$query->result_array(),"fee"=>$result_1,"rule_fee"=>$q2);
             return  $resultarr;
         }
@@ -851,9 +860,9 @@ class Admission_9th_reg_model extends CI_Model
         $todaydate = $data['todaydate'];
         $total_std = $data['updatedFee']['TotalStd'];
         //        EXEC Batch_Create @Inst_Cd = ".$user->inst_cd.",@UserId = ".$user->get_currentUser_ID()."@Amount = ".$tot_fee.",@Total_ProcessingFee = ".$prs_fee.",@Total_RegistrationFee = ".$reg_fee.",@Total_LateRegistrationFee =".$late_fee.",@Total_LateAdmissionFee = 0,@Valid_Date = '$today',@form_ids = '$forms_id'"
-        
-         $query=$this->db->query("execute Registration..Batch_Create_9th_Adm $inst_cd,$total_std,$total_fee,$TotalAdmFee,$Totalprocessing_fee,$TotalLatefee,'$forms_id'");
-        
+
+        $query=$this->db->query("execute Registration..Batch_Create_9th_Adm $inst_cd,$total_std,$total_fee,$TotalAdmFee,$Totalprocessing_fee,$TotalLatefee,'$forms_id'");
+
         $res = $query->result();
         $myBatch_Id = $res[0]->batchID;
         $challanno = $res[0]->ChallanNo;
@@ -866,8 +875,8 @@ class Admission_9th_reg_model extends CI_Model
         $this->db->update_batch(tblreg9th,$sm_data,'formNo');
         return true;
     }
-    
-    
+
+
     public function Batch_List($data)
     {
         ////DebugBreak();
@@ -892,7 +901,7 @@ class Admission_9th_reg_model extends CI_Model
             return  false;
         }
     }
-       public function Print_challan_Form($fetch_data)
+    public function Print_challan_Form($fetch_data)
     {
         $Inst_cd = $fetch_data['Inst_cd'];
         $Batch_Id = $fetch_data['Batch_Id'];
@@ -914,22 +923,22 @@ class Admission_9th_reg_model extends CI_Model
         // //DebugBreak();
         $Inst_cd = $User_info_data['Inst_Id'];
         $RegGrp = $User_info_data['Batch_Id'];
-       // $spl_cd = $User_info_data['spl_case'];
+        // $spl_cd = $User_info_data['spl_case'];
 
         // $forms_id = $User_info_data['forms_id'];
         $query = $this->db->get_where('Admission_online..tblinstitutes_all',  array('Inst_cd' => $Inst_cd));
         $rowcount = $query->num_rows();
-        
+
         if($rowcount > 0)
         {
-              // $this->db->select("*");
-               // $this->db->from(tblreg9th);
-              $where = '(IsDeleted=0 or IsDeleted is null) and Sch_cd ='.$Inst_cd.' and Batch_Id_Adm = '.$RegGrp;
-               // $q1 = $this->db->where($where);
-                
-                $q1         = $this->db->get_where(tblreg9th,$where);    
-           
-           
+            // $this->db->select("*");
+            // $this->db->from(tblreg9th);
+            $where = '(IsDeleted=0 or IsDeleted is null) and Sch_cd ='.$Inst_cd.' and Batch_Id_Adm = '.$RegGrp;
+            // $q1 = $this->db->where($where);
+
+            $q1         = $this->db->get_where(tblreg9th,$where);    
+
+
 
             $result_1 ;
             $nrowcount = $q1->num_rows();
@@ -940,7 +949,7 @@ class Admission_9th_reg_model extends CI_Model
             else{
                 return false;
             }
-           // DebugBreak();
+            // DebugBreak();
             $q2         = $this->getrulefee_new();
             $resultarr = array("info"=>$query->result_array(),"fee"=>$result_1,"rule_fee"=>$q2);
             return  $resultarr;
@@ -1196,7 +1205,7 @@ class Admission_9th_reg_model extends CI_Model
             return false;
         }
     }
-     public function getdelformno($formno,$dob)
+    public function getdelformno($formno,$dob)
     {
         $dob = date('Y-m-d',strtotime($dob));
         $table1 = 'admission_online..tblVerificationCode';

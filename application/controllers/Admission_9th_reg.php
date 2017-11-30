@@ -46,7 +46,7 @@ class Admission_9th_reg extends CI_Controller {
 
         $inst_cd = '';
         $isset = $this->Admission_9th_reg_model->iszoneset($Inst_Id);
-        
+
         if($Inst_Id == $inst_cd)
         {
             $this->load->view('Admission/9th/errorPage.php',$userinfo);
@@ -78,7 +78,7 @@ class Admission_9th_reg extends CI_Controller {
         {
             redirect('Admission_9th_reg');
         }
-        }
+    }
     public function forwarding_pdf()
     {
         $this->load->library('session');
@@ -520,7 +520,7 @@ class Admission_9th_reg extends CI_Controller {
 
 
     }
-    
+
 
     public function NewEnrolment()
     {    
@@ -603,7 +603,7 @@ class Admission_9th_reg extends CI_Controller {
     }
     public function NewEnrolment_update()
     {
-       // DebugBreak();
+        // DebugBreak();
         $this->load->model('Admission_9th_reg_model');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
@@ -994,11 +994,11 @@ class Admission_9th_reg extends CI_Controller {
         $RegStdData = array('data'=>$this->Admission_9th_reg_model->Spl_case_std_list_new($myinfo),'spl_cd'=>$spl_cd,'grp_selected'=>$grp_selected);
         if($RegStdData['data'] == FALSE)
         {
-        $RegStdData['error'] = "No any Record found against this option";
+            $RegStdData['error'] = "No any Record found against this option";
         }
         else
         {
-        $RegStdData['msg_status'] = $error_msg;
+            $RegStdData['msg_status'] = $error_msg;
         }
         $RegStdData['spl_cd'] =  $spl_cd;
         $userinfo = $Logged_In_Array['logged_in'];
@@ -1018,10 +1018,10 @@ class Admission_9th_reg extends CI_Controller {
         $this->load->view('Admission/9th/ProofReading.php');
         $this->commonfooter();
     }
-    
+
     public function Make_Batch_Group_wise()
     {
-       //DebugBreak();
+        //DebugBreak();
         $RegGrp = $this->uri->segment(3);
         $Spl_case = $this->uri->segment(4);
         $this->load->model('Admission_9th_reg_model');
@@ -1031,7 +1031,25 @@ class Admission_9th_reg extends CI_Controller {
         $userinfo['isselected'] = 14;
         $Inst_Id = $userinfo['Inst_Id'];
         $page_name  = "Create Batch";
-        $User_info_data = array('Inst_Id'=>$Inst_Id,'RegGrp'=>$RegGrp,'spl_case'=>$Spl_case);
+        if($RegGrp == 1)
+        {
+            $sub7 = 8;
+        }
+        else if($RegGrp == 7)
+        {
+            $sub7 = 78;
+        }
+        else if($RegGrp == 8)
+        {
+            $sub7 = 43;
+        }
+        else
+        {
+            $sub7 = 0;
+        }
+
+        $User_info_data = array('Inst_Id'=>$Inst_Id,'RegGrp'=>$RegGrp,'spl_case'=>$Spl_case,'sub7'=>$sub7);
+        //$User_info_data = array('Inst_Id'=>$Inst_Id,'RegGrp'=>$RegGrp,'spl_case'=>$Spl_case);
         $user_info  =  $this->Admission_9th_reg_model->user_info($User_info_data); 
         //$forms_id =   implode(",",$user_info['']); 
         if($user_info == false)
@@ -1051,7 +1069,7 @@ class Admission_9th_reg extends CI_Controller {
     }
     public function Make_Batch_Formwise()
     {
-   // DebugBreak();
+        // DebugBreak();
         if(!empty($_POST["CheckedFormno_createBatch"]))
         {
 
@@ -1079,7 +1097,7 @@ class Admission_9th_reg extends CI_Controller {
         redirect('Admission_9th_reg/BatchList');
         return;
     }
-     public function BatchList()
+    public function BatchList()
     {
         $data = array(
             'isselected' => '14',
@@ -1551,20 +1569,20 @@ class Admission_9th_reg extends CI_Controller {
         {
             $batch_id = $this->uri->segment(3);
             $fetch_data = array('Inst_Id'=>$user['Inst_Id'],'Batch_Id'=>$batch_id);
-           // DebugBreak();
+            // DebugBreak();
             $user_info =$this->Admission_9th_reg_model->user_info_Batch_Id($fetch_data);
             $mydata = $this->calcFee($user_info);
             $this->Admission_9th_reg_model->UpdateFee_Final($mydata);
         }
 
-       // DebugBreak();
+        // DebugBreak();
         $temp = $user['Inst_Id'].'@9@'.Session.'@'.$mydata['batchid'];
         $image =  $this->set_barcode($temp);
-        
+
         //$User_info_data = array('Inst_Id'=>$user['Inst_Id'], 'date' => date('Y-m-d'));
         //$user_info  =  $this->Admission_9th_reg_model->getuser_info($User_info_data); 
-             $user_info =$this->Admission_9th_reg_model->user_info_Batch_Id($fetch_data);
-                $data_final = array('Inst_cd'=>$user['Inst_Id'],'Inst_Name'=>$user['inst_Name'],'calcFeedata'=>$mydata,'userinfo'=>$user_info,'barcode'=>$image);
+        $user_info =$this->Admission_9th_reg_model->user_info_Batch_Id($fetch_data);
+        $data_final = array('Inst_cd'=>$user['Inst_Id'],'Inst_Name'=>$user['inst_Name'],'calcFeedata'=>$mydata,'userinfo'=>$user_info,'barcode'=>$image);
         $this->load->view('Admission/9th/RevenueForm.php',$data_final);
     }
     public  function GetSpeciality($spclty)
@@ -1593,7 +1611,7 @@ class Admission_9th_reg extends CI_Controller {
     public function Print_Admission_Form_Groupwise()
     {
 
-       //   DebugBreak();
+        //   DebugBreak();
         $Condition = $this->uri->segment(4);
 
         $this->load->library('session');
@@ -1616,16 +1634,16 @@ class Admission_9th_reg extends CI_Controller {
             $result = array('data'=>$this->Admission_9th_reg_model->Print_Form_Formnowise($fetch_data),'inst_Name'=>$user['inst_Name']);
             //Print_Form_Formnowise
         }
-         else if($Condition == "3")
+        else if($Condition == "3")
         {
-            
+
             $batch_id = $this->uri->segment(3);
             $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'Batch_Id'=>$batch_id);
             $result = array('data'=>$this->Admission_9th_reg_model->Print_Form_Batchwise($fetch_data),'inst_Name'=>$user['inst_Name']);
             //Print form batch wise
         }
 
-         //DebugBreak();
+        //DebugBreak();
         if(empty($result['data'])){
             $this->session->set_flashdata('error', 'No Found');
             redirect('Admission_9th_reg/FormPrinting');
@@ -1779,7 +1797,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetXY(4.4+$x,2+$Y);
             $pdf->Cell(0.5,0.5,strtoupper(@$data["Fname"]),0,'L');
 
-              $Y = $Y+0.2;
+            $Y = $Y+0.2;
             //--------------------------- 1st line 
             $pdf->SetXY(0.5, 2.1+$Y);
             $pdf->SetFont('Arial','',8);
@@ -1794,7 +1812,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetFont('Arial','B',8);
             $pdf->SetXY(4.4+$x,2.1+$Y);
             $pdf->Cell(0.5,0.5,"________________________",0,'L');
-           
+
 
             //--------------------------- BAY FORM NO line 
             $pdf->SetXY(0.5, 2.3+$Y);
@@ -1987,15 +2005,15 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetFont('Arial','',8);
             $pdf->Cell( 0.5,0.5,"Home Address in Urdu:  _____________________________________________________________________________________________________",0,'L');
 
-           // DebugBreak();
-           /* if(@$data["RegPvt"]==2)
+            // DebugBreak();
+            /* if(@$data["RegPvt"]==2)
             {  */
-            
+
             $pdf->SetXY(0.5,5.2+$Y);
             $pdf->SetFont('Arial','B',11);
             $pdf->Cell( 0.5,0.5,"Zone:                   ".@$data["zone_cd"]." - ".@$data["zone_name"],0,'L');
-               
-           
+
+
             //}
 
 
@@ -2183,7 +2201,7 @@ class Admission_9th_reg extends CI_Controller {
             $pdf->SetXY(0.5,9.8+$Y);
             $pdf->Cell(2,0.8,'',1,0,'C',0); 
             $pdf->SetXY(0.5,10.3+$Y);
-          //  $pdf->Cell(4,0.75,"Candidate's Signature in English",'',0,'L',0); 
+            //  $pdf->Cell(4,0.75,"Candidate's Signature in English",'',0,'L',0); 
             $pdf->MultiCell(4.5,0.3,"Candidate's Signature in English",0,'L'); 
             //------ Picture Box on right side on Top    
             $pdf->SetFont('Arial','B',7);  
@@ -2228,7 +2246,7 @@ class Admission_9th_reg extends CI_Controller {
     }
     public function ChallanForm_Reg9th_Regular()
     {
-       // DebugBreak();
+        // DebugBreak();
         $Batch_Id = $this->uri->segment(3);
         $this->load->library('session');
         $this->load->library('NumbertoWord');
@@ -2288,8 +2306,8 @@ class Admission_9th_reg extends CI_Controller {
         // $user_info  =  $this->Registration_model->getuser_info($User_info_data); 
         $isfine = 0;
 
-        
-       
+
+
 
         /*if($user['isSpecial']==1 && date('Y-m-d',strtotime($user['isSpecial_Fee']['FeedingDate']))>=date('Y-m-d')  )
         {
@@ -2362,7 +2380,7 @@ class Admission_9th_reg extends CI_Controller {
         $rule_fee   =  $this->Registration_model->getreulefee(); 
         $challanDueDate  = date('d-m-Y',strtotime($rule_fee[0]['End_Date'] )) ;
         }  */
-      // DebugBreak();
+        // DebugBreak();
         $obj    = new NumbertoWord();
         $obj->toWords($result[0]['Amount'],"Only.","");
         // $pdf->Cell( 0.5,0.5,ucwords($obj->words),0,'L');
@@ -3058,7 +3076,7 @@ class Admission_9th_reg extends CI_Controller {
 
                         }
     }
-    
+
 
     public function calcFee($fetch_data)
     {
@@ -3071,7 +3089,7 @@ class Admission_9th_reg extends CI_Controller {
         // Declare Science & Arts Fee's According to Fee Table .  Note: this will assign to Triple date fee. After triple date it will not asign fees.
         if(!empty($user_info['rule_fee'])) 
         {
-        $duedate =date('Y-m-d',strtotime($user_info['rule_fee'][0]['End_Date'])); 
+            $duedate =date('Y-m-d',strtotime($user_info['rule_fee'][0]['End_Date'])); 
             if($user_info['rule_fee'][0]['isPrSub']==1)
             {
                 $SciAdmFee = $user_info['rule_fee'][0]['Amount'];
@@ -3164,7 +3182,7 @@ class Admission_9th_reg extends CI_Controller {
         $lastdate  = date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])) ;
         if($user_info['info'][0]['feedingDate'] != null && (date('Y-m-d')<=$lastdate) )
         {
-                    $duedate =date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])); 
+            $duedate =date('Y-m-d',strtotime($user_info['info'][0]['feedingDate'])); 
 
             $Total_fine = 0;
             if($user_info['info'][0]['IsGovernment'] == 2)
@@ -3250,7 +3268,7 @@ class Admission_9th_reg extends CI_Controller {
         $singleDate =  $date->format('Y-m-d'); 
         if(date('Y-m-d') <= $singleDate && $user_info['info'][0]['IsGovernment'] == 1)
         {   
-        $duedate =date('Y-m-d',strtotime($user_info['rule_fee'][0]['End_Date']));   
+            $duedate =date('Y-m-d',strtotime($user_info['rule_fee'][0]['End_Date']));   
             if($user_info['rule_fee'][0]['isPrSub']==1)
             {
                 $SciAdmFee = 0;
@@ -3780,7 +3798,7 @@ class Admission_9th_reg extends CI_Controller {
         {
             $data_challanNo = $data['data']['stdinfo'][0]->challanno;
         }
-      //  $challanDueDate;
+        //  $challanDueDate;
 
         $feestructure[]    =  $mydata_final['sum_procFee'];    
         $displayfeetitle[] =  'Total Processing Fee';    
@@ -4031,7 +4049,7 @@ class Admission_9th_reg extends CI_Controller {
 
         //  $pdf->Output($data["Sch_cd"].'.pdf', 'I');
     }
-    
+
     public function EditPicForms()
     {
         // DebugBreak();
