@@ -375,13 +375,14 @@ class Admission_9th_pvt extends CI_Controller {
                                                                     else if($_sub_cd == 73)  $ret_val = "1";
                                                                         else if($_sub_cd == 78)  $ret_val = "1";
                                                                             else if($_sub_cd == 79)  $ret_val = "1";
-                                                                                else if($_sub_cd == 89)  $ret_val = "1";
-                                                                                    else if($_sub_cd == 88)  $ret_val = "1";
-                                                                                        else if($_sub_cd == 89)  $ret_val = "1";
-                                                                                            else if($_sub_cd == 90)  $ret_val = "1";
-                                                                                                else if($_sub_cd == 93)  $ret_val = "1";
-                                                                                                    else if($_sub_cd == 94)  $ret_val = "1";
-                                                                                                        else $ret_val = 0;
+                                                                                else if($_sub_cd == 83)  $ret_val = "1";
+                                                                                    else if($_sub_cd == 89)  $ret_val = "1";
+                                                                                        else if($_sub_cd == 88)  $ret_val = "1";
+                                                                                            else if($_sub_cd == 89)  $ret_val = "1";
+                                                                                                else if($_sub_cd == 90)  $ret_val = "1";
+                                                                                                    else if($_sub_cd == 93)  $ret_val = "1";
+                                                                                                        else if($_sub_cd == 94)  $ret_val = "1";
+                                                                                                            else $ret_val = 0;
         return $ret_val;
     }
     public  function GetSpeciality($spclty)
@@ -2530,13 +2531,13 @@ class Admission_9th_pvt extends CI_Controller {
         redirect('Admission_9th_reg/EditPicForms/');
         return;
     }
-   public function deleteExtarfiles()
+    public function deleteExtarfiles()
     {
 
-       //  DebugBreak();
+        //  DebugBreak();
         $clsfolder = $this->uri->segment(3);
-        
-        
+
+
         if($clsfolder == 10)
         {
             $folder = '\\annual';
@@ -2545,8 +2546,8 @@ class Admission_9th_pvt extends CI_Controller {
         {
             $folder = '';
         }
-        
-        
+
+
         $dirPath = 'C:\inetpub\vhosts\bisegrw.edu.pk\Share Images\uploads\SSC\admission\2018\\'.$clsfolder.'th'.$folder.'\private';
         $copypath = 'C:\inetpub\vhosts\bisegrw.edu.pk\Share Images\uploads\SSC\admission\2018\\'.$clsfolder.'th'.$folder.'\private_temp';
         if (is_dir($dirPath)) {
@@ -2566,15 +2567,15 @@ class Admission_9th_pvt extends CI_Controller {
                         if($subtem ==  'temp')
                         {
 
-                           // $fcrttime =  date('d-m-Y',filemtime($filepath));
-                           // $crttime  = date('d-m-Y'); 
-                          //  if($fcrttime <$crttime)
-                          //  {
-                                $i+=1;
-                                copy($filepath,$copydir);
-                                unlink($dirPath . DIRECTORY_SEPARATOR . $object); 
-                                echo $i.') File Moved '.$copydir.'</br>';   
-                          //  }
+                            // $fcrttime =  date('d-m-Y',filemtime($filepath));
+                            // $crttime  = date('d-m-Y'); 
+                            //  if($fcrttime <$crttime)
+                            //  {
+                            $i+=1;
+                            copy($filepath,$copydir);
+                            unlink($dirPath . DIRECTORY_SEPARATOR . $object); 
+                            echo $i.') File Moved '.$copydir.'</br>';   
+                            //  }
                         }
                     }
                 }

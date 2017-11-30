@@ -2154,14 +2154,15 @@ class Admission extends CI_Controller
                                                                 else if($_sub_cd == 72)  $ret_val = "1";
                                                                     else if($_sub_cd == 73)  $ret_val = "1";
                                                                         else if($_sub_cd == 78)  $ret_val = "1";
-                                                                            else if($_sub_cd == 79)  $ret_val = "1";
-                                                                                else if($_sub_cd == 89)  $ret_val = "1";
-                                                                                    else if($_sub_cd == 88)  $ret_val = "1";
-                                                                                        else if($_sub_cd == 89)  $ret_val = "1";
-                                                                                            else if($_sub_cd == 90)  $ret_val = "1";
-                                                                                                else if($_sub_cd == 93)  $ret_val = "1";
-                                                                                                    else if($_sub_cd == 94)  $ret_val = "1";
-                                                                                                        else $ret_val = 0;
+                                                                            else if($_sub_cd == 83)  $ret_val = "1";
+                                                                                else if($_sub_cd == 79)  $ret_val = "1";
+                                                                                    else if($_sub_cd == 89)  $ret_val = "1";
+                                                                                        else if($_sub_cd == 88)  $ret_val = "1";
+                                                                                            else if($_sub_cd == 89)  $ret_val = "1";
+                                                                                                else if($_sub_cd == 90)  $ret_val = "1";
+                                                                                                    else if($_sub_cd == 93)  $ret_val = "1";
+                                                                                                        else if($_sub_cd == 94)  $ret_val = "1";
+                                                                                                            else $ret_val = 0;
         return $ret_val;
     }
 
