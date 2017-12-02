@@ -3318,6 +3318,7 @@ class Admission_9th_reg extends CI_Controller {
         $GrandAdmFee = 0;
         $GrandProceFee = 0;
         $Total_LateAdmFee = 0;
+        $Total_AdmFee = 0;
         $Batch_id_new = 0;
         foreach($data['data'] as $key=>$vals)
         { $n++;
@@ -3334,9 +3335,22 @@ class Admission_9th_reg extends CI_Controller {
                 }
                 else if($vals['Spec']>0 && (date('Y-m-d') <= $singleDate || $user_info['info'][0]['feedingDate'] != null && (date('Y-m-d')<=$lastdate)) )
                 {
+
+                    if($vals['Spec']==1)
+                    {
+                        $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>0,'AdmTotalFee'=>0+$Total_fine);
+                        $GrandProceFee = $GrandProceFee+0;
+                    }
+                    else
+                    {
+                        $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciProcFee+$Total_fine);
+                        $GrandProceFee = $GrandProceFee+$SciProcFee;
+                    }
+
+                    /*
                     $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciProcFee+$Total_fine);
                     $GrandProceFee = $GrandProceFee+$SciProcFee;
-                    $Total_LateAdmFee = $Total_LateAdmFee +  $Total_fine;
+                    */$Total_LateAdmFee = $Total_LateAdmFee +  $Total_fine;
                     $Batch_id_new = $vals['Batch_id_Adm'];
 
                 }
@@ -3361,9 +3375,22 @@ class Admission_9th_reg extends CI_Controller {
                 }
                 else if($vals['Spec']>0 && (date('Y-m-d') <= $singleDate || $user_info['info'][0]['feedingDate'] != null && (date('Y-m-d')<=$lastdate)) )
                 {
-                    $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsProcFee+$Total_fine);
+
+                    if($vals['Spec']==1)
+                    {
+                        $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>0,'AdmTotalFee'=>0+$Total_fine);
+                        $GrandProceFee = $GrandProceFee+0;
+                    }
+                    else
+                    {
+                        $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$SciProcFee,'AdmTotalFee'=>$SciProcFee+$Total_fine);
+                        $GrandProceFee = $GrandProceFee+$SciProcFee;
+                    }
+
+
+                    /* $AllStdFee[$n] = array('formNo'=> $vals['formNo'],'AdmFee'=>0,'AdmFine'=>$Total_fine,'AdmProcessFee'=>$ArtsProcFee,'AdmTotalFee'=>$ArtsProcFee+$Total_fine);
                     $GrandProceFee = $GrandProceFee+$ArtsProcFee;
-                    $Total_LateAdmFee = $Total_LateAdmFee +  $Total_fine;
+                    */ $Total_LateAdmFee = $Total_LateAdmFee +  $Total_fine;
                     $Batch_id_new = $vals['Batch_id_Adm'];
                 }
                 else

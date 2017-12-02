@@ -718,7 +718,7 @@ class Admission_9th_reg_model extends CI_Model
             {
                 if($RegGrp==1 || $RegGrp == 7 || $RegGrp == 8)
                 {
-                    $q1 = $this->db->query("select * from ".tblreg9th."  where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and (spl_cd is null or spl_cd = 0) and grp_cd = ".$RegGrp." and sub7=".$sub7);    
+                    $q1 = $this->db->query("select * from ".tblreg9th."  where sch_cd = ".$Inst_cd." and (isdeleted = 0 or isdeleted is null) and IsAdmission = 1 and (Batch_id_Adm is null or Batch_id_Adm = 0) and (spl_cd is null or spl_cd = 0) and grp_cd = 1 and sub7=".$sub7);    
                 }
                 else
                 {

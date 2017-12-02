@@ -1993,7 +1993,7 @@ class Admission_matric extends CI_Controller {
             $ispractical = 0;
             $is9th = 0;
             if(($v["Spec"] == 1 || $v["Spec"] ==  2) && $isSignalDate == 0)   
-            {
+            {      
                 $Adm_fee = 0;
                 $TotalLatefee = $TotalLatefee + $LAdm_fee;
 
@@ -2009,14 +2009,26 @@ class Admission_matric extends CI_Controller {
                     {
                         $Adm_fee = $Adm_Fee_withArts_10th_Only;
                     }
-                    $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);
+
+                    if($v["Spec"] == 1){
+                        $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>0,'certFee'=>0,'AdmFine'=>0,'AdmProcessFee'=>0,'AdmTotalFee'=>0+0+0+0);    
+                    }
+                    else
+                    {
+                        $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);    
+                    }
                 }
                 else
                 {
-                    $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);
+                    if($v["Spec"] == 1)
+                    {
+                        $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>0,'certFee'=>0,'AdmFine'=>0,'AdmProcessFee'=>0,'AdmTotalFee'=>0+0+0+0);    
+                    }
+                    else
+                    {
+                        $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>$Adm_fee,'certFee'=>$certFee,'AdmFine'=>$LAdm_fee,'AdmProcessFee'=>$Adm_ProcessingFee,'AdmTotalFee'=>$Adm_fee+$LAdm_fee+$Adm_ProcessingFee+$certFee);    
+                    }
                 }
-
-
             }
             else
             {
