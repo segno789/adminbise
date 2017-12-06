@@ -299,7 +299,7 @@
                                         {
                                             for($i =0 ; $i<count($subgroups); $i++)
                                         {
-                                            if($subgroups[$i] == 1)
+                                            if($subgroups[$i] == 1 && $grp ==1)
                                             {
                                                 if($sub8 == 8)
                                                 {
@@ -310,7 +310,7 @@
                                                     echo "<option value='1' >SCIENCE WITH BIOLOGY</option>";    
                                                 }
                                             }
-                                            else if($subgroups[$i] == 7 )
+                                            else if($subgroups[$i] == 7 && $grp ==1 )
                                             {
                                                 if($sub8 == 78)
                                                 {
@@ -322,7 +322,7 @@
                                                 }
                                                   
                                             }
-                                            else if($subgroups[$i] == 8 )
+                                            else if($subgroups[$i] == 8 && $grp ==1 )
                                             {
                                                  if($sub8 == 43)
                                                 {

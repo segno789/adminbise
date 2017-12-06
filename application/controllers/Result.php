@@ -1398,7 +1398,6 @@ class Result extends CI_Controller {
         $pdf->SetXY(41.6,242);
         $pdf->MultiCell(125, 5, $info['addr'], 0, "L",0);
 
-
         $pdf->Image(CESIGN,160.0,247, 38,36, "PNG"); 
 
         $pdf->SetFont('Arial','B',10);
@@ -1406,8 +1405,6 @@ class Result extends CI_Controller {
         $pdf->Cell(0, 0.2, "CONTROLLER OF EXAMINATIONS", 0.25, "C");
 
         $pdf->Image("assets/img/headsign.jpg",28.0,255, 72,24, "JPG"); 
-
-
     }
     function subStatus($mVar)
     {

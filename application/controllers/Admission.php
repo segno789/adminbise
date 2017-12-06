@@ -3685,8 +3685,9 @@ class Admission extends CI_Controller
 
                     }
                 }
-                else if(@$_POST['exam_type'] == 2 &&  (@$allinputdata['grp_cd'] != 4))
-                { //DebugBreak();
+
+                else if(@$_POST['exam_type'] == 2 &&  @$_POST['std_group'] != 4)
+                { 
                     if(@$_POST['sub1p2'] == 0)
                     {
                         $allinputdata['excep'] = 'Please Select Part-II Subject 1';

@@ -62,7 +62,8 @@
                                             <button type="button" class="btn btn-info" value="'.$vals['Batch_ID'].'" onclick="ChallanForm_Adm10th_Regular('.$vals['Batch_ID'].')">Challan Form</button>
                                             <button type="button" class="btn btn-info" value="'.$vals['Batch_ID'].'" onclick="RevenueForm('.$vals['Batch_ID'].')">Revenue Form</button>';
                                             echo '
-                                            </td>';
+                                            </td>';  
+
                                             endforeach;
                                     }
                                     ?>

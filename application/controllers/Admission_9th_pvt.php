@@ -392,7 +392,7 @@ class Admission_9th_pvt extends CI_Controller {
         else if ($spclty == 2 )
             return('BOARD EMPLOYEE CHILD');
             else if ($spclty == 3 )
-                return('BLIND');
+                return('DISABLE');
                 else if ($spclty == 1 )
                     return('DEAF AND DUMB');
 

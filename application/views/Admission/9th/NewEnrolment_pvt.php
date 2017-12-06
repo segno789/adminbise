@@ -152,21 +152,21 @@
                         echo  "<option value='0' >None</option>  
                         <option value='1' selected='selected'>Deaf &amp; Dumb</option>
                         <option value='2'>Board Employee</option>
-                        <option value='3'>Blind</option>";
+                        <option value='3'>Disable</option>";
                     }
                     else if($spec ==2)
                     {
                         echo  "<option value='0'>None</option>  
                         <option value='1'>Deaf &amp; Dumb</option>
                         <option value='2' selected='selected'>Board Employee</option>
-                        <option value='3'>Blind</option>";
+                        <option value='3'>Disable</option>";
                     }
                     else
                     {
                         echo  "<option value='0' selected='selected'>None</option>  
                         <option value='1'>Deaf &amp; Dumb</option>
                         <option value='2'>Board Employee</option>
-                        <option value='3'>Blind</option>";
+                        <option value='3'>Disable</option>";
                     }
                     ?>
                 </select>
@@ -442,7 +442,7 @@
         alertify.confirm(msg, function (e) {
             if (e) {
                 // user clicked "ok"
-                window.location.href ="<?php echo base_url(); ?>Admission_pvt_9th";
+                window.location.href ="<?php echo base_url(); ?>Admission_9th_pvt";
             } else {
                 // user clicked "cancel"
 
