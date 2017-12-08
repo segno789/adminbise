@@ -145,7 +145,7 @@
             <td class="td" style="text-align:center !important;"><?php echo $vals->AdmFee ;?></td>
             <td class="td" style="text-align:center !important;"><?php echo $vals->AdmFine;?></td>
             <td class="td" style="text-align:center !important;"><?php echo $vals->AdmProcessFee;?></td>
-            <td class="td" style="text-align:center !important;"><?php echo '550';?></td>
+            <td class="td" style="text-align:center !important;"><?php echo $vals->certFee;?></td>
             <td class="td" style="text-align:center !important;"><?php echo $vals->AdmTotalFee?></td>
 
         </tr>

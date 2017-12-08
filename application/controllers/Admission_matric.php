@@ -2107,6 +2107,21 @@ class Admission_matric extends CI_Controller {
                 }
 
             }
+
+            if($v["Spec"] ==  1 && $isSignalDate == 0)   
+            {
+
+                $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>0,'certFee'=>0,'AdmFine'=>0,'AdmProcessFee'=>0,'AdmTotalFee'=>0+0+0+0); 
+                $TotalAdmFee = 0;
+                $Adm_fee = 0;
+                $TotalLatefee = 0;
+                $LAdm_fee = 0;
+                $Totalprocessing_fee = 0;
+                $Adm_ProcessingFee = 0;
+                $total_certFee = 0;
+                $certFee = 0;
+            }
+
             $TotalAdmFee = $TotalAdmFee + $Adm_fee;
             $TotalLatefee = $TotalLatefee + $LAdm_fee;
             $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;
@@ -2352,6 +2367,20 @@ class Admission_matric extends CI_Controller {
                 }
 
 
+            }
+
+            if($v["Spec"] ==  1 && $isSignalDate == 0)   
+            {
+
+                $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>0,'certFee'=>0,'AdmFine'=>0,'AdmProcessFee'=>0,'AdmTotalFee'=>0+0+0+0); 
+                $TotalAdmFee = 0;
+                $Adm_fee = 0;
+                $TotalLatefee = 0;
+                $LAdm_fee = 0;
+                $Totalprocessing_fee = 0;
+                $Adm_ProcessingFee = 0;
+                $total_certFee = 0;
+                $certFee = 0;
             }
 
             $TotalAdmFee = $TotalAdmFee + $Adm_fee;
