@@ -149,7 +149,8 @@ class Admission_matric extends CI_Controller {
 
 
         $temp =  $this->set_barcode($temp);
-        $pdf->Image("assets/img/M6.jpg",7.5, .2, .3, .3, "jpg");
+        //$pdf->Image("assets/img/M6.jpg",7.5, .2, .3, .3, "jpg");
+        $pdf->Image("assets/img/10th.png",7.5, .2, .3, .3, "png");
         $yy = 0.05;
         $dyy = 0.1;
         $corcnt = 0;
@@ -430,7 +431,8 @@ class Admission_matric extends CI_Controller {
                 $pdf->SetXY( 1.0,0.2);
                 $pdf->Cell(0, 0.2, "BOARD OF INTERMEDIATE AND SECONDARY EDUCATION, GUJRANWALA", 0.25, "C");
                 $pdf->SetXY( 1.0,0.2);
-                $pdf->Image( 'assets/img/M5.jpg' ,7.5,0.2 , 0.2,0.2 , "JPG");     
+                //$pdf->Image( 'assets/img/M5.jpg' ,7.5,0.2 , 0.2,0.2 , "JPG");     
+                $pdf->Image( 'assets/img/10th.png' ,7.5,0.2 , 0.2,0.2 , "png");     
 
 
                 if($Condition == 1 || $Condition ==2)
@@ -1981,7 +1983,6 @@ class Admission_matric extends CI_Controller {
             $Adm_ProcessingFee = $AdmFee[0]['Processing_Fee'];
             $LAdm_fee = 0;
         }
-
         $q1 = $user_info['fee'];
         $total_std = 0;
         $AllStdFee = array();
@@ -1996,7 +1997,6 @@ class Admission_matric extends CI_Controller {
             {      
                 $Adm_fee = 0;
                 $TotalLatefee = $TotalLatefee + $LAdm_fee;
-
                 if($v['cat09'] == 2)
                 {
 
@@ -2108,7 +2108,7 @@ class Admission_matric extends CI_Controller {
 
             }
 
-            if($v["Spec"] ==  1 && $isSignalDate == 0)   
+          /*  if($v["Spec"] ==  1 && $isSignalDate == 0)   
             {
 
                 $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>0,'certFee'=>0,'AdmFine'=>0,'AdmProcessFee'=>0,'AdmTotalFee'=>0+0+0+0); 
@@ -2121,16 +2121,13 @@ class Admission_matric extends CI_Controller {
                 $total_certFee = 0;
                 $certFee = 0;
             }
-
+*/
             $TotalAdmFee = $TotalAdmFee + $Adm_fee;
             $TotalLatefee = $TotalLatefee + $LAdm_fee;
             $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;
             $total_certFee = $total_certFee+$certFee;
             $n++;
         } 
-
-
-
         $mydata_final = $this->Admission_matric_model->Update_AdmissionFee($AllStdFee);
         $forms_id   = implode(",",$ids);        
         $tot_fee     = $Totalprocessing_fee+$TotalAdmFee+$TotalLatefee+$total_certFee;

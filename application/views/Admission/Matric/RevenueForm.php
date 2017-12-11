@@ -53,7 +53,8 @@
                     echo "SUPPLEMENTARY";
                 } ?> EXAMMINATION  <?= CURRENT_SESS1?></br>
 
-                <img style="margin-left: 605px;height: 32px;" src="<?php  echo base_url().'/assets/img/M4.jpg'; ?>" />
+                <!--<img style="margin-left: 605px;height: 32px;" src="<?php  echo base_url().'/assets/img/M4.jpg'; ?>" />-->
+                <img style="margin-left: 605px;height: 32px;" src="<?php  echo base_url().'/assets/img/10th.png'; ?>" />
             </div> 
         </td>
     </tr>
@@ -104,7 +105,7 @@
                 <tr>
                     <td><strong>Total Amount:</strong></td>
                     <td colspan="3"><strong><?php echo  $data['batch_info'][0]["Amount"];?></strong></td>
-                    
+
                 </tr>
             </table>
 

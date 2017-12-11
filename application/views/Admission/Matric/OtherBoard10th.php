@@ -374,7 +374,6 @@
                     <option value="13" <?php if(@$data['Brd_cd'] == 13) echo 'selected' ?>>BISE, KARACHI</option>
                     <option value="14" <?php if(@$data['Brd_cd'] == 14) echo 'selected' ?>>BISE, QUETTA</option>
                     <option value="15" <?php if(@$data['Brd_cd'] == 15) echo 'selected' ?>>BISE, MARDAN</option>
-                    <option value="16" <?php if(@$data['Brd_cd'] == 16) echo 'selected' ?>>FBISE, ISLAMABAD</option>
                     <option value="17" <?php if(@$data['Brd_cd'] == 17) echo 'selected' ?>>CAMBRIDGE</option>
                     <option value="18" <?php if(@$data['Brd_cd'] == 18) echo 'selected' ?>>AIOU, ISLAMABAD</option>
                     <option value="19" <?php if(@$data['Brd_cd'] == 19) echo 'selected' ?>>BISE, KOHAT</option>
