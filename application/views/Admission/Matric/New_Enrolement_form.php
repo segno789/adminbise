@@ -473,18 +473,33 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     <label class="control-label span1" >
 
                                     </label>
-                                    <select id="sub1" class="span3 dropdown" name="sub1">
-                                        <?php if($data[0]['sub1pf1']==2){ ?>
+                                    <?php
+                                    if($data[0]['exam_type'] != 2){
+                                        ?> 
+                                        <select id="sub1" class="span3 dropdown" name="sub1">
+                                            <?php if($data[0]['sub1pf1']==2){ ?>
+                                                <option value="<?php  echo $data[0]['sub1'];?>"><?php
+                                                    echo array_search($data[0]['sub1'],$subarray);
+                                                ?></option>
+                                                <?php } ?>
+                                            <?php if($data[0]['sub1st1']==1) {?>
+                                                <option value="0" <?php   if($data[0]['sub1pf1']==1) echo 'selected' ?> >NONE</option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select>
+                                        <?php
+                                    }
+                                    else{
+                                        ?>
+                                        <select id="sub1" class="span3 dropdown" name="sub1">
                                             <option value="<?php  echo $data[0]['sub1'];?>"><?php
                                                 echo array_search($data[0]['sub1'],$subarray);
                                             ?></option>
-                                            <?php } ?>
-                                        <?php if($data[0]['sub1st1']==1) {?>
-                                            <option value="0" <?php   if($data[0]['sub1pf1']==1) echo 'selected' ?> >NONE</option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select>
+                                        </select>
+                                        <?php
+                                    }
+                                    ?>
                                     <select id="sub1p2" class="span3 dropdown" name="sub1p2">
                                         <option value="<?php echo $data[0]['sub1'];?>"><?php
                                             echo array_search($data[0]['sub1'],$subarray);
@@ -494,18 +509,33 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 <div class="control row controls-row">
                                     <label class="control-label span1" >
                                     </label>
-                                    <select id="sub2" class="span3 dropdown" name="sub2">
-                                        <?php if($data[0]['sub2pf1']==2){ ?>
+                                    <?php
+                                    if($data[0]['exam_type'] != 2){
+                                        ?>   
+                                        <select id="sub2" class="span3 dropdown" name="sub2">
+                                            <?php if($data[0]['sub2pf1']==2){ ?>
+                                                <option value="<?php  echo $data[0]['sub2'];?>"><?php
+                                                    echo array_search($data[0]['sub2'],$subarray);
+                                                ?></option>
+                                                <?php } ?>
+                                            <?php if($data[0]['sub2st1']==1) {?>
+                                                <option value="0" <?php  if($data[0]['sub2pf1']==1) echo 'selected' ?> >NONE</option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select> 
+                                        <?php
+                                    }
+                                    else{
+                                        ?>
+                                        <select id="sub2" class="span3 dropdown" name="sub2">
                                             <option value="<?php  echo $data[0]['sub2'];?>"><?php
                                                 echo array_search($data[0]['sub2'],$subarray);
                                             ?></option>
-                                            <?php } ?>
-                                        <?php if($data[0]['sub2st1']==1) {?>
-                                            <option value="0" <?php  if($data[0]['sub2pf1']==1) echo 'selected' ?> >NONE</option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select> 
+                                        </select> 
+                                        <?php
+                                    }
+                                    ?>
                                     <select id="sub2p2" class="span3 dropdown" name="sub2p2">
                                         <option value="<?php echo $data[0]['sub2'];?>"><?php
                                             echo array_search($data[0]['sub2'],$subarray);
@@ -515,18 +545,34 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 <div class="control row controls-row">
                                     <label class="control-label span1" >
                                     </label>
-                                    <select id="sub3" class="span3 dropdown" name="sub3">
-                                        <?php if($data[0]['sub3pf1']==2){ ?>
+                                    <?php
+                                    if($data[0]['exam_type'] != 2){
+                                        ?>  
+                                        <select id="sub3" class="span3 dropdown" name="sub3">
+                                            <?php if($data[0]['sub3pf1']==2){ ?>
+                                                <option value="<?php  echo $data[0]['sub3'];?>"><?php
+                                                    echo array_search($data[0]['sub3'],$subarray);
+                                                ?></option>
+                                                <?php } ?>
+                                            <?php if($data[0]['sub3st1']==1) {?>
+                                                <option value="0" <?php if($data[0]['sub3pf1']==1) echo 'selected' ?> >NONE</option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select> 
+                                        <?php
+                                    }
+                                    else
+                                    {
+                                        ?>
+                                        <select id="sub3" class="span3 dropdown" name="sub3">
                                             <option value="<?php  echo $data[0]['sub3'];?>"><?php
                                                 echo array_search($data[0]['sub3'],$subarray);
                                             ?></option>
-                                            <?php } ?>
-                                        <?php if($data[0]['sub3st1']==1) {?>
-                                            <option value="0" <?php if($data[0]['sub3pf1']==1) echo 'selected' ?> >NONE</option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select> 
+                                        </select> 
+                                        <?php 
+                                    }
+                                    ?>
                                     <select id="sub3p2" class="span3 dropdown" name="sub3p2">
                                         <option value="<?php echo $data[0]['sub3'];?>"><?php
                                             echo array_search($data[0]['sub3'],$subarray);
@@ -537,18 +583,33 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     <label class="control-label span1" >
 
                                     </label>
-                                    <select id="sub4" class="span3 dropdown" name="sub4">
-                                        <?php if($data[0]['sub4pf1']==2){ ?>
+                                    <?php
+                                    if($data[0]['exam_type'] != 2){
+                                        ?>  
+                                        <select id="sub4" class="span3 dropdown" name="sub4">
+                                            <?php if($data[0]['sub4pf1']==2){ ?>
+                                                <option value="<?php  echo $data[0]['sub4'];?>"><?php
+                                                    echo array_search($data[0]['sub4'],$subarray);
+                                                ?></option>
+                                                <?php } ?>
+                                            <?php if($data[0]['sub4st1']==1) {?>
+                                                <option value="0" <?php   if($data[0]['sub4pf1']==1) echo 'selected' ?> >NONE</option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select>
+                                        <?php
+                                    }
+                                    else{
+                                        ?>
+                                        <select id="sub4" class="span3 dropdown" name="sub4">
                                             <option value="<?php  echo $data[0]['sub4'];?>"><?php
                                                 echo array_search($data[0]['sub4'],$subarray);
                                             ?></option>
-                                            <?php } ?>
-                                        <?php if($data[0]['sub4st1']==1) {?>
-                                            <option value="0" <?php   if($data[0]['sub4pf1']==1) echo 'selected' ?> >NONE</option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select> 
+                                        </select>
+                                        <?php
+                                    }  
+                                    ?>
                                     <select id="sub4p2" class="span3 dropdown" name="sub4p2">
                                         <option value="<?php echo $data[0]['sub4'];?>"><?php
                                             echo array_search($data[0]['sub4'],$subarray);
@@ -559,18 +620,32 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     <label class="control-label span1" >
 
                                     </label>
-                                    <select id="sub5" class="span3 dropdown" name="sub5">
-                                        <?php if($data[0]['sub5pf1']==2){ ?>
+                                    <?php
+                                    if($data[0]['exam_type'] != 2){
+                                        ?>
+                                        <select id="sub5" class="span3 dropdown" name="sub5">
+                                            <?php if($data[0]['sub5pf1']==2){ ?>
+                                                <option value="<?php  echo $data[0]['sub5'];?>"><?php
+                                                    echo array_search($data[0]['sub5'],$subarray);
+                                                ?></option>
+                                                <?php } ?>
+                                            <?php if($data[0]['sub5st1']==1) {?>
+                                                <option value="0" <?php if($data[0]['sub5pf1']==1) echo 'selected' ?> >NONE</option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select> 
+                                        <?php
+                                    }
+                                    else{
+                                        ?>
+                                        <select id="sub5" class="span3 dropdown" name="sub5">
                                             <option value="<?php  echo $data[0]['sub5'];?>"><?php
                                                 echo array_search($data[0]['sub5'],$subarray);
                                             ?></option>
-                                            <?php } ?>
-                                        <?php if($data[0]['sub5st1']==1) {?>
-                                            <option value="0" <?php if($data[0]['sub5pf1']==1) echo 'selected' ?> >NONE</option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select> 
+                                        </select> 
+                                        <?php }
+                                    ?>
                                     <select id="sub5p2" class="span3 dropdown" name="sub5p2" selected="selected">
                                         <option value="<?php echo $data[0]['sub5'];?>"><?php
                                             echo array_search($data[0]['sub5'],$subarray);
@@ -579,20 +654,32 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 </div>
                                 <div class="control row controls-row">
                                     <label class="control-label span1" >
-
                                     </label>
-                                    <select id="sub6" class="span3 dropdown" name="sub6">
-                                        <?php if($data[0]['sub6pf1']==2){ ?>
+                                    <?php
+                                    if($data[0]['exam_type'] != 2){
+                                        ?>
+                                        <select id="sub6" class="span3 dropdown" name="sub6">
+                                            <?php if($data[0]['sub6pf1']==2){ ?>
+                                                <option value="<?php  echo $data[0]['sub6'];?>"><?php
+                                                    echo array_search($data[0]['sub6'],$subarray);
+                                                ?></option>
+                                                <?php } ?>
+                                            <?php if($data[0]['sub6st1']==1) {?>
+                                                <option value="0" <?php   if($data[0]['sub6pf1']==1) echo 'selected' ?> >NONE</option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select> 
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <select id="sub6" class="span3 dropdown" name="sub6">
                                             <option value="<?php  echo $data[0]['sub6'];?>"><?php
                                                 echo array_search($data[0]['sub6'],$subarray);
                                             ?></option>
-                                            <?php } ?>
-                                        <?php if($data[0]['sub6st1']==1) {?>
-                                            <option value="0" <?php   if($data[0]['sub6pf1']==1) echo 'selected' ?> >NONE</option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select> 
+                                        </select> 
+                                        <?php }
+                                    ?>
                                     <select id="sub6p2"  name="sub6p2" class="span3 dropdown" selected="selected">
                                         <option value="<?php echo $data[0]['sub6'];?>"><?php
                                             echo array_search($data[0]['sub6'],$subarray);
@@ -602,20 +689,34 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 <div class="control row controls-row">
                                     <label class="control-label span1" >
                                     </label>
-                                    <select id="sub7" class="span3 dropdown" name="sub7">
-                                        <?php if($data[0]['sub7pf1']==2){ ?>
+                                    <?php
+                                    if($data[0]['exam_type'] != 2){
+                                        ?>
+                                        <select id="sub7" class="span3 dropdown" name="sub7">
+                                            <?php if($data[0]['sub7pf1']==2){ ?>
+                                                <option value="<?php  echo $data[0]['sub7'];?>"><?php
+                                                    echo array_search($data[0]['sub7'],$subarray);
+                                                ?></option>
+                                                <?php } ?>
+                                            <?php if($data[0]['sub7st1']==1) {?>
+                                                <option value="0" <?php   if($data[0]['sub7pf1']==1) echo 'selected' ?> >NONE</option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select> 
+                                        <?php
+                                    }
+                                    else{
+                                        ?>
+                                        <select id="sub7" class="span3 dropdown" name="sub7">
                                             <option value="<?php  echo $data[0]['sub7'];?>"><?php
                                                 echo array_search($data[0]['sub7'],$subarray);
                                             ?></option>
-                                            <?php } ?>
-                                        <?php if($data[0]['sub7st1']==1) {?>
-                                            <option value="0" <?php   if($data[0]['sub7pf1']==1) echo 'selected' ?> >NONE</option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select> 
+                                        </select> 
+                                        <?php 
+                                    }
+                                    ?>
                                     <select id="sub7p2" class="span3 dropdown" name="sub7p2" selected="selected">
-
                                         <option value="<?php echo $data[0]['sub7'];?>"><?php
                                             echo array_search($data[0]['sub7'],$subarray);
                                         ?></option>
@@ -623,20 +724,36 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                 </div> 
                                 <div class="control row controls-row">
                                     <label class="control-label span1" >
-
                                     </label>
-                                    <select id="sub8" class="span3 dropdown" name="sub8">
-                                        <?php if($data[0]['sub8pf1']==2){ ?>
+
+                                    <?php
+                                    if($data[0]['exam_type'] != 2){
+                                        ?>
+
+                                        <select id="sub8" class="span3 dropdown" name="sub8">
+                                            <?php if($data[0]['sub8pf1']==2){ ?>
+                                                <option value="<?php  echo $data[0]['sub8'];?>"><?php
+                                                    echo array_search($data[0]['sub8'],$subarray);
+                                                ?></option>
+                                                <?php } ?>
+                                            <?php if($data[0]['sub8st1']==1) {?>
+                                                <option value="0" <?php   if($data[0]['sub8pf1']==1) echo 'selected' ?> >NONE</option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select> 
+                                        <?php
+                                    }
+                                    else{
+                                        ?>
+                                        <select id="sub8" class="span3 dropdown" name="sub8">
                                             <option value="<?php  echo $data[0]['sub8'];?>"><?php
                                                 echo array_search($data[0]['sub8'],$subarray);
                                             ?></option>
-                                            <?php } ?>
-                                        <?php if($data[0]['sub8st1']==1) {?>
-                                            <option value="0" <?php   if($data[0]['sub8pf1']==1) echo 'selected' ?> >NONE</option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select> 
+                                        </select>    
+                                        <?php
+                                    }
+                                    ?>
                                     <select id="sub8p2"  name="sub8p2" class="span3 dropdown">
                                         <option value="<?php echo $data[0]['sub8'];?>"><?php
                                             echo array_search($data[0]['sub8'],$subarray);
