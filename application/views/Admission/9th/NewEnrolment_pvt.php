@@ -324,6 +324,7 @@
                     <option value="0">SELECT GROUP</option>
                     <option value="1">SCIENCE WITH BIOLOGY</option>
                     <option value="7">SCIENCE  WITH COMPUTER SCIENCE</option>
+                    <option value="8" >SCIENCE  WITH ELECTRICAL WIRING</option>
                     <option value="2">GENERAL</option>
                     <option value="5">DEAF AND DUMB</option>
                 </select>                                            

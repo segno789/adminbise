@@ -73,7 +73,7 @@ class Admission_model extends CI_Model
 
     public function getEmpCd_Model($employeeCode){
 
-        $query = $this->db->query("select Name from MiscDb..tblemployee where emp_cd = $employeeCode and isActive = 1");
+        $query = $this->db->query("select Name from MiscDb..tblemployee where emp_cd = $employeeCode and emp_cd < 3000");
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {

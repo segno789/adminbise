@@ -426,6 +426,12 @@ class Admission_9th_reg_model extends CI_Model
         }
         else
         {
+              $query = $this->db->query("admission_online..NextAppearanceSSC_9THADM 0,10,0,0,'$name','$fname','$dob','$fnic','',2");
+            $rowcount = $query->num_rows();
+            if($rowcount > 0)
+            {
+                return $query->result_array();
+            }
             return  -1;
         }
     }
@@ -806,13 +812,13 @@ class Admission_9th_reg_model extends CI_Model
     {
         // //DebugBreak();
         $Inst_cd = $User_info_data['Inst_Id'];
-        $forms_id = $User_info_data['forms_id'];
+        $forms_id =     str_replace(',',"','",$User_info_data['forms_id']) ;
         $query = $this->db->get_where('Admission_online..tblinstitutes_all',  array('Inst_cd' => $Inst_cd));
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
 
-            $q1         = $this->db->query("select * from Registration..tblreg9th where Sch_cd =$Inst_cd and (isdeleted = 0 or isdeleted is null) and (isAdmission = 1) and (Batch_id_Adm is null or Batch_id_Adm = 0)  and  formNo in($forms_id)");
+            $q1         = $this->db->query("select * from Registration..tblreg9th where Sch_cd =$Inst_cd and (isdeleted = 0 or isdeleted is null) and (isAdmission = 1) and (Batch_id_Adm is null or Batch_id_Adm = 0)  and  formNo in('$forms_id')");
             // $this->db->from('Registration..MA_P1_Reg_Adm2016');
             //$this->db->where(array('Sch_cd'=>$Inst_cd,'IsDeleted'=>0,'Batch_ID'=>0));
             // $this->db->where_in('formNo',$forms_id);

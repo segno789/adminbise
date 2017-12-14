@@ -3586,7 +3586,7 @@ class Admission extends CI_Controller
 
             else if( (@$_POST['father_cnic'] == '00000-0000000-0') || (@$_POST['father_cnic'] == '11111-1111111-1') || (@$_POST['father_cnic'] == '22222-2222222-2') || (@$_POST['father_cnic'] == '33333-3333333-3') || (@$_POST['father_cnic'] == '44444-4444444-4')
                 || (@$_POST['father_cnic'] == '55555-5555555-5') || (@$_POST['father_cnic'] == '66666-6666666-6') || (@$_POST['father_cnic'] == '77777-7777777-7') || (@$_POST['father_cnic'] == '88888-8888888-8') || (@$_POST['father_cnic'] == '99999-9999999-9') ||
-                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >7 || $cnt_fnic_one >7 || $cnt_fnic_two >7 || $cnt_fnic_four >7 || $cnt_fnic_thr >7 || $cnt_fnic_five >7 || $cnt_fnic_six >7 || $cnt_fnic_seven >7 || $cnt_fnic_eight >7 || $cnt_fnic_nine >7) ||
+                (@$_POST['father_cnic'] == '00000-1111111-0') || (@$_POST['father_cnic'] == '00000-1111111-1') || (@$_POST['father_cnic'] == '00000-0000000-1' || $cnt_fnic_zero >10 || $cnt_fnic_one >10 || $cnt_fnic_two >10 || $cnt_fnic_four >10 || $cnt_fnic_thr >10 || $cnt_fnic_five >10 || $cnt_fnic_six >10 || $cnt_fnic_seven >10 || $cnt_fnic_eight >10 || $cnt_fnic_nine >10) ||
                 ($father_cnic == "0")  && (@$_POST['nationality'] == 1)
                 )
                 {

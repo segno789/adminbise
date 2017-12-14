@@ -3087,6 +3087,8 @@ class Admission_9th_reg extends CI_Controller {
         $Total_fine = 0;
         $duedate ;
         $processFee = 195;
+         $Logged_In_Array = $this->session->all_userdata();
+        $user = $Logged_In_Array['logged_in'];
         // Declare Science & Arts Fee's According to Fee Table .  Note: this will assign to Triple date fee. After triple date it will not asign fees.
         if(!empty($user_info['rule_fee'])) 
         {

@@ -1818,7 +1818,7 @@
             else if (grp_cd == "8")
             {
                 load_Bio_CS_Sub();
-                //$("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
+                $("#sub7").append(new Option('ELECTRICAL WIRING (OPT)',43));
                 //ELECTRICAL WIRING (OPT)
             }
 

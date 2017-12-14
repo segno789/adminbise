@@ -361,6 +361,7 @@
                 <select id="std_group" class="form-control text-uppercase" name="std_group">
                     <?php
                     $grp = $data[0]['grp_cd'];
+                    $sub6 = $data[0]['sub6'];
                     $sub7 = $data[0]['sub7'];
                     $sub8 = $data[0]['sub8'];
                     $chance = $data[0]['chance'];
@@ -460,10 +461,19 @@
 
                         if($grp == 2)
                         {
-                            echo "<option value='2' selected='selected'>GENERAL</option>";  
-                            echo "<option value='1' >SCIENCE WITH BIOLOGY</option>";                                                               
-                            echo "<option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>";  
-                            echo "<option value='5'>DEAF AND DUMB</option>";
+                            if($sub6 == 43){
+                                echo "<option value='1' >SCIENCE WITH BIOLOGY</option>";                                                                                  
+                                echo "<option value='7' >SCIENCE  WITH COMPUTER SCIENCE</option>";
+                                echo "<option value='8'  selected='selected' >SCIENCE  WITH ELECTRICAL WIRING</option>";
+                                echo "<option value='2'>GENERAL</option>";
+                                echo "<option value='5'>DEAF AND DUMB</option>";  
+                            }
+                            else{
+                                echo "<option value='2' selected='selected'>GENERAL</option>";  
+                                echo "<option value='1' >SCIENCE WITH BIOLOGY</option>";                                                               
+                                echo "<option value='7'>SCIENCE  WITH COMPUTER SCIENCE</option>";  
+                                echo "<option value='5'>DEAF AND DUMB</option>";    
+                            }
                         }
 
                         if($grp == 5)
@@ -735,9 +745,9 @@
                     );
                     $result =  array_search($data[0]['sub4'],$subarray); 
 
-                    if($sub7 != 43){
-                        unset($subarray["ELECTRICAL WIRING"]);    
-                    }
+                    /* if($sub7 != 43){
+                    unset($subarray["ELECTRICAL WIRING"]);    
+                    } */
 
                     ?>
                 </select>

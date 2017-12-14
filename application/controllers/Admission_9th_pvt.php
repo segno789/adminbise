@@ -2357,7 +2357,7 @@ class Admission_9th_pvt extends CI_Controller {
 
                         }
 
-                        $nxtrnosessyear3 = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic']);
+        $nxtrnosessyear3 = $this->Admission_9th_reg_model->checknextrno($_POST['cand_name'],$_POST['father_name'],$_POST['dob'],$_POST['father_cnic']);
 
         //if($nxtrnosessyear !=  -1)
         if($nxtrnosessyear3[0]['NextRno_Sess_Year'] !="")
