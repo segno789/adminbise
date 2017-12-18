@@ -225,42 +225,32 @@
                 <label class="control-label" for="gend">
                     Gender :
                 </label>     
-
-                <?php
-                @$gender = @$data['sex'];
-                if($gender == 1 || $gender == 2){
-                    ?>
-                    <select name="gender" class="form-control text-uppercase" id="gend" disabled="disabled">
-                        <?php
-
-                        if($gender == 1)
-                        {
-                            echo"
-                            <option value='0'>None</option>
-                            <option value='1' selected='selected'>MALE</option> 
-                            <option value='2'>FEMALE</option>";
-                        }
-                        else if ($gender == 2)
-                        {
-                            echo"
-                            <option value='0'>None</option><option value='1'>MALE</option> 
-                            <option value='2' selected='selected'>FEMALE</option>";
-                        }
-                        ?>  
-                    </select>
-                    <input type="hidden" class="hidden" name="gend" value="<?php echo $gender; ?>"> 
+                <select name="gend" class="form-control text-uppercase" id="gend">
                     <?php
-                }
-                else if($gender != 1 || $gender != 2){
-                    ?>
-                    <select name="gend" class="form-control text-uppercase" id="gend">
-                        <option value='0' selected='selected'>NONE</option>
+                    @$gender = @$data['sex'];
+                    if($gender == 1)
+                    {
+                        echo"
+                        <option value='0'>None</option>
+                        <option value='1' selected='selected'>MALE</option> 
+                        <option value='2'>FEMALE</option>";
+                    }
+                    else if ($gender == 2)
+                    {
+                        echo"
+                        <option value='0'>None</option>
                         <option value='1'>MALE</option> 
-                        <option value='2'>FEMALE</option>
-                    </select>
-                    <?php
-                }
-                ?>
+                        <option value='2' selected='selected'>FEMALE</option>";
+                    }
+                    else
+                    {
+                        echo"
+                        <option value='0'selected='selected'>None</option>
+                        <option value='1'>MALE</option> 
+                        <option value='2'>FEMALE</option>";
+                    }
+                    ?>
+                </select>
             </div>
         </div>
     </div>
@@ -1779,6 +1769,14 @@
 
             var sel_group = $("#std_group").val();
 
+            var Gender = $("#gend").val();
+            if(Gender == "0"){
+                alertify.error('Please Select Gender First');
+                $("#gend").focus();
+                $("#std_group").val(0)
+                return false;
+            }
+
             if(sel_group == 0){
                 ClearALLDropDowns();    
             }
@@ -1851,26 +1849,20 @@
 
                 var gend = $('#gend').val();
                 var rel = $('#religion').val();
-                if(gend == 2)
+
+                if(Gender == "2")
                 {
-                    if($('#sub7 option[value=13]').length == 0)
-                    {
-                        $("#sub8").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
-                        $("#sub8p2").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
-                        $("#sub7").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
-                        $("#sub7p2").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
-                    }
+                    $("#sub6").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                    $("#sub6p2").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                    $("#sub7").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
+                    $("#sub7p2").append(new Option('ELEMENTS OF HOME ECONOMICS',13));
                 }
-                else  if(gend == 1)
+                else
                 {
-                    if($('#sub7 option[value=13]').length > 0)
-                    {
-                        $("#sub7 option[value='13']").remove();
-                        $("#sub7p2 option[value='13']").remove();
-                        $("#sub8 option[value='13']").remove();
-                        $("#sub8p2 option[value='13']").remove();
-                    }
+                    dropdownElement.find('sub8[value=13]').remove();
+                    dropdownElement.find('sub8p2[value=13]').remove();
                 }
+
 
                 if(rel == 1)
                 {
@@ -2022,7 +2014,6 @@
                     $("#sub8p2 option[value='43']").remove();
                 }  
             }
-            var Gender = $("#gend").val();
 
             if(Gender == "2")
             {

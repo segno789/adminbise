@@ -2039,6 +2039,14 @@
 
             var sel_group = $("#std_group").val();
 
+            var Gender = $("#gend").val();
+            if(Gender == "0"){
+                alertify.error('Please Select Gender First');
+                $("#gend").focus();
+                $("#std_group").val(0)
+                return false;
+            }
+
             if(sel_group == "0"){
                 ClearALLDropDowns();
             }
@@ -2186,6 +2194,7 @@
                     dropdownElement.find('sub8[value=13]').remove();
                     dropdownElement.find('sub8p2[value=13]').remove();
                 }
+
             }
             else if(sel_group == "5")
             {
