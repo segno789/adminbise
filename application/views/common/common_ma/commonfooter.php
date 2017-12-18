@@ -1042,7 +1042,7 @@
             return status;  
         }
 
-        else if((exam_type ==2 &&  selected_group_conversion==2 && grppre == 2)|| (exam_type < 7 &&  selected_group_conversion != grppre && grppre != 5))
+        else if((exam_type ==2 &&  selected_group_conversion==2 && grppre == 2 && grp_cd != 8)|| (exam_type < 7 &&  selected_group_conversion != grppre && grppre != 5 && grp_cd != 8))
         {
             if ((sub6p1 == 0 || sub6p2 == 0) )
             {

@@ -106,7 +106,7 @@ else if(Session == '2')
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
                 <input type="text" class="form-control" id="delformid" name="delformid" placeholder="Enter Form No" maxlength="6" required="required"><br>
-                <input type="text" class="form-control"  id="dob" name="dob" maxlength="10"><br>
+                <input type="text" class="form-control"  id="dob" name="dob" maxlength="10" placeholder="Enter Date of Birth"><br>
                 <input type="text" class="form-control"  id="mobCode" name="mobCode" maxlength="6" placeholder="Enter Verification Code" style="display:none">
             </div>         
         </div>

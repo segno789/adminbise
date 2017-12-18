@@ -287,7 +287,7 @@
                 alertify.error("Please write Valid Form No.");
                 return false;    
             }
-          
+
             else
             {
                 alertify.log("Please wait while your form is downloading....")    
@@ -303,7 +303,7 @@
             if(formno == ""){
                 return false;
             }
-            
+
             window.location.href='<?php  echo base_url(); ?>Admission_9th_pvt/checkFormNo_then_download/'+formno+'/'+dob;  
         }
         function downloadform(){
@@ -464,7 +464,6 @@
                         //$('#instruction').empty();
                         $.each(json.center, function (key, data) {
 
-                            console.log(data);
                             listitems +='<label style="text-align: left; margin-top: -23px;">'+data.CENT_CD + '-' + data.CENT_NAME+'</label><br>';
                         })
                         $('#instruction').html('<h1 style="    margin-bottom: 28px;">Selected Zone Centre List </h1>'+listitems); 
@@ -841,17 +840,13 @@
         var status = 0;
         // alert('sub6 '+sub6p1+ ' and '+ sub6p2);
         if(name == "" ||  name == undefined){
-            $('#ErrMsg').show();  
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your  Name </b>");    
+            
             alertify.error("Please Enter your  Name")
             $('#cand_name').focus(); 
             return status;
         }
         else if(fName == "" || fName == undefined){
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your Father's Name  </b>");   
+            
             alertify.error("Please Enter your Father's Name  ") 
             $('#father_name').focus(); 
             return status;
@@ -859,18 +854,12 @@
 
         else if(bFormNo == "" || bFormNo == 0 || bFormNo == undefined)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your bay-Form</b>"); 
             alertify.error("Please Enter your bay-Form") 
             $('#bay_form').focus();  
             return status; 
         }
         else if(FNic == "" || FNic.length == undefined )
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your Father's CNIC</b>"); 
             alertify.error("Please Enter your Father's CNIC") 
             $('#father_cnic').focus();  
             return status; 
@@ -878,9 +867,6 @@
 
         else if(dob == "" || dob.length == undefined)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            //$('#ErrMsg').html("<b>Please Enter your Date of Birth</b>"); 
             alertify.error("Please Enter your Date of Birth") 
             $('#dob').focus(); 
             return status;  
@@ -888,9 +874,6 @@
 
         else if(mobNo == "" || mobNo == 0 || mobNo == undefined)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            // $('#ErrMsg').html("<b>Please Enter your Mobile No.</b>"); 
             alertify.error("Please Enter your Mobile No.") 
             $('#mob_number').focus();   
             return status;  
@@ -898,18 +881,12 @@
 
         else if(MarkOfIdent == "" || MarkOfIdent == 0 || MarkOfIdent == undefined)
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            //$('#ErrMsg').html("<b>Please Enter your Mark of Indentification</b>"); 
             alertify.error("Please Enter your Mark of Indentification") 
             $('#MarkOfIden').focus();   
             return status;  
         }
         else if(address == "" || address == 0 || address.length ==undefined )
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-            $('#ErrMsg').html("<b>Please Enter your Address</b>"); 
             alertify.error("Please Enter your Address")
             $('#address').focus(); 
             return status;    
@@ -937,54 +914,12 @@
 
         else if (grp_cd == 0) 
         {
-            $('#ErrMsg').show(); 
-            $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
             alertify.error('Please Select your Study Group '); 
             $("#std_group").focus();
             return status;  
         }
 
-        /*      else if ($("#sub3p2").find('option:selected').val() == 0) 
-        {
-        alertify.error('Please select your Study Group ');                  
-        $("#sub3p2").focus();
-        return status;  
-        }
-        else if ($("#sub5p2").find('option:selected').val() == 0 )
-        {
-        $('#ErrMsg').show(); 
-        alertify.error('Please select Subject ');                   
-        $("#sub5p2").focus();
-        return status;  
-        }
-
-        else if ($("#sub6p2").find('option:selected').val() == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');                          
-        $("#sub6p2").focus();
-        return status;  
-        }
-
-        else   if ($("#sub7p2").find('option:selected').val() == 0)
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject ');
-        $("#sub7p2").focus();
-        return status;  
-        }
-
-        else if ($("#sub8p2").find('option:selected').val() == 0 )
-        {
-        $('#ErrMsg').show(); 
-        $("#ErrMsg").css({ backgroundColor: '#FEFAFB', color: '#F00' });
-        alertify.error('Please select Subject '); 
-        $("#sub8p2").focus();
-        return status;  
-        }*/
-
+        
         status = 1;
         return status;
     }
@@ -1106,7 +1041,7 @@
 
         return false;
     })
-       $("#btndel9Form").click(function(){
+    $("#btndel9Form").click(function(){
         var formno = $("#delformid").val();
         var btval = $("#btndel9Form").val();
 
