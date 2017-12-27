@@ -46,7 +46,7 @@ $type = pathinfo(@$data[0]['picpath'], PATHINFO_EXTENSION);
                                     $bformLen = strlen($data['0']['BForm']);
                                     $fnicLen = strlen($data['0']['FNIC']);
 
-                                    $bay_form = @$_POST['bay_form'];
+                                    $bay_form = $data['0']['BForm'];
                                     $bay_form = explode(' ',trim($bay_form));
                                     $bay_form = $bay_form[0][0];
 

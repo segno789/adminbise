@@ -65,6 +65,9 @@ class Admission_matric_model extends CI_Model
         }
     }
     public function getStudentsData($data){
+        
+        //DebugBreak();
+        
         $inst_cd = $data['Inst_Id'];
         $gender = $data['gender'];
         $year = YEAR;

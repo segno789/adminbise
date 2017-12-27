@@ -1869,6 +1869,8 @@ class Admission_matric extends CI_Controller {
     public function Make_Batch_Group_wise()
     {
 
+        DebugBreak();
+        
         $this->load->model('Admission_matric_model');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();

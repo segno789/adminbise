@@ -71,7 +71,7 @@ return false;
             "sPaginationType": "full_numbers",
             "cache": false
         });
-        <?php if(@$data['isNotFresh']==0){ ?>  
+        <?php if(@$data['isNotFresh']==0 || @$data['Dob'] == ''){ ?>  
             $("#dob").datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true, changeYear: true, maxDate: new Date(2004, 7,1),yearRange: '1970:2004'}).val();
             <?php } ?>
         $("#bay_form,#father_cnic").mask("99999-9999999-9",{placeholder:"_"});

@@ -281,6 +281,8 @@ class Admission extends CI_Controller
         else
         {*/
 
+        //DebugBreak();
+
         $retfee = $this->feecalculate($data);
         $data['AdmFee'] = $retfee[0]['AdmFee'];
         $data['AdmTotalFee'] = $retfee[0]['AdmTotalFee'];
@@ -1899,7 +1901,6 @@ class Admission extends CI_Controller
     }
 
     public function Pre_Matric_data()
-
     {
         $this->load->library('session');
         $this->load->model('Admission_model');
@@ -1964,6 +1965,8 @@ class Admission extends CI_Controller
         $specialcase = @$data[0]['result2'];
         $nxtrnosessyear = @$data[0]['NextRno_Sess_Year'];
 
+
+
         if($nxtrnosessyear != "")
         {
             $parts = explode(",", $nxtrnosessyear);
@@ -1979,16 +1982,36 @@ class Admission extends CI_Controller
             return false; 
         } 
 
+        $allowedSpl_cd = array("12", "13", "14");
 
-        if($specialcode != '')
+        if($specialcode != '') 
         {
-            $error_msg.= 'You can not proceed due to  '.$data[0]['Spl_Name'].' Condition.';            
-            $data['error'] = $error_msg;
-            $this->load->view('common/commonheader.php');        
-            $this->load->view('Admission/Matric/getinfo.php', $data);
-            $this->load->view('common/footer.php');    
-            return false;  
-        }
+            if(in_array($data[0]['spl_cd'], $allowedSpl_cd) && YEAR-2)
+            {
+                $data[0]['name'] = $data[0]['Name'] ;
+                $data[0]['BForm'] = $data[0]['bFormNo'] ;
+                $data[0]['Dob'] = $data[0]['dob'] ;
+                $data[0]['Iyear'] = $data[0]['iyear'] ;
+                $data[0]['rno'] = $data[0]['RNo'] ;
+                $data[0]['sess'] =    $session;
+                $data[0]['class'] =    $oldClass;
+                $data[0]['isNotFresh'] =    1;
+                $this->load->view('common/commonheader.php');
+                $this->load->view('Admission/Matric/matricFreshForm.php', array('data'=>$data[0]));
+                $this->load->view('common/common_ma/Otherboard10thfooter.php');
+                return false;  
+            }
+
+            else
+            {
+                $error_msg.= 'You can not proceed due to  '.$data[0]['Spl_Name'].' Condition.';            
+                $data['error'] = $error_msg;
+                $this->load->view('common/commonheader.php');        
+                $this->load->view('Admission/Matric/getinfo.php', $data);
+                $this->load->view('common/footer.php');    
+                return false;  
+            }
+        }    
 
         if(@$_POST['confirmProceed'] == "Confirm to Proceed")
         {
@@ -2061,7 +2084,7 @@ class Admission extends CI_Controller
                 return false;
             }
 
-            else if($data[0]['Spl_Name'] !="")
+            else if($data[0]['Spl_Name'] != "")
             {
                 $error_msg.= 'You can not appear due to  '.$data[0]['Spl_Name'].' Condition.';            
                 $data['error'] = $error_msg;
