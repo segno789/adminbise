@@ -21,7 +21,7 @@ class Admission_matric extends CI_Controller {
         $this->load->view('common/header.php',$userinfo);
         $this->load->model('Admission_matric_model');
 
-        $inst_cd = 151087;
+        $inst_cd = '';
 
         $isset = $this->Admission_matric_model->iszoneset($Inst_Id);
 
@@ -606,7 +606,7 @@ class Admission_matric extends CI_Controller {
         $userinfo = $Logged_In_Array['logged_in'];
         $this->load->model('Admission_matric_model');
 
-        $inst_cd = 151087;
+        $inst_cd = '';
         if($userinfo['Inst_Id'] == $inst_cd)
         {
             $this->load->view('common/header.php',$userinfo);
@@ -1869,8 +1869,6 @@ class Admission_matric extends CI_Controller {
     public function Make_Batch_Group_wise()
     {
 
-        DebugBreak();
-        
         $this->load->model('Admission_matric_model');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();

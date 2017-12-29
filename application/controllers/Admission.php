@@ -281,8 +281,6 @@ class Admission extends CI_Controller
         else
         {*/
 
-        //DebugBreak();
-
         $retfee = $this->feecalculate($data);
         $data['AdmFee'] = $retfee[0]['AdmFee'];
         $data['AdmTotalFee'] = $retfee[0]['AdmTotalFee'];
@@ -1901,6 +1899,7 @@ class Admission extends CI_Controller
     }
 
     public function Pre_Matric_data()
+
     {
         $this->load->library('session');
         $this->load->model('Admission_model');
@@ -1965,8 +1964,6 @@ class Admission extends CI_Controller
         $specialcase = @$data[0]['result2'];
         $nxtrnosessyear = @$data[0]['NextRno_Sess_Year'];
 
-
-
         if($nxtrnosessyear != "")
         {
             $parts = explode(",", $nxtrnosessyear);
@@ -1982,8 +1979,8 @@ class Admission extends CI_Controller
             return false; 
         } 
 
-        $allowedSpl_cd = array("12", "13", "14");
 
+        $allowedSpl_cd = array("12", "13", "14");
         if($specialcode != '') 
         {
             if(in_array($data[0]['spl_cd'], $allowedSpl_cd) && YEAR-2)
@@ -2011,7 +2008,7 @@ class Admission extends CI_Controller
                 $this->load->view('common/footer.php');    
                 return false;  
             }
-        }    
+        } 
 
         if(@$_POST['confirmProceed'] == "Confirm to Proceed")
         {
@@ -2084,7 +2081,7 @@ class Admission extends CI_Controller
                 return false;
             }
 
-            else if($data[0]['Spl_Name'] != "")
+            else if($data[0]['Spl_Name'] !="")
             {
                 $error_msg.= 'You can not appear due to  '.$data[0]['Spl_Name'].' Condition.';            
                 $data['error'] = $error_msg;

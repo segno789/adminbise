@@ -698,8 +698,10 @@ class Admission_9th_reg extends CI_Controller {
     }
     $pdf->Output('financeReoprt.pdf', 'I'); 
     }*/
+
     public function financeReoprt()
     {
+        //DebugBreak();
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
         $user = $Logged_In_Array['logged_in'];
@@ -708,15 +710,17 @@ class Admission_9th_reg extends CI_Controller {
         $result = array('data'=>$this->Admission_9th_reg_model->forwarding_pdf_Finance_final($fetch_data),'inst_Name'=>$user['inst_Name']);    
         if(empty($result['data']))
         {
-            //   return; 
+
         }
-        //  print_r($result);die();
-        $temp = $user['Inst_Id'].'@'.Year.'@'.Session;
-        //$image =  $this->set_barcode($temp);
+        $CurrentYear = Year + 1;
+        $temp = $user['Inst_Id'].'@'.$CurrentYear.'@'.Session;
+
         $this->load->library('PDFFWithOutPage');
         $pdf=new PDFFWithOutPage();   
         $pdf->SetAutoPageBreak(true,2);
+
         $pdf->AddPage('P',"A4");
+
         $fontSize = 10; 
         $marge    = .95;   // between barcode and hri in pixel
         $bx        = 170.6;  // barcode center
@@ -724,16 +728,18 @@ class Admission_9th_reg extends CI_Controller {
         $height   = 5.7;   // barcode height in 1D ; module size in 2D
         $width    = .26;  // barcode height in 1D ; not use in 2D
         $angle    = 0;   // rotation in degrees
+
         $code     = '222020';     // barcode (CP852 encoding for Polish and other Central European languages)
         $type     = 'code128';
         $black    = '000000'; // color in hex
-        $data['iyear'] = Year + 1;
+
+        $data['iyear'] = Year;
         $data['sess'] = Session;
 
         $Barcode = $temp;
 
         $result[0] = $result['data'][0];
-        // DebugBreak();
+
         $pdf->Image("assets/img/9thForwardingLetterIncome.png",5,6, 200,280, "PNG");
         // $pdf->Image("assets/img/M2.jpg",100, 2.8, 10, 10, "jpg");
         $bardata = Barcode::fpdf($pdf, $black, $bx, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
@@ -742,83 +748,303 @@ class Admission_9th_reg extends CI_Controller {
         Barcode::rotate(-$len / 2, ($bardata['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
 
         $pdf->SetFont('Arial','B',11.5);
-        $pdf->SetXY(70.5, 44);
-        $pdf->Cell(0,0,$data['iyear'],0,0,'L',0);
-        //Finance Page
-        $Y = 67;
-        $font = 12;
-        $x = 13; 
-        for($i =0 ; $i<7 ; $i++)
+        $pdf->SetXY(72.5, 44);
+        $pdf->Cell(0,0,$CurrentYear,0,0,'L',0);
+
+        if($data['sess'] ==  1)
+        {
+            //  $pdf->Image("assets/img/Annual.jpg",84.9,43, 14,8, "JPG"); 
+        }
+
+        else if($data['sess'] == 2)
+        {
+            //  $pdf->Image("assets/img/Supply.jpg",84.9,43, 14,8, "JPG");
+        }
+        $rule_fee   =  $this->Admission_9th_reg_model->getrulefee(date('Y-m-d')); 
+        $print = 7;
+        if($rule_fee[0]['Fee_Type']=='Single Fee')
+        {
+            $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")";
+
+            $Y = 70; //single Fee
+            $print = 7;
+        }
+        else if($rule_fee[0]['Fee_Type']=='Double Fee')
+        {
+            $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")". '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
+            $Y = 80; //double Fee
+            $print = 15;
+        }
+        else if($rule_fee[0]['Fee_Type']=='Triple Fee')
         {
 
+            if($rule_fee[0]['Fine']=='0'){
+                $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
+                '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
+                $specFee2 = '  T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")";
+
+                $Y = 90; //Tripple Fee
+                $print = 23;
+            }
+            else{
+                $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
+                '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
+                $specFee2= '  T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")".
+                '    F('.$result[0]['Total_Fee_Spec_fineFee'].'/-    '.$result[0]['Total_SpeCandidate_fineFee'].")";
+
+                $Y = 100; // per day fee
+                $print = 31;
+            }
+        }
+        else
+        {
+            $specFee1 = '*S('.$result[0]['Total_Fee_Spec_singleFee'].'/-    '.$result[0]['Total_SpeCandidate_singleFee'].")".
+            '    D('.$result[0]['Total_Fee_Spec_doubleFee'].'/-    '.$result[0]['Total_SpeCandidate_doubleFee'].")";
+            $specFee2= '  T('.$result[0]['Total_Fee_Spec_tripleFee'].'/-    '.$result[0]['Total_SpeCandidate_tripleFee'].")".
+            '    F('.$result[0]['Total_Fee_Spec_fineFee'].'/-    '.$result[0]['Total_SpeCandidate_fineFee'].")";
+
+            $Y = 100; // per day fee 
+            $print = 31;       
+        }
+        $font = 12;
+        $x = 20; 
+        $tempx ;
+        //    DebugBreak();
+        for($i =0 ; $i<$print ; $i++)
+        {
             $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-2, $Y-7.5);
-            //$result[0]['Total_sci']
-            if($i == 6)
+            $pdf->SetXY($x, $Y+2);
+            $isschedule = 0;
+
+            if($i == 6 || $i == 13 || $i == 20 || $i == 27)
             {
-                $pdf->SetXY($x-8, $Y-7.5);
-                $pdf->Cell(0,0,$result[0]['Total_sci'],0,0,'L',0);
+                if($i==6)
+                {
+                    $Y = 60;
+                    $Total_sci = $result[0]['Total_sci_singleFee'];
+                }
+                if($i==13)
+                {
+                    $Y = 70;
+                    $Total_sci= $result[0]['Total_sci_doubleFee'];
+                }
+                if($i==20)
+                {
+                    $Y = 80;
+                    $Total_sci= $result[0]['Total_sci_tripleFee'];
+                }
+                if($i==27)
+                {
+                    $Y = 90;
+                    $Total_sci= $result[0]['Total_sci_fineFee'];
+                }
+                $pdf->SetXY($x-18, $Y+$isschedule);
+                $pdf->Cell(0,0,$Total_sci,0,0,'L',0);
             }
-            else if($i == 5)
+            else if($i == 5 || $i == 12 || $i == 19 || $i == 26)
             {
-                $pdf->Cell(0,0,$result[0]['Total_Arts'],0,0,'L',0);
+                $pdf->SetXY($x-16, $Y+$isschedule);
+                if($i==5)
+                {
+                    $Y = 60;
+                    $Total_Arts = $result[0]['Total_Arts_singleFee'];
+
+                }
+                if($i==12)
+                {
+                    $Y = 70;
+                    $pdf->SetXY($x-10, $Y+$isschedule);
+                    $Total_Arts= $result[0]['Total_Arts_doubleFee'];
+
+                }
+                if($i==19)
+                {
+                    $Y = 80;
+                    $Total_Arts= $result[0]['Total_Arts_tripleFee'];
+                }
+                if($i==26)
+                {
+                    $Y = 90;
+                    $Total_Arts= $result[0]['Total_Arts_fineFee'];
+                }
+
+                $pdf->Cell(0,0,$Total_Arts,0,0,'L',0);
             }
-            else if($i == 4)
+            else if($i == 4 || $i == 11 || $i == 18 || $i == 25)
             {
-                $pdf->Cell(0,0,$result[0]['Total_ArtsPr'],0,0,'L',0);
+
+                if($i==4)
+                {
+                    $Y = 60;
+                    $Total_ArtsPr = $result[0]['Total_ArtsPr_singleFee'];
+
+                }
+                if($i==11)
+                {
+                    $Y = 70;
+                    $Total_ArtsPr= $result[0]['Total_ArtsPr_doubleFee'];
+
+                }
+                if($i==18)
+                {
+                    $Y = 80;
+                    $Total_ArtsPr= $result[0]['Total_ArtsPr_tripleFee'];
+                }
+                if($i==25)
+                {
+                    $Y = 90;
+                    $Total_ArtsPr = $result[0]['Total_ArtsPr_fineFee'];
+                }
+                $pdf->SetXY($x-14, $Y+$isschedule); 
+                $pdf->Cell(0,0,$Total_ArtsPr,0,0,'L',0);
             }
-            else if($i == 3)
+            else if($i == 3 || $i == 10 || $i == 17 || $i == 24)
             {
-                $pdf->Cell(0,0,$result[0]['Total_ReApSc'],0,0,'L',0);
+                $pdf->SetXY($x-12, $Y+$isschedule);
+                if($i==3)
+                {
+                    $Y = 60;
+                    $Total_ReApSc = $result[0]['Total_ReApSc_singleFee'];
+                }
+                if($i==10)
+                {
+                    $Y = 70;
+                    $Total_ReApSc= $result[0]['Total_ReApSc_doubleFee'];
+                }
+                if($i==17)
+                {
+                    $Y = 80;
+                    $Total_ReApSc= $result[0]['Total_ReApSc_tripleFee'];
+                }
+                if($i==24)
+                {
+                    $Y = 90;
+                    $Total_ReApSc = $result[0]['Total_ReApSc_fineFee'];
+                }
+                $pdf->Cell(0,0,$Total_ReApSc,0,0,'L',0);
             }
-            else if($i == 2)
+            else if($i == 2 || $i == 9 || $i == 16 || $i == 23)
             {
-                $pdf->Cell(0,0,$result[0]['Total_ReApArts'],0,0,'L',0);
+                $pdf->SetXY($x-8, $Y+$isschedule);
+                if($i==2)
+                {
+                    $Y = 60;
+                    $Total_ReApArts = $result[0]['Total_ReApArts_singleFee'];
+                }
+                if($i==9)
+                {
+                    $Y = 70;
+                    // $pdf->SetXY($x+5, $Y+$isschedule);
+                    $Total_ReApArts= $result[0]['Total_ReApArts_doubleFee'];
+                }
+                if($i==16)
+                {
+                    $Y = 80;
+                    $Total_ReApArts= $result[0]['Total_ReApArts_tripleFee'];
+                }
+                if($i==23)
+                {
+                    $Y = 90;
+                    $Total_ReApArts = $result[0]['Total_ReApArts_fineFee'];
+                }
+                $pdf->Cell(0,0,$Total_ReApArts,0,0,'L',0);
             }
-            else if($i == 1)
+            else if($i == 1 || $i == 8 || $i == 15 || $i == 22)
             {
-                $pdf->Cell(0,0,$result[0]['Total_ReApArtsPr'],0,0,'L',0);
+                $pdf->SetXY($x, $Y+$isschedule);
+                if($i==1)
+                {
+                    $Y = 60;
+                    $pdf->SetXY($x, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_singleFee'];
+                }
+                if($i==8)
+                {
+                    $Y = 70;
+                    // $pdf->SetXY($x+5, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_doubleFee'];
+                }
+                if($i==15)
+                {
+                    $Y = 80;
+                    $pdf->SetXY($x, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_tripleFee'];
+                }
+                if($i==22)
+                {
+                    $Y = 90;
+                    $pdf->SetXY($x, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_fineFee'];
+                }
+                $pdf->Cell(0,0,$Total_ReApArtsPr_singleFee,0,0,'L',0);
             }
-            else if($i == 0)
+            else if($i == 0 || $i == 7 || $i == 14 || $i == 21)
             {
-                $pdf->SetFont('Arial','B',$font-3);
-                $pdf->SetXY($x-5, $Y-6.5);
-                $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
+                $font = 9;
+                $pdf->SetFont('Arial','B',$font);
+
+                if($i==0)
+                {
+                    $Y = 60;
+                    $total_singleFee = $result[0]['Total_Fee_singleFee'];
+                }
+                if($i==7)
+                {
+                    $Y = 70;
+                    $x = 18; 
+                    $total_singleFee = $result[0]['Total_Fee_doubleFee'];
+                }
+                if($i==14)
+                {
+                    $Y = 80;
+                    $x = 18; 
+                    $total_singleFee = $result[0]['Total_Fee_tripleFee'];
+                }
+                if($i==21)
+                {
+                    $Y = 90;
+                    $x = 18; 
+                    $total_singleFee = $result[0]['Total_Fee_fineFee'];
+                }
+                $pdf->SetXY($x-10, $Y+$isschedule);
+                $pdf->Cell(0,0,$total_singleFee.'/-',0,0,'L',0);
+
+                $font = 14;
             }
-            if($i==1)
+
+            if($i==1 || $i == 7 || $i == 14 || $i == 21)
             {
                 $x= $x+26; 
             }
-            else if($i<6)
+            else if($i<6 || $i < 13 || $i < 20 || $i < 27 )
             {
                 $x= $x+22; 
 
-                if($i==4)
+                if($i==4 || $i == 11 || $i == 18 || $i == 25)
                 {
                     $x= $x-5; 
                 }
             }
-
-
-
         }
-
+        $x = 144;
+        $Y = 70;
         $pdf->SetFont('Arial','B',$font);
-        $pdf->SetXY($x-115, $Y+32);
-        $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
+        $pdf->SetXY($x-115, $Y+27);
+        $pdf->Cell(0,0,$result[0]['Grand_Total_Fee'].'/-',0,0,'L',0);
 
-        $pdf->SetFont('Arial','B',$font);
-        $pdf->SetXY($x-59, $Y+32);
-        $pdf->Cell(0,0,$result[0]['Total_SpeCandidate'],0,0,'L',0);
+        $pdf->SetFont('Arial','B',8);
+        $pdf->SetXY($x-75, $Y+28.5);
+        $pdf->Cell(0,0,$specFee1,0,0,'L',0);
+        $pdf->SetXY($x-75, $Y+28.5);
+        $pdf->Cell(0,0,$specFee2,0,0,'L',0);
 
-        // DebugBreak();
         $pdf->SetFont('Arial','B',$font);
         $pdf->SetXY($x-30, $Y+172);
         $pdf->Cell(0,0,$user['Inst_Id'],0,0,'L',0);
         $font = 9;
         $pdf->SetFont('Arial','B',$font);
         $pdf->SetXY($x-68, $Y+178);
-        $pdf->MultiCell(80,2.9,$user['inst_Name'],0,"L");
+        $pdf->MultiCell(90,2.9,$user['inst_Name'],0,"L");
         $font = 12;
         $pdf->SetFont('Arial','B',$font);
         $pdf->SetXY($x-30, $Y+198);
@@ -827,85 +1053,317 @@ class Admission_9th_reg extends CI_Controller {
         $pdf->SetFont('Arial','B',$font);
         $pdf->SetXY($x-30, $Y+206);
         $pdf->Cell(0,0,$user['cell'],0,0,'L',0);
-        /////Matric Branch Copy
-        $Y = 64;
-        $font = 12;
-        $x = 13; 
-        $pdf->AddPage('P',"A4");
-        for($i =0 ; $i<7 ; $i++)
+
+        $pdf->SetFont('Arial','B',8);
+        $pdf->SetXY($x-135, $Y+215);
+        $pdf->Cell(0,0,"* S = Single Fee Schedule, D = Double Fee Schedule, T = Triple Fee Schedule, F = Fine Fee Schedule    Printing Date: ".date('d-m-Y h:i A'),0,0,'L',0);
+
+        $print = 7;
+        if($rule_fee[0]['Fee_Type']=='Single Fee')
         {
+            $Y = 65; //single Fee
+            $print = 7;
+        }
+        else if($rule_fee[0]['Fee_Type']=='Double Fee')
+        {
+            $Y = 75; //double Fee
+            $print = 15;
+        }
+        else if($rule_fee[0]['Fee_Type']=='Triple Fee')
+        {
+
+            if($rule_fee[0]['Fine']=='0')
+            {
+                $Y = 85; //Tripple Fee
+                $print = 23;
+            }
+            else{
+                $Y = 95; // per day fee
+                $print = 31;  
+            }
+        }
+        else
+        {
+            $Y = 95; // per day fee
+            $print = 31;  
+
+        }
+
+        $font = 12;
+        $x = 18; 
+        $pdf->AddPage('P',"A4");
+        $pdf->Image("assets/img/9thForwardingLetterIncome.png",5,8, 200,280, "PNG");
+        //$pdf->Image("assets/img/M3.jpg",100, 2.8, 10, 10, "jpg");
+        $bardata = Barcode::fpdf($pdf, $black, $bx+2, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
+
+        $len = $pdf->GetStringWidth($bardata['hri']);
+        Barcode::rotate(-$len / 2, ($bardata['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
+
+        $pdf->SetFont('Arial','B',11.5);
+        $pdf->SetXY(72.5, 45);
+        $pdf->Cell(0,0,$CurrentYear,0,0,'L',0);
+
+        if($data['sess'] ==  1)
+        {
+            // $pdf->Image("assets/img/Annual.png",87,46, 12,8, "png"); 
+        }
+
+        else if($data['sess'] == 2)
+        {
+            // $pdf->Image("assets/img/Supply.png",87,46, 12,8, "png");
+        }
+        $isschedule = 8;
+        $Y= 54;
+        $sY = 62;
+        $dY = 71;
+        $tY = 94;
+        $fY = 103;
+        //       DebugBreak();
+        for($i =0 ; $i<$print ; $i++)
+        {
+
             $pdf->SetFont('Arial','B',$font);
-            $pdf->SetXY($x-1.5, $Y-2);
-            if($i == 6)
+            $pdf->SetXY($x, $Y+2);
+            $isschedule = 0;
+
+            if($i == 6 || $i == 13 || $i == 20 || $i == 27)
             {
-                $pdf->SetXY($x-8, $Y-2);
-                $pdf->Cell(0,0,$result[0]['Total_sci'],0,0,'L',0);
+                $pdf->SetXY($x-20, $Y+$isschedule);
+                if($i==6)
+                {
+                    $Y = $sY;    
+                    $Total_sci = $result[0]['Total_sci_singleFee'];
+                }
+                if($i==13)
+                {
+                    $Y = $dY;
+                    $pdf->SetXY($x-18, $Y+$isschedule);
+                    $Total_sci= $result[0]['Total_sci_doubleFee'];
+                }
+                if($i==20)
+                {
+                    $Y = $tY;
+                    $Total_sci= $result[0]['Total_sci_tripleFee'];
+                }
+                if($i==27)
+                {
+                    $Y = $fY;
+                    $Total_sci= $result[0]['Total_sci_fineFee'];
+                }
+
+                $pdf->Cell(0,0,$Total_sci,0,0,'L',0);
             }
-            else if($i == 5)
+            else if($i == 5 || $i == 12 || $i == 19 || $i == 26)
             {
-                $pdf->Cell(0,0,$result[0]['Total_Arts'],0,0,'L',0);
+                $pdf->SetXY($x-16, $Y+$isschedule);
+                if($i==5)
+                {
+                    $Y = $sY;
+                    $pdf->SetXY($x-12, $Y+$isschedule);
+                    $Total_Arts = $result[0]['Total_Arts_singleFee'];
+
+                }
+                if($i==12)
+                {
+                    $Y = $dY;
+                    $pdf->SetXY($x-12, $Y+$isschedule);
+                    $Total_Arts= $result[0]['Total_Arts_doubleFee'];
+
+                }
+                if($i==19)
+                {
+                    $Y = $tY;
+                    $Total_Arts= $result[0]['Total_Arts_tripleFee'];
+                }
+                if($i==26)
+                {
+                    $Y = $fY;
+                    $Total_Arts= $result[0]['Total_Arts_fineFee'];
+                }
+
+                $pdf->Cell(0,0,$Total_Arts,0,0,'L',0);
             }
-            else if($i == 4)
-            {
-                $pdf->Cell(0,0,$result[0]['Total_ArtsPr'],0,0,'L',0);
-            }
-            else if($i == 3)
-            {
-                $pdf->Cell(0,0,$result[0]['Total_ReApSc'],0,0,'L',0);
-            }
-            else if($i == 2)
+            else if($i == 4 || $i == 11 || $i == 18 || $i == 25)
             {
 
-                $pdf->Cell(0,0,$result[0]['Total_ReApArts'],0,0,'L',0);
+                if($i==4)
+                {
+                    $Y = $sY;
+                    $Total_ArtsPr = $result[0]['Total_ArtsPr_singleFee'];
+
+                }
+                if($i==11)
+                {
+                    $Y = $dY;
+                    $Total_ArtsPr= $result[0]['Total_ArtsPr_doubleFee'];
+
+                }
+                if($i==18)
+                {
+                    $Y = $tY;
+                    $Total_ArtsPr= $result[0]['Total_ArtsPr_tripleFee'];
+                }
+                if($i==25)
+                {
+                    $Y = $fY;
+                    $Total_ArtsPr = $result[0]['Total_ArtsPr_fineFee'];
+                }
+                $pdf->SetXY($x-14, $Y+$isschedule); 
+                $pdf->Cell(0,0,$Total_ArtsPr,0,0,'L',0);
             }
-            else if($i == 1)
+            else if($i == 3 || $i == 10 || $i == 17 || $i == 24)
+            {
+                $pdf->SetXY($x-12, $Y+$isschedule);
+                if($i==3)
+                {
+                    $Y = $sY;
+                    $Total_ReApSc = $result[0]['Total_ReApSc_singleFee'];
+                }
+                if($i==10)
+                {
+                    $Y = $dY;
+                    $pdf->SetXY($x-14, $Y+$isschedule);
+                    $Total_ReApSc= $result[0]['Total_ReApSc_doubleFee'];
+                }
+                if($i==17)
+                {
+                    $Y = $tY;
+                    $Total_ReApSc= $result[0]['Total_ReApSc_tripleFee'];
+                }
+                if($i==24)
+                {
+                    $Y = $fY;
+                    $Total_ReApSc = $result[0]['Total_ReApSc_fineFee'];
+                }
+                $pdf->Cell(0,0,$Total_ReApSc,0,0,'L',0);
+            }
+            else if($i == 2 || $i == 9 || $i == 16 || $i == 23)
+            {
+                $pdf->SetXY($x-8, $Y+$isschedule);
+                if($i==2)
+                {
+                    $Y = $sY;
+                    $Total_ReApArts = $result[0]['Total_ReApArts_singleFee'];
+                }
+                if($i==9)
+                {
+                    $Y = $dY;  
+                    $Total_ReApArts= $result[0]['Total_ReApArts_doubleFee'];
+                }
+                if($i==16)
+                {
+                    $Y = $tY;
+                    $Total_ReApArts= $result[0]['Total_ReApArts_tripleFee'];
+                }
+                if($i==23)
+                {
+                    $Y = $fY;
+                    $Total_ReApArts = $result[0]['Total_ReApArts_fineFee'];
+                }
+                $pdf->Cell(0,0,$Total_ReApArts,0,0,'L',0);
+            }
+            else if($i == 1 || $i == 8 || $i == 15 || $i == 22)
+            {
+                $pdf->SetXY($x, $Y+$isschedule);
+                if($i==1)
+                {
+                    $Y = $sY;
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_singleFee'];
+                }
+                if($i==8)
+                {
+                    $Y = $dY;
+                    $pdf->SetXY($x-4, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_doubleFee'];
+                }
+                if($i==15)
+                {
+                    $Y = $tY;
+                    $pdf->SetXY($x-4, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_tripleFee'];
+                }
+                if($i==22)
+                {
+                    $Y = $fY;
+                    $pdf->SetXY($x-4, $Y+$isschedule);
+                    $Total_ReApArtsPr_singleFee = $result[0]['Total_ReApArtsPr_fineFee'];
+                }
+                $pdf->Cell(0,0,$Total_ReApArtsPr_singleFee,0,0,'L',0);
+            }
+            else if($i == 0 || $i == 7 || $i == 14 || $i == 21)
             {
 
-                $pdf->Cell(0,0,$result[0]['Total_ReApArtsPr'],0,0,'L',0);
+                $font = 9;
+                $pdf->SetFont('Arial','B',$font);
+
+                if($i==0)
+                {
+                    $Y = $sY;  
+                    $pdf->SetXY($x-10, $Y+$isschedule);
+                    $total_singleFee = $result[0]['Total_Fee_singleFee'];
+                }
+                if($i==7)
+                {
+                    $Y = $dY;
+                    $x = 18; 
+                    $pdf->SetXY($x-10, $Y+$isschedule);
+                    $total_singleFee = $result[0]['Total_Fee_doubleFee'];
+                }
+                if($i==14)
+                {
+                    $Y = $tY;
+                    $x = 18; 
+                    $pdf->SetXY($x-10, $Y+$isschedule);
+                    $total_singleFee = $result[0]['Total_Fee_tripleFee'];
+                }
+                if($i==21)
+                {
+                    $Y = $fY;
+                    $x = 18; 
+                    $pdf->SetXY($x-10, $Y+$isschedule);
+                    $total_singleFee = $result[0]['Total_Fee_fineFee'];
+                }
+
+                $pdf->Cell(0,0,$total_singleFee.'/-',0,0,'L',0);
+
+                $font = 14;
             }
-            else if($i == 0)
-            {
-                $pdf->SetFont('Arial','B',$font-3);
-                $pdf->SetXY($x-5, $Y-2);
-                $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
-            }
-            if($i==1)
+
+            if($i==1 || $i == 7 || $i == 14 || $i == 21)
             {
                 $x= $x+26; 
             }
-            else if($i<6)
+            else if($i<6 || $i < 13 || $i < 20 || $i < 27 )
             {
-                if($i == 3)
+                $x= $x+22; 
+
+                if($i==4 || $i == 11 || $i == 18 || $i == 25)
                 {
-                    $x= $x+24; 
+                    $x= $x-5; 
                 }
-
-                else
-                {
-
-                    $x= $x+20; 
-
-
-                }
-
             }
         }
-        $pdf->SetFont('Arial','B',$font);
-        $pdf->SetXY($x-115, $Y+37);
-        $pdf->Cell(0,0,$result[0]['Total_Fee'].'/-',0,0,'L',0);
+        $x = 144;
+        $Y= 54;
 
         $pdf->SetFont('Arial','B',$font);
-        $pdf->SetXY($x-59, $Y+37);
-        $pdf->Cell(0,0,$result[0]['Total_SpeCandidate'],0,0,'L',0);
+        $pdf->SetXY($x-115, $Y+48);
+        $pdf->Cell(0,0,$result[0]['Grand_Total_Fee'].'/-',0,0,'L',0);
+
+        $pdf->SetFont('Arial','B',8);
+        $pdf->SetXY($x-75, $Y+48);
+        $pdf->Cell(0,0,$specFee1,0,0,'L',0);
+        $pdf->SetXY($x-75, $Y+55.5);
+        $pdf->Cell(0,0,$specFee2,0,0,'L',0);
 
         $pdf->SetFont('Arial','B',$font);
-        $pdf->SetXY($x-30, $Y+178);
+        $pdf->SetXY($x-30, $Y+185);
         $pdf->Cell(0,0,$user['Inst_Id'],0,0,'L',0);
 
         $font = 9;
         $pdf->SetFont('Arial','B',$font);
-        $pdf->SetXY($x-58, $Y+185);
-        $pdf->MultiCell(80,2.9,$user['inst_Name'],0,"L");
+        $pdf->SetXY($x-58, $Y+190);
+        $pdf->MultiCell(90,2.9,$user['inst_Name'],0,"L");
 
         $font = 12;
         $pdf->SetFont('Arial','B',$font);
@@ -916,21 +1374,13 @@ class Admission_9th_reg extends CI_Controller {
         $pdf->SetXY($x-30, $Y+213);
         $pdf->Cell(0,0,$user['cell'],0,0,'L',0);
 
-        $pdf->Image("assets/img/9thForwardingLetter9th.png",5,8, 200,280, "PNG");
-        //$pdf->Image("assets/img/M3.jpg",100, 2.8, 10, 10, "jpg");
-        $bardata = Barcode::fpdf($pdf, $black, $bx+2, $by, $angle, $type, array('code'=>$Barcode), $width, $height);
-
-        $len = $pdf->GetStringWidth($bardata['hri']);
-        Barcode::rotate(-$len / 2, ($bardata['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
-
-        $pdf->SetFont('Arial','B',11.5);
-        $pdf->SetXY(70.5, 46);
-        $pdf->Cell(0,0,$data['iyear'],0,0,'L',0);
-
-
+        $pdf->SetFont('Arial','B',8);
+        $pdf->SetXY($x-135, $Y+230);
+        $pdf->Cell(0,0,"* S = Single Fee Schedule, D = Double Fee Schedule, T = Triple Fee Schedule, F = Fine Fee Schedule    Printing Date: ".date('d-m-Y h:i A'),0,0,'L',0);
 
         $pdf->Output('financeReoprt.pdf', 'I'); 
     }
+
     public function EditForms()
     {
         $this->load->library('session');
@@ -3087,7 +3537,7 @@ class Admission_9th_reg extends CI_Controller {
         $Total_fine = 0;
         $duedate ;
         $processFee = 195;
-         $Logged_In_Array = $this->session->all_userdata();
+        $Logged_In_Array = $this->session->all_userdata();
         $user = $Logged_In_Array['logged_in'];
         // Declare Science & Arts Fee's According to Fee Table .  Note: this will assign to Triple date fee. After triple date it will not asign fees.
         if(!empty($user_info['rule_fee'])) 

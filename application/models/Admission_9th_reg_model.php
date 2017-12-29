@@ -133,12 +133,12 @@ class Admission_9th_reg_model extends CI_Model
             return  false;
         }
     }
-    public function forwarding_pdf_Finance_final($fetch_data)
-    {
-        //DebugBreak();
-        $Inst_cd = $fetch_data['Inst_cd'];
-        // $query = $this->db->query("Admission_online..sp_Forwading_letter_final_10TH $Inst_cd");
-        $query = $this->db->query("Registration..sp_ForwardingLetter_Finance_9thADM $Inst_cd");
+
+    public function getrulefee($date){
+
+        $date =  date('Y-m-d',strtotime($date)) ;
+
+        $query = $this->db->get_where('Admission_Online..RuleFeeAdm', array('class' => 10,'sess' => Session, 'Start_Date <='=>$date,'End_Date >='=>$date));
         $rowcount = $query->num_rows();
         if($rowcount > 0)
         {
@@ -149,6 +149,27 @@ class Admission_9th_reg_model extends CI_Model
             return  false;
         }
     }
+
+
+    public function forwarding_pdf_Finance_final($fetch_data)
+    {
+        //DebugBreak();
+        $Inst_cd = $fetch_data['Inst_cd'];
+        $session = Session;
+        //$query = $this->db->query("Admission_online..sp_Forwading_letter_final_10TH $Inst_cd");
+        //$query = $this->db->query("Registration..sp_ForwardingLetter_Finance_9thADM $Inst_cd,$session");
+        $query = $this->db->query("Admission_online..sp_ForwardingLetter_Finance_tblreg9th_test $Inst_cd,$session");
+        $rowcount = $query->num_rows();
+        if($rowcount > 0)
+        {
+            return $query->result_array();
+        }
+        else
+        {
+            return  false;
+        }
+    }
+
     public function Dashboard($inst_cd)
     {
 
@@ -426,7 +447,7 @@ class Admission_9th_reg_model extends CI_Model
         }
         else
         {
-              $query = $this->db->query("admission_online..NextAppearanceSSC_9THADM 0,10,0,0,'$name','$fname','$dob','$fnic','',2");
+            $query = $this->db->query("admission_online..NextAppearanceSSC_9THADM 0,10,0,0,'$name','$fname','$dob','$fnic','',2");
             $rowcount = $query->num_rows();
             if($rowcount > 0)
             {
