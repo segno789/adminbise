@@ -585,11 +585,11 @@ class Admission_9th_reg extends CI_Controller {
 
             if($this->session->flashdata('IsReAdm')){
                 $isReAdm = 1;
-                $year = date("Y",strtotime("-1 year"));
+                $year = date("Y",strtotime("-2 year"));
             }
             else{
                 $isReAdm = 0;
-                $year = date("Y");    
+                $year = date("Y",strtotime("-1 year"));   
             }
 
             $RegStdData = array('data'=>$this->Admission_9th_reg_model->EditEnrolement_data($formno,$year,$Inst_Id),'isReAdm'=>$isReAdm,'Oldrno'=>0);

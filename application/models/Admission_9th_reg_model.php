@@ -4,11 +4,7 @@ class Admission_9th_reg_model extends CI_Model
 {
     public function __construct()    
     {
-
         $this->load->database(); 
-
-
-
     }
     public function Incomplete_inst_info_INSERT($allinfo)
     {
@@ -29,9 +25,19 @@ class Admission_9th_reg_model extends CI_Model
         $this->db->insert('tblInstitutes_all_Info', $data); 
         return true;
     }
+
+
+    public function getrulefee_new_singleFee()
+    {
+        //DebugBreak();
+        $singleFee = 'Single Fee';
+        $q2         = $this->db->query('Select * from Admission_online..RuleFeeAdm where class = 9 and sess = 1 and Fee_Type = '.$this->db->escape($singleFee));
+        return $resultarr = $q2->result_array();
+    }
+
     public function Incomplete_inst($allinfo,$inst_cd)
     {
-        //  //DebugBreak();
+        //DebugBreak();
         $data = array(
             'Inst_cd' => $inst_cd ,
             'zone_cd' => $allinfo['pvtZone'] ,
