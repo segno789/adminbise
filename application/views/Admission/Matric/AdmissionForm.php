@@ -631,6 +631,9 @@
                             echo "
                             <option value='7'  selected='selected'>SCIENCE  WITH COMPUTER SCIENCE</option>"; 
 
+                        if($grp == 1 &&  $data[0]['sub7']== 43 )
+                          echo"<option value='8' selected='selected'>SCIENCE  WITH ELECTRICAL WIRING</option>";
+
                         if($grp == 2)
 
                             echo"<option value='2' selected='selected'>GENERAL</option>";
