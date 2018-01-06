@@ -87,6 +87,8 @@ class Admission_matric extends CI_Controller {
         $this->load->model('Admission_matric_model');
         $fetch_data = array('Inst_cd'=>$user['Inst_Id'],'Batch_Id'=>$Batch_Id);
 
+        //DebugBreak();
+
         $result = $this->Admission_matric_model->Print_challan_Form($fetch_data);
         $this->load->library('PDF_Rotate');
 
@@ -135,7 +137,14 @@ class Admission_matric extends CI_Controller {
         else
         {
             $rule_fee   =  $this->Admission_matric_model->getrulefee(date('Y-m-d')); 
-            $challanDueDate  = date('d-m-Y',strtotime($rule_fee[0]['End_Date'] )) ;
+
+            if($rule_fee == FALSE){
+                $challanDueDate  = date('d-m-Y');
+            }
+
+            else{
+                $challanDueDate  = date('d-m-Y',strtotime($rule_fee[0]['End_Date'] )) ;    
+            }
         }
 
         $obj    = new NumbertoWord();
@@ -194,6 +203,8 @@ class Admission_matric extends CI_Controller {
             $pdf->SetXY($w+1.4,$y+$dy+0.15);
             $pdf->SetFont('Arial','I',7);
             $pdf->Cell(0, $y, 'Admission Session '.CURRENT_SESS1.' '.corr_bank_chall_class1, 0.25, "L");
+
+
 
             $y += 0.25;
             $pdf->SetFont('Arial','B',10);
@@ -1629,6 +1640,9 @@ class Admission_matric extends CI_Controller {
     }
     public function Batchlist_INSERT()
     {
+
+        //DebugBreak();
+
         $this->load->model('Admission_matric_model');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
@@ -1869,6 +1883,8 @@ class Admission_matric extends CI_Controller {
     public function Make_Batch_Group_wise()
     {
 
+        //DebugBreak();
+
         $this->load->model('Admission_matric_model');
         $this->load->library('session');
         $Logged_In_Array = $this->session->all_userdata();
@@ -2108,22 +2124,24 @@ class Admission_matric extends CI_Controller {
 
             }
 
-          /*  if($v["Spec"] ==  1 && $isSignalDate == 0)   
+            /*  if($v["Spec"] ==  1 && $isSignalDate == 0)   
             {
 
-                $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>0,'certFee'=>0,'AdmFine'=>0,'AdmProcessFee'=>0,'AdmTotalFee'=>0+0+0+0); 
-                $TotalAdmFee = 0;
-                $Adm_fee = 0;
-                $TotalLatefee = 0;
-                $LAdm_fee = 0;
-                $Totalprocessing_fee = 0;
-                $Adm_ProcessingFee = 0;
-                $total_certFee = 0;
-                $certFee = 0;
+            $AllStdFee[$n] = array('formNo'=> $v["formNo"],'AdmFee'=>0,'certFee'=>0,'AdmFine'=>0,'AdmProcessFee'=>0,'AdmTotalFee'=>0+0+0+0); 
+            $TotalAdmFee = 0;
+            $Adm_fee = 0;
+            $TotalLatefee = 0;
+            $LAdm_fee = 0;
+            $Totalprocessing_fee = 0;
+            $Adm_ProcessingFee = 0;
+            $total_certFee = 0;
+            $certFee = 0;
             }
-*/
+            */
+
+            //DebugBreak();
             $TotalAdmFee = $TotalAdmFee + $Adm_fee;
-            $TotalLatefee = $TotalLatefee + $LAdm_fee;
+            $TotalLatefee = $TotalLatefee ;//+ $LAdm_fee;
             $Totalprocessing_fee = $Totalprocessing_fee + $Adm_ProcessingFee;
             $total_certFee = $total_certFee+$certFee;
             $n++;

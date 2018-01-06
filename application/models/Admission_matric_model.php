@@ -495,7 +495,7 @@ class Admission_matric_model extends CI_Model
     }
     public function Batch_Insertion($data)
     {
-
+             
 
         $inst_cd = $data['inst_cd'];
         $total_fee = $data['total_fee'];
